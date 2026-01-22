@@ -1,0 +1,68 @@
+- [X]  Obtenha a chave no Google AI Studio (https://aistudio.google.com/).
+- [X]  Mais detalhes da infração a serem inseridos:
+    Órgão Autuador: (Ex: DETRAN/DF, PRF, DNIT, Prefeitura de [Cidade]). Número do Auto de Infração (AIT): O código identificador único da multa. Placa do Veículo e UF: Essencial para identificação do bem. Marca/Modelo do Veículo: Para conferir se condiz com o que foi registrado no AIT. Data e Horário da Infração: Fundamental para verificar prescrição ou impossibilidade física. Local da Infração: Endereço completo ou km/rodovia. Código da Infração e Artigo do CTB: (Ex: Código 5010, Art. 162, I). Relato dos Fatos (Campo Aberto): Onde o usuário explica a versão dele. Equipamento de Medição (se houver): Número de série do radar ou bafômetro e data da última aferição pelo INMETRO (dados que costumam anular multas).
+    Qualificação:
+    Nome Completo. Nacionalidade. Estado Civil. Profissão. RG e Órgão Emissor. CPF. Número da CNH e Categoria. Endereço Residencial Completo: (Logradouro, número, complemento, bairro, cidade, estado e CEP). Telefone de Contato e E-mail.
+- [X]  Checklist de Documentos:
+    Cópia da Notificação de Autuação. Cópia da CNH (ou documento de identidade). Cópia do CRLV (Documento do veículo). Procuração (caso o recorrente não seja o proprietário). Provas documentais (fotos do local, notas fiscais, declarações de terceiros).
+- [X]  Campos obrigatórios e opcionais
+- [X]  Ajustar termos e privacidade
+- [X]  Apenas digitar Código da Infração e a app preenche automaticamente o art. ctb
+- [X]  Add à db da app os códigos de infração referentes ao art. do ctb
+- [X]  Relacionar Art./Código da infração com o que está escrito.
+- [X]  Crie um arquivo .env dentro da pasta functions e adicione a linha GEMINI_API_KEY=sua_chave.
+- [X]  Para testar o backend integrado localmente, você precisará rodar o emulador do Firebase com suporte a .env ou configurar a variável no ambiente de execução.
+- [X]  Adicionar campos de qualificação (pesquisar quais são)
+- [X]  Altere o local da busca rápida de infração para a seção "3. Detalhes da Infração"
+- [X]  Corrigir o "arraste aqui" do documento
+- [X]  Input de data como DD/MM/AAAA
+- [X]  Telefone, email devem ser campos obrigatórios; Horários deve ser campo opcional
+- [X]  Endereço deve ser preenchido automaticamente após inserir o CEP, que deve ser o primeiro campo da 'seção do endereço' (vir antes de rua)
+- [X]  Separar campos RG e Órgão Emissor
+- [X]  No modo manual, uma página antes de inserir os dados, o usuário deve selecionar se trata-se de Defesa Prévia, Recurso à JARI ou Recurso ao CETRAN/CONTRADIFE. Deve ser incluído também um botão que diz "Não sei dizer em que momento da defesa estou", que abre um modal explicando o que é cada momento e como identificar.
+- [X]  No modal de "Entenda as Fases da Defesa", antes do botão "Entendi, obrigado!", inserir string "Ainda não sabe a fase da defesa em que se encontra? Faça o upload do seu Auto de Infração que nossa IA fará tudo por você!" e um botão que leva à página "upload"
+- [X]  Adicionar CONTRADIFE onde couber
+- [X]  Adicionar objetivos secundários no modal "Entenda as fases da Defesa".
+- [X]  Emitir defesa em documento pronto (permitir que o usuário selecione formato word (docx) com alterações sugeridas para robustecer ou pdf com o recurso 100% pronto OU AMBOS
+- [X] Estado Civil Obrigatório
+- [x]  Novo campo de relatos, deve ser instruído ao usuário informar também o porquê de ele achar que a multa deve ser invalidada, informando ainda que caso ele não saiba, não se preocupe pois a IA cuidará de tudo.
+- [x] Inserir local e data para protocolo do recurso nos campos (inclusive no upload)
+- [x]  Na pós análise do documento, separar a análise e extração de dados do recurso em si
+
+
+
+- []  Altere o formato horário para ser 24h (sem am ou pm);
+- []  Altere o campo de data da assinatura para que, quando digitada, auto preencha com as barras de divisão (da mesma forma que acontece com o campo da data da ocorrência);
+- []  Adicionar conferência de CPF válido;
+- []  Adicionar opção de "Outro" no estado civil, ocasião na qual não deve ser informado na defesa;
+- []  Trocar o campo do relato para apresentar um placeholder simples com pequenos exemplos de relatos breves (remover a inserção da explicação da multa que está como feat atualmente); 
+
+
+
+
+- []  Fazer segunda camada de verificação caso o relato não bata com o art.
+- []  Login completo/autenticação com email e senha e possibilidade de google auth.
+
+
+
+- []  Valor atualizado da multa + penalidade
+- []  Ajustar busca rápida da infração para que no relato apareça como placeholder uma sugestão no sentido: "Sua multa é referente à X. As maiores possibilidades de defesa se encontram em ..." e usar IA para complementar as alegações no relato do usuário que podem ser benéficas para o recurso.
+
+
+
+- []  Melhorar Marketing
+- []  Melhorar termos de uso e privacidade
+- []  Inserir 
+- []  No caso de não provimento do recurso, basta entrar em contato que disponibilizamos o recurso seguinte gratuitamente
+- []  Possibilitar edição manual do recurso antes da versão final.
+- []  Formatação da versão final mais adequada (sem ser markdown, e sim formatação estética para leitura humana).
+
+
+- [ ] Instruções para o modelo: identificar qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso. Ser PROLIXO.
+
+
+Outras:
+- []  Permitir um (apenas 1) teste antes de efetivar? Demo
+
+Plus:
+- []  Premium?: Chatbot de dúvidas
