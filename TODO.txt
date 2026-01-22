@@ -32,37 +32,27 @@
 - [X]  Altere o campo de data da assinatura para que, quando digitada, auto preencha com as barras de divisão (da mesma forma que acontece com o campo da data da ocorrência);
 - [X]  Adicionar conferência de CPF válido;
 - [X]  Adicionar opção de "Outro" no estado civil, ocasião na qual não deve ser informado na defesa;
+- [x]  O campo de relato não deve ser preenchido quando o usuário adicionar o código da infração, deve ser mantido como está na primeira renderização da página (com o placeholder);
 
 
-
-- []  Trocar o campo do relato para apresentar um placeholder simples com pequenos exemplos de relatos breves (remover a inserção da explicação da multa que está como feat atualmente); 
-
-
-
-
-- []  Fazer segunda camada de verificação caso o relato não bata com o art.
 - []  Login completo/autenticação com email e senha e possibilidade de google auth.
 
-
-
-- []  Valor atualizado da multa + penalidade
-- []  Ajustar busca rápida da infração para que no relato apareça como placeholder uma sugestão no sentido: "Sua multa é referente à X. As maiores possibilidades de defesa se encontram em ..." e usar IA para complementar as alegações no relato do usuário que podem ser benéficas para o recurso.
-
-
-
-- []  Melhorar Marketing
-- []  Melhorar termos de uso e privacidade
-- []  Inserir 
-- []  No caso de não provimento do recurso, basta entrar em contato que disponibilizamos o recurso seguinte gratuitamente
+Feats:
+- []  Permitir um (apenas 1) teste antes de efetivar? Demo
 - []  Possibilitar edição manual do recurso antes da versão final.
+
+
+IA:
 - []  Formatação da versão final mais adequada (sem ser markdown, e sim formatação estética para leitura humana).
-
-
+- []  Fazer segunda camada de verificação caso o relato não bata com o art.
 - [ ] Instruções para o modelo: identificar qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso. Ser PROLIXO.
 
-
-Outras:
-- []  Permitir um (apenas 1) teste antes de efetivar? Demo
+Marketing:
+- []  Melhorar Marketing geral, principalmente da home
+- []  Melhorar termos de uso e privacidade
+- []  No caso de não provimento do recurso, basta entrar em contato que disponibilizamos o recurso seguinte gratuitamente
+- []  Valor atualizado da multa + penalidade
+- []  Ajustar busca rápida da infração para que no relato apareça como placeholder uma sugestão no sentido: "Sua multa é referente à X. As maiores possibilidades de defesa se encontram em ..." e usar IA para complementar as alegações no relato do usuário que podem ser benéficas para o recurso.
 
 Plus:
 - []  Premium?: Chatbot de dúvidas

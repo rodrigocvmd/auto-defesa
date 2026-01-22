@@ -157,10 +157,10 @@ const ManualDefense = () => {
         desdobramento: formData.infractionSplit 
       });
       if (response && response.success) {
+        const { article, description } = response.data;
         setFormData(prev => ({
           ...prev,
-          article: response.data.article || '',
-          description: prev.description ? prev.description : `Autuado por: ${response.data.description}. ` 
+          article: article || prev.article
         }));
       }
     } catch (error) {
