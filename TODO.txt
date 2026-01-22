@@ -33,9 +33,11 @@
 - [X]  Adicionar conferência de CPF válido;
 - [X]  Adicionar opção de "Outro" no estado civil, ocasião na qual não deve ser informado na defesa;
 - [x]  O campo de relato não deve ser preenchido quando o usuário adicionar o código da infração, deve ser mantido como está na primeira renderização da página (com o placeholder);
+- [X]  Login completo/autenticação com email e senha e possibilidade de google auth.
 
 
-- []  Login completo/autenticação com email e senha e possibilidade de google auth.
+
+- []  Página do perfil do usuário, devendo conter as informações padrão, bem como de arquivos/defesas geradas e outras opções e configurações default que entender pertinente;
 
 Feats:
 - []  Permitir um (apenas 1) teste antes de efetivar? Demo
@@ -45,7 +47,7 @@ Feats:
 IA:
 - []  Formatação da versão final mais adequada (sem ser markdown, e sim formatação estética para leitura humana).
 - []  Fazer segunda camada de verificação caso o relato não bata com o art.
-- [ ] Instruções para o modelo: identificar qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso. Ser PROLIXO.
+- [] Instruções para o modelo: identificar qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso. Ser PROLIXO.
 
 Marketing:
 - []  Melhorar Marketing geral, principalmente da home

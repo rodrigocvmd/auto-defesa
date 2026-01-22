@@ -1,10 +1,22 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Shield, Home } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Shield, Home, User, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const MainLayout = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
   const isHome = location.pathname === '/';
+
+  async function handleLogout() {
+    try {
+        await logout();
+        navigate('/login');
+    } catch (error) {
+        console.error("Erro ao sair", error);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
@@ -24,18 +36,49 @@ const MainLayout = ({ children }) => {
               </span>
             </Link>
 
-            {/* Desktop Navigation (Pode crescer no futuro) */}
-            <nav className="hidden md:flex gap-6">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-6">
               {!isHome && (
                 <Link to="/" className="text-gray-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-2">
                   <Home size={18} /> Início
                 </Link>
               )}
+
+              <div className="h-6 w-px bg-gray-200 mx-2"></div>
+
+              {currentUser ? (
+                 <div className="flex items-center gap-4">
+                    <span className="text-sm text-gray-600 truncate max-w-[150px]">
+                        {currentUser.email}
+                    </span>
+                    <button 
+                        onClick={handleLogout}
+                        className="text-gray-500 hover:text-red-600 font-medium transition-colors flex items-center gap-2"
+                    >
+                        <LogOut size={18} /> Sair
+                    </button>
+                 </div>
+              ) : (
+                <div className="flex items-center gap-4">
+                    <Link to="/login" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+                        Entrar
+                    </Link>
+                    <Link to="/register" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        Criar conta
+                    </Link>
+                </div>
+              )}
             </nav>
 
-            {/* Mobile Action (opcional, placeholder) */}
-            <div className="md:hidden">
-              {/* Menu hamburguer iria aqui se necessário */}
+            {/* Mobile Action (simplificado) */}
+            <div className="md:hidden flex items-center gap-4">
+                {currentUser ? (
+                     <button onClick={handleLogout} className="text-gray-600">
+                        <LogOut size={20} />
+                     </button>
+                ) : (
+                    <Link to="/login" className="text-blue-600 font-medium">Entrar</Link>
+                )}
             </div>
           </div>
         </div>
