@@ -28,13 +28,13 @@
 - [x]  Novo campo de relatos, deve ser instruído ao usuário informar também o porquê de ele achar que a multa deve ser invalidada, informando ainda que caso ele não saiba, não se preocupe pois a IA cuidará de tudo.
 - [x] Inserir local e data para protocolo do recurso nos campos (inclusive no upload)
 - [x]  Na pós análise do documento, separar a análise e extração de dados do recurso em si
+- [X]  Altere o formato horário para ser 24h (sem am ou pm);
+- [X]  Altere o campo de data da assinatura para que, quando digitada, auto preencha com as barras de divisão (da mesma forma que acontece com o campo da data da ocorrência);
+- [X]  Adicionar conferência de CPF válido;
+- [X]  Adicionar opção de "Outro" no estado civil, ocasião na qual não deve ser informado na defesa;
 
 
 
-- []  Altere o formato horário para ser 24h (sem am ou pm);
-- []  Altere o campo de data da assinatura para que, quando digitada, auto preencha com as barras de divisão (da mesma forma que acontece com o campo da data da ocorrência);
-- []  Adicionar conferência de CPF válido;
-- []  Adicionar opção de "Outro" no estado civil, ocasião na qual não deve ser informado na defesa;
 - []  Trocar o campo do relato para apresentar um placeholder simples com pequenos exemplos de relatos breves (remover a inserção da explicação da multa que está como feat atualmente); 
 
 

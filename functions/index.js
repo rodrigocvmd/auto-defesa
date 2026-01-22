@@ -78,7 +78,7 @@ exports.generateDefense = onRequest((req, res) => {
 
 			const userPrompt = `
         CASO: Órgão ${data.issuingBody}, AIT ${data.aitNumber}
-        CONDUTOR: ${data.name}, Brasileiro(a), ${data.maritalStatus}, ${data.profession}, RG ${data.rg} ${data.rgIssuer}, CPF ${data.cpf}. CNH ${data.cnh} Cat ${data.cnhCategory}.
+        CONDUTOR: ${data.name}, Brasileiro(a), ${data.maritalStatus === 'Outro' ? '' : data.maritalStatus}, ${data.profession}, RG ${data.rg} ${data.rgIssuer}, CPF ${data.cpf}. CNH ${data.cnh} Cat ${data.cnhCategory}.
         ENDEREÇO: ${data.address}, ${data.addressNumber} ${data.addressComplement}, ${data.neighborhood}, ${data.city}/${data.state}, CEP ${data.zipCode}.
         VEÍCULO: ${data.plate}/${data.plateUF}, ${data.vehicleModel}.
         INFRAÇÃO: ${data.article} em ${data.date} às ${data.time}, Local ${data.location}.
