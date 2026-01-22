@@ -34,15 +34,13 @@
 - [X]  Adicionar opção de "Outro" no estado civil, ocasião na qual não deve ser informado na defesa;
 - [x]  O campo de relato não deve ser preenchido quando o usuário adicionar o código da infração, deve ser mantido como está na primeira renderização da página (com o placeholder);
 - [X]  Login completo/autenticação com email e senha e possibilidade de google auth.
+- [x]  Página do perfil do usuário, devendo conter as informações padrão, bem como de arquivos/defesas geradas e outras opções e configurações default que entender pertinente;
 
-
-
-- []  Página do perfil do usuário, devendo conter as informações padrão, bem como de arquivos/defesas geradas e outras opções e configurações default que entender pertinente;
+- []  Elabore e faça funcionar as funcionalidade reais da página do perfil do usuário: nova defesa deve levar á página de escolher entre upload e manual, as defesas baixadas devem ficar armazenadas e deve ser possível baixar novamente, enfim, todas as funcionalidades que são possíveis agora devem ser aplicadas e estarem funcionais.
 
 Feats:
 - []  Permitir um (apenas 1) teste antes de efetivar? Demo
 - []  Possibilitar edição manual do recurso antes da versão final.
-
 
 IA:
 - []  Formatação da versão final mais adequada (sem ser markdown, e sim formatação estética para leitura humana).
