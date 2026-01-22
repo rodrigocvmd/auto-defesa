@@ -3,12 +3,17 @@ import {
   UploadCloud, File, X, ArrowLeft, Loader2, 
   CheckCircle, Copy, AlertTriangle, PenTool, Download, Send, RotateCcw, FileCheck, User, MapPin, Gauge, Info 
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import { api } from '../services/api';
 import { jsPDF } from 'jspdf';
+import { useAuth } from '../contexts/AuthContext';
+import { db } from '../firebaseConfig';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const UploadDefense = () => {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const [step, setStep] = useState('upload');
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -121,7 +126,28 @@ const UploadDefense = () => {
     try {
       const base64 = await fileToBase64(file);
       const response = await api.analyzeDocument(base64, file.type, formData);
-      if (response.success) { setResult(response.data.defenseText); setStep('result'); }
+      if (response.success) { 
+        setResult(response.data.defenseText); 
+        
+        // Save to Firestore if user is logged in
+        if (currentUser) {
+            try {
+                await addDoc(collection(db, 'defenses'), {
+                    userId: currentUser.uid,
+                    infractionType: 'Análise de Upload',
+                    licensePlate: 'Verificar documento',
+                    defenseText: response.data.defenseText,
+                    status: 'completed',
+                    createdAt: serverTimestamp(),
+                    fileName: file.name
+                });
+            } catch (fsError) {
+                console.error("Erro ao salvar no histórico:", fsError);
+            }
+        }
+
+        setStep('result'); 
+      }
     } catch (err) { setError(err.message || "Falha ao processar o arquivo."); setStep('upload'); } finally { setLoading(false); }
   };
 
@@ -146,6 +172,7 @@ const UploadDefense = () => {
       cursorY += 6;
     });
     doc.save("Defesa_Upload.pdf");
+    navigate('/profile');
   };
 
   if (step === 'result' && result) {
@@ -184,13 +211,31 @@ const UploadDefense = () => {
           </header>
 
           <form onSubmit={handleFormSubmit} className="space-y-8 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+            {loading && (
+              <div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center">
+                <Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Processando...</h2>
+                <p className="text-gray-600 max-w-md">Nossa IA está analisando todos os dados e montando a melhor defesa legal para a sua infração.</p>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div className="md:col-span-2"><label className="label-form">Nome Completo <span className="text-red-500">*</span></label><input name="name" value={formData.name} onChange={handleChange} className="input-form" required /></div>
               <div><label className="label-form">CPF <span className="text-red-500">*</span></label><input name="cpf" value={formData.cpf} onChange={handleChange} className="input-form" placeholder="000.000.000-00" required /></div>
               <div><label className="label-form">RG <span className="text-red-500">*</span></label><input name="rg" value={formData.rg} onChange={handleChange} className="input-form" required /></div>
               <div><label className="label-form">Órgão Emissor <span className="text-red-500">*</span></label><input name="rgIssuer" value={formData.rgIssuer} onChange={handleChange} className="input-form" required /></div>
               <div><label className="label-form">Nacionalidade <span className="text-red-500">*</span></label><input name="nationality" value={formData.nationality} onChange={handleChange} className="input-form" required /></div>
-              <div><label className="label-form">Estado Civil <span className="text-red-500">*</span></label><select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} className="input-form" required><option value="">Selecione...</option><option value="Solteiro(a)">Solteiro(a)</option><option value="Casado(a)">Casado(a)</option><option value="Divorciado(a)">Divorciado(a)</option><option value="Viúvo(a)">Viúvo(a)</option></select></div>
+              <div>
+                  <label className="label-form">Estado Civil <span className="text-red-500">*</span></label>
+                  <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} className="input-form" required>
+                      <option value="">Selecione...</option>
+                      <option value="Solteiro(a)">Solteiro(a)</option>
+                      <option value="Casado(a)">Casado(a)</option>
+                      <option value="Divorciado(a)">Divorciado(a)</option>
+                      <option value="Viúvo(a)">Viúvo(a)</option>
+                      <option value="Outro">Outro</option>
+                  </select>
+              </div>
               <div><label className="label-form">Profissão</label><input name="profession" value={formData.profession} onChange={handleChange} className="input-form" /></div>
               <div><label className="label-form">Número CNH <span className="text-red-500">*</span></label><input name="cnh" value={formData.cnh} onChange={handleChange} className="input-form" required /></div>
               <div><label className="label-form">Categoria CNH</label><input name="cnhCategory" value={formData.cnhCategory} onChange={handleChange} className="input-form" placeholder="Ex: AB" /></div>
@@ -230,7 +275,7 @@ const UploadDefense = () => {
             </div>
 
             <div className="pt-6">
-              <button type="submit" className="w-full bg-blue-600 text-white text-xl font-bold py-5 rounded-2xl shadow-xl hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center gap-2">{loading ? <Loader2 className="animate-spin" /> : 'Gerar Defesa com IA'}</button>
+              <button type="submit" className="w-full bg-blue-600 text-white text-xl font-bold py-5 rounded-2xl shadow-xl hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center gap-2">{loading ? '...' : 'Gerar Defesa com IA'}</button>
             </div>
           </form>
         </div>

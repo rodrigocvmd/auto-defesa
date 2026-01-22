@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import { 
     User, 
@@ -13,35 +13,83 @@ import {
     Save,
     Lock,
     AlertCircle,
-    CheckCircle
+    CheckCircle,
+    Plus
 } from 'lucide-react';
 import { updateProfile, updatePassword } from 'firebase/auth';
+import { doc, getDoc, setDoc, collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
+import { jsPDF } from 'jspdf';
 
 export default function Profile() {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('defenses');
     const [loading, setLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(true);
     const [message, setMessage] = useState({ type: '', content: '' });
 
     // Estados do Formulário de Perfil
-    const [displayName, setDisplayName] = useState(currentUser?.displayName || '');
-    const [defaultPlate, setDefaultPlate] = useState(''); // Futuro: carregar do Firestore
+    const [displayName, setDisplayName] = useState('');
+    const [defaultPlate, setDefaultPlate] = useState('');
     
     // Estados do Formulário de Senha
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    // Mock de dados para histórico (será substituído por dados do Firestore)
-    const mockDefenses = [
-        { id: 1, date: '2025-01-15', licensePlate: 'ABC-1234', infraction: 'Excesso de velocidade', status: 'concluido' },
-        { id: 2, date: '2025-01-20', licensePlate: 'XYZ-9876', infraction: 'Estacionamento irregular', status: 'pendente' },
-    ];
+    // Estado do Histórico
+    const [defenses, setDefenses] = useState([]);
 
     useEffect(() => {
         if (!currentUser) {
             navigate('/login');
+            return;
         }
+
+        async function fetchUserData() {
+            try {
+                // 1. Carregar dados básicos do Auth
+                setDisplayName(currentUser.displayName || '');
+
+                // 2. Carregar dados estendidos do Firestore (ex: placa padrão)
+                const userDocRef = doc(db, 'users', currentUser.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (userDocSnap.exists()) {
+                    const data = userDocSnap.data();
+                    if (data.defaultPlate) setDefaultPlate(data.defaultPlate);
+                }
+
+                // 3. Carregar histórico de defesas
+                const defensesRef = collection(db, 'defenses');
+                const q = query(
+                    defensesRef, 
+                    where('userId', '==', currentUser.uid)
+                );
+                
+                const querySnapshot = await getDocs(q);
+                const defensesList = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                // Ordenar no cliente para evitar necessidade de índice composto
+                defensesList.sort((a, b) => {
+                    const dateA = a.createdAt?.seconds || 0;
+                    const dateB = b.createdAt?.seconds || 0;
+                    return dateB - dateA; // Decrescente
+                });
+
+                setDefenses(defensesList);
+
+            } catch (error) {
+                console.error("Erro ao carregar dados:", error);
+            } finally {
+                setPageLoading(false);
+            }
+        }
+
+        fetchUserData();
     }, [currentUser, navigate]);
 
     async function handleUpdateProfile(e) {
@@ -50,15 +98,26 @@ export default function Profile() {
         setMessage({ type: '', content: '' });
 
         try {
+            // Atualizar Auth Profile
             if (currentUser.displayName !== displayName) {
                 await updateProfile(currentUser, {
                     displayName: displayName
                 });
             }
-            // Aqui salvaríamos a placa padrão no Firestore
+
+            // Atualizar Firestore Profile
+            const userDocRef = doc(db, 'users', currentUser.uid);
+            await setDoc(userDocRef, {
+                email: currentUser.email,
+                displayName: displayName,
+                defaultPlate: defaultPlate,
+                updatedAt: new Date()
+            }, { merge: true });
+
             setMessage({ type: 'success', content: 'Perfil atualizado com sucesso!' });
         } catch (error) {
-            setMessage({ type: 'error', content: 'Erro ao atualizar perfil.' });
+            console.error(error);
+            setMessage({ type: 'error', content: 'Erro ao atualizar perfil. Tente novamente.' });
         }
         setLoading(false);
     }
@@ -81,6 +140,42 @@ export default function Profile() {
             setMessage({ type: 'error', content: 'Erro ao alterar senha. Pode ser necessário fazer login novamente.' });
         }
         setLoading(false);
+    }
+
+    const downloadPDF = (defense) => {
+        if (!defense.defenseText) {
+            alert("Texto da defesa não encontrado.");
+            return;
+        }
+
+        const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+        doc.setFont("times", "normal");
+        doc.setFontSize(12);
+        const splitText = doc.splitTextToSize(defense.defenseText, 160);
+        let cursorY = 25;
+        splitText.forEach(line => {
+            if (cursorY > 270) { doc.addPage(); cursorY = 25; }
+            const isTitle = line.length < 50 && line === line.toUpperCase() && line.trim().length > 0;
+            if (isTitle) {
+                doc.setFont("times", "bold");
+                doc.text(line, 105, cursorY, { align: "center" });
+                doc.setFont("times", "normal");
+            } else {
+                doc.text(line, 25, cursorY, { align: "justify", maxWidth: 160 });
+            }
+            cursorY += 6;
+        });
+        doc.save(`Defesa_${defense.licensePlate || 'Recurso'}.pdf`);
+    };
+
+    if (pageLoading) {
+        return (
+            <MainLayout>
+                <div className="flex items-center justify-center min-h-[60vh]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                </div>
+            </MainLayout>
+        );
     }
 
     return (
@@ -154,34 +249,43 @@ export default function Profile() {
                         <div>
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-xl font-bold text-gray-900">Histórico de Defesas</h2>
-                                <button className="text-sm text-blue-600 font-medium hover:underline">
-                                    Nova Defesa
-                                </button>
+                                <Link to="/" className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg font-medium hover:bg-blue-100 transition-colors">
+                                    <Plus size={16} /> Nova Defesa
+                                </Link>
                             </div>
 
-                            {mockDefenses.length > 0 ? (
+                            {defenses.length > 0 ? (
                                 <div className="space-y-4">
-                                    {mockDefenses.map((defense) => (
+                                    {defenses.map((defense) => (
                                         <div key={defense.id} className="border border-gray-100 rounded-xl p-4 hover:border-blue-100 hover:shadow-md transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                                             <div className="flex items-start gap-4">
                                                 <div className="bg-blue-50 p-3 rounded-lg text-blue-600">
                                                     <Shield size={24} />
                                                 </div>
                                                 <div>
-                                                    <h3 className="font-semibold text-gray-900">{defense.infraction}</h3>
+                                                    <h3 className="font-semibold text-gray-900">{defense.infractionType || 'Infração não especificada'}</h3>
                                                     <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
-                                                        <span className="flex items-center gap-1"><Car size={14} /> {defense.licensePlate}</span>
-                                                        <span className="flex items-center gap-1"><Clock size={14} /> {new Date(defense.date).toLocaleDateString()}</span>
+                                                        <span className="flex items-center gap-1"><Car size={14} /> {defense.licensePlate || 'N/A'}</span>
+                                                        <span className="flex items-center gap-1">
+                                                            <Clock size={14} /> 
+                                                            {defense.createdAt?.seconds 
+                                                                ? new Date(defense.createdAt.seconds * 1000).toLocaleDateString() 
+                                                                : 'Data desc.'}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-3 w-full md:w-auto">
                                                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                                    defense.status === 'concluido' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                                                    defense.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                                                 }`}>
-                                                    {defense.status === 'concluido' ? 'Pronto' : 'Processando'}
+                                                    {defense.status === 'completed' ? 'Pronto' : 'Processando'}
                                                 </span>
-                                                <button className="p-2 text-gray-400 hover:text-blue-600 transition-colors" title="Baixar PDF">
+                                                <button 
+                                                    onClick={() => downloadPDF(defense)}
+                                                    className="p-2 text-gray-400 hover:text-blue-600 transition-colors" 
+                                                    title="Baixar PDF"
+                                                >
                                                     <Download size={20} />
                                                 </button>
                                             </div>
@@ -191,7 +295,10 @@ export default function Profile() {
                             ) : (
                                 <div className="text-center py-12 text-gray-500">
                                     <FileText size={48} className="mx-auto mb-4 opacity-20" />
-                                    <p>Nenhuma defesa gerada ainda.</p>
+                                    <p className="mb-4">Nenhuma defesa gerada ainda.</p>
+                                    <Link to="/" className="inline-flex items-center gap-2 text-blue-600 font-medium hover:underline">
+                                        Criar minha primeira defesa
+                                    </Link>
                                 </div>
                             )}
                         </div>

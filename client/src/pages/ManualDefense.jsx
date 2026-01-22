@@ -9,8 +9,12 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { jsPDF } from 'jspdf';
+import { useAuth } from '../contexts/AuthContext';
+import { db } from '../firebaseConfig';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const ManualDefense = () => {
+  const { currentUser } = useAuth();
   const navigate = useNavigate();
   
   const [step, setStep] = useState('selection');
@@ -184,6 +188,22 @@ const ManualDefense = () => {
       const response = await api.generateDefense(formData);
       if (response.success) {
         setResult(response.data.defenseText);
+        
+        // Save to Firestore
+        if (currentUser) {
+            try {
+                await addDoc(collection(db, 'defenses'), {
+                    userId: currentUser.uid,
+                    infractionType: formData.defenseType === 'previa' ? 'Defesa Prévia' : formData.defenseType === 'jari' ? 'Recurso JARI' : 'Recurso CETRAN',
+                    licensePlate: formData.plate,
+                    defenseText: response.data.defenseText,
+                    status: 'completed',
+                    createdAt: serverTimestamp()
+                });
+            } catch (fsError) {
+                console.error("Erro ao salvar no histórico:", fsError);
+            }
+        }
       }
     } catch (err) {
       alert("Erro ao gerar defesa.");
@@ -232,6 +252,7 @@ const ManualDefense = () => {
       cursorY += 6;
     });
     doc.save(`Defesa_${formData.plate || 'Recurso'}.pdf`);
+    navigate('/profile');
   };
 
   const copyToClipboard = () => {
@@ -298,7 +319,13 @@ const ManualDefense = () => {
           </header>
 
           <form onSubmit={handleSubmit} className="space-y-8 pb-20">
-            {loading && (<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center"><Loader2 size={60} className="text-blue-600 animate-spin mb-4" /><h2 className="text-2xl font-bold text-gray-800">Processando...</h2></div>)}
+            {loading && (
+              <div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center">
+                <Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Processando...</h2>
+                <p className="text-gray-600 max-w-md">Nossa IA está analisando todos os dados e montando a melhor defesa legal para a sua infração.</p>
+              </div>
+            )}
 
             <section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
               <div className="flex items-center gap-2 border-b pb-4"><User className="text-blue-600" /><h3 className="text-xl font-bold text-gray-800">1. Qualificação</h3></div>

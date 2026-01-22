@@ -35,12 +35,18 @@
 - [x]  O campo de relato não deve ser preenchido quando o usuário adicionar o código da infração, deve ser mantido como está na primeira renderização da página (com o placeholder);
 - [X]  Login completo/autenticação com email e senha e possibilidade de google auth.
 - [x]  Página do perfil do usuário, devendo conter as informações padrão, bem como de arquivos/defesas geradas e outras opções e configurações default que entender pertinente;
+- [X]  Elabore e faça funcionar as funcionalidade reais da página do perfil do usuário: nova defesa deve levar á página de escolher entre upload e manual, as defesas baixadas devem ficar armazenadas e deve ser possível baixar novamente, enfim, todas as funcionalidades que são possíveis agora devem ser aplicadas e estarem funcionais.
+- [x]  Opção de 'Outro' em estado civil também no campo da uploaddefense;
+- [x]  Corrigir: Loading Screen de gerar o recurso está indicando apenas "Processando", mas deve indicar "Processando" e algo como "Nossa IA está analisando todos os dados e montando a melhor defesa legal para a sua infração";
 
-- []  Elabore e faça funcionar as funcionalidade reais da página do perfil do usuário: nova defesa deve levar á página de escolher entre upload e manual, as defesas baixadas devem ficar armazenadas e deve ser possível baixar novamente, enfim, todas as funcionalidades que são possíveis agora devem ser aplicadas e estarem funcionais.
+
+- []  Corrigir: Defesas concluídas/geradas ainda não estão aparecendo no perfil;
+
 
 Feats:
-- []  Permitir um (apenas 1) teste antes de efetivar? Demo
 - []  Possibilitar edição manual do recurso antes da versão final.
+- []  Adicionar conferência de nome completo (ao menos 2 palavras com ao menos 2 caracteres cada);
+- []  Permitir um (apenas 1) teste antes de efetivar? Demo
 
 IA:
 - []  Formatação da versão final mais adequada (sem ser markdown, e sim formatação estética para leitura humana).
