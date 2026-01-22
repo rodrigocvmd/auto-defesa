@@ -48,14 +48,21 @@ const MainLayout = ({ children }) => {
 
               {currentUser ? (
                  <div className="flex items-center gap-4">
-                    <span className="text-sm text-gray-600 truncate max-w-[150px]">
-                        {currentUser.email}
-                    </span>
+                    <Link to="/profile" className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors group">
+                        <div className="bg-gray-100 p-1.5 rounded-full group-hover:bg-blue-50 transition-colors">
+                            <User size={18} />
+                        </div>
+                        <span className="text-sm font-medium truncate max-w-[150px]">
+                            {currentUser.displayName || currentUser.email}
+                        </span>
+                    </Link>
+                    <div className="h-4 w-px bg-gray-300"></div>
                     <button 
                         onClick={handleLogout}
-                        className="text-gray-500 hover:text-red-600 font-medium transition-colors flex items-center gap-2"
+                        className="text-gray-500 hover:text-red-600 font-medium transition-colors flex items-center gap-2 text-sm"
+                        title="Sair"
                     >
-                        <LogOut size={18} /> Sair
+                        <LogOut size={18} />
                     </button>
                  </div>
               ) : (

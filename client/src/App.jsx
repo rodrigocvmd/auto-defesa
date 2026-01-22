@@ -8,6 +8,7 @@ import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/upload" element={<UploadDefense />} />
           <Route path="/manual" element={<ManualDefense />} />
           <Route path="/terms" element={<Terms />} />

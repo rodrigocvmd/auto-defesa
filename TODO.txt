@@ -54,6 +54,7 @@ Marketing:
 - []  Melhorar termos de uso e privacidade
 - []  No caso de não provimento do recurso, basta entrar em contato que disponibilizamos o recurso seguinte gratuitamente
 - []  Valor atualizado da multa + penalidade
+- []  Criar sessão de Help completa (suporte ao usuário, com mockups das informações que você não souber (irei preencger depois))
 - []  Ajustar busca rápida da infração para que no relato apareça como placeholder uma sugestão no sentido: "Sua multa é referente à X. As maiores possibilidades de defesa se encontram em ..." e usar IA para complementar as alegações no relato do usuário que podem ser benéficas para o recurso.
 
 Plus:
