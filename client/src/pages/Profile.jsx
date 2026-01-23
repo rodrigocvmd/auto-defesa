@@ -23,7 +23,7 @@ import { db } from '../firebaseConfig';
 import { jsPDF } from 'jspdf';
 
 export default function Profile() {
-    const { currentUser, userData } = useAuth();
+    const { currentUser, userData, updateUserEmail } = useAuth();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('defenses');
     const [loading, setLoading] = useState(false);
@@ -32,6 +32,7 @@ export default function Profile() {
 
     // Estados do Formulário de Perfil
     const [displayName, setDisplayName] = useState('');
+    const [email, setEmail] = useState('');
     const [defaultPlate, setDefaultPlate] = useState('');
     
     // Estados do Formulário de Senha
@@ -51,6 +52,7 @@ export default function Profile() {
             try {
                 // 1. Carregar dados básicos do Auth
                 setDisplayName(currentUser.displayName || '');
+                setEmail(currentUser.email || '');
 
                 // 2. Carregar dados estendidos do Firestore (ex: placa padrão)
                 const userDocRef = doc(db, 'users', currentUser.uid);
@@ -106,26 +108,53 @@ export default function Profile() {
         setMessage({ type: '', content: '' });
 
         try {
-            // Atualizar Auth Profile
+            let successMsg = '';
+
+            // 1. Atualizar Email (se mudou)
+            if (email !== currentUser.email) {
+                try {
+                    await updateUserEmail(email);
+                    successMsg += `Email de verificação enviado para ${email}. Confirme para concluir a alteração. `;
+                } catch (error) {
+                    if (error.code === 'auth/requires-recent-login') {
+                        throw new Error("Para alterar o email, faça login novamente por segurança.");
+                    } else if (error.code === 'auth/invalid-email') {
+                        throw new Error("O email informado é inválido.");
+                    } else if (error.code === 'auth/email-already-in-use') {
+                        throw new Error("Este email já está em uso por outra conta.");
+                    }
+                    throw error;
+                }
+            }
+
+            // 2. Atualizar Auth Profile (Nome)
             if (currentUser.displayName !== displayName) {
                 await updateProfile(currentUser, {
                     displayName: displayName
                 });
+                if (!successMsg) successMsg = 'Perfil atualizado com sucesso!';
             }
 
-            // Atualizar Firestore Profile
+            // 3. Atualizar Firestore Profile
             const userDocRef = doc(db, 'users', currentUser.uid);
             await setDoc(userDocRef, {
-                email: currentUser.email,
+                // Mantemos o email antigo no Firestore até que a verificação ocorra, 
+                // ou atualizamos se quisermos refletir a intenção.
+                // Como verifyBeforeUpdateEmail não muda o auth.email imediatamente, 
+                // melhor manter sync com auth.email ou user a nova input?
+                // Vamos manter o auth.email atual para consistência até verificação.
+                email: currentUser.email, 
                 displayName: displayName,
                 defaultPlate: defaultPlate,
                 updatedAt: new Date()
             }, { merge: true });
 
-            setMessage({ type: 'success', content: 'Perfil atualizado com sucesso!' });
+            if (!successMsg) successMsg = 'Perfil atualizado com sucesso!';
+            setMessage({ type: 'success', content: successMsg });
+
         } catch (error) {
             console.error(error);
-            setMessage({ type: 'error', content: 'Erro ao atualizar perfil. Tente novamente.' });
+            setMessage({ type: 'error', content: error.message || 'Erro ao atualizar perfil. Tente novamente.' });
         }
         setLoading(false);
     }
@@ -355,9 +384,10 @@ export default function Profile() {
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                                     <input
                                         type="email"
-                                        className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded-lg text-gray-500 cursor-not-allowed"
-                                        value={currentUser?.email}
-                                        disabled
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="seu@email.com"
                                     />
                                 </div>
                                 <div>

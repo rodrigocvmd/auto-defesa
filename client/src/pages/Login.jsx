@@ -27,7 +27,7 @@ export default function Login() {
             
             if (isResetMode) {
                 await resetPassword(email);
-                setMessage('Verifique seu email para instruções de redefinição de senha.');
+                setMessage('Verifique seu email para instruções de redefinição de senha (verifique também a caixa de spam).');
             } else {
                 await login(email, password);
                 navigate(redirect);

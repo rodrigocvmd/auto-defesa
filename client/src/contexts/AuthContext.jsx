@@ -6,7 +6,8 @@ import {
     onAuthStateChanged,
     GoogleAuthProvider,
     signInWithPopup,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    verifyBeforeUpdateEmail
 } from 'firebase/auth';
 import { doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
@@ -21,6 +22,9 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // Configurar idioma para português (Emails de reset, verificação, etc)
+    auth.languageCode = 'pt';
 
     function signup(email, password) {
         return createUserWithEmailAndPassword(auth, email, password);
@@ -41,6 +45,10 @@ export function AuthProvider({ children }) {
 
     function resetPassword(email) {
         return sendPasswordResetEmail(auth, email);
+    }
+
+    function updateUserEmail(newEmail) {
+        return verifyBeforeUpdateEmail(currentUser, newEmail);
     }
 
     useEffect(() => {
@@ -91,7 +99,8 @@ export function AuthProvider({ children }) {
         login,
         loginWithGoogle,
         logout,
-        resetPassword
+        resetPassword,
+        updateUserEmail
     };
 
     return (
