@@ -62,6 +62,7 @@ const UploadDefense = () => {
 	// Novos estados para alertas
 	const [showEditWarning, setShowEditWarning] = useState(false);
 	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
+	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
 
 	const initialFormState = {
 		defenseType: "Análise de Upload", // Default
@@ -439,7 +440,11 @@ const UploadDefense = () => {
 			const response = await api.preAnalyze(formData);
 			if (response.success) {
 				setAnalysisData(response.data);
-				setStep("analysis");
+				if (response.data.divergence && response.data.divergence.isDivergent) {
+					setShowDivergenceModal(true);
+				} else {
+					setStep("analysis");
+				}
 			}
 		} catch (err) {
 			alert("Erro na análise preliminar. Tente novamente.");
@@ -607,67 +612,303 @@ const UploadDefense = () => {
 		</div>
 	);
 
-	const DownloadConfirmModal = () => (
-		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
-				<h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-					<CheckCircle className="text-green-500" /> Confirmar Versão Final
-				</h3>
-				<p className="text-gray-600 mb-6">
-					Esta será a versão final do seu documento. Após confirmar, você será redirecionado.
-				</p>
-				<div className="flex justify-end gap-3">
-					<button
-						onClick={() => setShowDownloadConfirm(false)}
-						className="px-4 py-2 text-gray-600 font-medium hover:bg-gray-100 rounded-lg">
-						Voltar e Revisar
-					</button>
-					<button
-						onClick={confirmDownload}
-						className="px-4 py-2 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700">
-						Sim, Baixar PDF
-					</button>
-				</div>
-			</div>
-		</div>
-	);
+		const DownloadConfirmModal = () => (
 
-	// --- RENDERS ---
+			<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
 
-	if (result) {
-		return (
-			<MainLayout>
-				<NavigationBlocker when={!!result} />
-				{loading && (
-					<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
-						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
-						<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
-						<p className="text-gray-600 max-w-md font-medium">
-							Nossa IA está aplicando as melhores teses jurídicas e resoluções do CONTRAN para
-							garantir a máxima qualidade do seu recurso.
-						</p>
-						<div className="mt-8 flex gap-2">
-							<div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
-								<div className="h-full bg-blue-600 animate-progress"></div>
-							</div>
-						</div>
-						<style
-							dangerouslySetInnerHTML={{
-								__html: `
-                @keyframes progress {
-                    0% { width: 0%; }
-                    100% { width: 100%; }
-                }
-                .animate-progress {
-                    animation: progress 2s ease-in-out infinite;
-                }
-            `,
-							}}
-						/>
+				<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
+
+					<h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+
+						<CheckCircle className="text-green-500" /> Confirmar Versão Final
+
+					</h3>
+
+					<p className="text-gray-600 mb-6">
+
+						Esta será a versão final do seu documento. Após confirmar, você será redirecionado.
+
+					</p>
+
+					<div className="flex justify-end gap-3">
+
+						<button
+
+							onClick={() => setShowDownloadConfirm(false)}
+
+							className="px-4 py-2 text-gray-600 font-medium hover:bg-gray-100 rounded-lg">
+
+							Voltar e Revisar
+
+						</button>
+
+						<button
+
+							onClick={confirmDownload}
+
+							className="px-4 py-2 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700">
+
+							Sim, Baixar PDF
+
+						</button>
+
 					</div>
-				)}
-				{showEditWarning && <EditWarningModal />}
-				{showDownloadConfirm && <DownloadConfirmModal />}
+
+				</div>
+
+			</div>
+
+		);
+
+	
+
+			const DivergenceWarningModal = () => (
+
+	
+
+				<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+
+	
+
+					<div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8">
+
+	
+
+						<div className="text-center mb-6">
+
+	
+
+							<div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600">
+
+	
+
+								<AlertTriangle size={32} />
+
+	
+
+							</div>
+
+	
+
+							<h2 className="text-2xl font-bold text-gray-900">Contradição Identificada</h2>
+
+	
+
+						</div>
+
+	
+
+						<div className="space-y-4 text-gray-600 mb-8 text-left">
+
+	
+
+							<p>
+
+	
+
+								Foi identificada uma inconsistência severa entre o seu <strong>relato</strong> e a{" "}
+
+	
+
+								<strong>materialidade da infração</strong>.
+
+	
+
+							</p>
+
+	
+
+		
+
+	
+
+							<div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+
+	
+
+								<p className="text-sm font-bold text-red-800 mb-1">Qual é a contradição:</p>
+
+	
+
+								<p className="text-sm text-red-700 italic">"{analysisData?.divergence?.message}"</p>
+
+	
+
+							</div>
+
+	
+
+		
+
+	
+
+							<p className="text-sm">
+
+	
+
+								<strong>Atenção:</strong> Manter essas informações pode <strong>não ser positivo</strong> para
+
+	
+
+								o recurso, proporcionando inconsistências jurídicas e limitando significativamente os
+
+	
+
+								argumentos de defesa que a IA poderá utilizar.
+
+	
+
+							</p>
+
+	
+
+						</div>
+
+	
+
+						<div className="flex flex-col gap-3">
+
+	
+
+							<button
+
+	
+
+								onClick={() => setShowDivergenceModal(false)}
+
+	
+
+								className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+
+	
+
+								Alterar Relato (Recomendado)
+
+	
+
+							</button>
+
+	
+
+							<button
+
+	
+
+								onClick={() => {
+
+	
+
+									setShowDivergenceModal(false);
+
+	
+
+									setStep("analysis");
+
+	
+
+								}}
+
+	
+
+								className="w-full bg-white border border-gray-300 text-gray-500 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">
+
+	
+
+								Manter como está
+
+	
+
+							</button>
+
+	
+
+						</div>
+
+	
+
+					</div>
+
+	
+
+				</div>
+
+	
+
+			);
+
+	
+
+		// --- RENDERS ---
+
+	
+
+		if (result) {
+
+			return (
+
+				<MainLayout>
+
+					<NavigationBlocker when={!!result} />
+
+					{loading && (
+
+						<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
+
+							<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
+
+							<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
+
+							<p className="text-gray-600 max-w-md font-medium">
+
+								Nossa IA está aplicando as melhores teses jurídicas e resoluções do CONTRAN para garantir a máxima qualidade do seu recurso.
+
+							</p>
+
+							<div className="mt-8 flex gap-2">
+
+								<div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
+
+									<div className="h-full bg-blue-600 animate-progress"></div>
+
+								</div>
+
+							</div>
+
+							<style
+
+								dangerouslySetInnerHTML={{
+
+									__html: `
+
+	                @keyframes progress {
+
+	                    0% { width: 0%; }
+
+	                    100% { width: 100%; }
+
+	                }
+
+	                .animate-progress {
+
+	                    animation: progress 2s ease-in-out infinite;
+
+	                }
+
+	            `,
+
+								}}
+
+							/>
+
+						</div>
+
+					)}
+
+					{showEditWarning && <EditWarningModal />}
+
+					{showDownloadConfirm && <DownloadConfirmModal />}
+
+					{showDivergenceModal && <DivergenceWarningModal />}
 				<div className="max-w-5xl mx-auto py-8">
 					<div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4">
 						<div>
@@ -1646,25 +1887,7 @@ const UploadDefense = () => {
 										className="input-form"
 									/>
 								</div>
-								<div className="md:col-span-2">
-									<label className="label-form text-blue-900 font-bold mb-2">
-										Relato <span className="text-red-500">*</span>
-									</label>
-									<textarea
-										name="description"
-										value={formData.description}
-										onChange={handleChange}
-										onBlur={handleBlur}
-										rows={6}
-										className={`input-form resize-none ${errors.description ? "border-red-500" : ""}`}
-										placeholder="Ex: 'Não havia placa no local', 'O carro não estava nesse horário', 'Estava socorrendo alguém'..."
-										required
-									/>
-									{errors.description && (
-										<p className="text-red-500 text-xs mt-1">{errors.description}</p>
-									)}
-								</div>
-							</div>
+								                <div className="md:col-span-2"><label className="label-form text-blue-900 font-bold mb-2">Relato <span className="text-red-500">*</span></label><textarea name="description" value={formData.description} onChange={handleChange} onBlur={handleBlur} rows={6} className={`input-form resize-none ${errors.description ? 'border-red-500' : ''}`} placeholder="Descreva com o máximo de detalhes possível os acontecimentos, fatos e informações que considere úteis para a possível nulidade da multa. Quanto mais detalhes, melhor a IA poderá argumentar a seu favor. Ex: 'O sinal estava encoberto por uma árvore', 'O agente não preencheu o campo observações', 'O local da infração não confere com a foto', etc." required />{errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}</div>							</div>
 						</section>
 						<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 							<div className="flex items-center gap-2 border-b pb-4">

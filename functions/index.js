@@ -234,11 +234,20 @@ exports.preAnalyze = onRequest((req, res) => {
 
 			const systemInstruction = `
         Você é um Analista Sênior de Multas de Trânsito. Sua função é avaliar a viabilidade de um recurso e vender a solução para o cliente.
+        
+        Além da viabilidade, você DEVE verificar se o relato do condutor faz sentido com a infração (Artigo/Código e Descrição).
+        Exemplo de contradição grave: Infração por excesso de velocidade em movimento e o condutor diz que o carro estava estacionado na garagem o dia todo.
+        Exemplo de coerência: Infração por avanço de sinal e o condutor diz que o sinal estava escondido por uma árvore.
+
         Saída OBRIGATÓRIA em JSON:
         {
           "viability": "Alta" | "Média" | "Baixa",
           "summary": "Uma frase curta e impactante sobre a chance de anulação.",
-          "arguments": ["Argumento técnico 1", "Argumento técnico 2", "Argumento técnico 3", "Argumento técnico 4", "Argumento técnico 5"]
+          "arguments": ["Argumento técnico 1", "Argumento técnico 2", "Argumento técnico 3", "Argumento técnico 4", "Argumento técnico 5"],
+          "divergence": {
+             "isDivergent": boolean, // True apenas se houver contradição GRITANTE que inviabilize a defesa técnica proposta.
+             "message": "Se houver divergência forte, explique em 1 frase curta alertando o usuário. Caso contrário, string vazia."
+          }
         }
       `;
 

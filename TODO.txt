@@ -62,11 +62,22 @@
 - [x]  Altere a página de reset de password que é mostrada para o user quando ele clica no link que chegou pelo email para que seja apresentada em português (no momento aparece em inglês (Reser your password for...; New Password... etc));
 - [x]  Na redefinição de senha, na mensagem "Verifique seu email para instruções de redefinição de senha.", informe que o email pode ter ido para o spam, para o usuário conferir lá;
 - [x]  Resolver blur
+- [x] Instruções para o modelo: identificar qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso. Ser PROLIXO.
+- [x]  Fazer segunda camada de verificação caso o relato não bata com o art.
+
+
+
+Conferir campos, títulos
+Nº Equipamento e Aferição - Placeholders simulando dados que seriam reais
+
+Conferir fases das defesas para escolher (e colocar mais infos, inclsuive na ajuda)
+
+Em uploaddefense, não preencher relato quando o código da infração for inserido (manter o placeholder)
+
+
 
 
 IA:
-- []  Fazer segunda camada de verificação caso o relato não bata com o art.
-- [] Instruções para o modelo: identificar qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso. Ser PROLIXO.
 
 Marketing:
 - []  Melhorar Marketing geral, principalmente da home
