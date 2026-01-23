@@ -61,13 +61,13 @@
 - [x]  Altere o email que é enviado para recuperação de senha para português;
 - [x]  Altere a página de reset de password que é mostrada para o user quando ele clica no link que chegou pelo email para que seja apresentada em português (no momento aparece em inglês (Reser your password for...; New Password... etc));
 - [x]  Na redefinição de senha, na mensagem "Verifique seu email para instruções de redefinição de senha.", informe que o email pode ter ido para o spam, para o usuário conferir lá;
+- [x]  Resolver blur
 
 
 Changes you made may not be saved.
 
 
 Feats:
-- []  Resolver blur
 - []  Limitar os testes?
 
 

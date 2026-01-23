@@ -612,12 +612,17 @@ const ManualDefense = () => {
               <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2"><Search size={16} /> Teses Identificadas pela IA</h3>
               <div className="space-y-4 mb-6">
                 {analysisData.arguments.slice(0, 3).map((arg, idx) => (
-                  <div key={idx} className="relative flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 overflow-hidden max-h-[90px]">
+                  <div key={idx} className="relative flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 overflow-hidden max-h-[80px] select-none">
                     <div className="bg-blue-100 p-1 rounded-full mt-0.5 shrink-0"><CheckCircle size={14} className="text-blue-600" /></div>
-                    <div className="relative w-full">
-                        <p className="absolute inset-0 text-gray-700 text-sm font-medium select-none blur-[5px] opacity-80" aria-hidden="true">{arg}</p>
-                        <p className="relative text-gray-700 text-sm font-medium select-none" style={{ maskImage: 'linear-gradient(to bottom, black 0%, transparent 90%)', WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 90%)' }}>{arg}</p>
-                    </div>
+                    <p className="text-gray-700 text-sm font-medium leading-relaxed">
+                      {arg.substring(0, 50)}
+                      <span style={{ maskImage: 'linear-gradient(to bottom right, black, transparent)', WebkitMaskImage: 'linear-gradient(to bottom right, black, transparent)' }}>
+                        {arg.substring(50, 125)}
+                      </span>
+                      <span className="opacity-0">
+                        {arg.substring(125)}
+                      </span>
+                    </p>
                   </div>
                 ))}
               </div>
