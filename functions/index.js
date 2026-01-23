@@ -97,7 +97,11 @@ exports.generateDefense = onRequest((req, res) => {
 				systemInstruction += `\nMODO REFINAMENTO: Reescreva o texto mantendo os dados mas aplicando: "${data.refinementInstructions}".`;
 			}
 
+            const defenseTypeMap = { 'previa': 'DEFESA PRÉVIA', 'jari': 'RECURSO À JARI', 'cetran': 'RECURSO AO CETRAN' };
+            const defenseTypeLabel = defenseTypeMap[data.defenseType] || 'RECURSO ADMINISTRATIVO';
+
 			const userPrompt = `
+        TIPO DE PEÇA: ${defenseTypeLabel}
         CASO: Órgão ${data.issuingBody}, AIT ${data.aitNumber}
         CONDUTOR: ${data.name}, Brasileiro(a), ${data.maritalStatus === "Outro" ? "" : data.maritalStatus}, ${data.profession}, RG ${data.rg} ${data.rgIssuer}, CPF ${data.cpf}. CNH ${data.cnh} Cat ${data.cnhCategory}.
         ENDEREÇO: ${data.address}, ${data.addressNumber} ${data.addressComplement}, ${data.neighborhood}, ${data.city}/${data.state}, CEP ${data.zipCode}.
@@ -315,8 +319,11 @@ exports.analyzeDocument = onRequest((req, res) => {
         11. Finalize com: "Nestes termos, pede deferimento. ${userData.signCity || "Local"}, ${userData.signDate || "Data"}."
       `;
 
+            const defenseTypeMap = { 'previa': 'DEFESA PRÉVIA', 'jari': 'RECURSO À JARI', 'cetran': 'RECURSO AO CETRAN' };
+            const defenseTypeLabel = defenseTypeMap[userData.defenseType] || 'RECURSO ADMINISTRATIVO';
+
 			const imagePart = { inlineData: { data: image, mimeType: mimeType } };
-			const result = await model.generateContent([prompt, imagePart]);
+			const result = await model.generateContent([`TIPO DE PEÇA: ${defenseTypeLabel}\n` + prompt, imagePart]);
 
 			res.status(200).json({ success: true, data: { defenseText: result.response.text() } });
 		} catch (error) {

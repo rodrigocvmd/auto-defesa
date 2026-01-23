@@ -11,6 +11,7 @@ import { jsPDF } from 'jspdf';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebaseConfig';
 import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
+import { NavigationBlocker } from '../components/NavigationBlocker';
 
 const UploadDefense = () => {
   const { currentUser, userData } = useAuth();
@@ -30,28 +31,11 @@ const UploadDefense = () => {
   const [analysisData, setAnalysisData] = useState(null);
   const [searchingCode, setSearchingCode] = useState(false);
   const [defenseId, setDefenseId] = useState(null);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   // Novos estados para alertas
   const [showEditWarning, setShowEditWarning] = useState(false);
   const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
-
-  // PROTEÇÃO CONTRA SAÍDA ACIDENTAL
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-        if (result) {
-            e.preventDefault();
-            e.returnValue = '';
-        }
-    };
-
-    if (result) {
-        window.addEventListener('beforeunload', handleBeforeUnload);
-    }
-
-    return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [result]);
 
   const initialFormState = {
     defenseType: 'Análise de Upload', // Default
@@ -453,6 +437,7 @@ const UploadDefense = () => {
   if (result) {
     return (
       <MainLayout>
+        <NavigationBlocker when={!!result} />
         {loading && (
           <div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
             <Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
@@ -621,8 +606,6 @@ const UploadDefense = () => {
       </div>
     </div>
   );
-
-  const [showHelpModal, setShowHelpModal] = useState(false);
 
   if (step === 'phaseConfirmation') {
       const typeLabels = { 'previa': 'Defesa Prévia', 'jari': 'Recurso à JARI', 'cetran': 'Recurso ao CETRAN' };
@@ -806,7 +789,7 @@ const UploadDefense = () => {
                   <div className="w-full max-w-sm bg-white p-6 rounded-xl shadow-md flex items-center gap-4 animate-in fade-in zoom-in duration-300 z-20"><div className="bg-blue-100 p-3 rounded-lg"><File size={32} className="text-blue-600" /></div><div className="flex-1 min-w-0 text-left"><p className="font-semibold text-gray-800 truncate">{file.name}</p></div><button type="button" onClick={handleRemove} className="text-gray-400 hover:text-red-500 transition-colors p-2"><X size={20} /></button></div>
                 )}
               </div>
-              <div className="flex justify-center pt-4 border-t border-gray-100"><button type="submit" disabled={!file || loading} className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && !loading ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed'}`}>{loading ? (<><Loader2 className="animate-spin inline mr-2" /> Lendo Documento...</>) : 'Extrair Dados com IA'}</button></div>
+              <div className="flex justify-center pt-4 border-t border-gray-100"><button type="submit" disabled={!file || loading} className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && !loading ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed'}`}>{loading ? (<><Loader2 className="animate-spin inline mr-2" /> Lendo Documento...</>) : 'Analisar com IA'}</button></div>
             </form>
           </div>
         </div>

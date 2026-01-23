@@ -12,6 +12,7 @@ import { jsPDF } from 'jspdf';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebaseConfig';
 import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
+import { NavigationBlocker } from '../components/NavigationBlocker';
 
 const ManualDefense = () => {
   const { currentUser, userData } = useAuth();
@@ -38,24 +39,6 @@ const ManualDefense = () => {
   // Novos estados para alertas
   const [showEditWarning, setShowEditWarning] = useState(false);
   const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
-
-  // PROTEÇÃO CONTRA SAÍDA ACIDENTAL
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-        if (result) {
-            e.preventDefault();
-            e.returnValue = ''; // Padrão para navegadores modernos
-        }
-    };
-
-    if (result) {
-        window.addEventListener('beforeunload', handleBeforeUnload);
-    }
-
-    return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [result]);
 
   const initialFormState = {
     defenseType: '', 
@@ -539,6 +522,7 @@ const ManualDefense = () => {
   if (result) {
     return (
       <MainLayout>
+        <NavigationBlocker when={!!result} />
         {loading && (
           <div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
             <Loader2 size={60} className="text-blue-600 animate-spin mb-4" />

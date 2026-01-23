@@ -57,11 +57,10 @@
 - [x]  Na página da viabilidade/Teses Identificadas pela IA, caso o usuário não tenha créditos, o botão "Utilizar 1 Crédito" deve estar bloqueado e deve ter uma opção para o usuário clicar para adquirir créditos. Deve ainda ser informado ao usuário que os dados inseridos ficarão salvos e que após adquirir o crédito, ele poderá continuar de onde parou.
 - [x]  A defesa/recurso já deve ser salva/adicionada ao histórico de defesas do usuário assim que o crédito for utilizado e a defesa/recurso for gerada, mesmo que o user saia ou atualize a página de edição antes de baixar o recurso/defesa. Isso deve ocorrer pois o crédito já foi gasto e não pode ter sido perdido à toa. Mas deve ser informado ao user ao tentar fechar ou atualizar a página antes de baixar o recurso que caso ele faça isso, não poderá mais editar o recurso e a versão final que ficará salva será aquela que está aparecendo no momento. Portanto, em termos práticos, o recurso deve ser salvo no histórico assim que for gerado, mas qualquer nova edição do recurso (após salva) deve sobrescrever a versão anterior salva. O recurso baixado é a versão final que ficará salva daquele recurso/daquela sessão do crédito do usuário e é o comportamento esperado. A questão de salvar antes está sendo implementada apenas para que o user não cometa um erro de sair antes de baixar e perca o crédito.
 
-upload ainda nao informa qual defesa é
+
 
 Changes you made may not be saved.
 
-Trocar extrair dados com IA para Analisar e extrair dados com IA.
 
 Feats:
 - []  Resolver blur
