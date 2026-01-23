@@ -576,6 +576,29 @@ const ManualDefense = () => {
 
     return (
       <MainLayout>
+        {loading && (
+          <div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
+            <Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
+            <h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
+            <p className="text-gray-600 max-w-md font-medium">
+              Nossa IA está aplicando as melhores teses jurídicas e resoluções do CONTRAN para garantir a máxima qualidade do seu recurso.
+            </p>
+            <div className="mt-8 flex gap-2">
+                <div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-blue-600 animate-progress"></div>
+                </div>
+            </div>
+            <style dangerouslySetInnerHTML={{ __html: `
+                @keyframes progress {
+                    0% { width: 0%; }
+                    100% { width: 100%; }
+                }
+                .animate-progress {
+                    animation: progress 2s ease-in-out infinite;
+                }
+            `}} />
+          </div>
+        )}
         <div className="max-w-2xl mx-auto py-12 px-4">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 animate-in slide-in-from-bottom-4 duration-500">
             <div className={`p-8 text-center ${viability === 'Alta' ? 'bg-green-50' : 'bg-yellow-50'}`}>
