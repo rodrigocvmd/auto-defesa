@@ -168,13 +168,31 @@ const UploadDefense = () => {
                 nationality: extractedData.nationality || prev.nationality,
                 signDate: extractedData.signDate || prev.signDate
             }));
-            setStep('form'); // Avança para o formulário
+
+            // Lógica de Fase Detectada
+            if (extractedData.defensePhase) {
+                // Mapear retorno da IA para o state interno
+                let detectedType = '';
+                const phaseLower = extractedData.defensePhase.toLowerCase();
+                if (phaseLower.includes('previa') || phaseLower.includes('autuação')) detectedType = 'previa';
+                else if (phaseLower.includes('jari') || phaseLower.includes('penalidade') || phaseLower.includes('boleto')) detectedType = 'jari';
+                else if (phaseLower.includes('cetran') || phaseLower.includes('contradife')) detectedType = 'cetran';
+
+                if (detectedType) {
+                    setFormData(prev => ({ ...prev, defenseType: detectedType }));
+                    setStep('phaseConfirmation');
+                } else {
+                    setStep('phaseSelection');
+                }
+            } else {
+                setStep('phaseSelection'); 
+            }
         }
      } catch (e) {
         console.error(e);
         setError("Não foi possível ler os dados da imagem automaticamente. Mas você pode preencher manualmente.");
-        // Opcional: Avançar mesmo com erro? Melhor deixar o usuário tentar de novo ou ter um botão "Pular Upload"
-        setTimeout(() => setStep('form'), 2000); // Avança após 2s de erro para não bloquear
+        // Se der erro na leitura, ainda assim pergunta a fase, pois o usuário vai preencher manual
+        setTimeout(() => setStep('phaseSelection'), 2000); 
      } finally {
         setLoading(false);
      }
@@ -584,6 +602,90 @@ const UploadDefense = () => {
         </div>
       </MainLayout>
     );
+  }
+
+  const HelpModal = ({ onClose }) => (
+    <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+      <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
+        <button onClick={onClose} className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"><X size={24} className="text-gray-500" /></button>
+        <div className="p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2 border-b pb-4"><HelpCircle className="text-blue-600" /> Entenda as Fases da Defesa</h2>
+          <div className="space-y-4">
+            <div className="p-5 bg-yellow-50 rounded-2xl border border-yellow-100 shadow-sm"><h3 className="font-bold text-lg text-yellow-900 mb-2 flex items-center gap-2"><FileWarning size={22} /> 1. Defesa Prévia</h3><p className="text-sm text-yellow-800">Apontar erros formais antes da multa virar penalidade.<br/><strong>👉 Caso negada, permite Recurso à JARI.</strong></p></div>
+            <div className="flex justify-center text-gray-300"><ArrowDown size={32} /></div>
+            <div className="p-5 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm"><h3 className="font-bold text-lg text-blue-900 mb-2 flex items-center gap-2"><Gavel size={22} /> 2. Recurso à JARI</h3><p className="text-sm text-blue-800">Discutir o mérito da infração.<br/><strong>👉 Caso negado, permite Recurso ao CETRAN/CONTRADIFE.</strong></p></div>
+            <div className="flex justify-center text-gray-300"><ArrowDown size={32} /></div>
+            <div className="p-5 bg-purple-50 rounded-2xl border border-purple-100 shadow-sm"><h3 className="font-bold text-lg text-purple-900 mb-2 flex items-center gap-2"><Scale size={22} /> 3. Recurso ao CETRAN</h3><p className="text-sm text-purple-800">Última tentativa administrativa.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const [showHelpModal, setShowHelpModal] = useState(false);
+
+  if (step === 'phaseConfirmation') {
+      const typeLabels = { 'previa': 'Defesa Prévia', 'jari': 'Recurso à JARI', 'cetran': 'Recurso ao CETRAN' };
+      const detectedLabel = typeLabels[formData.defenseType] || formData.defenseType;
+
+      return (
+        <MainLayout>
+            <div className="max-w-2xl mx-auto py-12 px-4">
+                <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 text-center p-8 animate-in slide-in-from-bottom-4">
+                    <div className="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600">
+                        <CheckCircle size={40} />
+                    </div>
+                    <h2 className="text-2xl font-black text-gray-900 mb-2">Fase Identificada!</h2>
+                    <p className="text-gray-600 mb-8">
+                        Nossa IA analisou seu documento e identificou que se trata de uma:
+                        <br/>
+                        <span className="text-2xl font-bold text-blue-600 mt-2 block">{detectedLabel}</span>
+                    </p>
+                    
+                    <div className="flex flex-col gap-3">
+                        <button onClick={() => setStep('form')} className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-colors shadow-lg">
+                            Correto, prosseguir com {detectedLabel}
+                        </button>
+                        <button onClick={() => setStep('phaseSelection')} className="text-gray-500 font-medium hover:text-gray-700 py-2">
+                            Não, escolher outra fase manualmente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </MainLayout>
+      );
+  }
+
+  if (step === 'phaseSelection') {
+      return (
+        <MainLayout>
+          {showHelpModal && <HelpModal onClose={() => setShowHelpModal(false)} />}
+          <div className="max-w-4xl mx-auto py-10">
+             <header className="mb-12 text-center">
+              <button onClick={() => setStep('upload')} className="inline-flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors"><ArrowLeft size={20} className="mr-1" /> Voltar</button>
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">Qual fase da defesa?</h1>
+              <p className="text-gray-600">A IA não conseguiu identificar a fase automaticamente ou você optou por alterar.</p>
+            </header>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <button onClick={() => { setFormData(prev => ({...prev, defenseType: 'previa'})); setStep('form'); }} className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-yellow-400 transition-all text-left group">
+                <div className="bg-yellow-100 w-12 h-12 rounded-xl flex items-center justify-center text-yellow-600 mb-4 group-hover:scale-110 transition-transform"><FileWarning size={24} /></div><h3 className="font-bold text-lg text-gray-800">Defesa Prévia</h3><p className="text-sm text-gray-500 mt-2">Ainda não recebi boleto/multa final.</p>
+              </button>
+              <button onClick={() => { setFormData(prev => ({...prev, defenseType: 'jari'})); setStep('form'); }} className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-blue-500 transition-all text-left group">
+                <div className="bg-blue-100 w-12 h-12 rounded-xl flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform"><Gavel size={24} /></div><h3 className="font-bold text-lg text-gray-800">Recurso JARI</h3><p className="text-sm text-gray-500 mt-2">Já recebi o boleto com a multa.</p>
+              </button>
+              <button onClick={() => { setFormData(prev => ({...prev, defenseType: 'cetran'})); setStep('form'); }} className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-purple-500 transition-all text-left group">
+                <div className="bg-purple-100 w-12 h-12 rounded-xl flex items-center justify-center text-purple-600 mb-4 group-hover:scale-110 transition-transform"><Scale size={24} /></div><h3 className="font-bold text-lg text-gray-800">CETRAN</h3><p className="text-sm text-gray-500 mt-2">Meu recurso à JARI foi negado.</p>
+              </button>
+            </div>
+            
+            <div className="text-center">
+              <button onClick={() => setShowHelpModal(true)} className="text-blue-600 font-bold flex items-center gap-2 mx-auto hover:underline">
+                <HelpCircle size={20} /> Preciso de ajuda para identificar
+              </button>
+            </div>
+          </div>
+        </MainLayout>
+      );
   }
 
   if (step === 'form') {

@@ -198,7 +198,8 @@ exports.extractDataFromImage = onRequest((req, res) => {
           "article": "Artigo do CTB (ex: Art. 218, I)",
           "description": "Descrição da infração",
           "equipmentNumber": "Nº do Equipamento/Radar",
-          "lastCalibration": "Data verificação/aferição"
+          "lastCalibration": "Data verificação/aferição",
+          "defensePhase": "Fase detectada: 'previa' (se Notificação de Autuação), 'jari' (se Notificação de Penalidade/Boleto), 'cetran' (se indeferimento JARI) ou ''"
         }
       `;
 

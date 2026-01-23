@@ -61,6 +61,8 @@ upload ainda nao informa qual defesa é
 
 Changes you made may not be saved.
 
+Trocar extrair dados com IA para Analisar e extrair dados com IA.
+
 Feats:
 - []  Resolver blur
 - []  Limitar os testes?
