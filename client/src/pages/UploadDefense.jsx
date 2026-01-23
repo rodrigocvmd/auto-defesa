@@ -1352,6 +1352,7 @@ const UploadDefense = () => {
 	if (step === "form") {
 		return (
 			<MainLayout>
+				{showDivergenceModal && <DivergenceWarningModal />}
 				<div className="max-w-5xl mx-auto py-8">
 					<header className="mb-8">
 						<button

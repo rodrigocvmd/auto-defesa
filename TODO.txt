@@ -67,6 +67,11 @@
 
 
 
+Viabilidade média?
+
+Add campo que descreve a infração ao lado do código da infração (para ser autopreenchido)
+Add campo que preenche o dispositivo legal ao lado do amparo legal (para ser autopreenchido)
+
 Conferir campos, títulos
 Nº Equipamento e Aferição - Placeholders simulando dados que seriam reais
 
