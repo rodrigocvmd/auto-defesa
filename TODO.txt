@@ -60,6 +60,7 @@
 
 
 Changes you made may not be saved.
+Manual -> inserir loading screen assim que user clicar para usar o crédito
 
 
 Feats:

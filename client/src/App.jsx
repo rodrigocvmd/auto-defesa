@@ -22,7 +22,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/upload" element={<UploadDefense />} />
-          <Route path="/manual" element={<ManualDefense />} />
+          <Route path="/manual-defense" element={<ManualDefense />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
         </Routes>

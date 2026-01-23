@@ -44,7 +44,7 @@ const Home = () => {
           </Link>
 
           {/* Opção 2: Manual */}
-          <Link to="/manual" className="group relative bg-white p-8 rounded-2xl shadow-sm border-2 border-transparent hover:border-indigo-100 hover:shadow-xl transition-all duration-300">
+          <Link to="/manual-defense" className="group relative bg-white p-8 rounded-2xl shadow-sm border-2 border-transparent hover:border-indigo-100 hover:shadow-xl transition-all duration-300">
              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
               <FileText size={120} />
             </div>
