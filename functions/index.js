@@ -75,7 +75,7 @@ exports.generateDefense = onRequest((req, res) => {
 			}
 
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+			const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
 			let systemInstruction = `
         Você é um Advogado Especialista em Direito de Trânsito.
@@ -97,8 +97,12 @@ exports.generateDefense = onRequest((req, res) => {
 				systemInstruction += `\nMODO REFINAMENTO: Reescreva o texto mantendo os dados mas aplicando: "${data.refinementInstructions}".`;
 			}
 
-            const defenseTypeMap = { 'previa': 'DEFESA PRÉVIA', 'jari': 'RECURSO À JARI', 'cetran': 'RECURSO AO CETRAN' };
-            const defenseTypeLabel = defenseTypeMap[data.defenseType] || 'RECURSO ADMINISTRATIVO';
+			const defenseTypeMap = {
+				previa: "DEFESA PRÉVIA",
+				jari: "RECURSO À JARI",
+				cetran: "RECURSO AO CETRAN",
+			};
+			const defenseTypeLabel = defenseTypeMap[data.defenseType] || "RECURSO ADMINISTRATIVO";
 
 			const userPrompt = `
         TIPO DE PEÇA: ${defenseTypeLabel}
@@ -130,9 +134,7 @@ exports.createCheckoutSession = onRequest((req, res) => {
 	cors(req, res, async () => {
 		// RECOMENDADO: Use process.env.STRIPE_SECRET_KEY configurado no Firebase Functions
 		// Para teste rápido, substitua abaixo, mas NÃO COMITE em produção real.
-		const stripe = require("stripe")(
-			process.env.STRIPE_SECRET_KEY
-		);
+		const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 		const { priceId, userId, credits, successUrl, cancelUrl, mode } = req.body;
 
@@ -178,7 +180,7 @@ exports.extractDataFromImage = onRequest((req, res) => {
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+			const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
 			const systemInstruction = `
         Você é uma IA especializada em OCR de multas de trânsito brasileiras (AIT/Notificação).
@@ -210,7 +212,10 @@ exports.extractDataFromImage = onRequest((req, res) => {
 			const imagePart = { inlineData: { data: image, mimeType: mimeType } };
 			const result = await model.generateContent([systemInstruction, imagePart]);
 			const responseText = result.response.text();
-			const cleanedText = responseText.replace(/```json/g, "").replace(/```/g, "").trim();
+			const cleanedText = responseText
+				.replace(/```json/g, "")
+				.replace(/```/g, "")
+				.trim();
 
 			res.status(200).json({ success: true, data: JSON.parse(cleanedText) });
 		} catch (error) {
@@ -226,56 +231,64 @@ exports.preAnalyze = onRequest((req, res) => {
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
 
 		const { image, mimeType, ...userData } = req.body || {};
-    // NÃO verifica créditos aqui, pois é uma "amostra grátis" para conversão.
+		// NÃO verifica créditos aqui, pois é uma "amostra grátis" para conversão.
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+			const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
-			const systemInstruction = `
-        Você é um Analista Sênior de Multas de Trânsito. Sua função é avaliar a viabilidade de um recurso e vender a solução para o cliente.
-        
-        Além da viabilidade, você DEVE verificar se o relato do condutor faz sentido com a infração (Artigo/Código e Descrição).
-        Exemplo de contradição grave: Infração por excesso de velocidade em movimento e o condutor diz que o carro estava estacionado na garagem o dia todo.
-        Exemplo de coerência: Infração por avanço de sinal e o condutor diz que o sinal estava escondido por uma árvore.
-
-        Saída OBRIGATÓRIA em JSON:
-        {
-          "viability": "Alta" | "Média" | "Baixa",
-          "summary": "Uma frase curta e impactante sobre a chance de anulação.",
-          "arguments": ["Argumento técnico 1", "Argumento técnico 2", "Argumento técnico 3", "Argumento técnico 4", "Argumento técnico 5"],
-          "divergence": {
-             "isDivergent": boolean, // True apenas se houver contradição GRITANTE que inviabilize a defesa técnica proposta.
-             "message": "Se houver divergência forte, explique em 1 frase curta alertando o usuário. Caso contrário, string vazia."
-          }
-        }
-      `;
-
-      const userPrompt = `
-        Analise esta infração para recurso:
-        Infração: ${userData.article || "Não informado"} - ${userData.description || "Análise de imagem"}
-        Dados: ${JSON.stringify(userData)}
-        
-        Identifique erros formais ou teses jurídicas aplicáveis.
-        INSTRUÇÃO DE VENDA: Adote uma postura sempre otimista. Tente classificar a viabilidade como "Alta" ou no mínimo "Média" sempre que houver qualquer margem argumentativa, para encorajar o usuário.
-        O resumo deve ser motivador e mencionar benefícios além da anulação, como o Efeito Suspensivo (adiamento da penalidade e pontos), a possibilidade de Prescrição Intercorrente ou erros administrativos do órgão.
-        Gere 5 argumentos técnicos possíveis.
-      `;
-
-      let parts = [systemInstruction, userPrompt];
-      if (image) {
-         parts.push({ inlineData: { data: image, mimeType: mimeType } });
-      }
+						const systemInstruction = `
+			        Você é um Analista Sênior de Multas de Trânsito. Sua função é avaliar a viabilidade de um recurso e vender a solução para o cliente.
+			        
+			        Além da viabilidade, você DEVE verificar se o relato do condutor faz sentido com a infração (Artigo/Código e Descrição).
+			        Exemplo de contradição grave: Infração por excesso de velocidade em movimento e o condutor diz que o carro estava estacionado na garagem o dia todo.
+			        Exemplo de coerência: Infração por avanço de sinal e o condutor diz que o sinal estava escondido por uma árvore.
+			
+			        Saída OBRIGATÓRIA em JSON:
+			        {
+			          "viability": "Muito Alta" | "Alta" | "Possível",
+			          "summary": "Uma frase curta e impactante sobre a chance de anulação.",
+			          "arguments": ["Argumento técnico 1", "Argumento técnico 2", "Argumento técnico 3", "Argumento técnico 4", "Argumento técnico 5"],
+			          "divergence": {
+			             "isDivergent": boolean,
+			             "message": "Se houver divergência forte, explique em 1 frase curta alertando o usuário. Caso contrário, string vazia."
+			          }
+			        }
+			      `;
+			
+			      const userPrompt = `
+			        Analise esta infração para recurso:
+			        Infração: ${userData.article || "Não informado"} - ${userData.description || "Análise de imagem"}
+			        Dados: ${JSON.stringify(userData)}
+			        
+			        Identifique erros formais ou teses jurídicas aplicáveis.
+			        INSTRUÇÃO DE VENDA E ESCALA:
+			        1. A escala de viabilidade para casos reais deve ser EXCLUSIVAMENTE: "Possível", "Alta" ou "Muito Alta". NUNCA retorne "Baixa" ou "Média".
+			        2. "Possível": Para casos com argumentos genéricos ou testemunhais.
+			        3. "Alta": Para casos com bons argumentos técnicos ou erros formais visíveis.
+			        4. "Muito Alta": Para casos de erro crasso ou nulidade evidente.
+			        
+			        ESTRATÉGIA: Seja sempre otimista mas realista. Se os argumentos técnicos forem escassos ou fracos, classifique como "Possível" e FORCE a venda focando nos benefícios secundários: Efeito Suspensivo (adiar pontos e pagamento), chance de Prescrição Intercorrente (se o processo demorar) e a possibilidade de o órgão cometer erros administrativos durante o julgamento (nulidade superveniente).
+			        O resumo deve ser motivador.
+			        Gere 5 argumentos técnicos possíveis (ou teses acessórias como o Efeito Suspensivo se não houver teses diretas fortes).
+			      `;
+			let parts = [systemInstruction, userPrompt];
+			if (image) {
+				parts.push({ inlineData: { data: image, mimeType: mimeType } });
+			}
 
 			const result = await model.generateContent(parts);
-      const responseText = result.response.text();
-      
-      // Limpeza básica para garantir JSON (o modelo as vezes põe markdown ```json ... ```)
-      const cleanedText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-      
+			const responseText = result.response.text();
+
+			// Limpeza básica para garantir JSON (o modelo as vezes põe markdown ```json ... ```)
+			const cleanedText = responseText
+				.replace(/```json/g, "")
+				.replace(/```/g, "")
+				.trim();
+
 			res.status(200).json({ success: true, data: JSON.parse(cleanedText) });
 		} catch (error) {
-      console.error("Erro na pré-análise:", error);
+			console.error("Erro na pré-análise:", error);
 			res.status(500).json({ error: "Erro ao analisar viabilidade." });
 		}
 	});
@@ -300,7 +313,7 @@ exports.analyzeDocument = onRequest((req, res) => {
 			await checkAndDeductCredits(userId);
 
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+			const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
 			const prompt = `
         Aja como Advogado de Trânsito. Analise a imagem da multa.
@@ -328,11 +341,18 @@ exports.analyzeDocument = onRequest((req, res) => {
         11. Finalize com: "Nestes termos, pede deferimento. ${userData.signCity || "Local"}, ${userData.signDate || "Data"}."
       `;
 
-            const defenseTypeMap = { 'previa': 'DEFESA PRÉVIA', 'jari': 'RECURSO À JARI', 'cetran': 'RECURSO AO CETRAN' };
-            const defenseTypeLabel = defenseTypeMap[userData.defenseType] || 'RECURSO ADMINISTRATIVO';
+			const defenseTypeMap = {
+				previa: "DEFESA PRÉVIA",
+				jari: "RECURSO À JARI",
+				cetran: "RECURSO AO CETRAN",
+			};
+			const defenseTypeLabel = defenseTypeMap[userData.defenseType] || "RECURSO ADMINISTRATIVO";
 
 			const imagePart = { inlineData: { data: image, mimeType: mimeType } };
-			const result = await model.generateContent([`TIPO DE PEÇA: ${defenseTypeLabel}\n` + prompt, imagePart]);
+			const result = await model.generateContent([
+				`TIPO DE PEÇA: ${defenseTypeLabel}\n` + prompt,
+				imagePart,
+			]);
 
 			res.status(200).json({ success: true, data: { defenseText: result.response.text() } });
 		} catch (error) {
@@ -348,9 +368,7 @@ exports.analyzeDocument = onRequest((req, res) => {
 exports.stripeWebhook = onRequest(async (req, res) => {
 	console.log("🔔 Webhook recebido! Tipo:", req.body.type);
 
-	const stripe = require("stripe")(
-		process.env.STRIPE_SECRET_KEY
-	);
+	const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 	const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -381,10 +399,12 @@ exports.stripeWebhook = onRequest(async (req, res) => {
 				await db.runTransaction(async (t) => {
 					const doc = await t.get(userRef);
 					const currentCredits = doc.exists ? doc.data().credits || 0 : 0;
-          const newCredits = currentCredits + creditsToAdd;
+					const newCredits = currentCredits + creditsToAdd;
 
 					t.set(userRef, { credits: newCredits }, { merge: true });
-          console.log(`Atualizando créditos do usuário ${userId}: ${currentCredits} -> ${newCredits}`);
+					console.log(
+						`Atualizando créditos do usuário ${userId}: ${currentCredits} -> ${newCredits}`,
+					);
 				});
 				console.log(`Adicionados ${creditsToAdd} créditos para o usuário ${userId}`);
 			} catch (error) {
@@ -408,7 +428,7 @@ async function checkAndDeductCredits(userId) {
 
 		const data = doc.data();
 		const credits = data.credits || 0;
-    console.log(`Verificando créditos para ${userId}: possui ${credits}`);
+		console.log(`Verificando créditos para ${userId}: possui ${credits}`);
 
 		if (credits <= 0) {
 			throw new Error("Créditos insuficientes.");

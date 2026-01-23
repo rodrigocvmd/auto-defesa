@@ -996,6 +996,9 @@ const UploadDefense = () => {
 	}
 
 	if (step === "analysis" && analysisData) {
+		const viability = analysisData.viability || "Possível";
+		const isHighViability = viability === "Alta" || viability === "Muito Alta";
+
 		return (
 			<MainLayout>
 				{loading && (
@@ -1029,16 +1032,16 @@ const UploadDefense = () => {
 				<div className="max-w-2xl mx-auto py-12 px-4">
 					<div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 animate-in slide-in-from-bottom-4 duration-500">
 						<div
-							className={`p-8 text-center ${analysisData.viability === "Alta" ? "bg-green-50" : "bg-yellow-50"}`}>
+							className={`p-8 text-center ${isHighViability ? "bg-green-50" : "bg-yellow-50"}`}>
 							<div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white shadow-sm mb-4">
-								{analysisData.viability === "Alta" ? (
+								{isHighViability ? (
 									<CheckCircle size={40} className="text-green-600" />
 								) : (
 									<AlertCircle size={40} className="text-yellow-600" />
 								)}
 							</div>
 							<h2 className="text-2xl font-black text-gray-900 mb-2">
-								Viabilidade {analysisData.viability}
+								Viabilidade {viability}
 							</h2>
 							<p className="text-gray-600 font-medium px-4">{analysisData.summary}</p>
 						</div>

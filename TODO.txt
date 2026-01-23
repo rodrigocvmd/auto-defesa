@@ -64,10 +64,9 @@
 - [x]  Resolver blur
 - [x] Instruções para o modelo: identificar qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso. Ser PROLIXO.
 - [x]  Fazer segunda camada de verificação caso o relato não bata com o art.
+- [x]  Viabilidade média?
 
 
-
-Viabilidade média?
 
 Add campo que descreve a infração ao lado do código da infração (para ser autopreenchido)
 Add campo que preenche o dispositivo legal ao lado do amparo legal (para ser autopreenchido)
@@ -78,7 +77,6 @@ Nº Equipamento e Aferição - Placeholders simulando dados que seriam reais
 Conferir fases das defesas para escolher (e colocar mais infos, inclsuive na ajuda)
 
 Em uploaddefense, não preencher relato quando o código da infração for inserido (manter o placeholder)
-
 
 
 
@@ -95,6 +93,7 @@ Marketing:
 - []  Valor atualizado da multa + penalidade
 - []  Criar sessão de Help completa (suporte ao usuário, com mockups das informações que você não souber (irei preencger depois))
 - []  Ajustar busca rápida da infração para que no relato apareça como placeholder uma sugestão no sentido: "Sua multa é referente à X. As maiores possibilidades de defesa se encontram em ..." e usar IA para complementar as alegações no relato do usuário que podem ser benéficas para o recurso.
+
 
 
 Feats:

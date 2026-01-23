@@ -605,10 +605,12 @@ const ManualDefense = () => {
   }
 
   if (step === 'analysis' && analysisData) {
-    const viability = isTestMode ? 'Média' : 'Alta';
+    const viability = isTestMode ? 'Média' : (analysisData.viability || 'Possível');
     const summary = isTestMode 
         ? 'Existem argumentos técnicos aplicáveis ao seu caso que podem ser explorados para contestar a infração.' 
         : analysisData.summary;
+
+    const isHighViability = viability === 'Alta' || viability === 'Muito Alta';
 
     return (
       <MainLayout>
@@ -637,9 +639,9 @@ const ManualDefense = () => {
         )}
         <div className="max-w-2xl mx-auto py-12 px-4">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 animate-in slide-in-from-bottom-4 duration-500">
-            <div className={`p-8 text-center ${viability === 'Alta' ? 'bg-green-50' : 'bg-yellow-50'}`}>
+            <div className={`p-8 text-center ${isHighViability ? 'bg-green-50' : 'bg-yellow-50'}`}>
               <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white shadow-sm mb-4">
-                {viability === 'Alta' ? <CheckCircle size={40} className="text-green-600" /> : <AlertCircle size={40} className="text-yellow-600" />}
+                {isHighViability ? <CheckCircle size={40} className="text-green-600" /> : <AlertCircle size={40} className="text-yellow-600" />}
               </div>
               <h2 className="text-2xl font-black text-gray-900 mb-2">Viabilidade {viability}</h2>
               <p className="text-gray-600 font-medium px-4">{summary}</p>
