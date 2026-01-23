@@ -14,7 +14,8 @@ import {
     Lock,
     AlertCircle,
     CheckCircle,
-    Plus
+    Plus,
+    Coins
 } from 'lucide-react';
 import { updateProfile, updatePassword } from 'firebase/auth';
 import { doc, getDoc, setDoc, collection, query, where, getDocs, orderBy } from 'firebase/firestore';
@@ -22,7 +23,7 @@ import { db } from '../firebaseConfig';
 import { jsPDF } from 'jspdf';
 
 export default function Profile() {
-    const { currentUser } = useAuth();
+    const { currentUser, userData } = useAuth();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('defenses');
     const [loading, setLoading] = useState(false);
@@ -94,6 +95,13 @@ export default function Profile() {
 
     async function handleUpdateProfile(e) {
         e.preventDefault();
+        
+        const nameParts = displayName.trim().split(/\s+/);
+        if (nameParts.length < 2 || nameParts.some(part => part.length < 2)) {
+            setMessage({ type: 'error', content: 'Nome completo deve ter pelo menos 2 palavras com 2 caracteres cada.' });
+            return;
+        }
+
         setLoading(true);
         setMessage({ type: '', content: '' });
 
@@ -192,8 +200,25 @@ export default function Profile() {
                         </h1>
                         <p className="text-gray-500">{currentUser?.email}</p>
                         <p className="text-xs text-gray-400 mt-1">
-                            Membro desde {currentUser?.metadata.creationTime ? new Date(currentUser.metadata.creationTime).toLocaleDateString() : '-'}
+                            Membro desde {currentUser?.metadata.creationTime ? new Date(currentUser.metadata.creationTime).toLocaleDateString('pt-BR') : '-'}
                         </p>
+                    </div>
+                    
+                    {/* Créditos do Usuário */}
+                    <div className="bg-blue-50 border border-blue-100 p-6 rounded-2xl flex flex-col items-center justify-center min-w-[200px]">
+                        <div className="flex items-center gap-2 text-blue-600 mb-1">
+                            <Coins size={20} />
+                            <span className="text-sm font-bold uppercase tracking-wider">Créditos</span>
+                        </div>
+                        <div className="text-3xl font-black text-gray-900 mb-2">
+                            {userData?.credits || 0}
+                        </div>
+                        <Link 
+                            to="/pricing" 
+                            className="text-xs bg-blue-600 text-white px-4 py-1.5 rounded-full font-bold hover:bg-blue-700 transition-colors shadow-sm"
+                        >
+                            Adquirir mais
+                        </Link>
                     </div>
                 </div>
 
@@ -269,7 +294,13 @@ export default function Profile() {
                                                         <span className="flex items-center gap-1">
                                                             <Clock size={14} /> 
                                                             {defense.createdAt?.seconds 
-                                                                ? new Date(defense.createdAt.seconds * 1000).toLocaleDateString() 
+                                                                ? new Date(defense.createdAt.seconds * 1000).toLocaleString('pt-BR', {
+                                                                    day: '2-digit',
+                                                                    month: '2-digit',
+                                                                    year: 'numeric',
+                                                                    hour: '2-digit',
+                                                                    minute: '2-digit'
+                                                                })
                                                                 : 'Data desc.'}
                                                         </span>
                                                     </div>

@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Regra para a coleção 'users'
+    match /users/{userId} {
+      // Permite ler e escrever apenas se o ID do usuário autenticado for igual ao ID do documento
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Regra para a coleção 'defenses'
+    match /defenses/{defenseId} {
+      // Permite criar se estiver autenticado e o userId no documento for o do usuário
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      
+      // Permite ler, atualizar e deletar apenas se o documento pertencer ao usuário
+      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Regra para a coleção 'infracoes' (consulta pública de infrações)
+    match /infracoes/{infracaoId} {
+      allow read: if true;
+    }
+  }
+}

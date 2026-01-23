@@ -43,6 +43,10 @@ const MainLayout = ({ children }) => {
                   <Home size={18} /> Início
                 </Link>
               )}
+              
+              <Link to="/pricing" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+                Preços
+              </Link>
 
               <div className="h-6 w-px bg-gray-200 mx-2"></div>
 

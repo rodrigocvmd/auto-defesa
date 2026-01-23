@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import { AlertCircle, UserPlus } from 'lucide-react';
 
@@ -12,6 +12,8 @@ export default function Register() {
     const [loading, setLoading] = useState(false);
     const { signup, loginWithGoogle } = useAuth();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get('redirect') || '/';
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -28,7 +30,7 @@ export default function Register() {
             setError('');
             setLoading(true);
             await signup(email, password);
-            navigate('/');
+            navigate(redirect);
         } catch (err) {
             console.error(err);
             setError('Falha ao criar conta. Tente novamente.');
@@ -42,7 +44,7 @@ export default function Register() {
             setError('');
             setLoading(true);
             await loginWithGoogle();
-            navigate('/');
+            navigate(redirect);
         } catch (err) {
             console.error(err);
             setError('Falha ao cadastrar com Google.');
@@ -140,7 +142,7 @@ export default function Register() {
 
                     <div className="mt-8 text-center text-sm text-gray-600">
                         Já tem uma conta?{' '}
-                        <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
+                        <Link to={`/login${redirect !== '/' ? `?redirect=${redirect}` : ''}`} className="font-medium text-blue-600 hover:text-blue-500">
                             Entrar
                         </Link>
                     </div>

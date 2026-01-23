@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import { AlertCircle, LogIn, KeyRound, ArrowLeft } from 'lucide-react';
 
@@ -14,6 +14,8 @@ export default function Login() {
     
     const { login, loginWithGoogle, resetPassword } = useAuth();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get('redirect') || '/';
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -28,7 +30,7 @@ export default function Login() {
                 setMessage('Verifique seu email para instruções de redefinição de senha.');
             } else {
                 await login(email, password);
-                navigate('/');
+                navigate(redirect);
             }
         } catch (err) {
             console.error(err);
@@ -47,7 +49,7 @@ export default function Login() {
             setError('');
             setLoading(true);
             await loginWithGoogle();
-            navigate('/');
+            navigate(redirect);
         } catch (err) {
             console.error(err);
             setError('Falha ao fazer login com Google.');
@@ -179,7 +181,7 @@ export default function Login() {
 
                             <div className="mt-8 text-center text-sm text-gray-600">
                                 Não tem uma conta?{' '}
-                                <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+                                <Link to={`/register${redirect !== '/' ? `?redirect=${redirect}` : ''}`} className="font-medium text-blue-600 hover:text-blue-500">
                                     Cadastre-se
                                 </Link>
                             </div>

@@ -14,6 +14,46 @@ const PROD_URL = `https://${REGION}-${PROJECT_ID}.cloudfunctions.net`;
 const BASE_URL = import.meta.env.VITE_API_URL || (IS_DEV ? EMULATOR_URL : PROD_URL);
 
 export const api = {
+  // 6. Extração de Dados (OCR)
+  extractData: async (imageBase64, mimeType) => {
+    try {
+      const response = await fetch(`${BASE_URL}/extractDataFromImage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: imageBase64, mimeType }),
+      });
+
+      if (!response.ok) throw new Error('Erro na leitura da imagem');
+      return await response.json();
+    } catch (error) {
+      console.error("Extraction API Error:", error);
+      throw error;
+    }
+  },
+
+  // 5. Pré-análise Gratuita
+  preAnalyze: async (data, imageBase64 = null, mimeType = null) => {
+    try {
+      const body = { ...data };
+      if (imageBase64) {
+        body.image = imageBase64;
+        body.mimeType = mimeType;
+      }
+
+      const response = await fetch(`${BASE_URL}/preAnalyze`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) throw new Error('Erro na pré-análise');
+      return await response.json();
+    } catch (error) {
+      console.error("Pre-Analyze API Error:", error);
+      throw error;
+    }
+  },
+
   // 1. Defesa Manual
   generateDefense: async (data) => {
     try {
@@ -33,12 +73,12 @@ export const api = {
   },
 
   // 2. Defesa via Upload
-  analyzeDocument: async (fileBase64, mimeType) => {
+  analyzeDocument: async (fileBase64, mimeType, userData = {}) => {
     try {
       const response = await fetch(`${BASE_URL}/analyzeDocument`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: fileBase64, mimeType }),
+        body: JSON.stringify({ image: fileBase64, mimeType, ...userData }),
       });
 
       if (!response.ok) {
@@ -48,6 +88,33 @@ export const api = {
       return await response.json();
     } catch (error) {
       console.error("Upload API Error:", error);
+      throw error;
+    }
+  },
+
+  // 4. Criar Sessão de Checkout (Pagamento)
+  createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl }) => {
+    try {
+      const response = await fetch(`${BASE_URL}/createCheckoutSession`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            priceId, 
+            userId,
+            credits,
+            mode, // Envia o modo (payment ou subscription)
+            successUrl: successUrl || window.location.origin + '/profile?success=true',
+            cancelUrl: window.location.origin + '/pricing?canceled=true'
+        }),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || 'Erro ao iniciar pagamento');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Stripe API Error:", error);
       throw error;
     }
   },

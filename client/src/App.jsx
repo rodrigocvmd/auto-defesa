@@ -9,6 +9,7 @@ import Privacy from './pages/Privacy';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
+import Pricing from './pages/Pricing';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/upload" element={<UploadDefense />} />
           <Route path="/manual" element={<ManualDefense />} />
           <Route path="/terms" element={<Terms />} />
