@@ -10,7 +10,9 @@ export function NavigationBlocker({ when }) {
 
         const handleBeforeUnload = (e) => {
             e.preventDefault();
-            e.returnValue = ''; // Exibe o alerta padrão do navegador
+            const message = "Ao sair agora da página, a versão atual do Recurso será salva no seu histórico como a versão final para ser baixada.";
+            e.returnValue = message;
+            return message;
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
