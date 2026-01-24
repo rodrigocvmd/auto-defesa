@@ -78,11 +78,14 @@
 - [X]  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quando em UploadDefense, apresente também a informação ao user que a IA está analisando a congruência entre a materialidade da infração e o relato do usuário.
 
 
-- [X]  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quando em UploadDefense, altere a formatação apenas da  
+1. Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quanto em UploadDefense, altere a formatação apenas da descrição do que está acontecendo para o seguinte:
+A descrição deve ficar alternando entre "Analisando a congruência entre a materialidade da infração e o relato do usuário." e "Nossa IA está identificando erros na multa e melhores argumentos de defesa.", a cada 3 segundos, ambas em negrito;
+2. Tanto em ManualDefense quanto em UploadDefense, aplique máscara no campo RG para que fique no formato xxx.xxx ou x.xxx.xxx. Ou seja, quando o user digitar o quarto dígito, um '.' deve aparecer antes (entre o terceiro e quarto número), e isso deve acontecer novamente entre o sexto e sétimo números, sendo que sete é o limite de números inseridos;
+3. Tanto em ManualDefense quanto em UploadDefense, o dispositivo Legal segue mostrando o placeholder mesmo depois do preenchimento do cód. infração. Deve consultar a base de dados existente e apresentar o texto do artigo referente ao código da infração inserido/extraído;
+4. Em UploadDefense, o campo do relato segue sendo preenchido pela descrição da infração. Isso não deve ocorrer, deve ser mantido o placeholder até o usuário inserir o relato manualmente;
+5. Tanto em ManualDefense quanto em UploadDefense, na página de edição, altere o placeholder do IA Ajustes para informar o usuário do que se trata aquele campo com pequenos exemplos simples e pontuais do que ele pode pedir à IA para ajustar.
 
-apresente também a informação ao user que a IA está analisando a congruência entre a materialidade da infração e o relato do usuário.
 
-Formato RG xxx.xxx ou x.xxx.xxx
 
 Dispositivo Legal segue mostrando placeholder mesmo depois do preenchimento do cód. infração (no upload pelo menos). DEve consultar a base de dados e apresentar o texto do artigo
 

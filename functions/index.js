@@ -1,4 +1,5 @@
 const { onRequest } = require("firebase-functions/v2/https");
+require("dotenv").config(); // Carrega variáveis de ambiente locais (para emulador)
 const logger = require("firebase-functions/logger");
 const cors = require("cors")({ origin: true });
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -377,25 +378,45 @@ exports.analyzeDocument = onRequest((req, res) => {
 });
 
 exports.stripeWebhook = onRequest(async (req, res) => {
-	console.log("🔔 Webhook recebido! Tipo:", req.body.type);
+	console.log("🔔 Webhook recebido! Headers:", JSON.stringify(req.headers));
+	console.log("🔔 Webhook recebido! Body Type:", typeof req.body);
+    console.log("🔔 Webhook recebido! Event Type (from body):", req.body?.type);
 
 	const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
 	const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+    console.log(`🔑 Webhook Secret configurado: ${endpointSecret ? "SIM (Inicia com " + endpointSecret.substring(0, 5) + ")" : "NÃO"}`);
+    
+    if(!endpointSecret) {
+        console.warn("⚠️ AVISO: STRIPE_WEBHOOK_SECRET não está definido. A verificação de assinatura será pulada (INSEGURO EM PRODUÇÃO).");
+    }
 
 	let event;
 
 	if (endpointSecret) {
 		const sig = req.headers["stripe-signature"];
+        
+        if (!req.rawBody) {
+             console.error("❌ ERRO CRÍTICO: req.rawBody está undefined. O middleware do Firebase pode ter parseado o corpo antes. Verifique a configuração.");
+             // Tentativa de fallback (arriscada, mas útil para debug se o emulador estiver falhando no rawBody)
+             // event = req.body; 
+             // Mas para constructEvent precisamos do buffer original.
+             res.status(400).send("Webhook Error: req.rawBody is missing.");
+             return;
+        }
+
 		try {
 			event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
+            console.log("✅ Assinatura do Webhook verificada com sucesso.");
 		} catch (err) {
-			console.error(`Webhook Error: ${err.message}`);
+			console.error(`❌ Webhook Signature Error: ${err.message}`);
+            console.error(`Dica: Verifique se o segredo 'whsec_...' gerado pelo 'stripe listen' é o mesmo que está no seu .env.`);
 			res.status(400).send(`Webhook Error: ${err.message}`);
 			return;
 		}
 	} else {
 		event = req.body;
+        console.log("⚠️ Usando req.body diretamente (sem verificação de assinatura).");
 	}
 
 	// Handle the event
@@ -403,6 +424,8 @@ exports.stripeWebhook = onRequest(async (req, res) => {
 		const session = event.data.object;
 		const userId = session.metadata.userId;
 		const creditsToAdd = parseInt(session.metadata.credits || "1", 10);
+        
+        console.log(`📦 Processando checkout para UserId: ${userId}, Créditos a adicionar: ${creditsToAdd}`);
 
 		if (userId) {
 			try {
@@ -414,16 +437,20 @@ exports.stripeWebhook = onRequest(async (req, res) => {
 
 					t.set(userRef, { credits: newCredits }, { merge: true });
 					console.log(
-						`Atualizando créditos do usuário ${userId}: ${currentCredits} -> ${newCredits}`,
+						`✅ SUCESSO: Atualizando créditos do usuário ${userId}: ${currentCredits} -> ${newCredits}`,
 					);
 				});
-				console.log(`Adicionados ${creditsToAdd} créditos para o usuário ${userId}`);
+				console.log(`🎉 Transação concluída. Adicionados ${creditsToAdd} créditos para o usuário ${userId}`);
 			} catch (error) {
-				console.error("Erro ao atualizar créditos:", error);
+				console.error("❌ ERRO ao atualizar créditos no Firestore:", error);
 				return res.status(500).send("Erro interno ao atualizar créditos");
 			}
-		}
-	}
+		} else {
+            console.error("❌ ERRO: UserId não encontrado nos metadados da sessão Stripe.");
+        }
+	} else {
+        console.log(`ℹ️ Evento ignorado: ${event.type}`);
+    }
 
 	res.send();
 });
