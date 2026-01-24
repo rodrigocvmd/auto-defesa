@@ -65,24 +65,26 @@
 - [x] Instruções para o modelo: identificar qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso. Ser PROLIXO.
 - [x]  Fazer segunda camada de verificação caso o relato não bata com o art.
 - [x]  Viabilidade média?
+- [X]  Em ManualDefense e em UploadDefense, altere o local dos campos Amparo Legal e Dispositvo Legal para ficarem em seguida dos campos AIT e Cód. Infração. E remova a parte "(Texto)" do campo Dispositvo Legal;
+- [X]  Altere o estilo do cursor quando estiver em cima de campos que serão preenchidos automaticamente (Amparo legal e dispositivo legal) para not-allowed;
+- [X]  Altere o formato do campo Aferição para que insira as barras da data automaticamente enquanto o usuário digita;
+- [X]  Em UploadDefense, altere o campo Relato para que não seja preenchido autimaticamente quando o código da infração for inserido (mantendo apenas o placeholder);
+- [X]  Em ManualDefense e em UploadDefense, adicione campo que apresenta dispositivo legal (o texto do artigo, não o número do artigo) ao lado do campo do amparo legal descreve a infração de forma simples ao lado do código da infração (também para ser autopreenchido quando o usuário inserir ou quando a IA extrair o código da infração e se tiver, por consequência, a informação de qual é o dispositivo legal);
+- [X]  Em ManualDefense e em UploadDefense, adicione campo que descreve a infração de forma simples ao lado do código da infração (para ser autopreenchido quando o usuário inserir ou quando a IA extrair o código da infração);
+- [X]  Add Nº Equipamento e Aferição - Placeholders simulando dados que seriam reais
+
+
+- [ ]  Em ManualDefense e em UploadDefense, altere o estilo do cursor quando estiver em hover sobre o campo Descrição da Infração para not-allowed;
+- [ ]  Em ManualDefense e em UploadDefense, o placeholder dos campos Amparo Legal, Dispositivo Legal e Descrição da Infração devem ser "Aguardando preenchimento do Código da Infração..."
+- [ ]  Na página "Qual fase da defesa?", tanto em ManualDefense quanto em UploadDefense (quando o usuário decide escolher manualmente a defesa), melhore as descrições de cada botão (Defesa Prévia, "Recurso JARI" e "CETRAN"), que atualmente são, respectivamente, "Ainda não recebi o boleto", Já recebi o boleto" e "Recorrer da JARI" para descrições levemente mais completas, pelo menos duas frases com palavras chave em destaque para instruir o usuário de qual defesa se trata. Melhore também o modal "Entenda as Fases da Defesa" para ficar bem claro para o usuário, com informações mais completas e estilizadas, mas mantendo o estilo atual.
 
 
 
 - []  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quando em UploadDefense, apresente também a informação ao user que a IA está analisando a congruência entre a materialidade da infração e o relato do usuário.
-- []  Em ManualDefense e em UploadDefense, adicione campo que descreve a infração de forma simples ao lado do código da infração (para ser autopreenchido quando o usuário inserir ou quando a IA extrair o código da infração);
-- []  Em ManualDefense e em UploadDefense, adicione campo que apresenta dispositivo legal (o texto do artigo, não o número do artigo) ao lado do campo do amparo legal descreve a infração de forma simples ao lado do código da infração (também para ser autopreenchido quando o usuário inserir ou quando a IA extrair o código da infração e se tiver, por consequência, a informação de qual é o dispositivo legal);
-- []  Add Nº Equipamento e Aferição - Placeholders simulando dados que seriam reais
 
 
-Em ManualDefense e em UploadDefense, altere o local dos campos Amparo Legal e Dispositvo Legal para ficarem em seguida dos campos AIT e Cód. Infração. E remova a parte "(Texto)" do campo Dispositvo Legal;
 
-Altere o estilo do cursor quando estiver em cima de campos que serão preenchidos automaticamente (Amparo legal e dispositivo legal) para not-allowed;
-
-Altere o formato do campo Aferição para que insira as barras da data automaticamente enquanto o usuário digita;
-
-Em UploadDefense, altere o campo Relato para que não seja preenchido autimaticamente quando o código da infração for inserido (mantendo apenas o placeholder);
-
-
+Qual fase da defesa?
 Conferir fases das defesas para escolher (e colocar mais infos, inclsuive na ajuda)
 
 Fazer manualmente:

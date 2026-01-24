@@ -137,7 +137,7 @@ const ManualDefense = () => {
       value = value.replace(/\D/g, '').slice(0, 11);
       if (value.length > 10) value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
     }
-    if (name === 'date' || name === 'signDate') {
+    if (name === 'date' || name === 'signDate' || name === 'lastCalibration') {
       value = value.replace(/\D/g, '').slice(0, 8);
       if (value.length > 4) value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`;
       else if (value.length > 2) value = `${value.slice(0, 2)}/${value.slice(2)}`;
@@ -828,6 +828,19 @@ const ManualDefense = () => {
                 <div><label className="label-form">AIT (Nº do Auto) <span className="text-red-500">*</span></label><input name="aitNumber" value={formData.aitNumber} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.aitNumber ? 'border-red-500' : ''}`} required />{errors.aitNumber && <p className="text-red-500 text-xs mt-1">{errors.aitNumber}</p>}</div>
                 <div><label className="label-form">Cód. Infração <span className="text-red-500">*</span></label><div className="flex gap-1"><input name="infractionCode" value={formData.infractionCode} onChange={handleChange} onBlur={handleBlur} className={`input-form w-2/3 ${errors.infractionCode ? 'border-red-500' : ''}`} required /><input name="infractionSplit" value={formData.infractionSplit} onChange={handleChange} onBlur={handleBlur} className="input-form w-1/3 text-center" placeholder="0" /><button type="button" onClick={handleSearchCode} className="bg-blue-100 text-blue-600 p-3 rounded-xl hover:bg-blue-200 transition-colors">{searchingCode ? <Loader2 className="animate-spin" size={20} /> : <Search size={20} />}</button></div>{errors.infractionCode && <p className="text-red-500 text-xs mt-1">{errors.infractionCode}</p>}</div>
                 <div className="md:col-span-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label className="label-form">Amparo Legal</label>
+                            <input name="article" value={formData.article} readOnly className="input-form bg-gray-50 cursor-not-allowed" placeholder="Ex: Art. 181, I, CTB" />
+                        </div>
+                        <div>
+                             <label className="label-form">Dispositivo Legal</label>
+                             <input name="legalText" value={formData.legalText || ''} readOnly className="input-form bg-gray-50 text-gray-600 cursor-not-allowed" placeholder="Texto do artigo..." />
+                        </div>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Preencha o Cód. Infração e clique na lupa para preencher automaticamente.</p>
+                </div>
+                <div className="md:col-span-3">
                     <label className="label-form">Descrição da Infração</label>
                     <input name="infractionDescription" value={formData.infractionDescription || ''} readOnly className="input-form bg-gray-50 text-gray-600" placeholder="Descrição automática da infração..." />
                 </div>
@@ -835,19 +848,6 @@ const ManualDefense = () => {
                 <div><label className="label-form">Data <span className="text-red-500">*</span></label><input type="text" name="date" value={formData.date} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.date ? 'border-red-500' : ''}`} placeholder="DD/MM/AAAA" maxLength={10} required />{errors.date && <p className="text-red-500 text-xs mt-1">{errors.date}</p>}</div>
                 <div><label className="label-form">Horário (24h) <span className="text-red-500">*</span></label><input name="time" value={formData.time} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.time ? 'border-red-500' : ''}`} placeholder="HH:MM" maxLength={5} required />{errors.time && <p className="text-red-500 text-xs mt-1">{errors.time}</p>}</div>
                 <div className="md:col-span-3"><label className="label-form">Local <span className="text-red-500">*</span></label><input name="location" value={formData.location} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.location ? 'border-red-500' : ''}`} required />{errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}</div>
-                <div className="md:col-span-3">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                            <label className="label-form">Amparo Legal</label>
-                            <input name="article" value={formData.article} readOnly className="input-form bg-gray-50" placeholder="Ex: Art. 181, I, CTB" />
-                        </div>
-                        <div>
-                             <label className="label-form">Dispositivo Legal (Texto)</label>
-                             <input name="legalText" value={formData.legalText || ''} readOnly className="input-form bg-gray-50 text-gray-600" placeholder="Texto do artigo..." />
-                        </div>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-1">Preencha o Cód. Infração e clique na lupa para preencher automaticamente.</p>
-                </div>
               </div>
             </section>
             <section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
