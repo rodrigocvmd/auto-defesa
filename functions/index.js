@@ -201,7 +201,7 @@ exports.extractDataFromImage = onRequest((req, res) => {
         
         Campos requeridos no JSON:
         {
-          "name": "Nome do condutor ou proprietário",
+          "name": "Nome do condutor, proprietário ou infrator (Busque por 'Nome', 'Proprietário', 'Condutor' ou próximo ao CPF)",
           "plate": "Placa do veículo (ABC-1234)",
           "plateUF": "UF da placa (ex: SP)",
           "vehicleModel": "Marca/Modelo",

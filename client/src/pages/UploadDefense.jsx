@@ -204,20 +204,22 @@ const UploadDefense = () => {
 			if (response.success) {
 				let extractedData = response.data;
 
-				// Auto-fill Legal Basis if code is present but article is missing
-				if (extractedData.infractionCode && !extractedData.article) {
+				// Always try to fetch details from DB to ensure accurate Legal Basis (Amparo) and Description
+				if (extractedData.infractionCode) {
 					try {
 						const infractionRes = await api.getInfraction({
 							code: extractedData.infractionCode,
 							desdobramento: extractedData.infractionSplit,
 						});
 						if (infractionRes && infractionRes.success) {
+                            // Overwrite OCR data with authoritative DB data where available
 							if (infractionRes.data.article) extractedData.article = infractionRes.data.article;
                             if (infractionRes.data.description) extractedData.infractionDescription = infractionRes.data.description;
                             if (infractionRes.data.legalText) extractedData.legalText = infractionRes.data.legalText;
+                            else if (infractionRes.data.description) extractedData.legalText = infractionRes.data.description; // Fallback
 						}
 					} catch (ignore) {
-						console.log("Failed to auto-fetch article from code");
+						console.log("Failed to auto-fetch article from code", ignore);
 					}
 				}
 
@@ -374,6 +376,10 @@ const UploadDefense = () => {
 					break;
 				case "cpf":
 					if (!isValidCPF(value)) error = "CPF inválido.";
+					break;
+				case 'rg': 
+					const rgRegex = /^(\d{3}\.\d{3}|\d{1}\.\d{3}\.\d{3})$/;
+					if (!rgRegex.test(value)) error = "RG inválido."; 
 					break;
 				case "email":
 					if (!value.includes("@") || !value.includes(".")) error = "E-mail inválido.";

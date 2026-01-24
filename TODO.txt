@@ -82,16 +82,14 @@
 A descrição deve ficar alternando entre "Analisando a congruência entre a materialidade da infração e o relato do usuário." e "Nossa IA está identificando erros na multa e melhores argumentos de defesa.", a cada 3 segundos, ambas em negrito;
 - [x]  Em ManualDefense a máscara do RG não foi aplicada. Em UploadDefense foi, mas está ao contrário, o '.' deve ficar entre o primeiro e segundo números entre o quarto e quinto números se houver 7 (x.xxx.xxx) ou apenas entre o terceiro e quarto números se houver 6 (formato xxx.xxx). Aplique isso nas duas páginas (manual e upload).
 - [x]  Em ManualDefense e em UploadDefense, remova o campo Dispositivo Legal.
-
-
-- []  Em Upload, nome está aparecendo como não disponível, deve ser lido do AIT e preenchido como outros campos já fazem;
-- []  Em Upload, amparo legal já deve vir preenchido baseado no código da infração identificado pela IA;
-- []  Campo do RG deve ser conferido em tempo real (assim como outros já estão sendo feitos) para o formato xxx.xxx ou x.xxx.xxx;
-
+- [x]  Em Upload, nome está aparecendo como não disponível, deve ser lido do AIT e preenchido como outros campos já fazem;
+- [x]  Em Upload, amparo legal já deve vir preenchido baseado no código da infração identificado pela IA;
+- [x]  Campo do RG deve ser conferido em tempo real (assim como outros já estão sendo feitos) para o formato xxx.xxx ou x.xxx.xxx;
 
 
 
-O endereçamento e o final do título de cada subtópico da defesa, quando é mais longo, está ficando em uma linha seguinte e em negrito. Instrua a IA para manter o padrão de estilo e formatação entre endereçamento, títulos e subtítulos de mesmo nível. Podem divergir de formatação entre eles por questões de destaque, mas o mesmo nível (endereçamento, títulos entre si e subtítulos entre si) devem manter o padrão sempre.
+
+
 
 Marketing:
 - []  Melhorar Marketing geral, principalmente da home/hero, a seu critério, mas seguindo as melhores práticas e recomendações atuais para garantir a máxima conversão possível, demonstrando o valor da app e o baixo custo a ser pago referente ao benefício que produz pra o usuário;
@@ -106,6 +104,7 @@ Marketing:
 - []  Ajustar busca rápida da infração para que no relato apareça como placeholder uma sugestão no sentido: "Sua multa é referente à X. As maiores possibilidades de defesa se encontram em ..." e usar IA para complementar as alegações no relato do usuário que podem ser benéficas para o recurso.
 
 IA:
+- []  O endereçamento e o final do título de cada subtópico da defesa, quando é mais longo, está ficando em uma linha seguinte e em negrito. Instrua a IA para manter o padrão de estilo e formatação entre endereçamento, títulos e subtítulos de mesmo nível. Podem divergir de formatação entre eles por questões de destaque, mas o mesmo nível (endereçamento, títulos entre si e subtítulos entre si) devem manter o padrão sempre.
 
 Fazer manualmente:
 - []  Conferir todos os textos da app

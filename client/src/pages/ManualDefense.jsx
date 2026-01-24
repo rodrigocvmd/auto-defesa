@@ -187,6 +187,10 @@ const ManualDefense = () => {
                   if (nameParts.length < 2 || nameParts.some(part => part.length < 2)) error = "Nome completo deve ter pelo menos 2 palavras com 2 caracteres cada.";
                   break;
               case 'cpf': if (!isValidCPF(value)) error = "CPF inválido."; break;
+              case 'rg': 
+                  const rgRegex = /^(\d{3}\.\d{3}|\d{1}\.\d{3}\.\d{3})$/;
+                  if (!rgRegex.test(value)) error = "RG inválido."; 
+                  break;
               case 'email': if (!value.includes('@') || !value.includes('.')) error = "E-mail inválido."; break;
               case 'date': case 'signDate': if (value.length < 10) error = "Data incompleta (DD/MM/AAAA)."; break;
               case 'time': if (value.length < 5) error = "Horário incompleto (HH:MM)."; break;
