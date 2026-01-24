@@ -77,23 +77,19 @@
 - [x]  Na página "Qual fase da defesa?", tanto em ManualDefense quanto em UploadDefense (quando o usuário decide escolher manualmente a defesa), melhore as descrições de cada botão (Defesa Prévia, "Recurso JARI" e "CETRAN"), que atualmente são, respectivamente, "Ainda não recebi o boleto", Já recebi o boleto" e "Recorrer da JARI" para descrições levemente mais completas, pelo menos duas frases com palavras chave em destaque para instruir o usuário de qual defesa se trata. Melhore também o modal "Entenda as Fases da Defesa" para ficar bem claro para o usuário, com informações mais completas e estilizadas, mas mantendo o estilo atual.
 - [X]  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quando em UploadDefense, apresente também a informação ao user que a IA está analisando a congruência entre a materialidade da infração e o relato do usuário.
 - [X]  Em UploadDefense, o campo do relato segue sendo preenchido pela descrição da infração. Isso não deve ocorrer, deve ser mantido o placeholder até o usuário inserir o relato manualmente;
-
-
-- []  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quanto em UploadDefense, altere a formatação apenas da descrição do que está acontecendo para o seguinte:
+- [x]  Tanto em ManualDefense quanto em UploadDefense, na página de edição, altere o placeholder do IA Ajustes para informar o usuário do que se trata aquele campo com pequenos exemplos simples e pontuais do que ele pode pedir à IA para ajustar.
+- [x]  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quanto em UploadDefense, altere a formatação apenas da descrição do que está acontecendo para o seguinte:
 A descrição deve ficar alternando entre "Analisando a congruência entre a materialidade da infração e o relato do usuário." e "Nossa IA está identificando erros na multa e melhores argumentos de defesa.", a cada 3 segundos, ambas em negrito;
-- []  Em ManualDefense a máscara do RG não foi aplicada. Em UploadDefense foi, mas está ao contrário, o '.' deve ficar entre o primeiro e segundo números entre o quarto e quinto números se houver 7 (x.xxx.xxx) ou apenas entre o terceiro e quarto números se houver 6 (formato xxx.xxx). Aplique isso nas duas páginas (manual e upload).
-- []  Em ManualDefense e em UploadDefense, remova o campo Dispositivo Legal.
+- [x]  Em ManualDefense a máscara do RG não foi aplicada. Em UploadDefense foi, mas está ao contrário, o '.' deve ficar entre o primeiro e segundo números entre o quarto e quinto números se houver 7 (x.xxx.xxx) ou apenas entre o terceiro e quarto números se houver 6 (formato xxx.xxx). Aplique isso nas duas páginas (manual e upload).
+- [x]  Em ManualDefense e em UploadDefense, remova o campo Dispositivo Legal.
 
 
-- []  Tanto em ManualDefense quanto em UploadDefense, na página de edição, altere o placeholder do IA Ajustes para informar o usuário do que se trata aquele campo com pequenos exemplos simples e pontuais do que ele pode pedir à IA para ajustar.
+- []  Em Upload, nome está aparecendo como não disponível, deve ser lido do AIT e preenchido como outros campos já fazem;
+- []  Em Upload, amparo legal já deve vir preenchido baseado no código da infração identificado pela IA;
+- []  Campo do RG deve ser conferido em tempo real (assim como outros já estão sendo feitos) para o formato xxx.xxx ou x.xxx.xxx;
 
 
 
-Dispositivo Legal segue mostrando placeholder mesmo depois do preenchimento do cód. infração (no upload pelo menos). DEve consultar a base de dados e apresentar o texto do artigo
-
-Campo do relato segue sendo preenchido pela descrição da infração
-
-Placeholder do IA Ajustes
 
 O endereçamento e o final do título de cada subtópico da defesa, quando é mais longo, está ficando em uma linha seguinte e em negrito. Instrua a IA para manter o padrão de estilo e formatação entre endereçamento, títulos e subtítulos de mesmo nível. Podem divergir de formatação entre eles por questões de destaque, mas o mesmo nível (endereçamento, títulos entre si e subtítulos entre si) devem manter o padrão sempre.
 
@@ -108,8 +104,6 @@ Marketing:
 - []  Valor atualizado da multa + penalidade
 - []  Criar sessão de Help completa (suporte ao usuário, com mockups das informações que você não souber (irei preencger depois))
 - []  Ajustar busca rápida da infração para que no relato apareça como placeholder uma sugestão no sentido: "Sua multa é referente à X. As maiores possibilidades de defesa se encontram em ..." e usar IA para complementar as alegações no relato do usuário que podem ser benéficas para o recurso.
-
-
 
 IA:
 

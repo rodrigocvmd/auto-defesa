@@ -154,6 +154,16 @@ const ManualDefense = () => {
       value = value.replace(/\D/g, '').slice(0, 11);
       if (value.length > 10) value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
     }
+    if (name === 'rg') {
+        // Máscara de RG: Limite de 7 números
+        // Formato: x.xxx.xxx (7 dígitos) ou xxx.xxx (6 dígitos)
+        value = value.replace(/\D/g, '').slice(0, 7);
+        if (value.length === 7) {
+            value = value.replace(/(\d{1})(\d{3})(\d{3})/, "$1.$2.$3");
+        } else if (value.length > 3) {
+            value = value.replace(/(\d{3})(\d+)/, "$1.$2");
+        }
+    }
     if (name === 'date' || name === 'signDate' || name === 'lastCalibration') {
       value = value.replace(/\D/g, '').slice(0, 8);
       if (value.length > 4) value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`;
@@ -824,7 +834,7 @@ const ManualDefense = () => {
              </div>
           </header>
           <form onSubmit={handlePreAnalysis} className="space-y-8 pb-20">
-            {loading && (<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center"><Loader2 size={60} className="text-blue-600 animate-spin mb-4" /><h2 className="text-2xl font-bold text-gray-800 mb-2">Processando Análise Gratuita...</h2><p className="text-gray-600 max-w-md">Identificando erros na multa e melhores argumentos de defesa.<br/><strong>A IA está analisando a congruência entre a materialidade da infração e o relato do usuário.</strong></p></div>)}
+            {loading && (<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center"><Loader2 size={60} className="text-blue-600 animate-spin mb-4" /><h2 className="text-2xl font-bold text-gray-800 mb-2">Processando Análise Gratuita...</h2><p className="text-gray-600 max-w-md font-bold">{loadingText}</p></div>)}
             <section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
               <div className="flex items-center gap-2 border-b pb-4"><User className="text-blue-600" /><h3 className="text-xl font-bold text-gray-800">1. Qualificação</h3></div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -871,10 +881,6 @@ const ManualDefense = () => {
                         <div>
                             <label className="label-form">Amparo Legal</label>
                             <input name="article" value={formData.article} readOnly className="input-form bg-gray-50 cursor-not-allowed" placeholder="Aguardando preenchimento do Código da Infração..." />
-                        </div>
-                        <div>
-                             <label className="label-form">Dispositivo Legal</label>
-                             <input name="legalText" value={formData.legalText || ''} readOnly className="input-form bg-gray-50 text-gray-600 cursor-not-allowed" placeholder="Aguardando preenchimento do Código da Infração..." />
                         </div>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Preencha o Cód. Infração e clique na lupa para preencher automaticamente.</p>

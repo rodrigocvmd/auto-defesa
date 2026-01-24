@@ -313,10 +313,11 @@ const UploadDefense = () => {
 			if (value.length > 10) value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
 		}
         if (name === 'rg') {
-            // Máscara de RG: Limite de 7 números, formato x.xxx.xxx
+            // Máscara de RG: Limite de 7 números
+            // Formato: x.xxx.xxx (7 dígitos) ou xxx.xxx (6 dígitos)
             value = value.replace(/\D/g, '').slice(0, 7);
-            if (value.length > 6) {
-                value = value.replace(/(\d{3})(\d{3})(\d{1})/, "$1.$2.$3");
+            if (value.length === 7) {
+                value = value.replace(/(\d{1})(\d{3})(\d{3})/, "$1.$2.$3");
             } else if (value.length > 3) {
                 value = value.replace(/(\d{3})(\d+)/, "$1.$2");
             }
@@ -1436,9 +1437,8 @@ const UploadDefense = () => {
 							<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center">
 								<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
 								<h2 className="text-2xl font-bold text-gray-800 mb-2">Processando Análise...</h2>
-								<p className="text-gray-600 max-w-md">
-									Identificando erros na multa e melhores argumentos de defesa.
-                                    <br/><strong>A IA está analisando a congruência entre a materialidade da infração e o relato do usuário.</strong>
+								<p className="text-gray-600 max-w-md font-bold">
+									{loadingText}
 								</p>
 							</div>
 						)}
@@ -1839,28 +1839,23 @@ const UploadDefense = () => {
 										<p className="text-red-500 text-xs mt-1">{errors.infractionCode}</p>
 									)}
 								</div>
-								<div className="md:col-span-3">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                        <div>
-                                            <label className="label-form">Amparo Legal</label>
-                                            <input
-                                                name="article"
-                                                value={formData.article}
-                                                readOnly
-                                                className="input-form bg-gray-50 cursor-not-allowed"
-                                                placeholder="Aguardando preenchimento do Código da Infração..."
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="label-form">Dispositivo Legal</label>
-                                            <input name="legalText" value={formData.legalText || ''} readOnly className="input-form bg-gray-50 text-gray-600 cursor-not-allowed" placeholder="Aguardando preenchimento do Código da Infração..." />
-                                        </div>
-                                    </div>
-									<p className="text-xs text-gray-500 mt-1">
-										Preencha o Cód. Infração e clique na lupa para preencher automaticamente.
-									</p>
-								</div>
-                                <div className="md:col-span-3">
+								                <div className="md:col-span-3">
+								                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+								                        <div>
+								                            <label className="label-form">Amparo Legal</label>
+								                            <input
+								                                name="article"
+								                                value={formData.article}
+								                                readOnly
+								                                className="input-form bg-gray-50 cursor-not-allowed"
+								                                placeholder="Aguardando preenchimento do Código da Infração..."
+								                            />
+								                        </div>
+								                    </div>
+																	<p className="text-xs text-gray-500 mt-1">
+																		Preencha o Cód. Infração e clique na lupa para preencher automaticamente.
+																	</p>
+																</div>                                <div className="md:col-span-3">
                                     <label className="label-form">Descrição da Infração</label>
                                     <input name="infractionDescription" value={formData.infractionDescription || ''} readOnly className="input-form bg-gray-50 text-gray-600 cursor-not-allowed" placeholder="Aguardando preenchimento do Código da Infração..." />
                                 </div>
