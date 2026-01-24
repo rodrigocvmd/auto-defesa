@@ -40,6 +40,23 @@ const ManualDefense = () => {
   const [showEditWarning, setShowEditWarning] = useState(false);
   const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
   const [showDivergenceModal, setShowDivergenceModal] = useState(false);
+  const [loadingText, setLoadingText] = useState("Analisando a congruência entre a materialidade da infração e o relato do usuário.");
+
+  useEffect(() => {
+    let interval;
+    if (loading) {
+      interval = setInterval(() => {
+        setLoadingText(prev => 
+          prev === "Analisando a congruência entre a materialidade da infração e o relato do usuário." 
+            ? "Nossa IA está identificando erros na multa e melhores argumentos de defesa." 
+            : "Analisando a congruência entre a materialidade da infração e o relato do usuário."
+        );
+      }, 3000);
+    } else {
+        setLoadingText("Analisando a congruência entre a materialidade da infração e o relato do usuário.");
+    }
+    return () => clearInterval(interval);
+  }, [loading]);
 
   const initialFormState = {
     defenseType: '', 
@@ -213,7 +230,8 @@ const ManualDefense = () => {
             ...prev, 
             article: article || prev.article,
             infractionDescription: description || prev.infractionDescription,
-            legalText: legalText || prev.legalText
+            // Se legalText não vier da API, usamos a descrição como fallback para preencher o campo Dispositivo Legal
+            legalText: legalText || description || prev.legalText
         }));
       }
     } catch (error) { alert("Código não encontrado."); } finally { setSearchingCode(false); }
@@ -590,13 +608,12 @@ const ManualDefense = () => {
   if (result) {
     return (
       <MainLayout>
-        <NavigationBlocker when={!!result} />
         {loading && (
           <div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
             <Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
             <h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
-            <p className="text-gray-600 max-w-md font-medium">
-              Nossa IA está aplicando as melhores teses jurídicas e resoluções do CONTRAN para garantir a máxima qualidade do seu recurso.
+            <p className="text-gray-600 max-w-md font-bold">
+              {loadingText}
             </p>
             <div className="mt-8 flex gap-2">
                 <div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
@@ -628,7 +645,7 @@ const ManualDefense = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">{isEditing ? (<textarea value={result} onChange={(e) => setResult(e.target.value)} className="w-full p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />) : (<div className="bg-white p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-gray-200 whitespace-pre-wrap">{result}</div>)}</div>
             <div className="lg:col-span-1 space-y-6">
-              {isRefining ? (<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40"><textarea value={refinementText} onChange={(e) => setRefinementText(e.target.value)} rows={6} className="w-full p-3 rounded-xl text-gray-900 text-sm" placeholder="O que deseja mudar?" /><div className="mt-4 flex justify-end"><button onClick={handleRefinementSubmit} disabled={!refinementText.trim() || refining} className="bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2">Atualizar <Send size={16} /></button></div></div>) : (<div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 sticky top-40"><div className="flex items-center gap-2 mb-4"><FileCheck className="text-amber-600" /><h3 className="font-bold text-amber-900">Checklist</h3></div><ul className="space-y-3 text-sm text-gray-700"><li>✓ Imprimir e Assinar</li><li>✓ Anexar Cópia CNH/RG e CRLV</li><li>✓ Anexar Notificação</li></ul><button onClick={() => setResult(null)} className="mt-6 w-full py-2 text-amber-700 hover:bg-amber-100 rounded-lg text-sm font-medium flex items-center justify-center gap-2"><RotateCcw size={14} /> Reiniciar</button></div>)}
+              {isRefining ? (<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40"><textarea value={refinementText} onChange={(e) => setRefinementText(e.target.value)} rows={6} className="w-full p-3 rounded-xl text-gray-900 text-sm" placeholder="Exemplos: 'Focar na falta de sinalização da via', 'Ajustar para tom mais formal', 'Remover argumento sobre a cor do veículo'." /><div className="mt-4 flex justify-end"><button onClick={handleRefinementSubmit} disabled={!refinementText.trim() || refining} className="bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2">Atualizar <Send size={16} /></button></div></div>) : (<div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 sticky top-40"><div className="flex items-center gap-2 mb-4"><FileCheck className="text-amber-600" /><h3 className="font-bold text-amber-900">Checklist</h3></div><ul className="space-y-3 text-sm text-gray-700"><li>✓ Imprimir e Assinar</li><li>✓ Anexar Cópia CNH/RG e CRLV</li><li>✓ Anexar Notificação</li></ul><button onClick={() => setResult(null)} className="mt-6 w-full py-2 text-amber-700 hover:bg-amber-100 rounded-lg text-sm font-medium flex items-center justify-center gap-2"><RotateCcw size={14} /> Reiniciar</button></div>)}
             </div>
           </div>
         </div>

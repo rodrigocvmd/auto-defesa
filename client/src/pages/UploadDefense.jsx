@@ -63,6 +63,23 @@ const UploadDefense = () => {
 	const [showEditWarning, setShowEditWarning] = useState(false);
 	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
 	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
+    const [loadingText, setLoadingText] = useState("Analisando a congruência entre a materialidade da infração e o relato do usuário.");
+
+    useEffect(() => {
+        let interval;
+        if (loading) {
+            interval = setInterval(() => {
+                setLoadingText(prev => 
+                    prev === "Analisando a congruência entre a materialidade da infração e o relato do usuário." 
+                        ? "Nossa IA está identificando erros na multa e melhores argumentos de defesa." 
+                        : "Analisando a congruência entre a materialidade da infração e o relato do usuário."
+                );
+            }, 3000);
+        } else {
+            setLoadingText("Analisando a congruência entre a materialidade da infração e o relato do usuário.");
+        }
+        return () => clearInterval(interval);
+    }, [loading]);
 
 	const initialFormState = {
 		defenseType: "Análise de Upload", // Default
@@ -204,15 +221,20 @@ const UploadDefense = () => {
 					}
 				}
 
+                // Separamos a descrição (que vem do OCR como descrição da infração) para não sobrescrever o relato do usuário
+                const { description: ocrDescription, ...otherData } = extractedData;
+
 				// Atualiza o formulário com os dados da IA
 				setFormData((prev) => ({
 					...prev,
-					...extractedData,
-                    infractionDescription: extractedData.infractionDescription || prev.infractionDescription,
-                    legalText: extractedData.legalText || prev.legalText,
+					...otherData,
+                    infractionDescription: ocrDescription || extractedData.infractionDescription || prev.infractionDescription,
+                    legalText: extractedData.legalText || ocrDescription || prev.legalText, // Fallback para description
 					// Mantém alguns defaults se a IA não achar
 					nationality: extractedData.nationality || prev.nationality,
 					signDate: extractedData.signDate || prev.signDate,
+                    // Garante que o relato do usuário não seja sobrescrito pela descrição da infração
+                    description: prev.description
 				}));
 
 				// Lógica de Fase Detectada
@@ -290,6 +312,15 @@ const UploadDefense = () => {
 			value = value.replace(/\D/g, "").slice(0, 11);
 			if (value.length > 10) value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
 		}
+        if (name === 'rg') {
+            // Máscara de RG: Limite de 7 números, formato x.xxx.xxx
+            value = value.replace(/\D/g, '').slice(0, 7);
+            if (value.length > 6) {
+                value = value.replace(/(\d{3})(\d{3})(\d{1})/, "$1.$2.$3");
+            } else if (value.length > 3) {
+                value = value.replace(/(\d{3})(\d+)/, "$1.$2");
+            }
+        }
 		    if (name === 'date' || name === 'signDate' || name === 'lastCalibration') {
 		      value = value.replace(/\D/g, '').slice(0, 8);
 		      if (value.length > 4) value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`;
@@ -427,7 +458,8 @@ const UploadDefense = () => {
                     ...prev, 
                     article: article || prev.article,
                     infractionDescription: description || prev.infractionDescription,
-                    legalText: legalText || prev.legalText
+                    // Se legalText não vier da API, usamos a descrição como fallback para preencher o campo Dispositivo Legal
+                    legalText: legalText || description || prev.legalText
                 }));
 			}
 		} catch (error) {
@@ -860,59 +892,59 @@ const UploadDefense = () => {
 
 					<NavigationBlocker when={!!result} />
 
-					{loading && (
+										{loading && (
 
-						<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
+											<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
 
-							<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
+												<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
 
-							<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
+												<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
 
-							<p className="text-gray-600 max-w-md font-medium">
+												<p className="text-gray-600 max-w-md font-bold">
 
-								Nossa IA está aplicando as melhores teses jurídicas e resoluções do CONTRAN para garantir a máxima qualidade do seu recurso.
+													{loadingText}
 
-							</p>
+												</p>
 
-							<div className="mt-8 flex gap-2">
+												<div className="mt-8 flex gap-2">
 
-								<div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
+													<div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
 
-									<div className="h-full bg-blue-600 animate-progress"></div>
+														<div className="h-full bg-blue-600 animate-progress"></div>
 
-								</div>
+													</div>
 
-							</div>
+												</div>
 
-							<style
+												<style
 
-								dangerouslySetInnerHTML={{
+													dangerouslySetInnerHTML={{
 
-									__html: `
+														__html: `
 
-	                @keyframes progress {
+						                @keyframes progress {
 
-	                    0% { width: 0%; }
+						                    0% { width: 0%; }
 
-	                    100% { width: 100%; }
+						                    100% { width: 100%; }
 
-	                }
+						                }
 
-	                .animate-progress {
+						                .animate-progress {
 
-	                    animation: progress 2s ease-in-out infinite;
+						                    animation: progress 2s ease-in-out infinite;
 
-	                }
+						                }
 
-	            `,
+						            `,
 
-								}}
+													}}
 
-							/>
+												/>
 
-						</div>
+											</div>
 
-					)}
+										)}
 
 					{showEditWarning && <EditWarningModal />}
 
@@ -969,7 +1001,7 @@ const UploadDefense = () => {
 										onChange={(e) => setRefinementText(e.target.value)}
 										rows={6}
 										className="w-full p-3 rounded-xl text-gray-900 text-sm"
-										placeholder="O que deseja mudar?"
+										placeholder="Exemplos: 'Focar na falta de sinalização da via', 'Ajustar para tom mais formal', 'Remover argumento sobre a cor do veículo'."
 									/>
 									<div className="mt-4 flex justify-end">
 										<button

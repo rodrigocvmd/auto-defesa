@@ -76,14 +76,16 @@
 - [x]  Em ManualDefense e em UploadDefense, o placeholder dos campos Amparo Legal, Dispositivo Legal e Descrição da Infração devem ser "Aguardando preenchimento do Código da Infração..."
 - [x]  Na página "Qual fase da defesa?", tanto em ManualDefense quanto em UploadDefense (quando o usuário decide escolher manualmente a defesa), melhore as descrições de cada botão (Defesa Prévia, "Recurso JARI" e "CETRAN"), que atualmente são, respectivamente, "Ainda não recebi o boleto", Já recebi o boleto" e "Recorrer da JARI" para descrições levemente mais completas, pelo menos duas frases com palavras chave em destaque para instruir o usuário de qual defesa se trata. Melhore também o modal "Entenda as Fases da Defesa" para ficar bem claro para o usuário, com informações mais completas e estilizadas, mas mantendo o estilo atual.
 - [X]  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quando em UploadDefense, apresente também a informação ao user que a IA está analisando a congruência entre a materialidade da infração e o relato do usuário.
+- [X]  Em UploadDefense, o campo do relato segue sendo preenchido pela descrição da infração. Isso não deve ocorrer, deve ser mantido o placeholder até o usuário inserir o relato manualmente;
 
 
-1. Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quanto em UploadDefense, altere a formatação apenas da descrição do que está acontecendo para o seguinte:
+- []  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quanto em UploadDefense, altere a formatação apenas da descrição do que está acontecendo para o seguinte:
 A descrição deve ficar alternando entre "Analisando a congruência entre a materialidade da infração e o relato do usuário." e "Nossa IA está identificando erros na multa e melhores argumentos de defesa.", a cada 3 segundos, ambas em negrito;
-2. Tanto em ManualDefense quanto em UploadDefense, aplique máscara no campo RG para que fique no formato xxx.xxx ou x.xxx.xxx. Ou seja, quando o user digitar o quarto dígito, um '.' deve aparecer antes (entre o terceiro e quarto número), e isso deve acontecer novamente entre o sexto e sétimo números, sendo que sete é o limite de números inseridos;
-3. Tanto em ManualDefense quanto em UploadDefense, o dispositivo Legal segue mostrando o placeholder mesmo depois do preenchimento do cód. infração. Deve consultar a base de dados existente e apresentar o texto do artigo referente ao código da infração inserido/extraído;
-4. Em UploadDefense, o campo do relato segue sendo preenchido pela descrição da infração. Isso não deve ocorrer, deve ser mantido o placeholder até o usuário inserir o relato manualmente;
-5. Tanto em ManualDefense quanto em UploadDefense, na página de edição, altere o placeholder do IA Ajustes para informar o usuário do que se trata aquele campo com pequenos exemplos simples e pontuais do que ele pode pedir à IA para ajustar.
+- []  Em ManualDefense a máscara do RG não foi aplicada. Em UploadDefense foi, mas está ao contrário, o '.' deve ficar entre o primeiro e segundo números entre o quarto e quinto números se houver 7 (x.xxx.xxx) ou apenas entre o terceiro e quarto números se houver 6 (formato xxx.xxx). Aplique isso nas duas páginas (manual e upload).
+- []  Em ManualDefense e em UploadDefense, remova o campo Dispositivo Legal.
+
+
+- []  Tanto em ManualDefense quanto em UploadDefense, na página de edição, altere o placeholder do IA Ajustes para informar o usuário do que se trata aquele campo com pequenos exemplos simples e pontuais do que ele pode pedir à IA para ajustar.
 
 
 
