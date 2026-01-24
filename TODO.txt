@@ -75,18 +75,27 @@
 - [x]  Em ManualDefense e em UploadDefense, altere o estilo do cursor quando estiver em hover sobre o campo Descrição da Infração para not-allowed;
 - [x]  Em ManualDefense e em UploadDefense, o placeholder dos campos Amparo Legal, Dispositivo Legal e Descrição da Infração devem ser "Aguardando preenchimento do Código da Infração..."
 - [x]  Na página "Qual fase da defesa?", tanto em ManualDefense quanto em UploadDefense (quando o usuário decide escolher manualmente a defesa), melhore as descrições de cada botão (Defesa Prévia, "Recurso JARI" e "CETRAN"), que atualmente são, respectivamente, "Ainda não recebi o boleto", Já recebi o boleto" e "Recorrer da JARI" para descrições levemente mais completas, pelo menos duas frases com palavras chave em destaque para instruir o usuário de qual defesa se trata. Melhore também o modal "Entenda as Fases da Defesa" para ficar bem claro para o usuário, com informações mais completas e estilizadas, mas mantendo o estilo atual.
+- [X]  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quando em UploadDefense, apresente também a informação ao user que a IA está analisando a congruência entre a materialidade da infração e o relato do usuário.
 
 
+- [X]  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quando em UploadDefense, altere a formatação apenas da  
 
-- []  Na loading screen que leva à página da viabilidade e teses da ia, tanto em ManualDefense quando em UploadDefense, apresente também a informação ao user que a IA está analisando a congruência entre a materialidade da infração e o relato do usuário.
+apresente também a informação ao user que a IA está analisando a congruência entre a materialidade da infração e o relato do usuário.
 
+Formato RG xxx.xxx ou x.xxx.xxx
 
+Dispositivo Legal segue mostrando placeholder mesmo depois do preenchimento do cód. infração (no upload pelo menos). DEve consultar a base de dados e apresentar o texto do artigo
 
+Campo do relato segue sendo preenchido pela descrição da infração
+
+Placeholder do IA Ajustes
+
+O endereçamento e o final do título de cada subtópico da defesa, quando é mais longo, está ficando em uma linha seguinte e em negrito. Instrua a IA para manter o padrão de estilo e formatação entre endereçamento, títulos e subtítulos de mesmo nível. Podem divergir de formatação entre eles por questões de destaque, mas o mesmo nível (endereçamento, títulos entre si e subtítulos entre si) devem manter o padrão sempre.
 
 Marketing:
-- []  Melhorar Marketing geral, principalmente da home/hero, a seu critério, mas seguindo as melhores práticas e recomendações atuais para garantir a máxima conversão possível 
-- []  Em /pricing, informar em proteção completa e pacote profissional que os créditos não expiram, podendo ser utilizados quando o usuário quiser;
-- []  Onde couber/for pertinente, informar que os testes são feitos com um modelo mais fraco de IA, enquanto o recurso real é elaborado com o modelo mais avançado;
+- []  Melhorar Marketing geral, principalmente da home/hero, a seu critério, mas seguindo as melhores práticas e recomendações atuais para garantir a máxima conversão possível, demonstrando o valor da app e o baixo custo a ser pago referente ao benefício que produz pra o usuário;
+- []  Em /pricing, informar em todos os valores que os créditos não expiram, podendo ser utilizados quando o usuário quiser, com reforço maior em proteção completa e pacote profissional por gerarem mais créditos;
+- []  Onde couber/for pertinente, informar que todas as demonstrações são  os testes são feitos com um modelo mais fraco de IA, enquanto o recurso real é elaborado com o modelo mais avançado;
 - []  Deixar claro que o usuário irá receber o documento completo pronto para ser assinado e protocolado.
 - []  Melhorar termos de uso e privacidade
 - []  Página informativa de como funciona a app passo a passo

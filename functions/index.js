@@ -21,6 +21,12 @@ if (admin.apps.length === 0) {
 }
 const db = admin.firestore();
 
+// --- CONFIGURAÇÃO DE MODELOS (HYBRID AI) ---
+// Flash: Para tarefas rápidas, OCR, extração e edições simples.
+// Pro: Para raciocínio jurídico complexo e redação da peça inicial.
+const MODEL_FLASH = "gemini-3-flash-preview";
+const MODEL_PRO = "gemini-3-pro-preview";
+
 // --- FUNÇÃO 1: CONSULTA ---
 exports.getInfraction = onRequest((req, res) => {
 	cors(req, res, async () => {
@@ -75,7 +81,11 @@ exports.generateDefense = onRequest((req, res) => {
 			}
 
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+			// Lógica Híbrida:
+			// Se for Refinamento (Edição) -> Usa Flash (Rápido/Barato)
+			// Se for Geração Inicial -> Usa Pro (Melhor qualidade jurídica)
+			const modelName = isRefinement ? MODEL_FLASH : MODEL_PRO;
+			const model = genAI.getGenerativeModel({ model: modelName });
 
 			let systemInstruction = `
         Você é um Advogado Especialista em Direito de Trânsito.
@@ -180,7 +190,7 @@ exports.extractDataFromImage = onRequest((req, res) => {
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+			const model = genAI.getGenerativeModel({ model: MODEL_FLASH });
 
 			const systemInstruction = `
         Você é uma IA especializada em OCR de multas de trânsito brasileiras (AIT/Notificação).
@@ -235,7 +245,7 @@ exports.preAnalyze = onRequest((req, res) => {
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+			const model = genAI.getGenerativeModel({ model: MODEL_FLASH });
 
 			const systemInstruction = `
 			        Você é um Analista Sênior de Multas de Trânsito. Sua função é avaliar a viabilidade de um recurso e vender a solução para o cliente.
@@ -313,7 +323,8 @@ exports.analyzeDocument = onRequest((req, res) => {
 			await checkAndDeductCredits(userId);
 
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+			// Análise completa gera o recurso final -> Usa PRO
+			const model = genAI.getGenerativeModel({ model: MODEL_PRO });
 
 			const prompt = `
         Aja como Advogado de Trânsito. Analise a imagem da multa.
