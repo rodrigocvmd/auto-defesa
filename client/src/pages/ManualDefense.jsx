@@ -72,6 +72,9 @@ const ManualDefense = () => {
     article: '',
     infractionCode: '', 
     infractionSplit: '', 
+    article: '', 
+    infractionDescription: '', // Nova descrição simples da infração
+    legalText: '', // Novo texto do dispositivo legal
     description: '', 
     equipmentNumber: '',
     lastCalibration: '',
@@ -205,8 +208,13 @@ const ManualDefense = () => {
     try {
       const response = await api.getInfraction({ code: formData.infractionCode, desdobramento: formData.infractionSplit });
       if (response && response.success) {
-        const { article, description } = response.data;
-        setFormData(prev => ({ ...prev, article: article || prev.article }));
+        const { article, description, legalText } = response.data;
+        setFormData(prev => ({ 
+            ...prev, 
+            article: article || prev.article,
+            infractionDescription: description || prev.infractionDescription,
+            legalText: legalText || prev.legalText
+        }));
       }
     } catch (error) { alert("Código não encontrado."); } finally { setSearchingCode(false); }
   };
@@ -243,7 +251,9 @@ const ManualDefense = () => {
         infractionCode: '7455',
         infractionSplit: '0',
         article: 'Art. 218, I, CTB',
-        description: 'Transitar em velocidade superior à máxima permitida em até 20%',
+        infractionDescription: 'Transitar em velocidade superior à máxima permitida em até 20%',
+        legalText: 'Transitar em velocidade superior à máxima permitida para o local...',
+        description: 'O sinal estava encoberto por uma árvore e não havia sinalização visível...',
         signCity: 'São Paulo',
         signDate: '01/01/2024'
     });
@@ -611,6 +621,7 @@ const ManualDefense = () => {
         : analysisData.summary;
 
     const isHighViability = viability === 'Alta' || viability === 'Muito Alta';
+    const isPossibleViability = viability === 'Possível';
 
     return (
       <MainLayout>
@@ -639,9 +650,15 @@ const ManualDefense = () => {
         )}
         <div className="max-w-2xl mx-auto py-12 px-4">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 animate-in slide-in-from-bottom-4 duration-500">
-            <div className={`p-8 text-center ${isHighViability ? 'bg-green-50' : 'bg-yellow-50'}`}>
+            <div className={`p-8 text-center ${isHighViability ? 'bg-green-50' : isPossibleViability ? 'bg-green-50/50' : 'bg-yellow-50'}`}>
               <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white shadow-sm mb-4">
-                {isHighViability ? <CheckCircle size={40} className="text-green-600" /> : <AlertCircle size={40} className="text-yellow-600" />}
+                {isHighViability ? (
+                    <CheckCircle size={40} className="text-green-600" />
+                ) : isPossibleViability ? (
+                    <CheckCircle size={40} className="text-green-500" />
+                ) : (
+                    <AlertCircle size={40} className="text-yellow-600" />
+                )}
               </div>
               <h2 className="text-2xl font-black text-gray-900 mb-2">Viabilidade {viability}</h2>
               <p className="text-gray-600 font-medium px-4">{summary}</p>
@@ -768,7 +785,7 @@ const ManualDefense = () => {
              </div>
           </header>
           <form onSubmit={handlePreAnalysis} className="space-y-8 pb-20">
-            {loading && (<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center"><Loader2 size={60} className="text-blue-600 animate-spin mb-4" /><h2 className="text-2xl font-bold text-gray-800 mb-2">Processando Análise Gratuita...</h2><p className="text-gray-600 max-w-md">Identificando erros na multa e melhores argumentos de defesa.</p></div>)}
+            {loading && (<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center"><Loader2 size={60} className="text-blue-600 animate-spin mb-4" /><h2 className="text-2xl font-bold text-gray-800 mb-2">Processando Análise Gratuita...</h2><p className="text-gray-600 max-w-md">Identificando erros na multa e melhores argumentos de defesa.<br/><strong>A IA está analisando a congruência entre a materialidade da infração e o relato do usuário.</strong></p></div>)}
             <section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
               <div className="flex items-center gap-2 border-b pb-4"><User className="text-blue-600" /><h3 className="text-xl font-bold text-gray-800">1. Qualificação</h3></div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -810,13 +827,25 @@ const ManualDefense = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div><label className="label-form">AIT (Nº do Auto) <span className="text-red-500">*</span></label><input name="aitNumber" value={formData.aitNumber} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.aitNumber ? 'border-red-500' : ''}`} required />{errors.aitNumber && <p className="text-red-500 text-xs mt-1">{errors.aitNumber}</p>}</div>
                 <div><label className="label-form">Cód. Infração <span className="text-red-500">*</span></label><div className="flex gap-1"><input name="infractionCode" value={formData.infractionCode} onChange={handleChange} onBlur={handleBlur} className={`input-form w-2/3 ${errors.infractionCode ? 'border-red-500' : ''}`} required /><input name="infractionSplit" value={formData.infractionSplit} onChange={handleChange} onBlur={handleBlur} className="input-form w-1/3 text-center" placeholder="0" /><button type="button" onClick={handleSearchCode} className="bg-blue-100 text-blue-600 p-3 rounded-xl hover:bg-blue-200 transition-colors">{searchingCode ? <Loader2 className="animate-spin" size={20} /> : <Search size={20} />}</button></div>{errors.infractionCode && <p className="text-red-500 text-xs mt-1">{errors.infractionCode}</p>}</div>
+                <div className="md:col-span-3">
+                    <label className="label-form">Descrição da Infração</label>
+                    <input name="infractionDescription" value={formData.infractionDescription || ''} readOnly className="input-form bg-gray-50 text-gray-600" placeholder="Descrição automática da infração..." />
+                </div>
                 <div><label className="label-form">Órgão Autuador <span className="text-red-500">*</span></label><input name="issuingBody" value={formData.issuingBody} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.issuingBody ? 'border-red-500' : ''}`} required />{errors.issuingBody && <p className="text-red-500 text-xs mt-1">{errors.issuingBody}</p>}</div>
                 <div><label className="label-form">Data <span className="text-red-500">*</span></label><input type="text" name="date" value={formData.date} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.date ? 'border-red-500' : ''}`} placeholder="DD/MM/AAAA" maxLength={10} required />{errors.date && <p className="text-red-500 text-xs mt-1">{errors.date}</p>}</div>
                 <div><label className="label-form">Horário (24h) <span className="text-red-500">*</span></label><input name="time" value={formData.time} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.time ? 'border-red-500' : ''}`} placeholder="HH:MM" maxLength={5} required />{errors.time && <p className="text-red-500 text-xs mt-1">{errors.time}</p>}</div>
                 <div className="md:col-span-3"><label className="label-form">Local <span className="text-red-500">*</span></label><input name="location" value={formData.location} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.location ? 'border-red-500' : ''}`} required />{errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}</div>
                 <div className="md:col-span-3">
-                    <label className="label-form">Amparo Legal</label>
-                    <input name="article" value={formData.article} readOnly className="input-form bg-gray-50" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label className="label-form">Amparo Legal</label>
+                            <input name="article" value={formData.article} readOnly className="input-form bg-gray-50" placeholder="Ex: Art. 181, I, CTB" />
+                        </div>
+                        <div>
+                             <label className="label-form">Dispositivo Legal (Texto)</label>
+                             <input name="legalText" value={formData.legalText || ''} readOnly className="input-form bg-gray-50 text-gray-600" placeholder="Texto do artigo..." />
+                        </div>
+                    </div>
                     <p className="text-xs text-gray-500 mt-1">Preencha o Cód. Infração e clique na lupa para preencher automaticamente.</p>
                 </div>
               </div>
@@ -824,8 +853,8 @@ const ManualDefense = () => {
             <section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
               <div className="flex items-center gap-2 border-b pb-4"><Gauge className="text-blue-600" /><h3 className="text-xl font-bold text-gray-800">4. Argumentação</h3></div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div><label className="label-form">Nº Equipamento</label><input name="equipmentNumber" value={formData.equipmentNumber} onChange={handleChange} onBlur={handleBlur} className="input-form" /></div>
-                <div><label className="label-form">Aferição</label><input name="lastCalibration" value={formData.lastCalibration} onChange={handleChange} onBlur={handleBlur} className="input-form" /></div>
+                <div><label className="label-form">Nº Equipamento</label><input name="equipmentNumber" value={formData.equipmentNumber} onChange={handleChange} onBlur={handleBlur} className="input-form" placeholder="Ex: 12345678" /></div>
+                <div><label className="label-form">Aferição</label><input name="lastCalibration" value={formData.lastCalibration} onChange={handleChange} onBlur={handleBlur} className="input-form" placeholder="Ex: 10/10/2023" /></div>
                 <div className="md:col-span-2"><label className="label-form text-blue-900 font-bold mb-2">Relato <span className="text-red-500">*</span></label><textarea name="description" value={formData.description} onChange={handleChange} onBlur={handleBlur} rows={6} className={`input-form resize-none ${errors.description ? 'border-red-500' : ''}`} placeholder="Descreva com o máximo de detalhes possível os acontecimentos, fatos e informações que considere úteis para a possível nulidade da multa. Quanto mais detalhes, melhor a IA poderá argumentar a seu favor. Ex: 'O sinal estava encoberto por uma árvore', 'O agente não preencheu o campo observações', 'O local da infração não confere com a foto', etc." required />{errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}</div>
               </div>
             </section>

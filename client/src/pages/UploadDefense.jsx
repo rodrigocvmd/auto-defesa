@@ -92,9 +92,11 @@ const UploadDefense = () => {
 		date: "",
 		time: "",
 		location: "",
-		article: "",
 		infractionCode: "",
 		infractionSplit: "",
+		article: "",
+        infractionDescription: "",
+        legalText: "",
 		description: "",
 		equipmentNumber: "",
 		lastCalibration: "",
@@ -192,8 +194,10 @@ const UploadDefense = () => {
 							code: extractedData.infractionCode,
 							desdobramento: extractedData.infractionSplit,
 						});
-						if (infractionRes && infractionRes.success && infractionRes.data.article) {
-							extractedData.article = infractionRes.data.article;
+						if (infractionRes && infractionRes.success) {
+							if (infractionRes.data.article) extractedData.article = infractionRes.data.article;
+                            if (infractionRes.data.description) extractedData.infractionDescription = infractionRes.data.description;
+                            if (infractionRes.data.legalText) extractedData.legalText = infractionRes.data.legalText;
 						}
 					} catch (ignore) {
 						console.log("Failed to auto-fetch article from code");
@@ -204,6 +208,8 @@ const UploadDefense = () => {
 				setFormData((prev) => ({
 					...prev,
 					...extractedData,
+                    infractionDescription: extractedData.infractionDescription || prev.infractionDescription,
+                    legalText: extractedData.legalText || prev.legalText,
 					// Mantém alguns defaults se a IA não achar
 					nationality: extractedData.nationality || prev.nationality,
 					signDate: extractedData.signDate || prev.signDate,
@@ -417,8 +423,13 @@ const UploadDefense = () => {
 				desdobramento: formData.infractionSplit,
 			});
 			if (response && response.success) {
-				const { article, description } = response.data;
-				setFormData((prev) => ({ ...prev, article: article || prev.article }));
+				const { article, description, legalText } = response.data;
+				setFormData((prev) => ({ 
+                    ...prev, 
+                    article: article || prev.article,
+                    infractionDescription: description || prev.infractionDescription,
+                    legalText: legalText || prev.legalText
+                }));
 			}
 		} catch (error) {
 			alert("Código não encontrado.");
@@ -998,6 +1009,7 @@ const UploadDefense = () => {
 	if (step === "analysis" && analysisData) {
 		const viability = analysisData.viability || "Possível";
 		const isHighViability = viability === "Alta" || viability === "Muito Alta";
+		const isPossibleViability = viability === "Possível";
 
 		return (
 			<MainLayout>
@@ -1032,10 +1044,12 @@ const UploadDefense = () => {
 				<div className="max-w-2xl mx-auto py-12 px-4">
 					<div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 animate-in slide-in-from-bottom-4 duration-500">
 						<div
-							className={`p-8 text-center ${isHighViability ? "bg-green-50" : "bg-yellow-50"}`}>
+							className={`p-8 text-center ${isHighViability ? "bg-green-50" : isPossibleViability ? "bg-green-50/50" : "bg-yellow-50"}`}>
 							<div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white shadow-sm mb-4">
 								{isHighViability ? (
 									<CheckCircle size={40} className="text-green-600" />
+								) : isPossibleViability ? (
+									<CheckCircle size={40} className="text-green-500" />
 								) : (
 									<AlertCircle size={40} className="text-yellow-600" />
 								)}
@@ -1386,6 +1400,7 @@ const UploadDefense = () => {
 								<h2 className="text-2xl font-bold text-gray-800 mb-2">Processando Análise...</h2>
 								<p className="text-gray-600 max-w-md">
 									Identificando erros na multa e melhores argumentos de defesa.
+                                    <br/><strong>A IA está analisando a congruência entre a materialidade da infração e o relato do usuário.</strong>
 								</p>
 							</div>
 						)}
@@ -1786,6 +1801,10 @@ const UploadDefense = () => {
 										<p className="text-red-500 text-xs mt-1">{errors.infractionCode}</p>
 									)}
 								</div>
+                                <div className="md:col-span-3">
+                                    <label className="label-form">Descrição da Infração</label>
+                                    <input name="infractionDescription" value={formData.infractionDescription || ''} readOnly className="input-form bg-gray-50 text-gray-600" placeholder="Descrição automática da infração..." />
+                                </div>
 								<div>
 									<label className="label-form">
 										Órgão Autuador <span className="text-red-500">*</span>
@@ -1852,13 +1871,22 @@ const UploadDefense = () => {
 									)}
 								</div>
 								<div className="md:col-span-3">
-									<label className="label-form">Amparo Legal</label>
-									<input
-										name="article"
-										value={formData.article}
-										readOnly
-										className="input-form bg-gray-50"
-									/>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                        <div>
+                                            <label className="label-form">Amparo Legal</label>
+                                            <input
+                                                name="article"
+                                                value={formData.article}
+                                                readOnly
+                                                className="input-form bg-gray-50"
+                                                placeholder="Ex: Art. 181, I, CTB"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="label-form">Dispositivo Legal (Texto)</label>
+                                            <input name="legalText" value={formData.legalText || ''} readOnly className="input-form bg-gray-50 text-gray-600" placeholder="Texto do artigo..." />
+                                        </div>
+                                    </div>
 									<p className="text-xs text-gray-500 mt-1">
 										Preencha o Cód. Infração e clique na lupa para preencher automaticamente.
 									</p>
@@ -1879,6 +1907,7 @@ const UploadDefense = () => {
 										onChange={handleChange}
 										onBlur={handleBlur}
 										className="input-form"
+                                        placeholder="Ex: 12345678"
 									/>
 								</div>
 								<div>
@@ -1889,6 +1918,7 @@ const UploadDefense = () => {
 										onChange={handleChange}
 										onBlur={handleBlur}
 										className="input-form"
+                                        placeholder="Ex: 10/10/2023"
 									/>
 								</div>
 								                <div className="md:col-span-2"><label className="label-form text-blue-900 font-bold mb-2">Relato <span className="text-red-500">*</span></label><textarea name="description" value={formData.description} onChange={handleChange} onBlur={handleBlur} rows={6} className={`input-form resize-none ${errors.description ? 'border-red-500' : ''}`} placeholder="Descreva com o máximo de detalhes possível os acontecimentos, fatos e informações que considere úteis para a possível nulidade da multa. Quanto mais detalhes, melhor a IA poderá argumentar a seu favor. Ex: 'O sinal estava encoberto por uma árvore', 'O agente não preencheu o campo observações', 'O local da infração não confere com a foto', etc." required />{errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}</div>							</div>

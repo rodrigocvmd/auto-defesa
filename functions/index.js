@@ -75,7 +75,7 @@ exports.generateDefense = onRequest((req, res) => {
 			}
 
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+			const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
 			let systemInstruction = `
         Você é um Advogado Especialista em Direito de Trânsito.
@@ -180,7 +180,7 @@ exports.extractDataFromImage = onRequest((req, res) => {
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+			const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
 			const systemInstruction = `
         Você é uma IA especializada em OCR de multas de trânsito brasileiras (AIT/Notificação).
@@ -235,9 +235,9 @@ exports.preAnalyze = onRequest((req, res) => {
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+			const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
-						const systemInstruction = `
+			const systemInstruction = `
 			        Você é um Analista Sênior de Multas de Trânsito. Sua função é avaliar a viabilidade de um recurso e vender a solução para o cliente.
 			        
 			        Além da viabilidade, você DEVE verificar se o relato do condutor faz sentido com a infração (Artigo/Código e Descrição).
@@ -255,8 +255,8 @@ exports.preAnalyze = onRequest((req, res) => {
 			          }
 			        }
 			      `;
-			
-			      const userPrompt = `
+
+			const userPrompt = `
 			        Analise esta infração para recurso:
 			        Infração: ${userData.article || "Não informado"} - ${userData.description || "Análise de imagem"}
 			        Dados: ${JSON.stringify(userData)}
@@ -313,7 +313,7 @@ exports.analyzeDocument = onRequest((req, res) => {
 			await checkAndDeductCredits(userId);
 
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+			const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
 			const prompt = `
         Aja como Advogado de Trânsito. Analise a imagem da multa.
