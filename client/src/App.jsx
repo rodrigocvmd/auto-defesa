@@ -10,6 +10,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Pricing from './pages/Pricing';
+import HowItWorks from './pages/HowItWorks';
+import Help from './pages/Help';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path="/manual-defense" element={<ManualDefense />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
       </AuthProvider>
     </Router>

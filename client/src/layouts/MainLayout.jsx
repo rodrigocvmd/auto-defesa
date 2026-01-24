@@ -105,6 +105,8 @@ const MainLayout = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
           <p>&copy; 2026 Auto Defesa MVP.</p>
           <div className="flex gap-4">
+            <Link to="/how-it-works" className="hover:text-blue-600">Como Funciona</Link>
+            <Link to="/help" className="hover:text-blue-600">Ajuda</Link>
             <Link to="/terms" className="hover:text-blue-600">Termos de Uso</Link>
             <Link to="/privacy" className="hover:text-blue-600">Privacidade</Link>
           </div>

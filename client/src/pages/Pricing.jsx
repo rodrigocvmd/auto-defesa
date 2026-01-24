@@ -28,6 +28,7 @@ const Pricing = () => {
 			description: "Ideal para resolver uma multa isolada de forma rápida e técnica.",
 			features: [
 				"1 Crédito de Defesa",
+				"Créditos não expiram",
 				"Geração Instantânea com IA",
 				"Download em PDF",
 				"Análise de Erros Formais",
@@ -46,6 +47,7 @@ const Pricing = () => {
 				"A estratégia mais segura. Garante a defesa em todas as instâncias administrativas.",
 			features: [
 				"3 Créditos de Defesa",
+				"Créditos vitalícios / não expiram",
 				"Inclui: Defesa Prévia",
 				"Inclui: Recurso à JARI",
 				"Inclui: Recurso ao CETRAN",
@@ -64,6 +66,7 @@ const Pricing = () => {
 			description: "Perfeito para motoristas de aplicativo, taxistas ou frotas familiares.",
 			features: [
 				"10 Créditos de Defesa",
+				"Créditos vitalícios / não expiram",
 				"Custo por recurso reduzido",
 				"Válido para múltiplos veículos",
 				"Prioridade no processamento",
@@ -165,17 +168,19 @@ const Pricing = () => {
 					))}
 				</div>
 
-				<div className="mt-16 text-center bg-gray-50 p-8 rounded-3xl border border-gray-200">
-					<h2 className="text-lg font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
-						<Scale size={20} className="text-blue-600" />
-						Por que recorrer com a AutoDefesa?
-					</h2>
-					<p className="text-gray-600 max-w-3xl mx-auto text-sm leading-relaxed">
-						Nossos modelos de IA são treinados com base nas resoluções do CONTRAN e no Código de
-						Trânsito Brasileiro. Ao contrário de modelos genéricos, focamos especificamente em
-						identificar <strong>erros formais</strong> e <strong>argumentos técnicos</strong> que
-						aumentam suas chances de deferimento.
-					</p>
+				<div className="mt-16 bg-gray-50 p-8 rounded-3xl border border-gray-200">
+					<div className="text-center mb-8">
+						<h2 className="text-lg font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+							<Scale size={20} className="text-blue-600" />
+							Tecnologia Jurídica Transparente
+						</h2>
+						<p className="text-gray-600 max-w-3xl mx-auto text-sm leading-relaxed">
+							Acreditamos na transparência. Nossos testes gratuitos e demonstrações utilizam um modelo 
+							de IA Standard para análise rápida de viabilidade. Ao adquirir um crédito, o recurso final 
+							é gerado exclusivamente pelo nosso <strong>Modelo Pro (Advogado Virtual)</strong>, treinado especificamente 
+							com jurisprudências, resoluções do CONTRAN e o Código de Trânsito Brasileiro para máxima assertividade.
+						</p>
+					</div>
 				</div>
 			</div>
 		</MainLayout>

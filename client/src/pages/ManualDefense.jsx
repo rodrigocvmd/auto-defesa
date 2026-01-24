@@ -540,6 +540,8 @@ const ManualDefense = () => {
                 Você escolheu preencher com <strong>Dados de Exemplo</strong>. 
                 Isso permite que você veja a inteligência artificial em ação sem precisar digitar seus dados agora.
                 <br/><br/>
+                <strong>Nota:</strong> Esta demonstração utiliza o modelo <em>Standard</em>. A versão paga utiliza o modelo <em>Pro</em>, treinado com jurisprudência avançada.
+                <br/><br/>
                 Os créditos <strong>NÃO</strong> serão cobrados nesta simulação e o recurso final não poderá ser desbloqueado até que você use dados reais.
             </p>
             <div className="flex flex-col gap-3">
@@ -715,6 +717,9 @@ const ManualDefense = () => {
               </div>
               <h2 className="text-2xl font-black text-gray-900 mb-2">Viabilidade {viability}</h2>
               <p className="text-gray-600 font-medium px-4">{summary}</p>
+              <div className="mt-4 inline-block bg-blue-50 border border-blue-100 rounded-lg px-3 py-1 text-xs text-blue-700 font-medium">
+                Análise preliminar realizada com IA Standard. O recurso final utilizará o Modelo Pro (Advogado Virtual).
+              </div>
             </div>
             <div className="p-8">
               <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2"><Search size={16} /> Teses Identificadas pela IA</h3>
