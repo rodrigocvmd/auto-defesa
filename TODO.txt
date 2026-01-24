@@ -87,24 +87,20 @@ A descrição deve ficar alternando entre "Analisando a congruência entre a mat
 - [x]  Campo do RG deve ser conferido em tempo real (assim como outros já estão sendo feitos) para o formato xxx.xxx ou x.xxx.xxx;
 - [x]  Melhorar Marketing geral, principalmente da home/hero, a seu critério, mas seguindo as melhores práticas e recomendações atuais para garantir a máxima conversão possível, demonstrando o valor da app e o baixo custo a ser pago referente ao benefício que produz pra o usuário;
 - [x]  Deixar claro que o usuário irá receber o documento completo pronto para ser assinado e protocolado.
+- [x]  Em /pricing, informar em todos os valores que os créditos não expiram, podendo ser utilizados quando o usuário quiser, com reforço maior em proteção completa e pacote profissional por gerarem mais créditos;
+- [x]  Onde couber/for pertinente, informar que todas as demonstrações são  os testes são feitos com um modelo mais fraco de IA, enquanto o recurso real é elaborado com o modelo mais avançado;
+- [x]  Melhorar termos de uso e privacidade, tornando mais completos e em acordo com as atuais boas práticas destes pontos;
+- [x]  Crie uma página informativa/de ajuda de como funciona a app passo a passo, opções do usuário, como prosseguir, o que a app faz, etc.; Ou seja, criar sessão de Help completa (suporte ao usuário, com mockups das informações que você não souber (irei preencher depois))
 
-
-Marketing:
-
-- []  Em /pricing, informar em todos os valores que os créditos não expiram, podendo ser utilizados quando o usuário quiser, com reforço maior em proteção completa e pacote profissional por gerarem mais créditos;
-- []  Onde couber/for pertinente, informar que todas as demonstrações são  os testes são feitos com um modelo mais fraco de IA, enquanto o recurso real é elaborado com o modelo mais avançado;
-- []  Melhorar termos de uso e privacidade, tornando mais completos e em acordo com as atuais boas práticas destes pontos;
-- []  Crie uma página informativa/de ajuda de como funciona a app passo a passo, opções do usuário, como prosseguir, o que a app faz, etc.; Ou seja, criar sessão de Help completa (suporte ao usuário, com mockups das informações que você não souber (irei preencher depois))
+Feats:
+- []  Limitar os testes?
 
 IA:
 - []  O endereçamento e o final do título de cada subtópico da defesa, quando é mais longo, está ficando em uma linha seguinte e em negrito. Instrua a IA para manter o padrão de estilo e formatação entre endereçamento, títulos e subtítulos de mesmo nível. Podem divergir de formatação entre eles por questões de destaque, mas o mesmo nível (endereçamento, títulos entre si e subtítulos entre si) devem manter o padrão sempre.
 - []  Valor atualizado da multa + penalidade
 
 Fazer manualmente:
-- []  Conferir todos os textos da app
+- []  Revisão final de funcionalidades
+- []  Revisão final de textos
 
-Feats:
-- []  Limitar os testes?
-
-Plus:
-- []  Premium?: Chatbot de dúvidas
+Marketing:
