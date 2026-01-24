@@ -85,26 +85,20 @@ A descrição deve ficar alternando entre "Analisando a congruência entre a mat
 - [x]  Em Upload, nome está aparecendo como não disponível, deve ser lido do AIT e preenchido como outros campos já fazem;
 - [x]  Em Upload, amparo legal já deve vir preenchido baseado no código da infração identificado pela IA;
 - [x]  Campo do RG deve ser conferido em tempo real (assim como outros já estão sendo feitos) para o formato xxx.xxx ou x.xxx.xxx;
-
-
-
-
+- [x]  Melhorar Marketing geral, principalmente da home/hero, a seu critério, mas seguindo as melhores práticas e recomendações atuais para garantir a máxima conversão possível, demonstrando o valor da app e o baixo custo a ser pago referente ao benefício que produz pra o usuário;
+- [x]  Deixar claro que o usuário irá receber o documento completo pronto para ser assinado e protocolado.
 
 
 Marketing:
-- []  Melhorar Marketing geral, principalmente da home/hero, a seu critério, mas seguindo as melhores práticas e recomendações atuais para garantir a máxima conversão possível, demonstrando o valor da app e o baixo custo a ser pago referente ao benefício que produz pra o usuário;
+
 - []  Em /pricing, informar em todos os valores que os créditos não expiram, podendo ser utilizados quando o usuário quiser, com reforço maior em proteção completa e pacote profissional por gerarem mais créditos;
 - []  Onde couber/for pertinente, informar que todas as demonstrações são  os testes são feitos com um modelo mais fraco de IA, enquanto o recurso real é elaborado com o modelo mais avançado;
-- []  Deixar claro que o usuário irá receber o documento completo pronto para ser assinado e protocolado.
-- []  Melhorar termos de uso e privacidade
-- []  Página informativa de como funciona a app passo a passo
-- []  No caso de não provimento do recurso, basta entrar em contato que disponibilizamos o recurso seguinte gratuitamente
-- []  Valor atualizado da multa + penalidade
-- []  Criar sessão de Help completa (suporte ao usuário, com mockups das informações que você não souber (irei preencger depois))
-- []  Ajustar busca rápida da infração para que no relato apareça como placeholder uma sugestão no sentido: "Sua multa é referente à X. As maiores possibilidades de defesa se encontram em ..." e usar IA para complementar as alegações no relato do usuário que podem ser benéficas para o recurso.
+- []  Melhorar termos de uso e privacidade, tornando mais completos e em acordo com as atuais boas práticas destes pontos;
+- []  Crie uma página informativa/de ajuda de como funciona a app passo a passo, opções do usuário, como prosseguir, o que a app faz, etc.; Ou seja, criar sessão de Help completa (suporte ao usuário, com mockups das informações que você não souber (irei preencher depois))
 
 IA:
 - []  O endereçamento e o final do título de cada subtópico da defesa, quando é mais longo, está ficando em uma linha seguinte e em negrito. Instrua a IA para manter o padrão de estilo e formatação entre endereçamento, títulos e subtítulos de mesmo nível. Podem divergir de formatação entre eles por questões de destaque, mas o mesmo nível (endereçamento, títulos entre si e subtítulos entre si) devem manter o padrão sempre.
+- []  Valor atualizado da multa + penalidade
 
 Fazer manualmente:
 - []  Conferir todos os textos da app
