@@ -72,11 +72,9 @@
 - [X]  Em ManualDefense e em UploadDefense, adicione campo que apresenta dispositivo legal (o texto do artigo, não o número do artigo) ao lado do campo do amparo legal descreve a infração de forma simples ao lado do código da infração (também para ser autopreenchido quando o usuário inserir ou quando a IA extrair o código da infração e se tiver, por consequência, a informação de qual é o dispositivo legal);
 - [X]  Em ManualDefense e em UploadDefense, adicione campo que descreve a infração de forma simples ao lado do código da infração (para ser autopreenchido quando o usuário inserir ou quando a IA extrair o código da infração);
 - [X]  Add Nº Equipamento e Aferição - Placeholders simulando dados que seriam reais
-
-
-- [ ]  Em ManualDefense e em UploadDefense, altere o estilo do cursor quando estiver em hover sobre o campo Descrição da Infração para not-allowed;
-- [ ]  Em ManualDefense e em UploadDefense, o placeholder dos campos Amparo Legal, Dispositivo Legal e Descrição da Infração devem ser "Aguardando preenchimento do Código da Infração..."
-- [ ]  Na página "Qual fase da defesa?", tanto em ManualDefense quanto em UploadDefense (quando o usuário decide escolher manualmente a defesa), melhore as descrições de cada botão (Defesa Prévia, "Recurso JARI" e "CETRAN"), que atualmente são, respectivamente, "Ainda não recebi o boleto", Já recebi o boleto" e "Recorrer da JARI" para descrições levemente mais completas, pelo menos duas frases com palavras chave em destaque para instruir o usuário de qual defesa se trata. Melhore também o modal "Entenda as Fases da Defesa" para ficar bem claro para o usuário, com informações mais completas e estilizadas, mas mantendo o estilo atual.
+- [x]  Em ManualDefense e em UploadDefense, altere o estilo do cursor quando estiver em hover sobre o campo Descrição da Infração para not-allowed;
+- [x]  Em ManualDefense e em UploadDefense, o placeholder dos campos Amparo Legal, Dispositivo Legal e Descrição da Infração devem ser "Aguardando preenchimento do Código da Infração..."
+- [x]  Na página "Qual fase da defesa?", tanto em ManualDefense quanto em UploadDefense (quando o usuário decide escolher manualmente a defesa), melhore as descrições de cada botão (Defesa Prévia, "Recurso JARI" e "CETRAN"), que atualmente são, respectivamente, "Ainda não recebi o boleto", Já recebi o boleto" e "Recorrer da JARI" para descrições levemente mais completas, pelo menos duas frases com palavras chave em destaque para instruir o usuário de qual defesa se trata. Melhore também o modal "Entenda as Fases da Defesa" para ficar bem claro para o usuário, com informações mais completas e estilizadas, mas mantendo o estilo atual.
 
 
 
@@ -84,14 +82,9 @@
 
 
 
-Qual fase da defesa?
-Conferir fases das defesas para escolher (e colocar mais infos, inclsuive na ajuda)
-
-Fazer manualmente:
-Conferir campos e seus títulos
 
 Marketing:
-- []  Melhorar Marketing geral, principalmente da home
+- []  Melhorar Marketing geral, principalmente da home/hero, a seu critério, mas seguindo as melhores práticas e recomendações atuais para garantir a máxima conversão possível 
 - []  Em /pricing, informar em proteção completa e pacote profissional que os créditos não expiram, podendo ser utilizados quando o usuário quiser;
 - []  Onde couber/for pertinente, informar que os testes são feitos com um modelo mais fraco de IA, enquanto o recurso real é elaborado com o modelo mais avançado;
 - []  Deixar claro que o usuário irá receber o documento completo pronto para ser assinado e protocolado.
@@ -103,8 +96,11 @@ Marketing:
 - []  Ajustar busca rápida da infração para que no relato apareça como placeholder uma sugestão no sentido: "Sua multa é referente à X. As maiores possibilidades de defesa se encontram em ..." e usar IA para complementar as alegações no relato do usuário que podem ser benéficas para o recurso.
 
 
+
 IA:
 
+Fazer manualmente:
+- []  Conferir todos os textos da app
 
 Feats:
 - []  Limitar os testes?

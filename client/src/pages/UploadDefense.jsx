@@ -1220,37 +1220,38 @@ const UploadDefense = () => {
 						<HelpCircle className="text-blue-600" /> Entenda as Fases da Defesa
 					</h2>
 					<div className="space-y-4">
-						<div className="p-5 bg-yellow-50 rounded-2xl border border-yellow-100 shadow-sm">
-							<h3 className="font-bold text-lg text-yellow-900 mb-2 flex items-center gap-2">
-								<FileWarning size={22} /> 1. Defesa Prévia
+						<div className="p-6 bg-yellow-50 rounded-2xl border border-yellow-100 shadow-sm hover:shadow-md transition-shadow">
+							<h3 className="font-bold text-lg text-yellow-900 mb-3 flex items-center gap-2">
+								<FileWarning size={22} /> 1. Defesa Prévia (Autuação)
 							</h3>
-							<p className="text-sm text-yellow-800">
-								Apontar erros formais antes da multa virar penalidade.
-								<br />
-								<strong>👉 Caso negada, permite Recurso à JARI.</strong>
+							<p className="text-sm text-yellow-800 leading-relaxed">
+								É a primeira oportunidade de defesa, quando você recebe a <strong>Notificação de Autuação</strong> (ainda sem código de barras para pagamento).<br/><br/>
+                                <strong>Objetivo:</strong> Apontar <strong>erros formais</strong> (ex: placa errada, cor do veículo divergente, local inexistente) para anular a infração antes que ela se torne uma penalidade (multa).
 							</p>
 						</div>
 						<div className="flex justify-center text-gray-300">
 							<ArrowDown size={32} />
 						</div>
-						<div className="p-5 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm">
-							<h3 className="font-bold text-lg text-blue-900 mb-2 flex items-center gap-2">
-								<Gavel size={22} /> 2. Recurso à JARI
+						<div className="p-6 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
+							<h3 className="font-bold text-lg text-blue-900 mb-3 flex items-center gap-2">
+								<Gavel size={22} /> 2. Recurso à JARI (1ª Instância)
 							</h3>
-							<p className="text-sm text-blue-800">
-								Discutir o mérito da infração.
-								<br />
-								<strong>👉 Caso negado, permite Recurso ao CETRAN/CONTRADIFE.</strong>
+							<p className="text-sm text-blue-800 leading-relaxed">
+								Deve ser apresentado quando você já recebeu a <strong>Notificação de Penalidade</strong> (o boleto com valor a pagar) ou teve a Defesa Prévia indeferida.<br/><br/>
+                                <strong>Objetivo:</strong> Discutir o <strong>mérito da infração</strong>. Aqui argumentamos se a infração realmente ocorreu ou se houve justificativa legal, contestando a aplicação da penalidade.
 							</p>
 						</div>
 						<div className="flex justify-center text-gray-300">
 							<ArrowDown size={32} />
 						</div>
-						<div className="p-5 bg-purple-50 rounded-2xl border border-purple-100 shadow-sm">
-							<h3 className="font-bold text-lg text-purple-900 mb-2 flex items-center gap-2">
-								<Scale size={22} /> 3. Recurso ao CETRAN
+						<div className="p-6 bg-purple-50 rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-shadow">
+							<h3 className="font-bold text-lg text-purple-900 mb-3 flex items-center gap-2">
+								<Scale size={22} /> 3. Recurso ao CETRAN (2ª Instância)
 							</h3>
-							<p className="text-sm text-purple-800">Última tentativa administrativa.</p>
+							<p className="text-sm text-purple-800 leading-relaxed">
+                                É a última tentativa na esfera administrativa, cabível apenas se o seu <strong>Recurso à JARI foi negado</strong>.<br/><br/>
+                                <strong>Objetivo:</strong> Levar o caso para um colegiado superior (Conselho Estadual de Trânsito) para reavaliar a decisão da JARI.
+                            </p>
 						</div>
 					</div>
 				</div>
@@ -1320,36 +1321,42 @@ const UploadDefense = () => {
 								setFormData((prev) => ({ ...prev, defenseType: "previa" }));
 								setStep("form");
 							}}
-							className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-yellow-400 transition-all text-left group">
+							className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-yellow-400 transition-all text-left group hover:shadow-md h-full flex flex-col">
 							<div className="bg-yellow-100 w-12 h-12 rounded-xl flex items-center justify-center text-yellow-600 mb-4 group-hover:scale-110 transition-transform">
 								<FileWarning size={24} />
 							</div>
-							<h3 className="font-bold text-lg text-gray-800">Defesa Prévia</h3>
-							<p className="text-sm text-gray-500 mt-2">Ainda não recebi boleto/multa final.</p>
+							<h3 className="font-bold text-lg text-gray-800 mb-2">Defesa Prévia</h3>
+							<p className="text-sm text-gray-500 leading-relaxed">
+                                Recebi a <strong>Notificação de Autuação</strong> (sem código de barras). Quero apontar erros formais antes da penalidade.
+                            </p>
 						</button>
 						<button
 							onClick={() => {
 								setFormData((prev) => ({ ...prev, defenseType: "jari" }));
 								setStep("form");
 							}}
-							className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-blue-500 transition-all text-left group">
+							className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-blue-500 transition-all text-left group hover:shadow-md h-full flex flex-col">
 							<div className="bg-blue-100 w-12 h-12 rounded-xl flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
 								<Gavel size={24} />
 							</div>
-							<h3 className="font-bold text-lg text-gray-800">Recurso JARI</h3>
-							<p className="text-sm text-gray-500 mt-2">Já recebi o boleto com a multa.</p>
+							<h3 className="font-bold text-lg text-gray-800 mb-2">Recurso JARI</h3>
+							<p className="text-sm text-gray-500 leading-relaxed">
+                                Recebi a <strong>Notificação de Penalidade</strong> (com boleto/valor). Quero contestar o mérito e cancelar a multa.
+                            </p>
 						</button>
 						<button
 							onClick={() => {
 								setFormData((prev) => ({ ...prev, defenseType: "cetran" }));
 								setStep("form");
 							}}
-							className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-purple-500 transition-all text-left group">
+							className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-purple-500 transition-all text-left group hover:shadow-md h-full flex flex-col">
 							<div className="bg-purple-100 w-12 h-12 rounded-xl flex items-center justify-center text-purple-600 mb-4 group-hover:scale-110 transition-transform">
 								<Scale size={24} />
 							</div>
-							<h3 className="font-bold text-lg text-gray-800">CETRAN</h3>
-							<p className="text-sm text-gray-500 mt-2">Meu recurso à JARI foi negado.</p>
+							<h3 className="font-bold text-lg text-gray-800 mb-2">CETRAN</h3>
+							<p className="text-sm text-gray-500 leading-relaxed">
+                                Meu recurso à JARI foi <strong>negado/indeferido</strong>. Quero recorrer à última instância administrativa.
+                            </p>
 						</button>
 					</div>
 
@@ -1809,12 +1816,12 @@ const UploadDefense = () => {
                                                 value={formData.article}
                                                 readOnly
                                                 className="input-form bg-gray-50 cursor-not-allowed"
-                                                placeholder="Ex: Art. 181, I, CTB"
+                                                placeholder="Aguardando preenchimento do Código da Infração..."
                                             />
                                         </div>
                                         <div>
                                             <label className="label-form">Dispositivo Legal</label>
-                                            <input name="legalText" value={formData.legalText || ''} readOnly className="input-form bg-gray-50 text-gray-600 cursor-not-allowed" placeholder="Texto do artigo..." />
+                                            <input name="legalText" value={formData.legalText || ''} readOnly className="input-form bg-gray-50 text-gray-600 cursor-not-allowed" placeholder="Aguardando preenchimento do Código da Infração..." />
                                         </div>
                                     </div>
 									<p className="text-xs text-gray-500 mt-1">
@@ -1823,7 +1830,7 @@ const UploadDefense = () => {
 								</div>
                                 <div className="md:col-span-3">
                                     <label className="label-form">Descrição da Infração</label>
-                                    <input name="infractionDescription" value={formData.infractionDescription || ''} readOnly className="input-form bg-gray-50 text-gray-600" placeholder="Descrição automática da infração..." />
+                                    <input name="infractionDescription" value={formData.infractionDescription || ''} readOnly className="input-form bg-gray-50 text-gray-600 cursor-not-allowed" placeholder="Aguardando preenchimento do Código da Infração..." />
                                 </div>
 								<div>
 									<label className="label-form">
