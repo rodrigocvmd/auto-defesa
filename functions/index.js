@@ -64,7 +64,7 @@ exports.generateDefense = onRequest((req, res) => {
 			return;
 		}
 
-		const data = req.body || {};
+		let data = req.body || {};
 		const userId = data.userId;
 
 		if (!userId) {
@@ -72,61 +72,124 @@ exports.generateDefense = onRequest((req, res) => {
 			return;
 		}
 
+		// CLEAN DATA: Remove empty fields to avoid "Field: " in the output
+		const cleanData = (obj) => {
+			return Object.fromEntries(
+				Object.entries(obj).filter(([_, v]) => v != null && v !== "" && v !== "null" && v !== "undefined")
+			);
+		};
+		// We clean specific sub-objects or just use cleaned values in the prompt construction
+		// However, since we construct the prompt manually below, we will handle empty fields there.
+
 		const isRefinement = !!data.refinementInstructions;
 
 		try {
 			if (!isRefinement) {
-				// Só cobra na geração inicial, não no refinamento (opcional, mas justo)
-				// Ou cobre em ambos. O prompt diz "liberar geração", então vou cobrar sempre por enquanto.
 				await checkAndDeductCredits(userId);
 			}
 
 			const genAI = new GoogleGenerativeAI(apiKey);
-			// Lógica Híbrida:
-			// Se for Refinamento (Edição) -> Usa Flash (Rápido/Barato)
-			// Se for Geração Inicial -> Usa Pro (Melhor qualidade jurídica)
 			const modelName = isRefinement ? MODEL_FLASH : MODEL_PRO;
 			const model = genAI.getGenerativeModel({ model: modelName });
 
-			let systemInstruction = `
-        Você é um Advogado Especialista em Direito de Trânsito.
-        Tarefa: Redigir o recurso de multa de trânsito técnica e persuasiva.
-        
-        REGRAS:
-        1. Identifique qual fase da defesa é (Defesa Prévia, JARI ou CETRAN) com base no contexto ou solicite se ambíguo, para que o endereçamento e argumentação sejam adequados.
-        2. Estrutura: Endereçamento (CAIXA ALTA), Qualificação, Fatos, Direito, Pedido, Local/Data.
-        3. A formatação da versão final não deve ser markdown, e sim formatação estética para leitura humana seguindo as boas práticas estéticas e de formatação de recursos administrativos e jurídicos.
-        4. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo.
-        5. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
-        6. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso.
-        7. Seja prolixo na defesa explorando a maior quantidade de pontos possível, mas nunca ultrapassando limites racionais ou legais.
-        8. Não insira asteríscos ('*') de formatação desnecessários.
-        9. No final, adicione: "Nestes termos, pede deferimento. ${data.signCity || "Local"}, ${data.signDate || "Data"}."
-      `;
+			let systemInstruction;
+			let userPrompt;
 
 			if (isRefinement) {
-				systemInstruction += `\nMODO REFINAMENTO: Reescreva o texto mantendo os dados mas aplicando: "${data.refinementInstructions}".`;
+				// --- LÓGICA DE REFINAMENTO (EDIÇÃO) ---
+				systemInstruction = `
+          Você é um Editor Jurídico Sênior responsável por revisar e ajustar peças processuais.
+          SUA TAREFA: Alterar o documento fornecido seguindo ESTRITAMENTE as instruções do usuário.
+          
+          REGRAS DE OURO:
+          1. O documento fornecido ("TEXTO BASE") é a fonte da verdade. NÃO gere uma nova defesa do zero baseada em metadados. Use o texto fornecido.
+          2. Faça APENAS as alterações solicitadas. Se o usuário pedir para mudar o argumento X, mantenha o resto do texto (Endereçamento, Qualificação, Fatos, Pedidos) INALTERADO.
+          3. Mantenha a formatação e o estilo do texto original.
+          4. Se a instrução for vaga (ex: "Melhore o texto"), apenas corrija gramática e fluidez, sem alterar a tese jurídica base.
+          5. Retorne o documento COMPLETO, pronto para uso/impressão.
+        `;
+
+				userPrompt = `
+          TEXTO BASE (DEFESA EXISTENTE):
+          """
+          ${data.previousDefense}
+          """
+
+          INSTRUÇÕES DE ALTERAÇÃO DO USUÁRIO:
+          "${data.refinementInstructions}"
+
+          Ação: Aplique as alterações no Texto Base e retorne o documento final completo.
+        `;
+
+			} else {
+				// --- LÓGICA DE GERAÇÃO INICIAL ---
+				systemInstruction = `
+          Você é um Advogado Especialista em Direito de Trânsito com 20 anos de experiência em Recursos Administrativos.
+          Tarefa: Redigir uma defesa/recurso de multa de trânsito.
+          
+          DIRETRIZES DE ESTÉTICA E FORMATAÇÃO (IMPORTANTE):
+          1. **Visual Profissional:** Não use Markdown (negrito com **, itálico com _). Use formatação visual limpa que simule um documento Word/PDF.
+          2. **Títulos:** Use CAIXA ALTA para o Endereçamento e Títulos das Seções (DOS FATOS, DO DIREITO, DOS PEDIDOS).
+          3. **Espaçamento:** Deixe espaços claros entre os parágrafos para facilitar a leitura do julgador.
+          4. **Estilo:** Formal, respeitoso, técnico, mas direto. Evite juridiquês arcaico desnecessário ("data venia" excessivo), foque na clareza dos fatos e da lei.
+          
+          REGRAS DE CONTEÚDO:
+          1. Identifique qual fase da defesa é (Defesa Prévia, JARI ou CETRAN) com base no contexto.
+          2. **Omissão de Vazios:** Se uma informação não foi fornecida no prompt (ex: Categoria da CNH, marca do veículo), NÃO a invente e NÃO a mencione no texto. Não escreva "CNH: [Vazio]" ou "Categoria: ". Simplesmente omita o campo.
+          3. A qualificação deve fluir no texto. Ex: "FULANO DE TAL, brasileiro, solteiro, portador do RG nº X e CPF nº Y..." em vez de lista de tópicos.
+          4. Apresentar apenas o recurso, nada mais. Sem "Aqui está seu recurso" no início.
+          5. Não adicionar espaço para assinatura de advogado, apenas "Assinatura do Requerente/Condutor".
+          6. Analise o relato do usuário e extraia teses jurídicas. Se o relato for fraco, use teses técnicas padrão para a infração (ex: erro de aferição do radar, ausência de notificação, sinalização irregular).
+          7. Seja prolixo e exaustivo na argumentação jurídica.
+          8. No final, adicione: "Nestes termos, pede deferimento. ${data.signCity || "Local"}, ${data.signDate || "Data"}."
+        `;
+
+				const defenseTypeMap = {
+					previa: "DEFESA PRÉVIA DE AUTUAÇÃO",
+					jari: "RECURSO À JARI (1ª INSTÂNCIA)",
+					cetran: "RECURSO AO CETRAN (2ª INSTÂNCIA)",
+				};
+				const defenseTypeLabel = defenseTypeMap[data.defenseType] || "RECURSO ADMINISTRATIVO";
+
+				// Helper to format fields only if present
+				const fmt = (label, value, suffix = "") => value ? `${label} ${value}${suffix}, ` : "";
+				const fmtDirect = (value, suffix = "") => value ? `${value}${suffix}, ` : "";
+
+				// Constructing the prompt carefully to avoid empty labels
+				userPrompt = `
+          TIPO DE PEÇA: ${defenseTypeLabel}
+          
+          DADOS DO CASO (Use apenas o que estiver preenchido):
+          Órgão: ${data.issuingBody || ""}
+          AIT: ${data.aitNumber || ""}
+          
+          QUALIFICAÇÃO (Monte um parágrafo fluido com estes dados):
+          Nome: ${data.name || ""}
+          Nacionalidade: ${data.nationality || "Brasileiro(a)"}
+          Estado Civil: ${data.maritalStatus === "Outro" ? "" : (data.maritalStatus || "")}
+          Profissão: ${data.profession || ""}
+          RG: ${data.rg || ""} ${data.rgIssuer || ""}
+          CPF: ${data.cpf || ""}
+          CNH: ${data.cnh || ""} ${data.cnhCategory ? `(Categoria ${data.cnhCategory})` : ""}
+          Endereço: ${data.address || ""}, ${data.addressNumber || ""} ${data.addressComplement || ""}
+          Bairro: ${data.neighborhood || ""}
+          Cidade/UF: ${data.city || ""}/${data.state || ""}
+          CEP: ${data.zipCode || ""}
+          Telefone/Email: (Apenas para cadastro, não precisa estar no corpo da qualificação pública se não quiser)
+          
+          DADOS DO VEÍCULO E INFRAÇÃO:
+          Placa: ${data.plate || ""} ${data.plateUF || ""}
+          Modelo: ${data.vehicleModel || ""}
+          Infração: ${data.article || ""}
+          Data/Hora: ${data.date || ""} às ${data.time || ""}
+          Local: ${data.location || ""}
+          Equipamento: ${data.equipmentNumber || ""}
+          Aferição: ${data.lastCalibration || ""}
+          
+          RELATO DOS FATOS (Argumentos do Usuário):
+          "${data.description}"
+        `;
 			}
-
-			const defenseTypeMap = {
-				previa: "DEFESA PRÉVIA",
-				jari: "RECURSO À JARI",
-				cetran: "RECURSO AO CETRAN",
-			};
-			const defenseTypeLabel = defenseTypeMap[data.defenseType] || "RECURSO ADMINISTRATIVO";
-
-			const userPrompt = `
-        TIPO DE PEÇA: ${defenseTypeLabel}
-        CASO: Órgão ${data.issuingBody}, AIT ${data.aitNumber}
-        CONDUTOR: ${data.name}, Brasileiro(a), ${data.maritalStatus === "Outro" ? "" : data.maritalStatus}, ${data.profession}, RG ${data.rg} ${data.rgIssuer}, CPF ${data.cpf}. CNH ${data.cnh} Cat ${data.cnhCategory}.
-        ENDEREÇO: ${data.address}, ${data.addressNumber} ${data.addressComplement}, ${data.neighborhood}, ${data.city}/${data.state}, CEP ${data.zipCode}.
-        VEÍCULO: ${data.plate}/${data.plateUF}, ${data.vehicleModel}.
-        INFRAÇÃO: ${data.article} em ${data.date} às ${data.time}, Local ${data.location}.
-        EQUIPAMENTO: ${data.equipmentNumber || "N/A"}, Aferição ${data.lastCalibration || "N/A"}.
-        
-        RELATO: "${data.description}"
-        ${isRefinement ? `\nTEXTO ANTERIOR: ${data.previousDefense?.substring(0, 500)}...` : ""}
-      `;
 
 			const result = await model.generateContent([systemInstruction, userPrompt]);
 			res.status(200).json({ success: true, data: { defenseText: result.response.text() } });

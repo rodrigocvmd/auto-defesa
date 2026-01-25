@@ -92,15 +92,29 @@ A descrição deve ficar alternando entre "Analisando a congruência entre a mat
 - [x]  Melhorar termos de uso e privacidade, tornando mais completos e em acordo com as atuais boas práticas destes pontos;
 - [x]  Crie uma página informativa/de ajuda de como funciona a app passo a passo, opções do usuário, como prosseguir, o que a app faz, etc.; Ou seja, criar sessão de Help completa (suporte ao usuário, com mockups das informações que você não souber (irei preencher depois))
 
+
+Conferir:
+- []  Depois de receber o aviso de limite de testes grátis, o usuário ainda consegue prosseguir, certo? Mas ele consegue prosseguir quantas vezes quiser depois, e isso pode ser um problema por uso indiscriminado das funcionalidades grátis da app. Portanto, após prosseguir em 3 avisos de limite atingido nas funcionalidades grátis, o usuário tem de realmente ser limitado a utilizar as funções por 1 hora. Passada a 1 hora de bloqueio, são resetados os limites das funcionalidades grátis. Porém, caso o usuário atinja novamente o limite delas, o próximo bloqueio deve ser de 24h.
+- []  Instruir AI (a que vai elaborar a defesa ou recurso em si, em sua primeira versão) a utilizar uma formatação estética e estilos que seguem as melhores práticas no âmbito de Recursos Administrativos (podendo até se inspirar nos melhores recursos jurídicos e suas melhores práticas);
+- []  Instruir AI de que informações não preenchidas pelo usuário ou não constantes/presentes não devem ser utilizadas/apresentadas (mesmo que vazias) no recurso (para evitar que apareça uma informação vazia como "Categoria da CNH: ");
+- []  O refinamento com IA está gerando um nova defesa/recurso por completo, isso tira o propósito de de utilizar um modelo melhor para gerar o recurso/defesa. O recurso/defesa, após gerado, deve ser a base para qualquer nova ediçao. Qualquer nova edição feita pela ia deve utilizar o recurso/defesa existente e apenas alterar nele o que for pedido pelo usuário, pontualmente, e não gerar um novo recurso/defesa como está ocorrendo agora. 
+
+
+Conferência de congruência do relato deve ser mais acurada no seguinte sentido: 1. apenas verificar se tem a ver ou não com o ASSUNTO, e depois fazer o melhor para inserir se o user insistir(?)
+
+
 Feats:
-- []  Limitar os testes?
 
 IA:
-- []  O endereçamento e o final do título de cada subtópico da defesa, quando é mais longo, está ficando em uma linha seguinte e em negrito. Instrua a IA para manter o padrão de estilo e formatação entre endereçamento, títulos e subtítulos de mesmo nível. Podem divergir de formatação entre eles por questões de destaque, mas o mesmo nível (endereçamento, títulos entre si e subtítulos entre si) devem manter o padrão sempre.
-- []  Valor atualizado da multa + penalidade
+
 
 Fazer manualmente:
 - []  Revisão final de funcionalidades
 - []  Revisão final de textos
+
+- []  Refatorar
+- []  Build
+- []  Deploy
+
 
 Marketing:

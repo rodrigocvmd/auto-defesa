@@ -38,6 +38,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebaseConfig";
 import { collection, addDoc, serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import { NavigationBlocker } from "../components/NavigationBlocker";
+import { rateLimiter } from "../services/rateLimiter";
 
 const UploadDefense = () => {
 	const { currentUser, userData } = useAuth();
@@ -64,6 +65,12 @@ const UploadDefense = () => {
 	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
 	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
     const [loadingText, setLoadingText] = useState("Analisando a congruência entre a materialidade da infração e o relato do usuário.");
+
+    // Rate Limiting States
+    const [showLimitModal, setShowLimitModal] = useState(false);
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+    const [consecutiveDivergenceCount, setConsecutiveDivergenceCount] = useState(0);
+    const [refinementCount, setRefinementCount] = useState(5);
 
     useEffect(() => {
         let interval;
@@ -192,14 +199,48 @@ const UploadDefense = () => {
 		setError(null);
 	};
 
-	const handleUploadAndExtract = async () => {
+	const [showHardBlockModal, setShowHardBlockModal] = useState(false);
+	const [hardBlockInfo, setHardBlockInfo] = useState(null);
+
+	const handleUploadAndExtract = async (bypass = false) => {
 		if (!file) return;
+
+        // Record bypass if applicable
+        const isAnonymous = !currentUser;
+        if (bypass) {
+            rateLimiter.recordBypass('upload_analysis', isAnonymous);
+        }
+
+        // Rate Limit Check for Upload
+        const limitStatus = rateLimiter.checkLimit('upload_analysis', isAnonymous);
+
+        if (limitStatus.hardBlocked) {
+            setHardBlockInfo({ 
+                expiresAt: limitStatus.expiresAt,
+                message: limitStatus.message
+            });
+            setShowHardBlockModal(true);
+            return;
+        }
+
+        if (!bypass && !limitStatus.allowed) {
+            if (isAnonymous) {
+                setShowLoginPrompt(true);
+            } else {
+                setShowLimitModal(true);
+            }
+            return;
+        }
+
 		setLoading(true);
 		setError(null);
 		try {
 			const base64 = await fileToBase64(file);
 			// Chama a nova função de extração
 			const response = await api.extractData(base64, file.type);
+            
+            // Record usage on attempt (even if extraction fails partially, we utilized the AI)
+            rateLimiter.recordUsage('upload_analysis', isAnonymous);
 
 			if (response.success) {
 				let extractedData = response.data;
@@ -478,8 +519,40 @@ const UploadDefense = () => {
 
 	// --- AÇÕES DO FORMULÁRIO ---
 
-	const handlePreAnalysis = async (e) => {
-		e.preventDefault();
+	const handlePreAnalysis = async (e, bypass = false) => {
+		if (e) e.preventDefault();
+
+        // Record bypass if applicable
+        const isAnonymous = !currentUser;
+        if (bypass) {
+            rateLimiter.recordBypass('upload_case_analysis', isAnonymous);
+        }
+
+        // Rate Limiting Check
+        const limitStatus = rateLimiter.checkLimit('upload_case_analysis', isAnonymous); 
+
+        if (limitStatus.hardBlocked) {
+            setHardBlockInfo({ 
+                expiresAt: limitStatus.expiresAt,
+                message: limitStatus.message
+            });
+            setShowHardBlockModal(true);
+            return;
+        }
+
+        if (!bypass && !limitStatus.allowed) {
+             if (consecutiveDivergenceCount >= 2) {
+                 // Bypass
+             } else {
+                if (isAnonymous) {
+                    setShowLoginPrompt(true);
+                } else {
+                    setShowLimitModal(true);
+                }
+                return;
+             }
+        }
+
 		if (!validateForm()) {
 			window.scrollTo({ top: 0, behavior: "smooth" });
 			return;
@@ -487,11 +560,20 @@ const UploadDefense = () => {
 		setLoading(true);
 		try {
 			const response = await api.preAnalyze(formData);
+            rateLimiter.recordUsage('upload_case_analysis', isAnonymous);
+            
 			if (response.success) {
 				setAnalysisData(response.data);
 				if (response.data.divergence && response.data.divergence.isDivergent) {
-					setShowDivergenceModal(true);
+                    if (consecutiveDivergenceCount >= 2 || (!limitStatus.allowed && consecutiveDivergenceCount > 0)) {
+                         setStep("analysis");
+                         setConsecutiveDivergenceCount(0);
+                    } else {
+                        setConsecutiveDivergenceCount(prev => prev + 1);
+					    setShowDivergenceModal(true);
+                    }
 				} else {
+                    setConsecutiveDivergenceCount(0);
 					setStep("analysis");
 				}
 			}
@@ -555,6 +637,13 @@ const UploadDefense = () => {
 
 	const handleRefinementSubmit = async () => {
 		if (!refinementText.trim()) return;
+        
+        const currentCount = rateLimiter.getRefinementCount(defenseId || 'temp_upload');
+        if (currentCount <= 0) {
+            alert("Limite de edições via IA atingido para este recurso.");
+            return;
+        }
+
 		setRefining(true);
 		try {
 			const response = await api.generateDefense({
@@ -568,6 +657,10 @@ const UploadDefense = () => {
 				setResult(newText);
 				setIsRefining(false);
 				setRefinementText("");
+                
+                rateLimiter.decrementRefinementCount(defenseId || 'temp_upload');
+                setRefinementCount(currentCount - 1);
+
 				await saveDefenseToHistory(newText);
 			}
 		} catch (err) {
@@ -887,6 +980,63 @@ const UploadDefense = () => {
 
 	
 
+	const LimitExceededModal = () => (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <AlertTriangle className="text-red-500" /> Limite de Testes Excedido
+                </h3>
+                <p className="text-gray-600 mb-6">
+                    Você atingiu o limite de utilizações gratuitas da nossa IA por hora. 
+                    Para garantir a disponibilidade do serviço para todos, aguarde um pouco antes de tentar nova análise.
+                </p>
+                <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-6">
+                     <p className="text-sm text-blue-800 font-medium">
+                        Deseja pular a análise preliminar e ir direto para a elaboração do recurso final?
+                        <br/><span className="text-xs opacity-75">(Isso permitirá mais uma verificação gratuita no processo final)</span>
+                     </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                    <button onClick={() => { 
+                        setShowLimitModal(false); 
+                        if (step === 'upload') handleUploadAndExtract(true);
+                        else handlePreAnalysis(null, true);
+                    }} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">Sim, prosseguir para Recurso</button>
+                    <button onClick={() => setShowLimitModal(false)} className="w-full bg-gray-100 text-gray-600 font-medium hover:bg-gray-200 py-3 rounded-xl">Aguardar e tentar depois</button>
+                </div>
+            </div>
+        </div>
+    );
+    
+    const LoginPromptModal = () => (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
+                <div className="text-center mb-4">
+                    <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+                        <User size={32} />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900">Limite Gratuito Atingido</h3>
+                </div>
+                <p className="text-gray-600 mb-6 text-center">
+                    Você atingiu o limite de 3 testes gratuitos como visitante. 
+                    <br/><br/>
+                    <strong>Crie sua conta ou faça login</strong> para continuar utilizando nossas ferramentas e desbloquear mais limites.
+                </p>
+                <div className="flex flex-col gap-3">
+                    <button onClick={() => { 
+                        localStorage.setItem('pendingDefenseData', JSON.stringify({ formData, source: 'upload' }));
+                        navigate('/register?redirect=/upload'); 
+                    }} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">Criar Conta Grátis</button>
+                    <button onClick={() => { 
+                        localStorage.setItem('pendingDefenseData', JSON.stringify({ formData, source: 'upload' }));
+                        navigate('/login?redirect=/upload'); 
+                    }} className="w-full bg-white border border-gray-300 text-blue-600 font-bold py-3 rounded-xl hover:bg-gray-50">Já tenho conta</button>
+                    <button onClick={() => setShowLoginPrompt(false)} className="w-full text-gray-400 text-sm hover:text-gray-600 py-2">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    );
+
 		// --- RENDERS ---
 
 	
@@ -958,6 +1108,9 @@ const UploadDefense = () => {
 					{showDownloadConfirm && <DownloadConfirmModal />}
 
 					{showDivergenceModal && <DivergenceWarningModal />}
+                    {showLimitModal && <LimitExceededModal />}
+                    {showLoginPrompt && <LoginPromptModal />}
+					{showHardBlockModal && <HardBlockModal />}
 				<div className="max-w-5xl mx-auto py-8">
 					<div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4">
 						<div>
@@ -1003,6 +1156,10 @@ const UploadDefense = () => {
 						<div className="lg:col-span-1 space-y-6">
 							{isRefining ? (
 								<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <span className="text-xs font-bold uppercase tracking-wider text-blue-200">Refinamento com IA</span>
+                                        <span className="bg-blue-800 text-xs px-2 py-1 rounded-full">{refinementCount} restantes</span>
+                                    </div>
 									<textarea
 										value={refinementText}
 										onChange={(e) => setRefinementText(e.target.value)}
@@ -1013,8 +1170,8 @@ const UploadDefense = () => {
 									<div className="mt-4 flex justify-end">
 										<button
 											onClick={handleRefinementSubmit}
-											disabled={!refinementText.trim() || refining}
-											className="bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2">
+											disabled={!refinementText.trim() || refining || refinementCount <= 0}
+											className={`bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2 ${refinementCount <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}>
 											Atualizar <Send size={16} />
 										</button>
 									</div>
@@ -1046,6 +1203,7 @@ const UploadDefense = () => {
 
 	if (step === "analysis" && analysisData) {
 		const viability = analysisData.viability || "Possível";
+        const summary = analysisData.summary;
 		const isHighViability = viability === "Alta" || viability === "Muito Alta";
 		const isPossibleViability = viability === "Possível";
 
@@ -1412,9 +1570,44 @@ const UploadDefense = () => {
 		);
 	}
 
+	const HardBlockModal = () => {
+		const timeLeft = hardBlockInfo ? Math.ceil((hardBlockInfo.expiresAt - Date.now()) / 60000) : 0;
+		
+		return (
+		<div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8 text-center border-t-4 border-red-600">
+				<div className="mb-6 flex justify-center">
+					<div className="bg-red-100 p-4 rounded-full">
+						<Lock size={40} className="text-red-600" />
+					</div>
+				</div>
+				<h3 className="text-2xl font-black text-gray-900 mb-2">
+					Acesso Temporariamente Bloqueado
+				</h3>
+				<p className="text-red-600 font-bold mb-4 bg-red-50 py-2 rounded-lg">
+					{hardBlockInfo?.message || "Limite de segurança atingido."}
+				</p>
+				<p className="text-gray-600 mb-8 leading-relaxed">
+					Você excedeu o limite de tentativas e bypass permitidos. 
+					<br/>
+					Para garantir a estabilidade do sistema, novas análises estão suspensas por:
+					<br/>
+					<span className="text-3xl font-black text-gray-900 block mt-4">{timeLeft} minutos</span>
+				</p>
+				
+				<button onClick={() => { setShowHardBlockModal(false); navigate('/'); }} className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-black transition-colors shadow-lg">
+					Voltar ao Início
+				</button>
+			</div>
+		</div>
+	  )};
+
 	if (step === "form") {
 		return (
 			<MainLayout>
+                {showLimitModal && <LimitExceededModal />}
+                {showLoginPrompt && <LoginPromptModal />}
+				{showHardBlockModal && <HardBlockModal />}
 				{showDivergenceModal && <DivergenceWarningModal />}
 				<div className="max-w-5xl mx-auto py-8">
 					<header className="mb-8">
@@ -2026,6 +2219,9 @@ const UploadDefense = () => {
 
 	return (
 		<MainLayout>
+            {showLimitModal && <LimitExceededModal />}
+            {showLoginPrompt && <LoginPromptModal />}
+			{showHardBlockModal && <HardBlockModal />}
 			<div className="max-w-3xl mx-auto py-10">
 				<div className="mb-8 text-center">
 					<Link

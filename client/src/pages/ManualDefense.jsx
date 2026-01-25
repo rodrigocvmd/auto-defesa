@@ -13,6 +13,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebaseConfig';
 import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
 import { NavigationBlocker } from '../components/NavigationBlocker';
+import { rateLimiter } from '../services/rateLimiter';
 
 const ManualDefense = () => {
   const { currentUser, userData } = useAuth();
@@ -41,6 +42,12 @@ const ManualDefense = () => {
   const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
   const [showDivergenceModal, setShowDivergenceModal] = useState(false);
   const [loadingText, setLoadingText] = useState("Analisando a congruência entre a materialidade da infração e o relato do usuário.");
+  
+  // Rate Limiting States
+  const [showLimitModal, setShowLimitModal] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [consecutiveDivergenceCount, setConsecutiveDivergenceCount] = useState(0);
+  const [refinementCount, setRefinementCount] = useState(5);
 
   useEffect(() => {
     let interval;
@@ -89,7 +96,6 @@ const ManualDefense = () => {
     article: '',
     infractionCode: '', 
     infractionSplit: '', 
-    article: '', 
     infractionDescription: '', // Nova descrição simples da infração
     legalText: '', // Novo texto do dispositivo legal
     description: '', 
@@ -304,8 +310,46 @@ const ManualDefense = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handlePreAnalysis = async (e) => {
-    e.preventDefault();
+  // State for Hard Block Modal
+  const [showHardBlockModal, setShowHardBlockModal] = useState(false);
+  const [hardBlockInfo, setHardBlockInfo] = useState(null);
+
+  const handlePreAnalysis = async (e, bypass = false) => {
+    if (e) e.preventDefault();
+
+    // Record bypass if applicable
+    const isAnonymous = !currentUser;
+    if (bypass) {
+        rateLimiter.recordBypass('manual_analysis', isAnonymous);
+    }
+
+    // Rate Limiting Logic
+    const limitStatus = rateLimiter.checkLimit('manual_analysis', isAnonymous);
+
+    if (limitStatus.hardBlocked) {
+        setHardBlockInfo({ 
+            expiresAt: limitStatus.expiresAt,
+            message: limitStatus.message
+        });
+        setShowHardBlockModal(true);
+        return;
+    }
+
+    if (!bypass && !limitStatus.allowed) {
+        // Se o limite foi atingido DEVIDO a incongruências repetidas, permitimos passar direto
+        if (consecutiveDivergenceCount >= 2) {
+             // Bypass: Prosseguir sem checar limite novamente para esta tentativa específica
+             // (Logic continues below)
+        } else {
+            if (isAnonymous) {
+                setShowLoginPrompt(true);
+            } else {
+                setShowLimitModal(true);
+            }
+            return;
+        }
+    }
+
     if (!formData.name && !formData.cpf && !formData.plate) {
         const confirmTest = window.confirm("O formulário está vazio. Deseja preencher com DADOS DE EXEMPLO para testar a Análise Gratuita?");
         if (confirmTest) {
@@ -347,6 +391,7 @@ const ManualDefense = () => {
             setFormData(testData);
             setLoading(true);
             try {
+                // Não contabiliza limite para dados de teste
                 const response = await api.preAnalyze(testData);
                 if (response.success) {
                     setAnalysisData(response.data);
@@ -362,14 +407,34 @@ const ManualDefense = () => {
     }
 
     if (!validateForm()) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    
     setLoading(true);
     try {
       const response = await api.preAnalyze(formData);
+      
+      // Contabiliza uso se sucesso (ou se tentou e a API respondeu)
+      rateLimiter.recordUsage('manual_analysis', isAnonymous);
+
       if (response.success) {
         setAnalysisData(response.data);
+        
+        // Verifica se deve aplicar a checagem de divergência
+        // Se já teve muitas divergências e o limite estourou (tratado no inicio), ou apenas muitas divergências,
+        // poderíamos ignorar. Mas aqui seguimos a regra: se divergir, mostra modal.
+        // Se o usuário clicar em "Tentar Novamente" no modal, ele vai chamar handlePreAnalysis de novo.
+        // Se ele corrigir e chamar de novo, conta +1 uso.
+        
         if (response.data.divergence && response.data.divergence.isDivergent) {
-            setShowDivergenceModal(true);
+            // Se já excedeu limite ou é a 3ª tentativa falha seguida, pula
+            if (consecutiveDivergenceCount >= 2 || (!limitStatus.allowed && consecutiveDivergenceCount > 0)) {
+                 setStep('analysis');
+                 setConsecutiveDivergenceCount(0);
+            } else {
+                setConsecutiveDivergenceCount(prev => prev + 1);
+                setShowDivergenceModal(true);
+            }
         } else {
+            setConsecutiveDivergenceCount(0); // Reset se passar
             setStep('analysis');
         }
       }
@@ -419,6 +484,14 @@ const ManualDefense = () => {
 
   const handleRefinementSubmit = async () => {
     if (!refinementText.trim()) return;
+    
+    // Check Refinement Limit
+    const currentCount = rateLimiter.getRefinementCount(defenseId || 'temp');
+    if (currentCount <= 0) {
+        alert("Limite de edições via IA atingido para este recurso.");
+        return;
+    }
+
     setRefining(true);
     try {
       const response = await api.generateDefense({ ...formData, previousDefense: result, refinementInstructions: refinementText, userId: currentUser?.uid });
@@ -427,6 +500,11 @@ const ManualDefense = () => {
           setResult(newText); 
           setIsRefining(false); 
           setRefinementText(''); 
+          
+          // Decrement Counter
+          rateLimiter.decrementRefinementCount(defenseId || 'temp');
+          setRefinementCount(currentCount - 1);
+          
           await saveDefenseToHistory(newText);
       }
     } catch (err) { alert("Erro ao atualizar: " + (err.message || "Tente novamente.")); } finally { setRefining(false); }
@@ -590,36 +668,90 @@ const ManualDefense = () => {
     </div>
   );
 
-  const DivergenceWarningModal = () => (
+  const LimitExceededModal = () => (
     <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-        <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8">
-            <div className="text-center mb-6">
-                <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600">
-                    <AlertTriangle size={32} />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900">Contradição Identificada</h2>
-            </div>
-            <div className="space-y-4 text-gray-600 mb-8 text-left">
-                <p>
-                    Foi identificada uma inconsistência severa entre o seu <strong>relato</strong> e a <strong>materialidade da infração</strong>.
-                </p>
-                
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                    <p className="text-sm font-bold text-red-800 mb-1">Qual é a contradição:</p>
-                    <p className="text-sm text-red-700 italic">"{analysisData?.divergence?.message}"</p>
-                </div>
-
-                <p className="text-sm">
-                    <strong>Atenção:</strong> Manter essas informações pode <strong>não ser positivo</strong> para o recurso, proporcionando inconsistências jurídicas e limitando significativamente os argumentos de defesa que a IA poderá utilizar.
-                </p>
+        <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <AlertTriangle className="text-red-500" /> Limite de Testes Excedido
+            </h3>
+            <p className="text-gray-600 mb-6">
+                Você atingiu o limite de utilizações gratuitas da nossa IA por hora. 
+                Para garantir a disponibilidade do serviço para todos, aguarde um pouco antes de tentar nova análise.
+            </p>
+            <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-6">
+                 <p className="text-sm text-blue-800 font-medium">
+                    Deseja pular a análise preliminar e ir direto para a elaboração do recurso final?
+                    <br/><span className="text-xs opacity-75">(Isso permitirá mais uma verificação gratuita no processo final)</span>
+                 </p>
             </div>
             <div className="flex flex-col gap-3">
-                <button onClick={() => setShowDivergenceModal(false)} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">Alterar Relato (Recomendado)</button>
-                <button onClick={() => { setShowDivergenceModal(false); setStep('analysis'); }} className="w-full bg-white border border-gray-300 text-gray-500 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">Manter como está</button>
+                <button onClick={() => { setShowLimitModal(false); handlePreAnalysis(null, true); }} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">Sim, prosseguir para Recurso</button>
+                <button onClick={() => setShowLimitModal(false)} className="w-full bg-gray-100 text-gray-600 font-medium hover:bg-gray-200 py-3 rounded-xl">Aguardar e tentar depois</button>
             </div>
         </div>
     </div>
   );
+
+  const LoginPromptModal = () => (
+    <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+        <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
+            <div className="text-center mb-4">
+                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+                    <User size={32} />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">Limite Gratuito Atingido</h3>
+            </div>
+            <p className="text-gray-600 mb-6 text-center">
+                Você atingiu o limite de 3 testes gratuitos como visitante. 
+                <br/><br/>
+                <strong>Crie sua conta ou faça login</strong> para continuar utilizando nossas ferramentas e desbloquear mais limites.
+            </p>
+            <div className="flex flex-col gap-3">
+                <button onClick={() => { 
+                    localStorage.setItem('pendingDefenseData', JSON.stringify({ formData, source: 'manual' }));
+                    navigate('/register?redirect=/manual-defense'); 
+                }} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">Criar Conta Grátis</button>
+                <button onClick={() => { 
+                    localStorage.setItem('pendingDefenseData', JSON.stringify({ formData, source: 'manual' }));
+                    navigate('/login?redirect=/manual-defense'); 
+                }} className="w-full bg-white border border-gray-300 text-blue-600 font-bold py-3 rounded-xl hover:bg-gray-50">Já tenho conta</button>
+                <button onClick={() => setShowLoginPrompt(false)} className="w-full text-gray-400 text-sm hover:text-gray-600 py-2">Cancelar</button>
+            </div>
+        </div>
+    </div>
+  );
+
+  const HardBlockModal = () => {
+    const timeLeft = hardBlockInfo ? Math.ceil((hardBlockInfo.expiresAt - Date.now()) / 60000) : 0;
+    
+    return (
+    <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in">
+        <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8 text-center border-t-4 border-red-600">
+            <div className="mb-6 flex justify-center">
+                <div className="bg-red-100 p-4 rounded-full">
+                    <Lock size={40} className="text-red-600" />
+                </div>
+            </div>
+            <h3 className="text-2xl font-black text-gray-900 mb-2">
+                Acesso Temporariamente Bloqueado
+            </h3>
+            <p className="text-red-600 font-bold mb-4 bg-red-50 py-2 rounded-lg">
+                {hardBlockInfo?.message || "Limite de segurança atingido."}
+            </p>
+            <p className="text-gray-600 mb-8 leading-relaxed">
+                Você excedeu o limite de tentativas e bypass permitidos. 
+                <br/>
+                Para garantir a estabilidade do sistema, novas análises estão suspensas por:
+                <br/>
+                <span className="text-3xl font-black text-gray-900 block mt-4">{timeLeft} minutos</span>
+            </p>
+            
+            <button onClick={() => { setShowHardBlockModal(false); navigate('/'); }} className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-black transition-colors shadow-lg">
+                Voltar ao Início
+            </button>
+        </div>
+    </div>
+  )};
 
   if (result) {
     return (
@@ -649,6 +781,7 @@ const ManualDefense = () => {
         )}
         {showEditWarning && <EditWarningModal />}
         {showDownloadConfirm && <DownloadConfirmModal />}
+        {showHardBlockModal && <HardBlockModal />}
         <div className="max-w-5xl mx-auto py-8">
           <div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4">
             <div><h2 className="text-lg font-bold text-gray-900 flex items-center gap-2"><CheckCircle className="text-green-500" /> Defesa Gerada</h2><p className="text-xs text-gray-500">Revise o documento abaixo antes de finalizar.</p></div>
@@ -661,7 +794,14 @@ const ManualDefense = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">{isEditing ? (<textarea value={result} onChange={(e) => setResult(e.target.value)} className="w-full p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />) : (<div className="bg-white p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-gray-200 whitespace-pre-wrap">{result}</div>)}</div>
             <div className="lg:col-span-1 space-y-6">
-              {isRefining ? (<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40"><textarea value={refinementText} onChange={(e) => setRefinementText(e.target.value)} rows={6} className="w-full p-3 rounded-xl text-gray-900 text-sm" placeholder="Exemplos: 'Focar na falta de sinalização da via', 'Ajustar para tom mais formal', 'Remover argumento sobre a cor do veículo'." /><div className="mt-4 flex justify-end"><button onClick={handleRefinementSubmit} disabled={!refinementText.trim() || refining} className="bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2">Atualizar <Send size={16} /></button></div></div>) : (<div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 sticky top-40"><div className="flex items-center gap-2 mb-4"><FileCheck className="text-amber-600" /><h3 className="font-bold text-amber-900">Checklist</h3></div><ul className="space-y-3 text-sm text-gray-700"><li>✓ Imprimir e Assinar</li><li>✓ Anexar Cópia CNH/RG e CRLV</li><li>✓ Anexar Notificação</li></ul><button onClick={() => setResult(null)} className="mt-6 w-full py-2 text-amber-700 hover:bg-amber-100 rounded-lg text-sm font-medium flex items-center justify-center gap-2"><RotateCcw size={14} /> Reiniciar</button></div>)}
+              {isRefining ? (<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40">
+                <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-blue-200">Refinamento com IA</span>
+                    <span className="bg-blue-800 text-xs px-2 py-1 rounded-full">{refinementCount} restantes</span>
+                </div>
+                <textarea value={refinementText} onChange={(e) => setRefinementText(e.target.value)} rows={6} className="w-full p-3 rounded-xl text-gray-900 text-sm" placeholder="Exemplos: 'Focar na falta de sinalização da via', 'Ajustar para tom mais formal', 'Remover argumento sobre a cor do veículo'." />
+                <div className="mt-4 flex justify-end"><button onClick={handleRefinementSubmit} disabled={!refinementText.trim() || refining || refinementCount <= 0} className={`bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2 ${refinementCount <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}>Atualizar <Send size={16} /></button></div>
+              </div>) : (<div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 sticky top-40"><div className="flex items-center gap-2 mb-4"><FileCheck className="text-amber-600" /><h3 className="font-bold text-amber-900">Checklist</h3></div><ul className="space-y-3 text-sm text-gray-700"><li>✓ Imprimir e Assinar</li><li>✓ Anexar Cópia CNH/RG e CRLV</li><li>✓ Anexar Notificação</li></ul><button onClick={() => setResult(null)} className="mt-6 w-full py-2 text-amber-700 hover:bg-amber-100 rounded-lg text-sm font-medium flex items-center justify-center gap-2"><RotateCcw size={14} /> Reiniciar</button></div>)}
             </div>
           </div>
         </div>
@@ -820,6 +960,7 @@ const ManualDefense = () => {
             </div>
           </div>
         </div>
+        {showHardBlockModal && <HardBlockModal />}
       </MainLayout>
     );
   }
@@ -831,6 +972,9 @@ const ManualDefense = () => {
       <MainLayout>
         {showTestModal && <TestInfoModal />}
         {showDivergenceModal && <DivergenceWarningModal />}
+        {showLimitModal && <LimitExceededModal />}
+        {showHardBlockModal && <HardBlockModal />}
+        {showLoginPrompt && <LoginPromptModal />}
         <div className="max-w-5xl mx-auto">
           <header className="mb-8">
             <button onClick={() => setStep('selection')} className="text-gray-500 hover:text-blue-600 flex items-center mb-4 font-medium"><ArrowLeft size={20} className="mr-1" /> Voltar</button>
