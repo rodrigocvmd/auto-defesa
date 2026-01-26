@@ -59,6 +59,8 @@ const UploadDefense = () => {
 	const [searchingCode, setSearchingCode] = useState(false);
 	const [defenseId, setDefenseId] = useState(null);
 	const [showHelpModal, setShowHelpModal] = useState(false);
+    const [showCodeNotFoundModal, setShowCodeNotFoundModal] = useState(false);
+    const [isManualInfraction, setIsManualInfraction] = useState(false);
 
 	// Novos estados para alertas
 	const [showEditWarning, setShowEditWarning] = useState(false);
@@ -509,9 +511,12 @@ const UploadDefense = () => {
                     // Se legalText não vier da API, usamos a descrição como fallback para preencher o campo Dispositivo Legal
                     legalText: legalText || description || prev.legalText
                 }));
-			}
+                setIsManualInfraction(false);
+			} else {
+                setShowCodeNotFoundModal(true);
+            }
 		} catch (error) {
-			alert("Código não encontrado.");
+			setShowCodeNotFoundModal(true);
 		} finally {
 			setSearchingCode(false);
 		}
@@ -753,6 +758,50 @@ const UploadDefense = () => {
 			</div>
 		</div>
 	);
+
+    const CodeNotFoundModal = () => (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8">
+                <div className="text-center mb-6">
+                    <div className="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-600">
+                        <AlertTriangle size={32} />
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900">Código não encontrado</h2>
+                </div>
+                <p className="text-gray-600 text-center mb-6">
+                    O código de infração informado não consta em nosso banco de dados. 
+                    Sugerimos verificar se foi digitado corretamente.
+                </p>
+                
+                <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-8 text-sm text-yellow-800">
+                    <p className="font-bold flex items-center gap-2 mb-2"><Info size={16}/> Atenção:</p>
+                    <p>
+                        Se optar por prosseguir manualmente, você deverá inserir o <strong>Amparo Legal</strong> e a <strong>Descrição</strong> por conta própria.
+                        <br/><br/>
+                        Nossa IA fará a defesa baseada no que você escrever, o que <strong>pode comprometer a qualidade técnica</strong> do recurso em comparação com infrações validadas pelo nosso sistema.
+                    </p>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                    <button 
+                        onClick={() => setShowCodeNotFoundModal(false)} 
+                        className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                    >
+                        Corrigir Código
+                    </button>
+                    <button 
+                        onClick={() => {
+                            setIsManualInfraction(true);
+                            setShowCodeNotFoundModal(false);
+                        }} 
+                        className="w-full bg-white border border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors"
+                    >
+                        Manter código e preencher manualmente
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 
 		const DownloadConfirmModal = () => (
 
@@ -1609,6 +1658,7 @@ const UploadDefense = () => {
                 {showLoginPrompt && <LoginPromptModal />}
 				{showHardBlockModal && <HardBlockModal />}
 				{showDivergenceModal && <DivergenceWarningModal />}
+                {showCodeNotFoundModal && <CodeNotFoundModal />}
 				<div className="max-w-5xl mx-auto py-8">
 					<header className="mb-8">
 						<button
@@ -2003,42 +2053,48 @@ const UploadDefense = () => {
 										<p className="text-red-500 text-xs mt-1">{errors.aitNumber}</p>
 									)}
 								</div>
-								<div>
-									<label className="label-form">
-										Cód. Infração <span className="text-red-500">*</span>
-									</label>
-									<div className="flex gap-1">
-										<input
-											name="infractionCode"
-											value={formData.infractionCode}
-											onChange={handleChange}
-											onBlur={handleBlur}
-											className={`input-form w-2/3 ${errors.infractionCode ? "border-red-500" : ""}`}
-											required
-										/>
-										<input
-											name="infractionSplit"
-											value={formData.infractionSplit}
-											onChange={handleChange}
-											onBlur={handleBlur}
-											className="input-form w-1/3 text-center"
-											placeholder="0"
-										/>
-										<button
-											type="button"
-											onClick={handleSearchCode}
-											className="bg-blue-100 text-blue-600 p-3 rounded-xl hover:bg-blue-200 transition-colors">
-											{searchingCode ? (
-												<Loader2 className="animate-spin" size={20} />
-											) : (
-												<Search size={20} />
-											)}
-										</button>
-									</div>
+								<div className="flex gap-2">
+                                    <div className="flex-1">
+                                        <label className="label-form">
+                                            Cód. Infração <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            name="infractionCode"
+                                            value={formData.infractionCode}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            className={`input-form w-full ${errors.infractionCode ? "border-red-500" : ""}`}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="w-24">
+                                        <label className="label-form">Desd.</label>
+                                        <input
+                                            name="infractionSplit"
+                                            value={formData.infractionSplit}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            className="input-form w-full text-center"
+                                            placeholder="0"
+                                        />
+                                    </div>
+                                    <div className="mt-auto pb-1">
+                                        <button
+                                            type="button"
+                                            onClick={handleSearchCode}
+                                            className="bg-blue-100 text-blue-600 p-2.5 rounded-xl hover:bg-blue-200 transition-colors h-[42px] w-[42px] flex items-center justify-center"
+                                            title="Buscar Código">
+                                            {searchingCode ? (
+                                                <Loader2 className="animate-spin" size={20} />
+                                            ) : (
+                                                <Search size={20} />
+                                            )}
+                                        </button>
+                                    </div>
+								</div>
 									{errors.infractionCode && (
 										<p className="text-red-500 text-xs mt-1">{errors.infractionCode}</p>
 									)}
-								</div>
 								                <div className="md:col-span-3">
 								                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 								                        <div>
@@ -2046,9 +2102,10 @@ const UploadDefense = () => {
 								                            <input
 								                                name="article"
 								                                value={formData.article}
-								                                readOnly
-								                                className="input-form bg-gray-50 cursor-not-allowed"
-								                                placeholder="Aguardando preenchimento do Código da Infração..."
+								                                onChange={handleChange}
+                                                                readOnly={!isManualInfraction}
+                                                                className={`input-form ${!isManualInfraction ? 'bg-gray-50 cursor-not-allowed' : 'bg-white border-yellow-400'}`}
+                                                                placeholder={isManualInfraction ? "Digite o Artigo (ex: Art. 218, I, CTB)" : "Aguardando preenchimento do Código da Infração..."}
 								                            />
 								                        </div>
 								                    </div>
@@ -2057,7 +2114,14 @@ const UploadDefense = () => {
 																	</p>
 																</div>                                <div className="md:col-span-3">
                                     <label className="label-form">Descrição da Infração</label>
-                                    <input name="infractionDescription" value={formData.infractionDescription || ''} readOnly className="input-form bg-gray-50 text-gray-600 cursor-not-allowed" placeholder="Aguardando preenchimento do Código da Infração..." />
+                                    <input 
+                                        name="infractionDescription" 
+                                        value={formData.infractionDescription || ''} 
+                                        onChange={handleChange}
+                                        readOnly={!isManualInfraction} 
+                                        className={`input-form ${!isManualInfraction ? 'bg-gray-50 text-gray-600 cursor-not-allowed' : 'bg-white border-yellow-400'}`} 
+                                        placeholder={isManualInfraction ? "Digite a descrição da infração" : "Aguardando preenchimento do Código da Infração..."} 
+                                    />
                                 </div>
 								<div>
 									<label className="label-form">
