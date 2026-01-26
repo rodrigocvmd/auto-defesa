@@ -15,7 +15,9 @@ import {
     AlertCircle,
     CheckCircle,
     Plus,
-    Coins
+    Coins,
+    AlertTriangle,
+    Trash2
 } from 'lucide-react';
 import { updateProfile, updatePassword } from 'firebase/auth';
 import { doc, getDoc, setDoc, collection, query, where, getDocs, orderBy } from 'firebase/firestore';
@@ -23,12 +25,13 @@ import { db } from '../firebaseConfig';
 import { jsPDF } from 'jspdf';
 
 export default function Profile() {
-    const { currentUser, userData, updateUserEmail } = useAuth();
+    const { currentUser, userData, updateUserEmail, deleteUserAccount } = useAuth();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('defenses');
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
     const [message, setMessage] = useState({ type: '', content: '' });
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     // Estados do Formulário de Perfil
     const [displayName, setDisplayName] = useState('');
@@ -175,6 +178,24 @@ export default function Profile() {
             setConfirmPassword('');
         } catch (error) {
             setMessage({ type: 'error', content: 'Erro ao alterar senha. Pode ser necessário fazer login novamente.' });
+        }
+        setLoading(false);
+    }
+
+    async function handleDeleteAccount() {
+        setLoading(true);
+        try {
+            await deleteUserAccount();
+            navigate('/login');
+        } catch (error) {
+            console.error("Erro ao excluir conta:", error);
+            if (error.code === 'auth/requires-recent-login') {
+                setMessage({ type: 'error', content: 'Por segurança, faça login novamente para excluir sua conta.' });
+                setShowDeleteModal(false);
+            } else {
+                setMessage({ type: 'error', content: 'Erro ao excluir conta. Tente novamente mais tarde.' });
+                setShowDeleteModal(false);
+            }
         }
         setLoading(false);
     }
@@ -417,6 +438,7 @@ export default function Profile() {
 
                     {/* ABA: SEGURANÇA */}
                     {activeTab === 'security' && (
+                        <>
                         <form onSubmit={handleUpdatePassword}>
                             <h2 className="text-xl font-bold text-gray-900 mb-6">Alterar Senha</h2>
                             
@@ -453,10 +475,78 @@ export default function Profile() {
                                 </button>
                             </div>
                         </form>
+
+                        <div className="mt-12 pt-8 border-t border-gray-100">
+                            <h3 className="text-lg font-bold text-red-600 mb-4 flex items-center gap-2">
+                                <AlertTriangle size={20} /> Zona de Perigo
+                            </h3>
+                            <div className="bg-red-50 border border-red-100 rounded-xl p-6">
+                                <h4 className="font-bold text-red-900 mb-2">Excluir Conta</h4>
+                                <p className="text-sm text-red-700 mb-6 max-w-xl">
+                                    Ao excluir sua conta, você perderá acesso imediato a todos os seus documentos salvos, 
+                                    créditos restantes e histórico de defesas. Esta ação é irreversível e seus dados 
+                                    não poderão ser recuperados.
+                                </p>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowDeleteModal(true)}
+                                    className="bg-white border border-red-200 text-red-600 font-bold py-2.5 px-6 rounded-lg hover:bg-red-600 hover:text-white transition-colors text-sm flex items-center gap-2"
+                                >
+                                    <Trash2 size={16} /> Excluir minha conta
+                                </button>
+                            </div>
+                        </div>
+                        </>
                     )}
 
                 </div>
             </div>
+
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+                    <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8">
+                        <div className="text-center mb-6">
+                            <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600">
+                                <AlertTriangle size={32} />
+                            </div>
+                            <h2 className="text-2xl font-bold text-gray-900">Tem certeza?</h2>
+                        </div>
+                        
+                        <div className="space-y-4 text-gray-600 mb-8 text-center text-sm">
+                            <p>
+                                Esta ação <strong>não pode ser desfeita</strong>.
+                            </p>
+                            <p>
+                                Você perderá todos os seus créditos ({userData?.credits || 0}) e o acesso a todos os recursos salvos no histórico.
+                            </p>
+                            <div className="bg-blue-50 p-4 rounded-xl text-blue-800 text-xs">
+                                <p className="font-bold mb-1">Está com algum problema?</p>
+                                <p className="mb-2">Nossa equipe pode te ajudar antes de você decidir partir.</p>
+                                <Link to="/help" className="inline-block bg-white text-blue-600 px-3 py-1.5 rounded-lg font-bold border border-blue-200 hover:bg-blue-50">
+                                    Falar com Suporte
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-3">
+                            <button 
+                                onClick={handleDeleteAccount}
+                                disabled={loading}
+                                className="w-full bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+                            >
+                                {loading ? 'Excluindo...' : 'Sim, excluir minha conta'}
+                            </button>
+                            <button 
+                                onClick={() => setShowDeleteModal(false)}
+                                disabled={loading}
+                                className="w-full bg-gray-100 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-200 transition-colors"
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </MainLayout>
     );
 }

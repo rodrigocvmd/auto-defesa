@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Shield, Home, User, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import VerificationBanner from '../components/VerificationBanner';
 
 const MainLayout = ({ children }) => {
   const location = useLocation();
@@ -102,6 +103,9 @@ const MainLayout = ({ children }) => {
           </div>
         </div>
       </header>
+
+      {/* Verification Banner */}
+      <VerificationBanner />
 
       {/* Main Content Area */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

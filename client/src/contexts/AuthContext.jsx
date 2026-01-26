@@ -9,9 +9,10 @@ import {
     sendPasswordResetEmail,
     verifyBeforeUpdateEmail,
     sendEmailVerification,
-    updateProfile
+    updateProfile,
+    deleteUser
 } from 'firebase/auth';
-import { doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
 
 const AuthContext = createContext();
@@ -37,22 +38,40 @@ export function AuthProvider({ children }) {
             await updateProfile(user, { displayName: name });
         }
 
-        // Enviar email de verificação
-        await sendEmailVerification(user);
-
-        // Deslogar para obrigar login após verificação (opcional, mas seguro)
-        await signOut(auth);
+        // Enviar email de verificação com redirecionamento
+        await sendVerificationEmail(user);
 
         return user;
     }
 
     async function login(email, password) {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        if (!userCredential.user.emailVerified) {
-            await signOut(auth);
-            throw new Error('Email not verified');
+        return signInWithEmailAndPassword(auth, email, password);
+    }
+
+    async function deleteUserAccount() {
+        if (!currentUser) return;
+
+        // 1. Deletar documento do Firestore
+        const userRef = doc(db, 'users', currentUser.uid);
+        await deleteDoc(userRef);
+
+        // 2. Deletar usuário do Authentication
+        await deleteUser(currentUser);
+    }
+
+    async function sendVerificationEmail(user) {
+        // Configurações para redirecionamento após o clique no email
+        const actionCodeSettings = {
+            url: `${window.location.origin}/profile?verified=true`,
+            handleCodeInApp: false,
+        };
+        await sendEmailVerification(user, actionCodeSettings);
+    }
+
+    async function resendVerificationEmail() {
+        if (currentUser) {
+            await sendVerificationEmail(currentUser);
         }
-        return userCredential;
     }
 
     function loginWithGoogle() {
@@ -121,7 +140,9 @@ export function AuthProvider({ children }) {
         loginWithGoogle,
         logout,
         resetPassword,
-        updateUserEmail
+        updateUserEmail,
+        resendVerificationEmail,
+        deleteUserAccount
     };
 
     return (

@@ -1070,7 +1070,12 @@ const ManualDefense = () => {
                   </button>
               )}
               
-              <button type="submit" className="w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all">
+              <button 
+                  type="submit" 
+                  disabled={currentUser && !currentUser.emailVerified}
+                  title={currentUser && !currentUser.emailVerified ? "Confirme seu email para utilizar" : ""}
+                  className={`w-full max-w-xl text-white text-2xl font-black py-6 rounded-3xl shadow-2xl transition-all ${currentUser && !currentUser.emailVerified ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 active:scale-95'}`}
+              >
                 {isTestMode ? "Analisar Dados de Teste (Grátis)" : "Analisar Caso (Grátis)"}
               </button>
               <p className="text-gray-400 text-sm">Nenhum crédito será cobrado nesta etapa.</p>

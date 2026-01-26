@@ -11,7 +11,6 @@ export default function Register() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [emailSent, setEmailSent] = useState(false);
     
     // Password strength states
     const [hasMinLength, setHasMinLength] = useState(false);
@@ -42,7 +41,7 @@ export default function Register() {
             setError('');
             setLoading(true);
             await signup(email, password, name);
-            setEmailSent(true);
+            navigate(redirect);
         } catch (err) {
             console.error(err);
             if (err.code === 'auth/email-already-in-use') {
@@ -66,35 +65,6 @@ export default function Register() {
             setError('Falha ao cadastrar com Google.');
         }
         setLoading(false);
-    }
-
-    if (emailSent) {
-        return (
-            <MainLayout>
-                <div className="flex items-center justify-center min-h-[60vh]">
-                    <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
-                        <div className="bg-green-100 p-4 rounded-full w-fit mx-auto mb-6 text-green-600">
-                            <Mail size={32} />
-                        </div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4">Verifique seu Email</h2>
-                        <p className="text-gray-600 mb-6">
-                            Enviamos um link de confirmação para <strong>{email}</strong>.
-                            <br/>
-                            Por favor, clique no link para ativar sua conta e começar a usar.
-                        </p>
-                        <div className="bg-blue-50 p-4 rounded-lg text-sm text-blue-800 mb-8">
-                            Não encontrou? Verifique sua caixa de Spam ou Lixo Eletrônico.
-                        </div>
-                        <Link 
-                            to="/login"
-                            className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-colors"
-                        >
-                            Ir para Login
-                        </Link>
-                    </div>
-                </div>
-            </MainLayout>
-        );
     }
 
     return (

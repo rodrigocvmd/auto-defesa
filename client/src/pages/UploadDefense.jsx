@@ -2288,8 +2288,9 @@ const UploadDefense = () => {
 							<div className="flex justify-center pt-4 border-t border-gray-100">
 								<button
 									type="submit"
-									disabled={!file || loading}
-									className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && !loading ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"}`}>
+									disabled={!file || loading || (currentUser && !currentUser.emailVerified)}
+									title={currentUser && !currentUser.emailVerified ? "Confirme seu email para utilizar" : ""}
+									className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && !loading && (!currentUser || currentUser.emailVerified) ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"}`}>
 									{loading ? (
 										<>
 											<Loader2 className="animate-spin inline mr-2" /> Lendo Documento...
@@ -2303,9 +2304,15 @@ const UploadDefense = () => {
 					</div>
 					<div className="bg-gray-50 p-6 text-center border-t border-gray-100">
 						<p className="text-gray-500 text-sm mb-2">Não tem arquivo ou foto da infração?</p>
-						<Link to="/manual-defense" className="text-blue-600 font-bold hover:underline flex items-center justify-center gap-1">
-							<FileText size={16} /> Inserir dados manualmente
-						</Link>
+						{currentUser && !currentUser.emailVerified ? (
+                            <button disabled className="text-gray-400 font-bold flex items-center justify-center gap-1 cursor-not-allowed" title="Confirme seu email para utilizar">
+                                <FileText size={16} /> Inserir dados manualmente
+                            </button>
+                        ) : (
+                            <Link to="/manual-defense" className="text-blue-600 font-bold hover:underline flex items-center justify-center gap-1">
+                                <FileText size={16} /> Inserir dados manualmente
+                            </Link>
+                        )}
 					</div>
 				</div>
 			</div>

@@ -36,8 +36,6 @@ export default function Login() {
             console.error(err);
             if (isResetMode) {
                 setError('Falha ao redefinir a senha. Verifique se o email está correto.');
-            } else if (err.message === 'Email not verified') {
-                setError('Email não verificado. Verifique sua caixa de entrada (e spam) e clique no link de ativação.');
             } else {
                 setError('Falha ao fazer login. Verifique suas credenciais.');
             }

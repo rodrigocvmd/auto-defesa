@@ -100,6 +100,14 @@ A descrição deve ficar alternando entre "Analisando a congruência entre a mat
 2. No cadastro, adicione critérios para a senha: (mínimo de 6 digitos (já está sendo aplicado), ao menos 1 letra maiúscula e ao menos 1 número). Adicione ainda uma interface simples que indica para o usuário se a senha está cumprindo os requisitos, bem como uma interface que indica se a senha do campo confirmar senha bate com a senha do campo senha;
 3. No cadastro, adicione o campo para inserir o nome do usuário;
 
+1. O email de confirmação pós cadastro está chegando sempre no spam, por que e como resolver isso?;
+2. É possível alterar o processo de confirmação de email para que quando o usuário clicar no link que chega no corpo do email, a página aberta seja a página do seu perfil na app com o email já confirmado? Se for possível, aplique essa alteração;
+3. É possível fazer com que ao cadastrar, mas enquanto o email ainda não foi confirmado, o usuário consiga acessar seu perfil, ficando pendente apenas a confirmação do email (com um aviso aparecendo para o usuário que ele precisa confirmar o email para utilizar as funcionalidades da app), e, enquanto não confirmar o email, o primeiro botão de "Analisar com IA" em UploadDefense e o primeiro botão de "Inserir dados manualmente" para ManualDefense fiquem inativos? Se for possível, aplique essa alteração;
+4. Junto do aviso de confirmar email, insira um botão para enviar novo email de confirmação (algo como "Não recebeu o email? Verifique o Spam, o email pode ter chegado lá" e, em seguida, o botão "Enviar novo email de confirmação").
+
+1. Adicione um botão de "Excluir minha conta", que apresenta um modal para o usuário informando que a ação não pode ser desfeita, e que ele perderá acesso a todos os créditos que possui, bem como a todas os recursos salvos no histórico, perguntando se ele tem certeza que deseja excluir a conta, e informando ainda que caso esteja tendo algum problema, que pode entrar em contato com a equipe de suporte (e um botão que leva à página de ajuda); 
+
+
 Os limites dos testes grátis devem ser referentes a cada perfil. Com exceção do limite sem o usuário estar logado, que deve ser mantido como está, os limites quando o usuário está logado devem ser vinculados ao perfil, e não ao navegador/computador/ip que está utilizando a app.
 
 
