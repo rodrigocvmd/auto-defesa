@@ -24,7 +24,7 @@ const db = admin.firestore();
 
 // --- CONFIGURAÇÃO DE MODELOS (HYBRID AI) ---
 // Flash: Para tarefas rápidas, OCR, extração e edições simples.
-// Pro: Para raciocínio jurídico complexo e redação da peça inicial.
+// Pro: Para raciocínio jurídico complexo e redação da pseça inicial.
 const MODEL_FLASH = "gemini-2.5-flash-lite";
 const MODEL_PRO = "gemini-2.5-flash-lite";
 

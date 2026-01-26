@@ -8,10 +8,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const Pricing = () => {
 	const { currentUser } = useAuth();
 	const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const [loadingId, setLoadingId] = useState(null);
 
-    const redirect = searchParams.get('redirect');
+	const redirect = searchParams.get("redirect");
 
 	// IMPORTANTE:
 	// O erro "No such price: 'prod_...'" ocorre porque você copiou o ID do PRODUTO (começa com prod_)
@@ -25,13 +25,13 @@ const Pricing = () => {
 			credits: 1,
 			mode: "payment", // Pagamento Único
 			icon: <FileText size={24} />,
-			description: "Ideal para resolver uma multa isolada de forma rápida e técnica.",
+			description: "Crédito único para resolver uma multa isolada de forma rápida e técnica.",
 			features: [
-				"1 Crédito de Defesa",
-				"Créditos não expiram",
-				"Geração Instantânea com IA",
-				"Download em PDF",
-				"Análise de Erros Formais",
+				"1 Crédito de Recurso",
+				"Crédito vitalício / não expira",
+				"Recurso fica salvo no histórico",
+				"Recurso para qualquer fase da Defesa",
+				"Custo padrão por Recurso",
 			],
 			recommended: false,
 			color: "gray",
@@ -44,14 +44,13 @@ const Pricing = () => {
 			mode: "payment", // Pagamento Único
 			icon: <Shield size={24} />,
 			description:
-				"A estratégia mais segura. Garante a defesa em todas as instâncias administrativas.",
+				"O pacote mais escolhido. Garante a defesa em todas as instâncias administrativas.",
 			features: [
-				"3 Créditos de Defesa",
+				"3 Créditos de Recurso",
 				"Créditos vitalícios / não expiram",
-				"Inclui: Defesa Prévia",
-				"Inclui: Recurso à JARI",
-				"Inclui: Recurso ao CETRAN",
-				"Maior chance de deferimento",
+				"Todos os Recursos salvos no histórico",
+				"Garante as 3 fases da Defesa",
+				"Custo por Recurso reduzido",
 			],
 			recommended: true,
 			color: "blue",
@@ -63,13 +62,13 @@ const Pricing = () => {
 			credits: 10,
 			mode: "payment", // Pagamento Único
 			icon: <Briefcase size={24} />,
-			description: "Perfeito para motoristas de aplicativo, taxistas ou frotas familiares.",
+			description: "Perfeito para motoristas de aplicativo, empresas e famílias.",
 			features: [
-				"10 Créditos de Defesa",
+				"10 Créditos de Recurso",
 				"Créditos vitalícios / não expiram",
-				"Custo por recurso reduzido",
-				"Válido para múltiplos veículos",
-				"Prioridade no processamento",
+				"Todos os Recursos salvos no histórico",
+				"Garante 10 Defesas Completas",
+				"Melhor custo por crédito",
 			],
 			recommended: false,
 			color: "gray",
@@ -89,7 +88,7 @@ const Pricing = () => {
 				userId: currentUser.uid,
 				credits: plan.credits, // Passa a quantidade de créditos do plano
 				mode: plan.mode, // Passa o modo (payment) para a API
-                successUrl: redirect ? window.location.origin + redirect : undefined
+				successUrl: redirect ? window.location.origin + redirect : undefined,
 			});
 
 			if (response.url) {
@@ -106,9 +105,9 @@ const Pricing = () => {
 			<div className="max-w-6xl mx-auto py-12 px-4">
 				<div className="text-center mb-16">
 					<h1 className="text-4xl font-black text-gray-900 mb-4">
-						Escolha a Melhor Defesa para Você
+						Escolha o melhor pacote de defesa para você
 					</h1>
-					<p className="text-xl text-gray-600 max-w-2xl mx-auto">
+					<p className="text-xl text-gray-600 max-w-1xl mx-auto">
 						Não pague multas injustas. Utilize nossa tecnologia jurídica para proteger sua CNH e seu
 						bolso.
 					</p>
@@ -159,8 +158,8 @@ const Pricing = () => {
 								disabled={!!loadingId}
 								className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 ${
 									plan.recommended
-										? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200"
-										: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-100"
+										? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-indigo-300"
+										: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-50"
 								} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""}`}>
 								{loadingId === plan.id ? "Processando..." : "Selecionar Produto"}
 							</button>
@@ -174,11 +173,13 @@ const Pricing = () => {
 							<Scale size={20} className="text-blue-600" />
 							Tecnologia Jurídica Transparente
 						</h2>
-						<p className="text-gray-600 max-w-3xl mx-auto text-sm leading-relaxed">
-							Acreditamos na transparência. Nossos testes gratuitos e demonstrações utilizam um modelo 
-							de IA Standard para análise rápida de viabilidade. Ao adquirir um crédito, o recurso final 
-							é gerado exclusivamente pelo nosso <strong>Modelo Pro (Advogado Virtual)</strong>, treinado especificamente 
-							com jurisprudências, resoluções do CONTRAN e o Código de Trânsito Brasileiro para máxima assertividade.
+						<p className="text-gray-600 max-w-5xl mx-auto text-sm leading-relaxed">
+							Acreditamos na transparência. Nossos testes gratuitos e demonstrações utilizam um
+							modelo de IA Standard para análise rápida de viabilidade. Ao adquirir um crédito, o
+							recurso final é gerado exclusivamente pelo nosso{" "}
+							<strong>Modelo Pro (Advogado Virtual)</strong>, treinado especificamente com
+							jurisprudências, resoluções do CONTRAN e o Código de Trânsito Brasileiro para máxima
+							assertividade.
 						</p>
 					</div>
 				</div>
