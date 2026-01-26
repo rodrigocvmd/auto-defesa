@@ -1,5 +1,7 @@
 // Configuração da URL da API
 // Em dev (local), usa o emulador. Em produção, usa a variável de ambiente definida no build.
+import { auth } from '../firebaseConfig';
+
 const IS_DEV = import.meta.env.DEV;
 const PROJECT_ID = "auto-defesa"; // Corrigido para bater com o emulador
 const REGION = "us-central1";
@@ -13,13 +15,25 @@ const PROD_URL = `https://${REGION}-${PROJECT_ID}.cloudfunctions.net`;
 
 const BASE_URL = import.meta.env.VITE_API_URL || (IS_DEV ? EMULATOR_URL : PROD_URL);
 
+// Helper para obter headers com token
+const getAuthHeaders = async () => {
+  const headers = { 'Content-Type': 'application/json' };
+  const user = auth.currentUser;
+  if (user) {
+    const token = await user.getIdToken();
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+};
+
 export const api = {
   // 6. Extração de Dados (OCR)
   extractData: async (imageBase64, mimeType) => {
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(`${BASE_URL}/extractDataFromImage`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ image: imageBase64, mimeType }),
       });
 
@@ -39,10 +53,12 @@ export const api = {
         body.image = imageBase64;
         body.mimeType = mimeType;
       }
+      
+      const headers = await getAuthHeaders();
 
       const response = await fetch(`${BASE_URL}/preAnalyze`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(body),
       });
 
@@ -57,10 +73,12 @@ export const api = {
   // 1. Defesa Manual
   generateDefense: async (data) => {
     try {
+      const headers = await getAuthHeaders();
+      
       // Ajuste para chamar a função correta
       const response = await fetch(`${BASE_URL}/generateDefense`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(data),
       });
 
@@ -75,9 +93,10 @@ export const api = {
   // 2. Defesa via Upload
   analyzeDocument: async (fileBase64, mimeType, userData = {}) => {
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(`${BASE_URL}/analyzeDocument`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ image: fileBase64, mimeType, ...userData }),
       });
 
@@ -95,9 +114,10 @@ export const api = {
   // 4. Criar Sessão de Checkout (Pagamento)
   createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl }) => {
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(`${BASE_URL}/createCheckoutSession`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ 
             priceId, 
             userId,
@@ -122,6 +142,7 @@ export const api = {
   // 3. Consultar Dados da Infração (Firestore)
   getInfraction: async ({ code, desdobramento }) => {
     try {
+      // Leitura pública, sem necessidade de auth header obrigatório, mas mal não faz.
       const response = await fetch(`${BASE_URL}/getInfraction`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
