@@ -1,14 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import MainLayout from "../layouts/MainLayout";
-import {
-	HelpCircle,
-	Mail,
-	Phone,
-	MessageCircle,
-	FileQuestion,
-	ChevronDown,
-	ChevronUp,
-} from "lucide-react";
+import { Mail, MessageCircle, FileQuestion, ChevronDown, ChevronUp, Send } from "lucide-react";
 
 const Help = () => {
 	const faqs = [
@@ -30,46 +22,122 @@ const Help = () => {
 		},
 	];
 
-	const [openIndex, setOpenIndex] = React.useState(null);
+	const [openIndex, setOpenIndex] = useState(null);
+	const [formData, setFormData] = useState({
+		name: "",
+		email: "",
+		message: "",
+	});
+
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setFormData((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const subject = `Suporte AutoDefesa - Mensagem de ${formData.name}`;
+		const body = `Nome: ${formData.name}\nEmail: ${formData.email}\n\nMensagem:\n${formData.message}`;
+
+		// Construct mailto link
+		const mailtoLink = `mailto:rodrigocvmd@gmail.com?subject=${encodeURIComponent(
+			subject,
+		)}&body=${encodeURIComponent(body)}`;
+
+		window.location.href = mailtoLink;
+	};
 
 	return (
 		<MainLayout>
-			<div className="max-w-4xl mx-auto py-12 px-4">
-				<header className="text-center mb-16">
+			<div className="max-w-6xl mx-auto py-12 px-4">
+				<header className="text-center mb-12">
 					<h1 className="text-4xl font-black text-gray-900 mb-4">Central de Ajuda</h1>
 					<p className="text-xl text-gray-600 max-w-2xl mx-auto">
 						Estamos aqui para te ajudar em cada etapa do processo.
 					</p>
 				</header>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-					<div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-md transition-shadow">
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 items-start">
+					{/* Contact Form - Takes 2 columns on large screens */}
+					<div className="lg:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+						<div className="flex items-center gap-4 mb-6">
+							<div className="bg-blue-100 p-3 rounded-full text-blue-600">
+								<Mail size={24} />
+							</div>
+							<div>
+								<h2 className="text-2xl font-bold text-gray-900">Envie uma mensagem</h2>
+								<p className="text-gray-500 text-sm">
+									Responderemos para o seu e-mail o mais breve possível.
+								</p>
+							</div>
+						</div>
+
+						<form onSubmit={handleSubmit} className="space-y-4">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<div>
+									<label className="block text-sm font-medium text-gray-700 mb-1">Seu Nome</label>
+									<input
+										type="text"
+										name="name"
+										required
+										value={formData.name}
+										onChange={handleInputChange}
+										className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+										placeholder="Ex: João Silva"
+									/>
+								</div>
+								<div>
+									<label className="block text-sm font-medium text-gray-700 mb-1">Seu E-mail</label>
+									<input
+										type="email"
+										name="email"
+										required
+										value={formData.email}
+										onChange={handleInputChange}
+										className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+										placeholder="Ex: joao@email.com"
+									/>
+								</div>
+							</div>
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-1">Mensagem</label>
+								<textarea
+									name="message"
+									required
+									value={formData.message}
+									onChange={handleInputChange}
+									rows="6"
+									className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+									placeholder="Descreva sua dúvida ou problema..."></textarea>
+							</div>
+							<button
+								type="submit"
+								className="bg-gray-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors flex items-center gap-2">
+								<Send size={18} />
+								Enviar Mensagem
+							</button>
+						</form>
+					</div>
+
+					{/* WhatsApp Card - Takes 1 column */}
+					<div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-md transition-shadow sticky top-8">
 						<div className="bg-green-100 p-4 rounded-full text-green-600 mb-4">
 							<MessageCircle size={32} />
 						</div>
 						<h3 className="font-bold text-xl text-gray-900 mb-2">WhatsApp</h3>
 						<p className="text-gray-500 mb-6 text-sm">
-							Atendimento rápido para dúvidas sobre pagamentos, uso da plataforma ou suporte em
-							geral.
-						</p>
-						<button className="bg-green-600 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-green-700 transition-colors">
-							(61) 99966-2404
-						</button>
-					</div>
-
-					<div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-md transition-shadow">
-						<div className="bg-blue-100 p-4 rounded-full text-blue-600 mb-4">
-							<Mail size={32} />
-						</div>
-						<h3 className="font-bold text-xl text-gray-900 mb-2">E-mail</h3>
-						<p className="text-gray-500 mb-6 text-sm">
-							Segunda via de atendimento para questões mais complexas, suporte especídico ou
-							parcerias comerciais.
+							Atendimento rápido para dúvidas, pagamentos ou suporte em geral.
 						</p>
 						<a
-							href="mailto:suporte@autodefesa.com.br"
-							className="bg-gray-900 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-gray-800 transition-colors">
-							suporte@autodefesa.com.br
+							href="https://wa.me/5561999662404?text=Ol%C3%A1%2C%20estou%20precisando%20de%20suporte%20para%20o%20app%20AutoDefesa."
+							target="_blank"
+							rel="noopener noreferrer"
+							className="bg-green-600 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+							<MessageCircle size={20} />
+							Falar no WhatsApp
 						</a>
 					</div>
 				</div>
@@ -83,7 +151,7 @@ const Help = () => {
 							<div key={idx} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
 								<button
 									onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-									className="w-full flex items-center justify-between p-5 text-left font-bold text-gray-800 hover:bg-gray-50 transition-colors">
+									className="w-full flex items-center justify-between p-5 pb-3 text-left font-bold text-gray-800 hover:bg-gray-50 transition-colors">
 									{faq.q}
 									{openIndex === idx ? (
 										<ChevronUp size={20} className="text-gray-400" />
@@ -92,7 +160,7 @@ const Help = () => {
 									)}
 								</button>
 								{openIndex === idx && (
-									<div className="p-5 pt-0 text-gray-600 text-sm leading-relaxed border-t border-gray-100 mt-2">
+									<div className="p-5 pt-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 mt-2">
 										{faq.a}
 									</div>
 								)}
