@@ -899,12 +899,6 @@ const UploadDefense = () => {
                     >
                         Ir para Minhas Defesas
                     </button>
-                    <button 
-                        onClick={() => setShowPostDownloadModal(false)} 
-                        className="w-full bg-white border border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors"
-                    >
-                        Fechar
-                    </button>
                 </div>
             </div>
         </div>
@@ -1249,7 +1243,7 @@ const UploadDefense = () => {
 						</div>
 					</div>
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-						<div className="lg:col-span-2 order-2 lg:order-1">
+						<div className={`${isRefining ? 'lg:col-span-2' : 'lg:col-span-3'} order-2 lg:order-1`}>
 							{isEditing ? (
 								<textarea
 									value={result}
@@ -1262,8 +1256,8 @@ const UploadDefense = () => {
 								</div>
 							)}
 						</div>
-						<div className="lg:col-span-1 space-y-6 order-1 lg:order-2">
-							{isRefining ? (
+						{isRefining && (
+							<div className="lg:col-span-1 space-y-6 order-1 lg:order-2">
 								<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40">
                                     <div className="flex justify-between items-center mb-2">
                                         <span className="text-xs font-bold uppercase tracking-wider text-blue-200">Refinamento com IA</span>
@@ -1285,20 +1279,8 @@ const UploadDefense = () => {
 										</button>
 									</div>
 								</div>
-							) : (
-								<div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 sticky top-40">
-									<div className="flex items-center gap-2 mb-4">
-										<FileCheck className="text-amber-600" />
-										<h3 className="font-bold text-amber-900">Checklist</h3>
-									</div>
-									<ul className="space-y-3 text-sm text-gray-700">
-										<li>✓ Imprimir e Assinar</li>
-										<li>✓ Anexar Cópia CNH/RG e CRLV</li>
-										<li>✓ Anexar Notificação</li>
-									</ul>
-								</div>
-							)}
-						</div>
+							</div>
+						)}
 					</div>
 				</div>
 			</MainLayout>

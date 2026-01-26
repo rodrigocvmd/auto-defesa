@@ -720,12 +720,6 @@ const ManualDefense = () => {
                 >
                     Ir para Minhas Defesas
                 </button>
-                <button 
-                    onClick={() => setShowPostDownloadModal(false)} 
-                    className="w-full bg-white border border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors"
-                >
-                    Fechar
-                </button>
             </div>
         </div>
     </div>
@@ -946,17 +940,19 @@ const ManualDefense = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 order-2 lg:order-1">{isEditing ? (<textarea value={result} onChange={(e) => setResult(e.target.value)} className="w-full p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />) : (<div className="bg-white p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-gray-200 whitespace-pre-wrap">{result}</div>)}</div>
-            <div className="lg:col-span-1 space-y-6 order-1 lg:order-2">
-              {isRefining ? (<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40">
-                <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-blue-200">Refinamento com IA</span>
-                    <span className="bg-blue-800 text-xs px-2 py-1 rounded-full">{refinementCount} restantes</span>
+            <div className={`${isRefining ? 'lg:col-span-2' : 'lg:col-span-3'} order-2 lg:order-1`}>{isEditing ? (<textarea value={result} onChange={(e) => setResult(e.target.value)} className="w-full p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />) : (<div className="bg-white p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-gray-200 whitespace-pre-wrap">{result}</div>)}</div>
+            {isRefining && (
+              <div className="lg:col-span-1 space-y-6 order-1 lg:order-2">
+                <div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40">
+                  <div className="flex justify-between items-center mb-2">
+                      <span className="text-xs font-bold uppercase tracking-wider text-blue-200">Refinamento com IA</span>
+                      <span className="bg-blue-800 text-xs px-2 py-1 rounded-full">{refinementCount} restantes</span>
+                  </div>
+                  <textarea value={refinementText} onChange={(e) => setRefinementText(e.target.value)} rows={6} className="w-full p-3 rounded-xl text-gray-900 text-sm" placeholder="Exemplos: 'Focar na falta de sinalização da via', 'Ajustar para tom mais formal', 'Remover argumento sobre a cor do veículo'." />
+                  <div className="mt-4 flex justify-end"><button onClick={handleRefinementSubmit} disabled={!refinementText.trim() || refining || refinementCount <= 0} className={`bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2 ${refinementCount <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}>Atualizar <Send size={16} /></button></div>
                 </div>
-                <textarea value={refinementText} onChange={(e) => setRefinementText(e.target.value)} rows={6} className="w-full p-3 rounded-xl text-gray-900 text-sm" placeholder="Exemplos: 'Focar na falta de sinalização da via', 'Ajustar para tom mais formal', 'Remover argumento sobre a cor do veículo'." />
-                <div className="mt-4 flex justify-end"><button onClick={handleRefinementSubmit} disabled={!refinementText.trim() || refining || refinementCount <= 0} className={`bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2 ${refinementCount <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}>Atualizar <Send size={16} /></button></div>
-              </div>) : (<div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 sticky top-40"><div className="flex items-center gap-2 mb-4"><FileCheck className="text-amber-600" /><h3 className="font-bold text-amber-900">Checklist</h3></div><ul className="space-y-3 text-sm text-gray-700"><li>✓ Imprimir e Assinar</li><li>✓ Anexar Cópia CNH/RG e CRLV</li><li>✓ Anexar Notificação</li></ul></div>)}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </MainLayout>

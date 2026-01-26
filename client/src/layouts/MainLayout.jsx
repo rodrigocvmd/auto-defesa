@@ -106,7 +106,7 @@ const MainLayout = ({ children }) => {
         {/* Mobile Menu Overlay */}
         {isMenuOpen && (
             <div className="md:hidden bg-white border-b border-gray-200 absolute w-full left-0 top-16 z-40 shadow-lg animate-in slide-in-from-top-2">
-                <div className="px-4 py-4 space-y-4">
+                <div className="px-4 py-4 space-y-4 text-center">
                     {!isHome && (
                         <Link to="/" onClick={() => setIsMenuOpen(false)} className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
                             Início
@@ -124,12 +124,12 @@ const MainLayout = ({ children }) => {
 
                     {currentUser ? (
                         <>
-                            <Link to="/profile" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 text-gray-600 hover:text-blue-600 font-medium py-2">
+                            <Link to="/profile" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 text-gray-600 hover:text-blue-600 font-medium py-2">
                                 <User size={18} /> Minha Conta ({currentUser.displayName?.split(' ')[0] || 'Perfil'})
                             </Link>
                             <button 
                                 onClick={() => { handleLogout(); setIsMenuOpen(false); }}
-                                className="w-full text-left text-red-600 font-medium py-2 flex items-center gap-2"
+                                className="w-full text-red-600 font-medium py-2 flex items-center justify-center gap-2"
                             >
                                 <LogOut size={18} /> Sair
                             </button>
