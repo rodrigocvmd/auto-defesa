@@ -320,11 +320,11 @@ const ManualDefense = () => {
     // Record bypass if applicable
     const isAnonymous = !currentUser;
     if (bypass) {
-        rateLimiter.recordBypass('manual_analysis', isAnonymous);
+        await rateLimiter.recordBypass('manual_analysis', currentUser);
     }
 
     // Rate Limiting Logic
-    const limitStatus = rateLimiter.checkLimit('manual_analysis', isAnonymous);
+    const limitStatus = await rateLimiter.checkLimit('manual_analysis', currentUser);
 
     if (limitStatus.hardBlocked) {
         setHardBlockInfo({ 
@@ -413,7 +413,7 @@ const ManualDefense = () => {
       const response = await api.preAnalyze(formData);
       
       // Contabiliza uso se sucesso (ou se tentou e a API respondeu)
-      rateLimiter.recordUsage('manual_analysis', isAnonymous);
+      await rateLimiter.recordUsage('manual_analysis', currentUser);
 
       if (response.success) {
         setAnalysisData(response.data);
@@ -486,7 +486,7 @@ const ManualDefense = () => {
     if (!refinementText.trim()) return;
     
     // Check Refinement Limit
-    const currentCount = rateLimiter.getRefinementCount(defenseId || 'temp');
+    const currentCount = await rateLimiter.getRefinementCount(defenseId || 'temp', currentUser);
     if (currentCount <= 0) {
         alert("Limite de edições via IA atingido para este recurso.");
         return;

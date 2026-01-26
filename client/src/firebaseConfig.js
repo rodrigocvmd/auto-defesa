@@ -19,6 +19,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+auth.languageCode = 'pt-BR'; // Força o idioma para Português do Brasil globalmente
 const db = getFirestore(app);
 
 export { app, auth, db };

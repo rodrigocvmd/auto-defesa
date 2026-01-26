@@ -12,7 +12,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [isResetMode, setIsResetMode] = useState(false);
     
-    const { login, loginWithGoogle, resetPassword } = useAuth();
+    const { login, loginWithGoogle, resetPassword, checkEmailExists } = useAuth();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const redirect = searchParams.get('redirect') || '/';
@@ -26,6 +26,14 @@ export default function Login() {
             setLoading(true);
             
             if (isResetMode) {
+                // Verificar se email existe antes de enviar
+                const exists = await checkEmailExists(email);
+                if (!exists) {
+                    setError('Este email não está cadastrado. Verifique ou crie uma nova conta.');
+                    setLoading(false);
+                    return;
+                }
+
                 await resetPassword(email);
                 setMessage('Verifique seu email para instruções de redefinição de senha (verifique também a caixa de spam).');
             } else {
@@ -37,6 +45,16 @@ export default function Login() {
             if (isResetMode) {
                 setError('Falha ao redefinir a senha. Verifique se o email está correto.');
             } else {
+                // Se o erro for de usuário não encontrado ou credenciais inválidas
+                // Verificamos se o usuário existe para redirecionar ou apenas mostrar erro de senha
+                if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
+                    const exists = await checkEmailExists(email);
+                    if (!exists) {
+                        // Se não existe, redireciona para cadastro com o email
+                        navigate(`/register?email=${encodeURIComponent(email)}`);
+                        return;
+                    }
+                }
                 setError('Falha ao fazer login. Verifique suas credenciais.');
             }
         }

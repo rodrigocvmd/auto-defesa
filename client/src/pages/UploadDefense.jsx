@@ -208,11 +208,11 @@ const UploadDefense = () => {
         // Record bypass if applicable
         const isAnonymous = !currentUser;
         if (bypass) {
-            rateLimiter.recordBypass('upload_analysis', isAnonymous);
+            await rateLimiter.recordBypass('upload_analysis', currentUser);
         }
 
         // Rate Limit Check for Upload
-        const limitStatus = rateLimiter.checkLimit('upload_analysis', isAnonymous);
+        const limitStatus = await rateLimiter.checkLimit('upload_analysis', currentUser);
 
         if (limitStatus.hardBlocked) {
             setHardBlockInfo({ 
@@ -240,7 +240,7 @@ const UploadDefense = () => {
 			const response = await api.extractData(base64, file.type);
             
             // Record usage on attempt (even if extraction fails partially, we utilized the AI)
-            rateLimiter.recordUsage('upload_analysis', isAnonymous);
+            await rateLimiter.recordUsage('upload_analysis', currentUser);
 
 			if (response.success) {
 				let extractedData = response.data;
@@ -525,11 +525,11 @@ const UploadDefense = () => {
         // Record bypass if applicable
         const isAnonymous = !currentUser;
         if (bypass) {
-            rateLimiter.recordBypass('upload_case_analysis', isAnonymous);
+            await rateLimiter.recordBypass('upload_case_analysis', currentUser);
         }
 
         // Rate Limiting Check
-        const limitStatus = rateLimiter.checkLimit('upload_case_analysis', isAnonymous); 
+        const limitStatus = await rateLimiter.checkLimit('upload_case_analysis', currentUser); 
 
         if (limitStatus.hardBlocked) {
             setHardBlockInfo({ 
@@ -560,7 +560,7 @@ const UploadDefense = () => {
 		setLoading(true);
 		try {
 			const response = await api.preAnalyze(formData);
-            rateLimiter.recordUsage('upload_case_analysis', isAnonymous);
+            await rateLimiter.recordUsage('upload_case_analysis', currentUser);
             
 			if (response.success) {
 				setAnalysisData(response.data);
@@ -638,7 +638,7 @@ const UploadDefense = () => {
 	const handleRefinementSubmit = async () => {
 		if (!refinementText.trim()) return;
         
-        const currentCount = rateLimiter.getRefinementCount(defenseId || 'temp_upload');
+        const currentCount = await rateLimiter.getRefinementCount(defenseId || 'temp_upload', currentUser);
         if (currentCount <= 0) {
             alert("Limite de edições via IA atingido para este recurso.");
             return;

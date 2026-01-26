@@ -22,7 +22,11 @@ export default function VerificationBanner() {
             setTimeout(() => setSent(false), 5000); // Reset "Sent" message after 5s
         } catch (err) {
             console.error(err);
-            setError("Erro ao enviar. Tente novamente mais tarde.");
+            if (err.code === 'auth/too-many-requests') {
+                setError("Muitas tentativas recentes. Aguarde alguns instantes.");
+            } else {
+                setError("Erro ao enviar: " + (err.message || "Tente novamente."));
+            }
         } finally {
             setSending(false);
         }

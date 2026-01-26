@@ -10,7 +10,8 @@ import {
     verifyBeforeUpdateEmail,
     sendEmailVerification,
     updateProfile,
-    deleteUser
+    deleteUser,
+    fetchSignInMethodsForEmail
 } from 'firebase/auth';
 import { doc, onSnapshot, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
@@ -25,9 +26,6 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    // Configurar idioma para português (Emails de reset, verificação, etc)
-    auth.languageCode = 'pt';
 
     async function signup(email, password, name) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -69,8 +67,23 @@ export function AuthProvider({ children }) {
     }
 
     async function resendVerificationEmail() {
-        if (currentUser) {
-            await sendVerificationEmail(currentUser);
+        if (auth.currentUser) {
+            await auth.currentUser.reload();
+            await sendVerificationEmail(auth.currentUser);
+        } else {
+            throw new Error("Usuário não identificado.");
+        }
+    }
+
+    async function checkEmailExists(email) {
+        try {
+            const methods = await fetchSignInMethodsForEmail(auth, email);
+            return methods.length > 0;
+        } catch (error) {
+            // Em projetos novos com proteção contra enumeração, isso pode falhar ou retornar array vazio.
+            // Se falhar, assumimos falso ou tratamos o erro.
+            console.error("Erro ao verificar email:", error);
+            return false;
         }
     }
 
@@ -142,7 +155,8 @@ export function AuthProvider({ children }) {
         resetPassword,
         updateUserEmail,
         resendVerificationEmail,
-        deleteUserAccount
+        deleteUserAccount,
+        checkEmailExists
     };
 
     return (

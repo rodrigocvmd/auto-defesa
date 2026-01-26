@@ -5,8 +5,12 @@ import MainLayout from '../layouts/MainLayout';
 import { AlertCircle, UserPlus, Check, X, Mail } from 'lucide-react';
 
 export default function Register() {
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get('redirect') || '/';
+    const emailParam = searchParams.get('email') || '';
+
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(emailParam);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
@@ -20,8 +24,6 @@ export default function Register() {
 
     const { signup, loginWithGoogle } = useAuth();
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const redirect = searchParams.get('redirect') || '/';
 
     useEffect(() => {
         setHasMinLength(password.length >= 6);
