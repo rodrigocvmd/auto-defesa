@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Home, User, LogOut } from 'lucide-react';
+import { Shield, Home, User, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import VerificationBanner from '../components/VerificationBanner';
 
@@ -8,6 +8,7 @@ const MainLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isHome = location.pathname === '/';
 
   async function handleLogout() {
@@ -90,18 +91,62 @@ const MainLayout = ({ children }) => {
               )}
             </nav>
 
-            {/* Mobile Action (simplificado) */}
-            <div className="md:hidden flex items-center gap-4">
-                {currentUser ? (
-                     <button onClick={handleLogout} className="text-gray-600">
-                        <LogOut size={20} />
-                     </button>
-                ) : (
-                    <Link to="/login" className="text-blue-600 font-medium">Entrar</Link>
-                )}
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center">
+                <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="text-gray-500 hover:text-blue-600 p-2"
+                >
+                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
             </div>
           </div>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMenuOpen && (
+            <div className="md:hidden bg-white border-b border-gray-200 absolute w-full left-0 top-16 z-40 shadow-lg animate-in slide-in-from-top-2">
+                <div className="px-4 py-4 space-y-4">
+                    {!isHome && (
+                        <Link to="/" onClick={() => setIsMenuOpen(false)} className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+                            Início
+                        </Link>
+                    )}
+                    <Link to="/pricing" onClick={() => setIsMenuOpen(false)} className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+                        Preços
+                    </Link>
+                    <Link to="/how-it-works" onClick={() => setIsMenuOpen(false)} className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+                        Como Funciona
+                    </Link>
+                    <Link to="/help" onClick={() => setIsMenuOpen(false)} className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+                        Ajuda
+                    </Link>
+
+                    {currentUser ? (
+                        <>
+                            <Link to="/profile" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 text-gray-600 hover:text-blue-600 font-medium py-2">
+                                <User size={18} /> Minha Conta ({currentUser.displayName?.split(' ')[0] || 'Perfil'})
+                            </Link>
+                            <button 
+                                onClick={() => { handleLogout(); setIsMenuOpen(false); }}
+                                className="w-full text-left text-red-600 font-medium py-2 flex items-center gap-2"
+                            >
+                                <LogOut size={18} /> Sair
+                            </button>
+                        </>
+                    ) : (
+                        <div className="flex flex-col gap-3 pt-2">
+                            <Link to="/login" onClick={() => setIsMenuOpen(false)} className="w-full text-center text-gray-600 border border-gray-300 font-bold py-3 rounded-xl hover:bg-gray-50">
+                                Entrar
+                            </Link>
+                            <Link to="/register" onClick={() => setIsMenuOpen(false)} className="w-full text-center bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
+                                Criar Conta
+                            </Link>
+                        </div>
+                    )}
+                </div>
+            </div>
+        )}
       </header>
 
       {/* Verification Banner */}

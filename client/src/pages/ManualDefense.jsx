@@ -880,15 +880,15 @@ const ManualDefense = () => {
         <div className="max-w-5xl mx-auto py-8">
           <div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4">
             <div><h2 className="text-lg font-bold text-gray-900 flex items-center gap-2"><CheckCircle className="text-green-500" /> Defesa Gerada</h2><p className="text-xs text-gray-500">Revise o documento abaixo antes de finalizar.</p></div>
-            <div className="flex gap-3">
-              <button onClick={handleEditClick} className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center gap-2"><FileText size={18} /> {isEditing ? 'Salvar Edição' : 'Editar Texto'}</button>
-              <button onClick={() => setIsRefining(!isRefining)} disabled={refining} className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center gap-2">{refining ? <Loader2 className="animate-spin" size={18} /> : <PenTool size={18} />}{isRefining ? 'Cancelar' : 'IA Ajustes'}</button>
-              <button onClick={handleDownloadClick} className="bg-green-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-700 flex items-center gap-2 shadow-md"><Download size={18} /> Baixar PDF Final</button>
+            <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+              <button onClick={handleEditClick} className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center justify-center gap-2"><FileText size={18} /> {isEditing ? 'Salvar Edição' : 'Editar Texto'}</button>
+              <button onClick={() => setIsRefining(!isRefining)} disabled={refining} className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center justify-center gap-2">{refining ? <Loader2 className="animate-spin" size={18} /> : <PenTool size={18} />}{isRefining ? 'Cancelar' : 'IA Ajustes'}</button>
+              <button onClick={handleDownloadClick} className="bg-green-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-700 flex items-center justify-center gap-2 shadow-md"><Download size={18} /> Baixar PDF Final</button>
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">{isEditing ? (<textarea value={result} onChange={(e) => setResult(e.target.value)} className="w-full p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />) : (<div className="bg-white p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-gray-200 whitespace-pre-wrap">{result}</div>)}</div>
-            <div className="lg:col-span-1 space-y-6">
+            <div className="lg:col-span-2 order-2 lg:order-1">{isEditing ? (<textarea value={result} onChange={(e) => setResult(e.target.value)} className="w-full p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />) : (<div className="bg-white p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-gray-200 whitespace-pre-wrap">{result}</div>)}</div>
+            <div className="lg:col-span-1 space-y-6 order-1 lg:order-2">
               {isRefining ? (<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40">
                 <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold uppercase tracking-wider text-blue-200">Refinamento com IA</span>
@@ -1124,7 +1124,7 @@ const ManualDefense = () => {
               <div className="flex items-center gap-2 border-b pb-4"><MapPin className="text-blue-600" /><h3 className="text-xl font-bold text-gray-800">3. Infração</h3></div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div><label className="label-form">AIT (Nº do Auto) <span className="text-red-500">*</span></label><input name="aitNumber" value={formData.aitNumber} onChange={handleChange} onBlur={handleBlur} className={`input-form ${errors.aitNumber ? 'border-red-500' : ''}`} required />{errors.aitNumber && <p className="text-red-500 text-xs mt-1">{errors.aitNumber}</p>}</div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-end">
                     <div className="flex-1">
                         <label className="label-form">Cód. Infração <span className="text-red-500">*</span></label>
                         <input name="infractionCode" value={formData.infractionCode} onChange={handleChange} onBlur={handleBlur} className={`input-form w-full ${errors.infractionCode ? 'border-red-500' : ''}`} required />

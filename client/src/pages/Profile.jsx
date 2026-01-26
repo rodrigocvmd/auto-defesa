@@ -273,7 +273,7 @@ export default function Profile() {
                 </div>
 
                 {/* Navegação de Abas */}
-                <div className="flex overflow-x-auto gap-2 mb-6 pb-2 md:pb-0">
+                <div className="flex flex-col md:flex-row md:overflow-x-auto gap-2 mb-6 pb-2 md:pb-0">
                     <button
                         onClick={() => setActiveTab('defenses')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${

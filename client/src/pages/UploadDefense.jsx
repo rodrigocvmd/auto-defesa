@@ -1171,28 +1171,28 @@ const UploadDefense = () => {
 							</h2>
 							<p className="text-xs text-gray-500">Revise o documento abaixo antes de finalizar.</p>
 						</div>
-						<div className="flex gap-3">
+						<div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
 							<button
 								onClick={handleEditClick}
-								className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center gap-2">
+								className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center justify-center gap-2">
 								<FileText size={18} /> {isEditing ? "Salvar Edição" : "Editar Texto"}
 							</button>
 							<button
 								onClick={() => setIsRefining(!isRefining)}
 								disabled={refining}
-								className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center gap-2">
+								className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center justify-center gap-2">
 								{refining ? <Loader2 className="animate-spin" size={18} /> : <PenTool size={18} />}
 								{isRefining ? "Cancelar" : "IA Ajustes"}
 							</button>
 							<button
 								onClick={handleDownloadClick}
-								className="bg-green-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-700 flex items-center gap-2 shadow-md">
+								className="bg-green-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-700 flex items-center justify-center gap-2 shadow-md">
 								<Download size={18} /> Baixar PDF
 							</button>
 						</div>
 					</div>
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-						<div className="lg:col-span-2">
+						<div className="lg:col-span-2 order-2 lg:order-1">
 							{isEditing ? (
 								<textarea
 									value={result}
@@ -1205,7 +1205,7 @@ const UploadDefense = () => {
 								</div>
 							)}
 						</div>
-						<div className="lg:col-span-1 space-y-6">
+						<div className="lg:col-span-1 space-y-6 order-1 lg:order-2">
 							{isRefining ? (
 								<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40">
                                     <div className="flex justify-between items-center mb-2">
@@ -2056,7 +2056,7 @@ const UploadDefense = () => {
 										<p className="text-red-500 text-xs mt-1">{errors.aitNumber}</p>
 									)}
 								</div>
-								<div className="flex gap-2">
+								<div className="flex gap-2 items-end">
                                     <div className="flex-1">
                                         <label className="label-form">
                                             Cód. Infração <span className="text-red-500">*</span>
