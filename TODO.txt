@@ -125,9 +125,19 @@ Corrija os campos Código da infração e desd. que estão desalinhados horizont
 Na página de edição do recurso, os botões Editar Texto, Ajustes IA e Baixar PDF estão saindo visualmente do 'container' "Defesa Gerada". Corrija para que não ultrapassem os limites do container;
 Na página de edição do recurso, ao clicar em "IA Ajustes", a caixa de texto para o prompt para a IA é um elemento que vem abaixo do texto do recurso e, portanto, o usuário pode nem saber que ela está lá para interagir como terá que scrollar tudo para baixo para digitar nela. Altere para que apenas no mobile ela apareça antes da do elemento do texto do recurso;
 Apenas no mobile, na página do perfil, os Minhas Defesas, Dados e Preferências e Segurança devem aparecer alinhados na vertical (um em cima do outro), e não com scroll lateral como está acontecendo.
-
-
 Remova o botão reiniciar do checklist na página de edição do recurso;
+Mudar checklist de lugar
+
+
+1. Em uploaddefense e ManualDefense, remova o checklist fixo da página de edição, mantendo apenas o checklist que aparece no modal após baixar o pdf. A parte do recurso em si, o texto, deve ocupar a largura do espeço liberado com a retirada do checklist, mesma largura da seção acima do recurso que possui a informação de "Defesa Gerada. Revise o documento abaixo antes de finalizar." e os botões Editar Texto, IA Ajustes e Baixar PDF;
+2. Remova o botão fechar do Cheklist pós download, mantendo apenas o botão "Ir para minhas defesas";
+
+Mascara para CNH e Numero do AITs
+
+Remova o botão fechar do Cheklist pós download, mantendo apenas o botão "Ir para minhas defesas";
+
+Quando o navbar estiver com o botão hamburguer, centralize horizontalmente os textos dos botões.
+
 
 
 - []  Revisão final de textos

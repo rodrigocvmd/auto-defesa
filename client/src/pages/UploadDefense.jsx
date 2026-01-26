@@ -61,6 +61,7 @@ const UploadDefense = () => {
 	const [showHelpModal, setShowHelpModal] = useState(false);
     const [showCodeNotFoundModal, setShowCodeNotFoundModal] = useState(false);
     const [isManualInfraction, setIsManualInfraction] = useState(false);
+    const [showPostDownloadModal, setShowPostDownloadModal] = useState(false);
 
 	// Novos estados para alertas
 	const [showEditWarning, setShowEditWarning] = useState(false);
@@ -724,9 +725,7 @@ const UploadDefense = () => {
 				cursorY += 6;
 			});
 			doc.save(`Defesa_${formData.plate || "Recurso"}.pdf`);
-			setTimeout(() => {
-				navigate("/profile");
-			}, 1000);
+			setShowPostDownloadModal(true);
 		} catch (err) {
 			console.error("Erro ao gerar PDF:", err);
 			alert("Ocorreu um erro ao gerar o PDF. Tente novamente.");
@@ -854,6 +853,62 @@ const UploadDefense = () => {
 
 		);
 
+    const PostDownloadModal = () => (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8 max-h-[90vh] overflow-y-auto">
+                <div className="text-center mb-6">
+                    <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
+                        <CheckCircle size={32} />
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900">Download Iniciado!</h2>
+                    <p className="text-gray-500 mt-2 text-sm">
+                        Seu documento foi gerado com sucesso. Você pode baixá-lo novamente a qualquer momento em <strong>"Minhas Defesas"</strong> no seu perfil.
+                    </p>
+                </div>
+
+                <div className="bg-blue-50 rounded-xl p-6 mb-6">
+                    <h3 className="font-bold text-blue-900 mb-4 flex items-center gap-2">
+                        <HelpCircle size={20} /> O que fazer agora?
+                    </h3>
+                    
+                    <div className="space-y-4">
+                        <div>
+                            <h4 className="font-bold text-blue-800 text-sm mb-2">Opção 1: Via Correios ou Pessoalmente</h4>
+                            <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
+                                <li>Imprimir e Assinar o recurso;</li>
+                                <li>Anexar Cópia da CNH/RG e CRLV;</li>
+                                <li>Anexar a Notificação de Autuação/Penalidade.</li>
+                            </ul>
+                        </div>
+                        
+                        <div className="border-t border-blue-200 pt-4">
+                            <h4 className="font-bold text-blue-800 text-sm mb-2">Opção 2: Protocolo Digital (Recomendado)</h4>
+                            <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
+                                <li>Imprimir, Assinar e Escanear (ou assinar via <strong>gov.br</strong>);</li>
+                                <li>Acessar o site do órgão autuador (Detran, DER, PRF...);</li>
+                                <li>Enviar o PDF do recurso junto com as cópias dos documentos (CNH, CRLV, Notificação).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                    <button 
+                        onClick={() => navigate('/profile')} 
+                        className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                    >
+                        Ir para Minhas Defesas
+                    </button>
+                    <button 
+                        onClick={() => setShowPostDownloadModal(false)} 
+                        className="w-full bg-white border border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors"
+                    >
+                        Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 	
 
 			const DivergenceWarningModal = () => (
@@ -1158,6 +1213,8 @@ const UploadDefense = () => {
 					{showEditWarning && <EditWarningModal />}
 
 					{showDownloadConfirm && <DownloadConfirmModal />}
+
+                    {showPostDownloadModal && <PostDownloadModal />}
 
 					{showDivergenceModal && <DivergenceWarningModal />}
                     {showLimitModal && <LimitExceededModal />}
