@@ -139,7 +139,11 @@ exports.generateDefense = onRequest((req, res) => {
           3. A qualificação deve fluir no texto. Ex: "FULANO DE TAL, brasileiro, solteiro, portador do RG nº X e CPF nº Y..." em vez de lista de tópicos.
           4. Apresentar apenas o recurso, nada mais. Sem "Aqui está seu recurso" no início.
           5. Não adicionar espaço para assinatura de advogado, apenas "Assinatura do Requerente/Condutor".
-          6. Analise o relato do usuário e extraia teses jurídicas. Se o relato for fraco, use teses técnicas padrão para a infração (ex: erro de aferição do radar, ausência de notificação, sinalização irregular).
+          6. ANÁLISE DO RELATO DO USUÁRIO:
+             a) Verifique a congruência temática. Se o relato for sobre outro assunto, ignore-o.
+             b) Se for sobre o mesmo assunto, filtre o conteúdo: Utilize APENAS partes que ajudem na defesa.
+             c) Se o relato for fraco, prejudicial ("confissão de culpa") ou inútil, DESCONSIDERE-O total ou parcialmente e foque exclusivamente em teses técnicas e formais (ex: erro de notificação, aferição, sinalização).
+             d) Priorize sempre a melhor tese jurídica técnica sobre o relato leigo do usuário.
           7. Seja prolixo e exaustivo na argumentação jurídica.
           8. No final, adicione: "Nestes termos, pede deferimento. ${data.signCity || "Local"}, ${data.signDate || "Data"}."
         `;
@@ -314,9 +318,9 @@ exports.preAnalyze = onRequest((req, res) => {
 			const systemInstruction = `
 			        Você é um Analista Sênior de Multas de Trânsito. Sua função é avaliar a viabilidade de um recurso e vender a solução para o cliente.
 			        
-			        Além da viabilidade, você DEVE verificar se o relato do condutor faz sentido com a infração (Artigo/Código e Descrição).
-			        Exemplo de contradição grave: Infração por excesso de velocidade em movimento e o condutor diz que o carro estava estacionado na garagem o dia todo.
-			        Exemplo de coerência: Infração por avanço de sinal e o condutor diz que o sinal estava escondido por uma árvore.
+			        Além da viabilidade, você DEVE verificar a congruência MATERIAL entre o relato do condutor e a infração.
+			        CRITÉRIO DE INCONGRUÊNCIA: Apenas alerte divergência se o relato tratar de um tema TOTALMENTE ALHEIO à infração (Ex: Infração de velocidade e relato sobre cinto de segurança; Infração de sinal vermelho e relato sobre documentação).
+			        CRITÉRIO DE ACEITAÇÃO: Se o relato tratar do mesmo objeto/materialidade da infração, mesmo que o argumento seja fraco, ruim, dispensável ou juridicamente inválido, NÃO considere como divergência. O foco é apenas a pertinência temática.
 			
 			        Saída OBRIGATÓRIA em JSON:
 			        {
@@ -409,7 +413,7 @@ exports.analyzeDocument = onRequest((req, res) => {
         4. Escreva o RECURSO completo. A formatação da versão final não deve ser markdown, e sim formatação estética para leitura humana seguindo as boas práticas estéticas e de formatação de recursos administrativos e jurídicos.
         5. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo.
         6. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
-        7. Não levar em consideração absoluta o relato do usuário, mas realmente analisar a fundo e ver quais argumentos são válidos para serem utilizados no recurso.
+        7. ANÁLISE ESTRATÉGICA DO RELATO: Verifique se o relato do usuário é congruente e benéfico. Se o relato contiver argumentos fracos, prejudiciais (ex: confissão) ou inúteis, DESCONSIDERE essas partes e construa a defesa baseada em argumentos técnicos e erros formais. Utilize do relato apenas o que fortalecer a defesa.
         8. Seja prolixo na defesa explorando a maior quantidade de pontos possível, mas nunca ultrapassando limites racionais ou legais.
         9. Não insira asteríscos ('*') de formatação desnecessários.
         10. IMPORTANTE: NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento (ex: "ILUSTRÍSSIMO SENHOR...").
