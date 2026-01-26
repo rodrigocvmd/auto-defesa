@@ -324,7 +324,7 @@ export default function Profile() {
                         <div>
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-xl font-bold text-gray-900">Histórico de Defesas</h2>
-                                <Link to="/" className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg font-medium hover:bg-blue-100 transition-colors">
+                                <Link to="/upload" className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg font-medium hover:bg-blue-100 transition-colors">
                                     <Plus size={16} /> Nova Defesa
                                 </Link>
                             </div>
@@ -377,7 +377,7 @@ export default function Profile() {
                                 <div className="text-center py-12 text-gray-500">
                                     <FileText size={48} className="mx-auto mb-4 opacity-20" />
                                     <p className="mb-4">Nenhuma defesa gerada ainda.</p>
-                                    <Link to="/" className="inline-flex items-center gap-2 text-blue-600 font-medium hover:underline">
+                                    <Link to="/upload" className="inline-flex items-center gap-2 text-blue-600 font-medium hover:underline">
                                         Criar minha primeira defesa
                                     </Link>
                                 </div>

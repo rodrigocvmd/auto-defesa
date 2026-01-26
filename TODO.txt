@@ -108,64 +108,29 @@ A descrição deve ficar alternando entre "Analisando a congruência entre a mat
 1. Adicione uma confirmação de email quando o usuário cria a conta, a qual ele deve clicar no link recebido no email indicado para validar e poder começar a usar a conta;
 2. No cadastro, adicione critérios para a senha: (mínimo de 6 digitos (já está sendo aplicado), ao menos 1 letra maiúscula e ao menos 1 número). Adicione ainda uma interface simples que indica para o usuário se a senha está cumprindo os requisitos, bem como uma interface que indica se a senha do campo confirmar senha bate com a senha do campo senha;
 3. No cadastro, adicione o campo para inserir o nome do usuário;
-
-
-
 Os limites dos testes grátis devem ser referentes a cada perfil. Com exceção do limite sem o usuário estar logado, que deve ser mantido como está, os limites quando o usuário está logado devem ser vinculados ao perfil, e não ao navegador/computador/ip que está utilizando a app.
+- [x]  Depois de receber o aviso de limite de testes grátis, o usuário ainda consegue prosseguir, certo? Mas ele consegue prosseguir quantas vezes quiser depois, e isso pode ser um problema por uso indiscriminado das funcionalidades grátis da app. Portanto, após prosseguir em 3 avisos de limite atingido nas funcionalidades grátis, o usuário tem de realmente ser limitado a utilizar as funções por 1 hora. Passada a 1 hora de bloqueio, são resetados os limites das funcionalidades grátis. Porém, caso o usuário atinja novamente o limite delas, o próximo bloqueio deve ser de 24h.
+- [x]  Instruir AI (a que vai elaborar a defesa ou recurso em si, em sua primeira versão) a utilizar uma formatação estética e estilos que seguem as melhores práticas no âmbito de Recursos Administrativos (podendo até se inspirar nos melhores recursos jurídicos e suas melhores práticas);
+- [x]  Instruir AI de que informações não preenchidas pelo usuário ou não constantes/presentes não devem ser utilizadas/apresentadas (mesmo que vazias) no recurso (para evitar que apareça uma informação vazia como "Categoria da CNH: ");
+- [x]  O refinamento com IA está gerando um nova defesa/recurso por completo, isso tira o propósito de de utilizar um modelo melhor para gerar o recurso/defesa. O recurso/defesa, após gerado, deve ser a base para qualquer nova ediçao. Qualquer nova edição feita pela ia deve utilizar o recurso/defesa existente e apenas alterar nele o que for pedido pelo usuário, pontualmente, e não gerar um novo recurso/defesa como está ocorrendo agora. 
+- [x]  Altere a conferência de congruência entre o relato do usuário para ser mais acurada no seguinte sentido: a IA deve verificar apenas se o relato do usuário se relaciona minimamente com a materialidade da infração. Mesmo que seja um argumento ruim, fraco ou até dispensável, ele não deve ser 'barrado' pela IA. O informe de incongruência deve ocorrer apenas se o relato do usuário tratar de um tópico efetivamente alheio ao do objeto da infração (ex: infração sobre uso de cinto, relato de velocidade da via; infração de avançar o sinal vermelho, relato de documentação do veículo). Se o relato tiver o mesmo objeto, ou seja, mesma materialidade da infração, não deve ocorrer o alerta de incongruência. E, nesse sentido, havendo congruência entre o relato e a infração, a IA deve analisar o relato e averiguar se alguma de (ou todas) as suas partes podem ou devem ser utilizadas na defesa/recurso. Se o relato não auxiliar em nada na construção da defesa/recurso ou, ainda pior, se for maléfico para a construção da defesa/recurso (mesmo que com mesma materialidade da infração), a IA deve desconsiderar o que não for benéfico e produzir o melhor e mais acurado recurso possível, mesmo que ausente de argumentos válidos por parte do usuário.
+1. Instruir AI (a que vai elaborar a defesa ou recurso em si, em sua primeira versão) a utilizar uma formatação estética e estilos que seguem as melhores práticas no âmbito de Recursos Administrativos (podendo até se inspirar nos melhores recursos jurídicos e suas melhores práticas);
+1. Botões no perfil de "nova defesa" e "Criar minha primeira defesa" devem levar já para o upload da defesa, no momento estão levando para a home;
+2. Em ManualDefense, ao clicar em "Analisar Caso (Grátis)", caso o relato esteja congruente com a infração, a página seguinte é exibida normalmente, todavia, nos meus testes, quando o relato não está congruente (ou seja, caso fosse ser apresentado o modal de incongruência), a página fica branca e nada mais renderiza. Verifique o porquê de isto estar acontecendo e corrija o problema;
+
+Caso o código da infração não existe no banco de dados, deve ser informado ao usuário quando clicar na lupa (mostrar um modal informando e sugerindo a alteração de código da infração), porém possibilitanto ao usuário prosseguir com o código apresentado por este, porém informando que a IA levará em conta o 
 
 
-
-Conferir:
-- []  Depois de receber o aviso de limite de testes grátis, o usuário ainda consegue prosseguir, certo? Mas ele consegue prosseguir quantas vezes quiser depois, e isso pode ser um problema por uso indiscriminado das funcionalidades grátis da app. Portanto, após prosseguir em 3 avisos de limite atingido nas funcionalidades grátis, o usuário tem de realmente ser limitado a utilizar as funções por 1 hora. Passada a 1 hora de bloqueio, são resetados os limites das funcionalidades grátis. Porém, caso o usuário atinja novamente o limite delas, o próximo bloqueio deve ser de 24h.
-- []  Instruir AI (a que vai elaborar a defesa ou recurso em si, em sua primeira versão) a utilizar uma formatação estética e estilos que seguem as melhores práticas no âmbito de Recursos Administrativos (podendo até se inspirar nos melhores recursos jurídicos e suas melhores práticas);
-- []  Instruir AI de que informações não preenchidas pelo usuário ou não constantes/presentes não devem ser utilizadas/apresentadas (mesmo que vazias) no recurso (para evitar que apareça uma informação vazia como "Categoria da CNH: ");
-- []  O refinamento com IA está gerando um nova defesa/recurso por completo, isso tira o propósito de de utilizar um modelo melhor para gerar o recurso/defesa. O recurso/defesa, após gerado, deve ser a base para qualquer nova ediçao. Qualquer nova edição feita pela ia deve utilizar o recurso/defesa existente e apenas alterar nele o que for pedido pelo usuário, pontualmente, e não gerar um novo recurso/defesa como está ocorrendo agora. 
-- []  Altere a conferência de congruência entre o relato do usuário para ser mais acurada no seguinte sentido: a IA deve verificar apenas se o relato do usuário se relaciona minimamente com a materialidade da infração. Mesmo que seja um argumento ruim, fraco ou até dispensável, ele não deve ser 'barrado' pela IA. O informe de incongruência deve ocorrer apenas se o relato do usuário tratar de um tópico efetivamente alheio ao do objeto da infração (ex: infração sobre uso de cinto, relato de velocidade da via; infração de avançar o sinal vermelho, relato de documentação do veículo). Se o relato tiver o mesmo objeto, ou seja, mesma materialidade da infração, não deve ocorrer o alerta de incongruência. E, nesse sentido, havendo congruência entre o relato e a infração, a IA deve analisar o relato e averiguar se alguma de (ou todas) as suas partes podem ou devem ser utilizadas na defesa/recurso. Se o relato não auxiliar em nada na construção da defesa/recurso ou, ainda pior, se for maléfico para a construção da defesa/recurso (mesmo que com mesma materialidade da infração), a IA deve desconsiderar o que não for benéfico e produzir o melhor e mais acurado recurso possível, mesmo que ausente de argumentos válidos por parte do usuário.
-
-
-
-
-
-
-
-
-Feats:
-
-IA:
-
-
-Fazer manualmente:
 
 - []  Revisão final de textos
-Email de verificação enviado para rodrigo010carvalho@gmail.com. Confirme para concluir a alteração (ADD SOBRE SPAM)
 
 - []  Refatorar
 - []  Build
 - []  Deploy
 
 - []  SEO
-1. O email de confirmação pós cadastro está chegando sempre no spam, por que e como resolver isso?;
 
-
-Marketing:
-
+- []  Ajustar domínios e email de confirmação (passos no txt na pasta geral da app)
 
 
 
-
-Apagar:
-"Estou pensando em colocar um limite para o usuário utilizar as ferramentas gratuitas da app (que não consomem créditos do usuário) para que não aja abuso por parte os usuários das ferramentas grátis e consequente cobrança exacerbada por parte da API do modelo. As ferramentas a serem limitadas são a de "Analisar multa grátis" em UploadDefense (onde o usuário faz o upload do arquivo), e os botões de "Analisar Caso (Grátis)" tanto em UploadDefense quanto em ManualDefense. Pensei em uma limitação de 6 utilizações por hora (para cada ferramenta), com um aviso ao usuário quando tentar alguma das ferramentas pela 7ª vez de que o limite de testes consumindo 'nossa' IA foi excedido e ele precisa esperar um tempo (não informar quanto, mas será de 1h) para novos testes. Ainda, deve ser apresentado ao usuário a opção de seguir para a elaboração final da defesa mesmo no caso de ele já ter superado o limite, ocasião na qual será permitida mais uma rodada de testes grátis no caminho até a geração da defesa/recurso.
-
-Caso o limite das ferramentas grátis seja atingido por conta de repetidas incongruências entre o relato e o amparo legal da infração (se a IA identificar seguidamente incongruência, sugerir alteração e o usuário alterar, clicar para gerar novamente e isso se repetir até atingir o limite), deve ser desligada para aquela análise a verificação de incongruência e deve apenas prosseguir para a página de teses, mesmo que o relato esteja incongruente.
-
-Caso o usuário não esteja logado, a utilização de ferramentas grátis deve ser limitada a 3 cada e, caso atinja este limite, deve ser informado ao usuário que ele deve fazer o login/cadastro para prosseguir e, ao fazê-lo, entra na lógica e limites padrão definidos acima.
-
-Ademais, em uma lógica totalmente à parte, a edição via IA na página de edição do recurso deve ser limitada a 5 prompts por utilização (por crédito utilizado, ou seja, a cada recurso), e isso deve ser claramente informado ao usuário com um contador (ex: Edição via IA restantes: 5, e depois 4 após a primeira edição via IA, e segue descendo até atingir o 0 e não serem permitidas mais edições com IA para aquele recurso/aquele crédito utilizado).
-A edição manual é ilimitada.
-
-
-*******
-
-1. Instruir AI (a que vai elaborar a defesa ou recurso em si, em sua primeira versão) a utilizar uma formatação estética e estilos que seguem as melhores práticas no âmbito de Recursos Administrativos (podendo até se inspirar nos melhores recursos jurídicos e suas melhores práticas);
-2. Instruir AI de que informações não preenchidas pelo usuário ou não constantes/presentes não devem ser utilizadas/apresentadas (mesmo que vazias) no recurso (para evitar que apareça uma informação vazia como "Categoria da CNH: ");
-3. O refinamento com IA está gerando um nova defesa/recurso por completo, isso tira o propósito de de utilizar um modelo melhor para gerar o recurso/defesa. O recurso/defesa, após gerado, deve ser a base para qualquer nova ediçao. Qualquer nova edição feita pela ia deve utilizar o recurso/defesa existente e apenas alterar nele o que for pedido pelo usuário, pontualmente, e não gerar um novo recurso/defesa como está ocorrendo agora. "
