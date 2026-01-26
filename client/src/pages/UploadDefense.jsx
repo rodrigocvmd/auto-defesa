@@ -1239,11 +1239,6 @@ const UploadDefense = () => {
 										<li>✓ Anexar Cópia CNH/RG e CRLV</li>
 										<li>✓ Anexar Notificação</li>
 									</ul>
-									<button
-										onClick={() => setResult(null)}
-										className="mt-6 w-full py-2 text-amber-700 hover:bg-amber-100 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
-										<RotateCcw size={14} /> Reiniciar
-									</button>
 								</div>
 							)}
 						</div>
