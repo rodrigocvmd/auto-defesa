@@ -784,7 +784,10 @@ const UploadDefense = () => {
 
                 <div className="flex flex-col gap-3">
                     <button 
-                        onClick={() => setShowCodeNotFoundModal(false)} 
+                        onClick={() => {
+                            setShowCodeNotFoundModal(false);
+                            setFormData(prev => ({ ...prev, infractionCode: '', infractionSplit: '' }));
+                        }} 
                         className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors"
                     >
                         Corrigir Código

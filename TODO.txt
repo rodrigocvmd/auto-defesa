@@ -117,9 +117,9 @@ Os limites dos testes grátis devem ser referentes a cada perfil. Com exceção 
 1. Instruir AI (a que vai elaborar a defesa ou recurso em si, em sua primeira versão) a utilizar uma formatação estética e estilos que seguem as melhores práticas no âmbito de Recursos Administrativos (podendo até se inspirar nos melhores recursos jurídicos e suas melhores práticas);
 1. Botões no perfil de "nova defesa" e "Criar minha primeira defesa" devem levar já para o upload da defesa, no momento estão levando para a home;
 2. Em ManualDefense, ao clicar em "Analisar Caso (Grátis)", caso o relato esteja congruente com a infração, a página seguinte é exibida normalmente, todavia, nos meus testes, quando o relato não está congruente (ou seja, caso fosse ser apresentado o modal de incongruência), a página fica branca e nada mais renderiza. Verifique o porquê de isto estar acontecendo e corrija o problema;
-
 Caso o código da infração não existe no banco de dados, deve ser informado ao usuário quando clicar na lupa (mostrar um modal informando e sugerindo a alteração de código da infração), porém possibilitanto ao usuário prosseguir com o código apresentado por este, e possibilitando ainda que o usuário insira manualmente o Amparo Legal e a Descrição da Infração (campos que devem ser possíveis de ser editados apenas nessa situação em que o usuário confirma que quer manter o código de infração mesmo ele não constando no bando de dados da app.), porém informando que a IA levará em conta o amparo legal e descrição da infração inseridos pelo usuário e fará a defesa nos termos destes e do relato apresentado, mas que isso pode comprometer a qualidade do recurso em relação a um recurso elaborado com um código de infração presente no bando de dados da app.
 
+Em uploaddefense e ManualDefense, no modal "Código não encontrado", caso o user selecione "Corrigir Código", os valores que estavam no campo do código da infração e desd. devem ser apagados (para que o usuário insira o novo código).
 
 
 - []  Revisão final de textos
