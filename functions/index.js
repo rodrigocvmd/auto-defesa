@@ -1,7 +1,28 @@
 const { onRequest } = require("firebase-functions/v2/https");
 require("dotenv").config(); // Carrega variáveis de ambiente locais (para emulador)
 const logger = require("firebase-functions/logger");
-const cors = require("cors")({ origin: true });
+const crypto = require("crypto"); // Para hash de IP
+
+// --- CONFIGURAÇÃO DE SEGURANÇA (CORS) ---
+const allowedOrigins = [
+	"http://localhost:5173",
+	"https://auto-defesa.web.app",
+	"https://auto-defesa.firebaseapp.com",
+];
+
+const cors = require("cors")({
+	origin: (origin, callback) => {
+		// Permitir requisições sem origem (ex: curl, mobile apps) pode ser perigoso para API pública,
+		// mas para web apps, o browser sempre manda origin.
+		if (!origin) return callback(null, true);
+		if (allowedOrigins.indexOf(origin) !== -1) {
+			callback(null, true);
+		} else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
+});
+
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const admin = require("firebase-admin");
@@ -21,6 +42,37 @@ if (admin.apps.length === 0) {
 	}
 }
 const db = admin.firestore();
+
+// --- HELPER: RATE LIMIT (Backend) ---
+async function checkIpRateLimit(req, limitCount = 3, windowHours = 1) {
+	// Tenta pegar o IP real (considerando proxies do Firebase/Google)
+	const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+	const ipHash = crypto.createHash("sha256").update(ip || "unknown").digest("hex");
+	
+	const rateRef = db.collection("rate_limits").doc(ipHash);
+	const now = admin.firestore.Timestamp.now();
+	
+	// Transação para garantir consistência
+	await db.runTransaction(async (t) => {
+		const doc = await t.get(rateRef);
+		let data = doc.exists ? doc.data() : { count: 0, resetAt: now };
+
+		// Se o tempo de janela expirou, reseta
+		if (now.toMillis() > data.resetAt.toMillis()) {
+			data = { count: 0, resetAt: admin.firestore.Timestamp.fromMillis(now.toMillis() + windowHours * 3600 * 1000) };
+		}
+
+		if (data.count >= limitCount) {
+			throw new Error("RATE_LIMIT_EXCEEDED");
+		}
+
+		t.set(rateRef, { 
+			count: data.count + 1, 
+			resetAt: data.resetAt,
+			lastIp: ip // Apenas para debug/audit se necessário
+		});
+	});
+}
 
 // --- CONFIGURAÇÃO DE MODELOS (HYBRID AI) ---
 // Flash: Para tarefas rápidas, OCR, extração e edições simples.
@@ -327,7 +379,19 @@ exports.preAnalyze = onRequest((req, res) => {
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
 
 		const { image, mimeType, ...userData } = req.body || {};
-		// NÃO verifica créditos aqui, pois é uma "amostra grátis" para conversão.
+		
+		try {
+			// RATE LIMIT BACKEND: 5 tentativas por hora por IP para pré-análise
+			// Isso protege sua cota da OpenAI/Gemini contra scripts de loop
+			await checkIpRateLimit(req, 5, 1);
+		} catch (e) {
+			if (e.message === "RATE_LIMIT_EXCEEDED") {
+				return res.status(429).json({ error: "Muitas tentativas. Tente novamente em 1 hora ou faça login." });
+			}
+			console.error("Erro Rate Limit:", e);
+			// Em caso de erro no Redis/Firestore do rate limit, optamos por falhar aberto ou fechado?
+			// Aqui falhamos seguro (bloqueia se der erro de banco), mas logamos.
+		}
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);

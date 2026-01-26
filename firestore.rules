@@ -20,7 +20,7 @@ service cloud.firestore {
 
     // Regra para a coleção 'infracoes' (consulta pública de infrações)
     match /infracoes/{infracaoId} {
-      allow read: if true;
+      allow get: if true;
     }
   }
 }
