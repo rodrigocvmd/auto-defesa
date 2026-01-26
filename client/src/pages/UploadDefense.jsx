@@ -429,7 +429,7 @@ const UploadDefense = () => {
 					if (!isValidCPF(value)) error = "CPF inválido.";
 					break;
                 case 'cnh': if (value.length !== 11) error = "CNH deve ter 11 dígitos."; break;
-                case 'aitNumber': if (value.length > 10) error = "Máximo 10 caracteres."; break;
+                case 'aitNumber': if (value.length !== 10) error = "AIT deve ter 10 caracteres."; break;
 				case 'rg': 
 					const rgRegex = /^(\d{3}\.\d{3}|\d{1}\.\d{3}\.\d{3})$/;
 					if (!rgRegex.test(value)) error = "RG inválido."; 
