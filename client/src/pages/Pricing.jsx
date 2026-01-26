@@ -62,7 +62,7 @@ const Pricing = () => {
 			credits: 10,
 			mode: "payment", // Pagamento Único
 			icon: <Briefcase size={24} />,
-			description: "Perfeito para motoristas de aplicativo, empresas e famílias.",
+			description: "Este pacote é perfeito para motoristas de aplicativo, empresas e famílias.",
 			features: [
 				"10 Créditos de Recurso",
 				"Créditos vitalícios / não expiram",
@@ -124,19 +124,28 @@ const Pricing = () => {
 								</div>
 							)}
 
-							<div
-								className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${plan.recommended ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-600"}`}>
-								{plan.icon}
+							<div className="flex items-center justify-center gap-4 mb-6">
+								<div
+									className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${plan.recommended ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-600"}`}>
+									{plan.icon}
+								</div>
+								<h3 className="text-2xl font-bold text-gray-900 leading-tight text-left">
+									{plan.name.split(" ").map((word, i) => (
+										<React.Fragment key={i}>
+											{word}
+											<br />
+										</React.Fragment>
+									))}
+								</h3>
 							</div>
 
-							<h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
 							<p className="text-gray-500 text-sm mb-6 min-h-[40px]">{plan.description}</p>
 
-							<div className="mb-8">
+							<div className="mb-6 text-center">
 								<div className="text-4xl font-black text-gray-900">{plan.price}</div>
-								{plan.credits > 1 && (
-									<div className="text-xs font-bold text-green-600 bg-green-50 inline-block px-2 py-1 rounded mt-2">
-										{plan.credits} créditos inclusos
+								{plan.credits >= 1 && (
+									<div className="text-sm font-bold text-green-600 bg-green-50 inline-block px-2 py-1 rounded mt-5">
+										{plan.credits} {plan.credits === 1 ? "crédito incluso" : "créditos inclusos"}
 									</div>
 								)}
 							</div>
