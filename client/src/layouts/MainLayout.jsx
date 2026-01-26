@@ -46,14 +46,14 @@ const MainLayout = ({ children }) => {
                 </Link>
               )}
               
-              <Link to="/pricing" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
-                Preços
-              </Link>
-              
               <Link to="/how-it-works" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
                 Como Funciona
               </Link>
 
+              <Link to="/pricing" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+                Preços
+              </Link>
+              
               <Link to="/help" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
                 Ajuda
               </Link>
@@ -112,11 +112,11 @@ const MainLayout = ({ children }) => {
                             Início
                         </Link>
                     )}
-                    <Link to="/pricing" onClick={() => setIsMenuOpen(false)} className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
-                        Preços
-                    </Link>
                     <Link to="/how-it-works" onClick={() => setIsMenuOpen(false)} className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
                         Como Funciona
+                    </Link>
+                    <Link to="/pricing" onClick={() => setIsMenuOpen(false)} className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+                        Preços
                     </Link>
                     <Link to="/help" onClick={() => setIsMenuOpen(false)} className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
                         Ajuda

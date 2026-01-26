@@ -86,7 +86,7 @@ const Home = () => {
              <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-500 rounded-full blur-[100px]"></div>
           </div>
 
-          <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <div className="max-w-6xl mx-auto px-6 lg:px-16 relative z-10">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black mb-6">Por que escolher a AutoDefesa?</h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-lg">
@@ -96,20 +96,20 @@ const Home = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Card Lawyer */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10">
+              <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-6 sm:p-8 border border-white/10">
                 <h3 className="text-xl font-bold text-gray-300 mb-6 flex items-center gap-2">
                   <Shield size={20} /> Defesa Tradicional (Advogado)
                 </h3>
                 <ul className="space-y-4 text-gray-400">
-                  <li className="flex items-center justify-between border-b border-white/10 pb-4">
+                  <li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-1 sm:gap-0">
                     <span>Custo Médio</span>
                     <span className="font-bold text-white">R$ 350,00 - R$ 800,00</span>
                   </li>
-                  <li className="flex items-center justify-between border-b border-white/10 pb-4">
+                  <li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-1 sm:gap-0">
                     <span>Tempo de Espera</span>
                     <span className="font-bold text-white">3 a 5 dias úteis</span>
                   </li>
-                  <li className="flex items-center justify-between">
+                  <li className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
                     <span>Processo</span>
                     <span className="font-bold text-white">Burocrático e lento</span>
                   </li>
@@ -117,27 +117,27 @@ const Home = () => {
               </div>
 
               {/* Card AutoDefesa */}
-              <div className="bg-white text-gray-900 rounded-3xl p-8 border-4 border-blue-500 shadow-2xl relative transform lg:scale-110">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+              <div className="bg-white text-gray-900 rounded-3xl p-6 sm:p-8 border-4 border-blue-500 shadow-2xl relative transform lg:scale-110">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-xs sm:text-sm font-bold shadow-lg whitespace-nowrap">
                   MELHOR ESCOLHA
                 </div>
                 <h3 className="text-2xl font-black text-gray-900 mb-6 flex items-center gap-2">
                   <span className="text-blue-600">AutoDefesa</span> IA
                 </h3>
                 <ul className="space-y-4">
-                  <li className="flex items-center justify-between border-b border-gray-100 pb-4">
+                  <li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
                     <span className="font-medium text-gray-600">Custo</span>
-                    <span className="font-black text-green-600 text-2xl">Apenas R$ 16,90</span>
+                    <span className="font-black text-green-600 text-xl sm:text-2xl">Apenas R$ 16,90</span>
                   </li>
-                  <li className="flex items-center justify-between border-b border-gray-100 pb-4">
+                  <li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
                     <span className="font-medium text-gray-600">Tempo de Espera</span>
                     <span className="font-bold text-blue-600 flex items-center gap-1"><Clock size={16} /> Imediato</span>
                   </li>
-                  <li className="flex items-center justify-between border-b border-gray-100 pb-4">
+                  <li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
                     <span className="font-medium text-gray-600">Qualidade</span>
                     <span className="font-bold text-gray-900">Especialista em Trânsito</span>
                   </li>
-                  <li className="flex items-center justify-between">
+                  <li className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
                     <span className="font-medium text-gray-600">Resultado</span>
                     <span className="font-bold text-gray-900 flex items-center gap-1"><FileCheck size={18} className="text-blue-600"/> Pronto p/ Protocolar</span>
                   </li>

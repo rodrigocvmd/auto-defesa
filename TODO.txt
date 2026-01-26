@@ -127,13 +127,11 @@ Na página de edição do recurso, ao clicar em "IA Ajustes", a caixa de texto p
 Apenas no mobile, na página do perfil, os Minhas Defesas, Dados e Preferências e Segurança devem aparecer alinhados na vertical (um em cima do outro), e não com scroll lateral como está acontecendo.
 Remova o botão reiniciar do checklist na página de edição do recurso;
 Mudar checklist de lugar
-
-
 1. Em uploaddefense e ManualDefense, remova o checklist fixo da página de edição, mantendo apenas o checklist que aparece no modal após baixar o pdf. A parte do recurso em si, o texto, deve ocupar a largura do espeço liberado com a retirada do checklist, mesma largura da seção acima do recurso que possui a informação de "Defesa Gerada. Revise o documento abaixo antes de finalizar." e os botões Editar Texto, IA Ajustes e Baixar PDF;
 2. Em uploaddefense e ManualDefense, remova o botão fechar do Cheklist pós download, mantendo apenas o botão "Ir para minhas defesas";
 3. Quando o navbar estiver com o botão hamburguer, centralize horizontalmente os textos dos botões;
-
 Em uploaddefense e ManualDefense, XXXX ascara para CNH e Numero do AITs
+
 
 
 - []  Revisão final de textos
