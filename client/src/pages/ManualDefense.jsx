@@ -155,6 +155,13 @@ const ManualDefense = () => {
     value = value || '';
     if (errors[name]) setErrors(prev => ({...prev, [name]: null}));
 
+    if (name === 'cnh') {
+        value = value.replace(/\D/g, '').slice(0, 11);
+    }
+    if (name === 'aitNumber') {
+        value = value.slice(0, 10);
+    }
+
     if (name === 'cpf') {
       value = value.replace(/\D/g, '').slice(0, 11);
       if (value.length > 9) value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
@@ -196,6 +203,7 @@ const ManualDefense = () => {
                   if (nameParts.length < 2 || nameParts.some(part => part.length < 2)) error = "Nome completo deve ter pelo menos 2 palavras com 2 caracteres cada.";
                   break;
               case 'cpf': if (!isValidCPF(value)) error = "CPF inválido."; break;
+              case 'cnh': if (value.length !== 11) error = "CNH deve ter 11 dígitos."; break;
               case 'rg': 
                   const rgRegex = /^(\d{3}\.\d{3}|\d{1}\.\d{3}\.\d{3})$/;
                   if (!rgRegex.test(value)) error = "RG inválido."; 
