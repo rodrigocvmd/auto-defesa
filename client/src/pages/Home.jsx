@@ -30,10 +30,6 @@ const Home = () => {
                 <Upload size={24} />
                 Analisar Multa Grátis
               </Link>
-              <Link to="/manual-defense" className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-lg font-bold py-4 px-8 rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2">
-                <FileText size={24} />
-                Preencher Manualmente
-              </Link>
             </div>
 
             <div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-500 animate-in fade-in duration-1000 delay-500">

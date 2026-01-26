@@ -160,7 +160,7 @@ const Pricing = () => {
 								className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 ${
 									plan.recommended
 										? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200"
-										: "bg-gray-900 text-white hover:bg-gray-800"
+										: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-100"
 								} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""}`}>
 								{loadingId === plan.id ? "Processando..." : "Selecionar Produto"}
 							</button>

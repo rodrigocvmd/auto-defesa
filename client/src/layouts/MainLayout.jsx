@@ -47,6 +47,14 @@ const MainLayout = ({ children }) => {
               <Link to="/pricing" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
                 Preços
               </Link>
+              
+              <Link to="/how-it-works" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+                Como Funciona
+              </Link>
+
+              <Link to="/help" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+                Ajuda
+              </Link>
 
               <div className="h-6 w-px bg-gray-200 mx-2"></div>
 

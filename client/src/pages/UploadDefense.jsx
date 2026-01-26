@@ -2301,6 +2301,12 @@ const UploadDefense = () => {
 							</div>
 						</form>
 					</div>
+					<div className="bg-gray-50 p-6 text-center border-t border-gray-100">
+						<p className="text-gray-500 text-sm mb-2">Não tem arquivo ou foto da infração?</p>
+						<Link to="/manual-defense" className="text-blue-600 font-bold hover:underline flex items-center justify-center gap-1">
+							<FileText size={16} /> Inserir dados manualmente
+						</Link>
+					</div>
 				</div>
 			</div>
 		</MainLayout>

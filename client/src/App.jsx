@@ -12,10 +12,12 @@ import Profile from './pages/Profile';
 import Pricing from './pages/Pricing';
 import HowItWorks from './pages/HowItWorks';
 import Help from './pages/Help';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />

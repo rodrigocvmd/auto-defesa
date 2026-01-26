@@ -91,6 +91,16 @@ A descrição deve ficar alternando entre "Analisando a congruência entre a mat
 - [x]  Onde couber/for pertinente, informar que todas as demonstrações são  os testes são feitos com um modelo mais fraco de IA, enquanto o recurso real é elaborado com o modelo mais avançado;
 - [x]  Melhorar termos de uso e privacidade, tornando mais completos e em acordo com as atuais boas práticas destes pontos;
 - [x]  Crie uma página informativa/de ajuda de como funciona a app passo a passo, opções do usuário, como prosseguir, o que a app faz, etc.; Ou seja, criar sessão de Help completa (suporte ao usuário, com mockups das informações que você não souber (irei preencher depois))
+- [x]  Revisão final de funcionalidades:
+1. Na Home, retirar o botão de "Preencher Manualmente". Deve constar apenas o botão de "Analisar Multa Grátis". O botão de "Preencher Manualmente" deve ser adicionado como opção na página de inserir documento em UploadDefense, abaixo da opção de inserir o documento, indicando algo como "Não tenho arquivo ou foto da infração - Inserir dados manualmente";
+2. Inserir os botões "Como Funcionar" e "Ajuda", que estão na footer, também no header;
+3. Sempre que o usuário é direcionado para um nova página, ela deve ser aberta no topo. ALgumas páginas estão sendo abertas já no final (como se tivessem sido scrolladas para baixo já);
+4. Altere a cor dos botões de seleciona produto do Recurso Expresso e do Pacote Profissional para um azul (um azul mais leve que o do botão de Proteção Completa, mas ainda assim deve ser azul.) Preto não é muito atrativo para cliques e conversão;
+1. Adicione uma confirmação de email quando o usuário cria a conta, a qual ele deve clicar no link recebido no email indicado para validar e poder começar a usar a conta;
+2. No cadastro, adicione critérios para a senha: (mínimo de 6 digitos (já está sendo aplicado), ao menos 1 letra maiúscula e ao menos 1 número). Adicione ainda uma interface simples que indica para o usuário se a senha está cumprindo os requisitos, bem como uma interface que indica se a senha do campo confirmar senha bate com a senha do campo senha;
+3. No cadastro, adicione o campo para inserir o nome do usuário;
+
+Os limites dos testes grátis devem ser referentes a cada perfil. Com exceção do limite sem o usuário estar logado, que deve ser mantido como está, os limites quando o usuário está logado devem ser vinculados ao perfil, e não ao navegador/computador/ip que está utilizando a app.
 
 
 Conferir:
@@ -102,11 +112,9 @@ Conferir:
 
 
 
-- []  Revisão final de funcionalidades:
-1. Na Home, retirar o botão de "Preencher Manualmente". Deve constar apenas o botão de "Analisar Multa Grátis". O botão de "Preencher Manualmente" deve ser adicionado como opção na página de inserir documento em UploadDefense, abaixo da opção de inserir o documento, indicando algo como "Não tenho arquivo ou foto da infração - Inserir dados manualmente";
-2. Inserir os botões "Como Funcionar" e "Ajuda", que estão na footer, também no header;
-3. Sempre que o usuário é direcionado para um nova página, ela deve ser aberta no topo. ALgumas páginas estão sendo abertas já no final (como se tivessem sido scrolladas para baixo já);
-4. Altere a cor dos botões de seleciona produto do Recurso Expresso e do Pacote Profissional para um azul (um azul mais leve que o do botão de Proteção Completa, mas ainda assim deve ser azul.) Preto não é muito atrativo para cliques e conversão;
+1. Adicione uma confirmação de email quando o usuário cria a conta, a qual ele deve clicar no link recebido no email indicado para validar e poder começar a usar a conta;
+2. No cadastro, adicione critérios para a senha: (mínimo de 6 digitos (já está sendo aplicado), ao menos 1 letra maiúscula e ao menos 1 número). Adicione ainda uma interface simples que indica para o usuário se a senha está cumprindo os requisitos, bem como uma interface que indica se a senha do campo confirmar senha bate com a senha do campo senha;
+3. No cadastro, adicione o campo para inserir o nome do usuário;
 
 
 

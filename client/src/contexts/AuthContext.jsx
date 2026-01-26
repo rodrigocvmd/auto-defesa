@@ -7,7 +7,9 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
     sendPasswordResetEmail,
-    verifyBeforeUpdateEmail
+    verifyBeforeUpdateEmail,
+    sendEmailVerification,
+    updateProfile
 } from 'firebase/auth';
 import { doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
@@ -26,12 +28,31 @@ export function AuthProvider({ children }) {
     // Configurar idioma para português (Emails de reset, verificação, etc)
     auth.languageCode = 'pt';
 
-    function signup(email, password) {
-        return createUserWithEmailAndPassword(auth, email, password);
+    async function signup(email, password, name) {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Atualizar nome do perfil
+        if (name) {
+            await updateProfile(user, { displayName: name });
+        }
+
+        // Enviar email de verificação
+        await sendEmailVerification(user);
+
+        // Deslogar para obrigar login após verificação (opcional, mas seguro)
+        await signOut(auth);
+
+        return user;
     }
 
-    function login(email, password) {
-        return signInWithEmailAndPassword(auth, email, password);
+    async function login(email, password) {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        if (!userCredential.user.emailVerified) {
+            await signOut(auth);
+            throw new Error('Email not verified');
+        }
+        return userCredential;
     }
 
     function loginWithGoogle() {
