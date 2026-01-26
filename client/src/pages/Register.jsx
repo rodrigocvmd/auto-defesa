@@ -6,7 +6,7 @@ import { AlertCircle, UserPlus, Check, X, Mail } from 'lucide-react';
 
 export default function Register() {
     const [searchParams] = useSearchParams();
-    const redirect = searchParams.get('redirect') || '/';
+    const redirect = searchParams.get('redirect') || '/profile';
     const emailParam = searchParams.get('email') || '';
 
     const [name, setName] = useState('');

@@ -15,7 +15,7 @@ export default function Login() {
     const { login, loginWithGoogle, resetPassword, checkEmailExists } = useAuth();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const redirect = searchParams.get('redirect') || '/';
+    const redirect = searchParams.get('redirect') || '/profile';
 
     async function handleSubmit(e) {
         e.preventDefault();

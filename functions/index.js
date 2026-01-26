@@ -61,7 +61,13 @@ async function verifyAuth(req) {
 // --- HELPER: RATE LIMIT (Backend) ---
 async function checkIpRateLimit(req, limitCount = 3, windowHours = 1) {
 	// Tenta pegar o IP real (considerando proxies do Firebase/Google)
-	const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+	let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+	
+	// Se houver múltiplos IPs (proxy chain), pega o primeiro (client real)
+	if (ip && ip.indexOf(',') !== -1) {
+		ip = ip.split(',')[0].trim();
+	}
+
 	const ipHash = crypto.createHash("sha256").update(ip || "unknown").digest("hex");
 	
 	const rateRef = db.collection("rate_limits").doc(ipHash);
