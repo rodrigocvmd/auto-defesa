@@ -18,7 +18,7 @@ const Home = () => {
 		<MainLayout>
 			<div className="flex flex-col gap-20 pb-20">
 				{/* HERO SECTION */}
-				<section className="relative pt-10 pb-20 lg:pt-20 lg:pb-28 overflow-hidden">
+				<section className="relative pt-8 pb-4 lg:pt-10 lg:pb-10 overflow-hidden">
 					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/50 via-gray-50 to-white"></div>
 
 					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -48,7 +48,7 @@ const Home = () => {
 							</Link>
 						</div>
 
-						<div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-500 animate-in fade-in duration-1000 delay-500">
+						<div className="mt-16 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-500 animate-in fade-in duration-1000 delay-500">
 							<div className="flex items-center gap-2">
 								<CheckCircle size={16} className="text-green-500" /> Baseado no CTB e Normativas
 								CONTRAN

@@ -187,7 +187,7 @@ const MainLayout = ({ children }) => {
 			<VerificationBanner />
 
 			{/* Main Content Area */}
-			<main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">{children}</main>
+			<main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-1 py-1">{children}</main>
 
 			{/* Footer Responsivo */}
 			<footer className="bg-white border-t border-gray-200 mt-auto">

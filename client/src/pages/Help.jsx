@@ -160,7 +160,7 @@ const Help = () => {
 									)}
 								</button>
 								{openIndex === idx && (
-									<div className="p-5 pt-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 mt-2">
+									<div className="p-5 pt-5 text-gray-600 text-md leading-relaxed border-t border-gray-100 mt-2">
 										{faq.a}
 									</div>
 								)}
