@@ -131,10 +131,8 @@ Mudar checklist de lugar
 2. Em uploaddefense e ManualDefense, remova o botão fechar do Cheklist pós download, mantendo apenas o botão "Ir para minhas defesas";
 3. Quando o navbar estiver com o botão hamburguer, centralize horizontalmente os textos dos botões;
 Em uploaddefense e ManualDefense, XXXX ascara para CNH e Numero do AITs
+- [x]  Revisão final de textos
 
-
-
-- []  Revisão final de textos
 
 - []  Refatorar
 - []  Build

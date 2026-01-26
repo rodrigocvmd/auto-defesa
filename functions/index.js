@@ -75,7 +75,9 @@ exports.generateDefense = onRequest((req, res) => {
 		// CLEAN DATA: Remove empty fields to avoid "Field: " in the output
 		const cleanData = (obj) => {
 			return Object.fromEntries(
-				Object.entries(obj).filter(([_, v]) => v != null && v !== "" && v !== "null" && v !== "undefined")
+				Object.entries(obj).filter(
+					([_, v]) => v != null && v !== "" && v !== "null" && v !== "undefined",
+				),
 			);
 		};
 		// We clean specific sub-objects or just use cleaned values in the prompt construction
@@ -120,7 +122,6 @@ exports.generateDefense = onRequest((req, res) => {
 
           Ação: Aplique as alterações no Texto Base e retorne o documento final completo.
         `;
-
 			} else {
 				// --- LÓGICA DE GERAÇÃO INICIAL ---
 				systemInstruction = `
@@ -156,8 +157,8 @@ exports.generateDefense = onRequest((req, res) => {
 				const defenseTypeLabel = defenseTypeMap[data.defenseType] || "RECURSO ADMINISTRATIVO";
 
 				// Helper to format fields only if present
-				const fmt = (label, value, suffix = "") => value ? `${label} ${value}${suffix}, ` : "";
-				const fmtDirect = (value, suffix = "") => value ? `${value}${suffix}, ` : "";
+				const fmt = (label, value, suffix = "") => (value ? `${label} ${value}${suffix}, ` : "");
+				const fmtDirect = (value, suffix = "") => (value ? `${value}${suffix}, ` : "");
 
 				// Constructing the prompt carefully to avoid empty labels
 				userPrompt = `
@@ -170,7 +171,7 @@ exports.generateDefense = onRequest((req, res) => {
           QUALIFICAÇÃO (Monte um parágrafo fluido com estes dados):
           Nome: ${data.name || ""}
           Nacionalidade: ${data.nationality || "Brasileiro(a)"}
-          Estado Civil: ${data.maritalStatus === "Outro" ? "" : (data.maritalStatus || "")}
+          Estado Civil: ${data.maritalStatus === "Outro" ? "" : data.maritalStatus || ""}
           Profissão: ${data.profession || ""}
           RG: ${data.rg || ""} ${data.rgIssuer || ""}
           CPF: ${data.cpf || ""}
@@ -214,10 +215,27 @@ exports.createCheckoutSession = onRequest((req, res) => {
 		// Para teste rápido, substitua abaixo, mas NÃO COMITE em produção real.
 		const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-		const { priceId, userId, credits, successUrl, cancelUrl, mode } = req.body;
+		const { priceId, userId, successUrl, cancelUrl, mode } = req.body;
 
 		if (!userId) {
 			res.status(400).json({ error: "Usuário não identificado." });
+			return;
+		}
+
+		// MAPA DE PREÇOS X CRÉDITOS (SEGURANÇA)
+		// Substitua os IDs abaixo pelos 'API ID' que aparecem no seu Dashboard do Stripe (Produtos > Preços)
+		const PRICE_CREDITS_MAP = {
+			price_1SsUk8Qphe4gmDmiJhdjZsL4: 1, // Ex: Recurso Único (R$ 29,90)
+			price_1SsUkvQphe4gmDmiExt4PDuw: 5, // Ex: Combo 5 Recursos (R$ 99,00)
+			price_1SsUlDQphe4gmDmimwZpXhQg: 10, // Ex: Combo Profissional 10 Recursos (R$ 149,00)
+		};
+
+		const selectedPriceId = priceId || "price_H5ggYwtDq4fbrJ";
+		const creditsAmount = PRICE_CREDITS_MAP[selectedPriceId];
+
+		if (!creditsAmount) {
+			console.error(`❌ Tentativa de compra com preço inválido: ${selectedPriceId}`);
+			res.status(400).json({ error: "Produto inválido." });
 			return;
 		}
 
@@ -227,7 +245,7 @@ exports.createCheckoutSession = onRequest((req, res) => {
 				locale: "pt-BR",
 				line_items: [
 					{
-						price: priceId || "price_H5ggYwtDq4fbrJ",
+						price: selectedPriceId,
 						quantity: 1,
 					},
 				],
@@ -237,7 +255,7 @@ exports.createCheckoutSession = onRequest((req, res) => {
 				client_reference_id: userId,
 				metadata: {
 					userId: userId,
-					credits: credits || 1,
+					credits: creditsAmount, // Fonte segura (servidor)
 				},
 			});
 
@@ -464,34 +482,32 @@ exports.stripeWebhook = onRequest(async (req, res) => {
 
 	let event;
 
-	if (endpointSecret) {
-		const sig = req.headers["stripe-signature"];
+	if (!endpointSecret) {
+		console.error("❌ ERRO CRÍTICO: STRIPE_WEBHOOK_SECRET não está definido.");
+		res.status(500).send("Configuration Error: Webhook Secret missing.");
+		return;
+	}
 
-		if (!req.rawBody) {
-			console.error(
-				"❌ ERRO CRÍTICO: req.rawBody está undefined. O middleware do Firebase pode ter parseado o corpo antes. Verifique a configuração.",
-			);
-			// Tentativa de fallback (arriscada, mas útil para debug se o emulador estiver falhando no rawBody)
-			// event = req.body;
-			// Mas para constructEvent precisamos do buffer original.
-			res.status(400).send("Webhook Error: req.rawBody is missing.");
-			return;
-		}
+	const sig = req.headers["stripe-signature"];
 
-		try {
-			event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
-			console.log("✅ Assinatura do Webhook verificada com sucesso.");
-		} catch (err) {
-			console.error(`❌ Webhook Signature Error: ${err.message}`);
-			console.error(
-				`Dica: Verifique se o segredo 'whsec_...' gerado pelo 'stripe listen' é o mesmo que está no seu .env.`,
-			);
-			res.status(400).send(`Webhook Error: ${err.message}`);
-			return;
-		}
-	} else {
-		event = req.body;
-		console.log("⚠️ Usando req.body diretamente (sem verificação de assinatura).");
+	if (!req.rawBody) {
+		console.error(
+			"❌ ERRO CRÍTICO: req.rawBody está undefined. O middleware do Firebase pode ter parseado o corpo antes. Verifique a configuração.",
+		);
+		res.status(400).send("Webhook Error: req.rawBody is missing.");
+		return;
+	}
+
+	try {
+		event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
+		console.log("✅ Assinatura do Webhook verificada com sucesso.");
+	} catch (err) {
+		console.error(`❌ Webhook Signature Error: ${err.message}`);
+		console.error(
+			`Dica: Verifique se o segredo 'whsec_...' gerado pelo 'stripe listen' é o mesmo que está no seu .env.`,
+		);
+		res.status(400).send(`Webhook Error: ${err.message}`);
+		return;
 	}
 
 	// Handle the event
