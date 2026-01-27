@@ -69,7 +69,7 @@ const ManualDefense = () => {
 	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
 	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
 	const [loadingText, setLoadingText] = useState(
-		"Aguarde na página, o processamento das informações e elaboração do recurso pela nossa IA Pro pode demorar até 1 minuto.",
+		"Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem aplicadas...",
 	);
 
 	// Rate Limiting States
@@ -81,7 +81,7 @@ const ManualDefense = () => {
 	useEffect(() => {
 		// Loading text is now static as requested
 		setLoadingText(
-			"Aguarde na página, o processamento das informações e elaboração do recurso pela nossa IA Pro pode demorar até 1 minuto.",
+			"Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem aplicadas...",
 		);
 	}, [loading]);
 
@@ -936,7 +936,7 @@ const ManualDefense = () => {
 								</li>
 								<li>Acessar o site do órgão autuador (Detran, DER, PRF...);</li>
 								<li>
-									Enviar o PDF do recurso junto com as cópias dos documentos (CNH, CRLV,
+									Enviar o PDF do recurso junto com as cópias dos documentos (CNH, CRLV e
 									Notificação).
 								</li>
 							</ul>
@@ -1189,10 +1189,10 @@ const ManualDefense = () => {
 	if (result) {
 		return (
 			<MainLayout>
-				<SEO 
+				<SEO
 					title="Resultado da Defesa"
 					description="Seu recurso foi gerado com sucesso. Baixe agora."
-					noIndex={true} 
+					noIndex={true}
 				/>
 				{loading && (
 					<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
@@ -1316,8 +1316,12 @@ const ManualDefense = () => {
 						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
 						<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
 						<p className="text-gray-600 max-w-md font-medium">
-							Nossa IA está aplicando as melhores teses jurídicas e resoluções do CONTRAN para
-							garantir a máxima qualidade do seu recurso.
+							Aguarde na página, nossa IA está aplicando as melhores teses jurídicas e resoluções do
+							CONTRAN para garantir a máxima qualidade do seu recurso.
+						</p>
+						<p className="text-gray-600 max-w-md font-medium">
+							O processamento das informações e elaboração do recurso pela IA Pro pode demorar até 1
+							minuto.
 						</p>
 						<div className="mt-8 flex gap-2">
 							<div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
@@ -1528,7 +1532,7 @@ const ManualDefense = () => {
 	if (step === "form") {
 		return (
 			<MainLayout>
-				<SEO 
+				<SEO
 					title="Focada em Inserção de Dados Manualmente"
 					description="Preencha os dados da sua multa manualmente e gere seu recurso personalizado com IA."
 					keywords="recurso manual, preencher multa, advogado virtual"
@@ -2255,7 +2259,7 @@ const ManualDefense = () => {
 	// 3. TELA DE SELEÇÃO (DEFAULT)
 	return (
 		<MainLayout>
-			<SEO 
+			<SEO
 				title="Focada em Inserção de Dados Manualmente"
 				description="Preencha os dados da sua multa manualmente e gere seu recurso personalizado com IA."
 				keywords="recurso manual, preencher multa, advogado virtual"

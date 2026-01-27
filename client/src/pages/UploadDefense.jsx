@@ -69,7 +69,7 @@ const UploadDefense = () => {
 	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
 	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
 	const [loadingText, setLoadingText] = useState(
-		"Aguarde na página, o processamento das informações e elaboração do recurso pela nossa IA Pro pode demorar até 1 minuto.",
+		"Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem aplicadas...",
 	);
 
 	// Rate Limiting States
@@ -81,7 +81,7 @@ const UploadDefense = () => {
 	useEffect(() => {
 		// Loading text is now static as requested
 		setLoadingText(
-			"Aguarde na página, o processamento das informações e elaboração do recurso pela nossa IA Pro pode demorar até 1 minuto.",
+			"Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem aplicadas...",
 		);
 	}, [loading]);
 
@@ -896,7 +896,7 @@ const UploadDefense = () => {
 								</li>
 								<li>Acessar o site do órgão autuador (Detran, DER, PRF...);</li>
 								<li>
-									Enviar o PDF do recurso junto com as cópias dos documentos (CNH, CRLV,
+									Enviar o PDF do recurso junto com as cópias dos documentos (CNH, CRLV e
 									Notificação).
 								</li>
 							</ul>
@@ -1211,8 +1211,12 @@ const UploadDefense = () => {
 						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
 						<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
 						<p className="text-gray-600 max-w-md font-medium">
-							Nossa IA está aplicando as melhores teses jurídicas e resoluções do CONTRAN para
-							garantir a máxima qualidade do seu recurso.
+							Aguarde na página, nossa IA está aplicando as melhores teses jurídicas e resoluções do
+							CONTRAN para garantir a máxima qualidade do seu recurso.
+						</p>
+						<p className="text-gray-600 max-w-md font-medium">
+							O processamento das informações e elaboração do recurso pela IA Pro pode demorar até 1
+							minuto.
 						</p>
 						<div className="mt-8 flex gap-2">
 							<div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
@@ -2331,7 +2335,7 @@ const UploadDefense = () => {
 
 	return (
 		<MainLayout>
-			<SEO 
+			<SEO
 				title="Focado em Análise de Multa por Foto"
 				description="Envie a foto da sua notificação de autuação e nossa IA extrairá os dados e analisará a viabilidade do recurso gratuitamente."
 				keywords="analise multa foto, ocr multa, recurso ia, defesa transito"
