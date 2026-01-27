@@ -134,6 +134,8 @@ Em uploaddefense e ManualDefense, XXXX ascara para CNH e Numero do AITs
 - [x]  Revisão final de textos
 
 
+Inverter ordem checklist
+
 - []  Refatorar
 - []  Build
 - []  Deploy

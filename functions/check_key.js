@@ -7,7 +7,6 @@ async function checkModels() {
     return;
   }
 
-  console.log(`🔑 Testando chave: ${apiKey.substring(0, 6)}... (Tamanho: ${apiKey.length})`);
   console.log("📡 Conectando ao Google para listar modelos disponíveis...");
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;

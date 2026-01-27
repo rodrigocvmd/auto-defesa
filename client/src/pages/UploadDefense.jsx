@@ -59,37 +59,42 @@ const UploadDefense = () => {
 	const [searchingCode, setSearchingCode] = useState(false);
 	const [defenseId, setDefenseId] = useState(null);
 	const [showHelpModal, setShowHelpModal] = useState(false);
-    const [showCodeNotFoundModal, setShowCodeNotFoundModal] = useState(false);
-    const [isManualInfraction, setIsManualInfraction] = useState(false);
-    const [showPostDownloadModal, setShowPostDownloadModal] = useState(false);
+	const [showCodeNotFoundModal, setShowCodeNotFoundModal] = useState(false);
+	const [isManualInfraction, setIsManualInfraction] = useState(false);
+	const [showPostDownloadModal, setShowPostDownloadModal] = useState(false);
 
 	// Novos estados para alertas
 	const [showEditWarning, setShowEditWarning] = useState(false);
 	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
 	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
-    const [loadingText, setLoadingText] = useState("Analisando a congruência entre a materialidade da infração e o relato do usuário.");
+	const [loadingText, setLoadingText] = useState(
+		"Analisando a congruência entre a materialidade da infração e o relato do usuário.",
+	);
 
-    // Rate Limiting States
-    const [showLimitModal, setShowLimitModal] = useState(false);
-    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-    const [consecutiveDivergenceCount, setConsecutiveDivergenceCount] = useState(0);
-    const [refinementCount, setRefinementCount] = useState(5);
+	// Rate Limiting States
+	const [showLimitModal, setShowLimitModal] = useState(false);
+	const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+	const [consecutiveDivergenceCount, setConsecutiveDivergenceCount] = useState(0);
+	const [refinementCount, setRefinementCount] = useState(5);
 
-    useEffect(() => {
-        let interval;
-        if (loading) {
-            interval = setInterval(() => {
-                setLoadingText(prev => 
-                    prev === "Analisando a congruência entre a materialidade da infração e o relato do usuário." 
-                        ? "Nossa IA está identificando erros na multa e melhores argumentos de defesa." 
-                        : "Analisando a congruência entre a materialidade da infração e o relato do usuário."
-                );
-            }, 3000);
-        } else {
-            setLoadingText("Analisando a congruência entre a materialidade da infração e o relato do usuário.");
-        }
-        return () => clearInterval(interval);
-    }, [loading]);
+	useEffect(() => {
+		let interval;
+		if (loading) {
+			interval = setInterval(() => {
+				setLoadingText((prev) =>
+					prev ===
+					"Analisando a congruência entre a materialidade da infração e o relato do usuário."
+						? "Nossa IA está identificando erros na multa e melhores argumentos de defesa."
+						: "Analisando a congruência entre a materialidade da infração e o relato do usuário.",
+				);
+			}, 3000);
+		} else {
+			setLoadingText(
+				"Analisando a congruência entre a materialidade da infração e o relato do usuário.",
+			);
+		}
+		return () => clearInterval(interval);
+	}, [loading]);
 
 	const initialFormState = {
 		defenseType: "Análise de Upload", // Default
@@ -122,8 +127,8 @@ const UploadDefense = () => {
 		infractionCode: "",
 		infractionSplit: "",
 		article: "",
-        infractionDescription: "",
-        legalText: "",
+		infractionDescription: "",
+		legalText: "",
 		description: "",
 		equipmentNumber: "",
 		lastCalibration: "",
@@ -208,32 +213,32 @@ const UploadDefense = () => {
 	const handleUploadAndExtract = async (bypass = false) => {
 		if (!file) return;
 
-        // Record bypass if applicable
-        const isAnonymous = !currentUser;
-        if (bypass) {
-            await rateLimiter.recordBypass('upload_analysis', currentUser);
-        }
+		// Record bypass if applicable
+		const isAnonymous = !currentUser;
+		if (bypass) {
+			await rateLimiter.recordBypass("upload_analysis", currentUser);
+		}
 
-        // Rate Limit Check for Upload
-        const limitStatus = await rateLimiter.checkLimit('upload_analysis', currentUser);
+		// Rate Limit Check for Upload
+		const limitStatus = await rateLimiter.checkLimit("upload_analysis", currentUser);
 
-        if (limitStatus.hardBlocked) {
-            setHardBlockInfo({ 
-                expiresAt: limitStatus.expiresAt,
-                message: limitStatus.message
-            });
-            setShowHardBlockModal(true);
-            return;
-        }
+		if (limitStatus.hardBlocked) {
+			setHardBlockInfo({
+				expiresAt: limitStatus.expiresAt,
+				message: limitStatus.message,
+			});
+			setShowHardBlockModal(true);
+			return;
+		}
 
-        if (!bypass && !limitStatus.allowed) {
-            if (isAnonymous) {
-                setShowLoginPrompt(true);
-            } else {
-                setShowLimitModal(true);
-            }
-            return;
-        }
+		if (!bypass && !limitStatus.allowed) {
+			if (isAnonymous) {
+				setShowLoginPrompt(true);
+			} else {
+				setShowLimitModal(true);
+			}
+			return;
+		}
 
 		setLoading(true);
 		setError(null);
@@ -241,9 +246,9 @@ const UploadDefense = () => {
 			const base64 = await fileToBase64(file);
 			// Chama a nova função de extração
 			const response = await api.extractData(base64, file.type);
-            
-            // Record usage on attempt (even if extraction fails partially, we utilized the AI)
-            await rateLimiter.recordUsage('upload_analysis', currentUser);
+
+			// Record usage on attempt (even if extraction fails partially, we utilized the AI)
+			await rateLimiter.recordUsage("upload_analysis", currentUser);
 
 			if (response.success) {
 				let extractedData = response.data;
@@ -256,31 +261,35 @@ const UploadDefense = () => {
 							desdobramento: extractedData.infractionSplit,
 						});
 						if (infractionRes && infractionRes.success) {
-                            // Overwrite OCR data with authoritative DB data where available
+							// Overwrite OCR data with authoritative DB data where available
 							if (infractionRes.data.article) extractedData.article = infractionRes.data.article;
-                            if (infractionRes.data.description) extractedData.infractionDescription = infractionRes.data.description;
-                            if (infractionRes.data.legalText) extractedData.legalText = infractionRes.data.legalText;
-                            else if (infractionRes.data.description) extractedData.legalText = infractionRes.data.description; // Fallback
+							if (infractionRes.data.description)
+								extractedData.infractionDescription = infractionRes.data.description;
+							if (infractionRes.data.legalText)
+								extractedData.legalText = infractionRes.data.legalText;
+							else if (infractionRes.data.description)
+								extractedData.legalText = infractionRes.data.description; // Fallback
 						}
 					} catch (ignore) {
 						console.log("Failed to auto-fetch article from code", ignore);
 					}
 				}
 
-                // Separamos a descrição (que vem do OCR como descrição da infração) para não sobrescrever o relato do usuário
-                const { description: ocrDescription, ...otherData } = extractedData;
+				// Separamos a descrição (que vem do OCR como descrição da infração) para não sobrescrever o relato do usuário
+				const { description: ocrDescription, ...otherData } = extractedData;
 
 				// Atualiza o formulário com os dados da IA
 				setFormData((prev) => ({
 					...prev,
 					...otherData,
-                    infractionDescription: ocrDescription || extractedData.infractionDescription || prev.infractionDescription,
-                    legalText: extractedData.legalText || ocrDescription || prev.legalText, // Fallback para description
+					infractionDescription:
+						ocrDescription || extractedData.infractionDescription || prev.infractionDescription,
+					legalText: extractedData.legalText || ocrDescription || prev.legalText, // Fallback para description
 					// Mantém alguns defaults se a IA não achar
 					nationality: extractedData.nationality || prev.nationality,
 					signDate: extractedData.signDate || prev.signDate,
-                    // Garante que o relato do usuário não seja sobrescrito pela descrição da infração
-                    description: prev.description
+					// Garante que o relato do usuário não seja sobrescrito pela descrição da infração
+					description: prev.description,
 				}));
 
 				// Lógica de Fase Detectada
@@ -350,12 +359,12 @@ const UploadDefense = () => {
 		value = value || "";
 		if (errors[name]) setErrors((prev) => ({ ...prev, [name]: null }));
 
-        if (name === 'cnh') {
-            value = value.replace(/\D/g, '').slice(0, 11);
-        }
-        if (name === 'aitNumber') {
-            value = value.slice(0, 10);
-        }
+		if (name === "cnh") {
+			value = value.replace(/\D/g, "").slice(0, 11);
+		}
+		if (name === "aitNumber") {
+			value = value.slice(0, 10);
+		}
 
 		if (name === "cpf") {
 			value = value.replace(/\D/g, "").slice(0, 11);
@@ -365,22 +374,23 @@ const UploadDefense = () => {
 			value = value.replace(/\D/g, "").slice(0, 11);
 			if (value.length > 10) value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
 		}
-        if (name === 'rg') {
-            // Máscara de RG: Limite de 7 números
-            // Formato: x.xxx.xxx (7 dígitos) ou xxx.xxx (6 dígitos)
-            value = value.replace(/\D/g, '').slice(0, 7);
-            if (value.length === 7) {
-                value = value.replace(/(\d{1})(\d{3})(\d{3})/, "$1.$2.$3");
-            } else if (value.length > 3) {
-                value = value.replace(/(\d{3})(\d+)/, "$1.$2");
-            }
-        }
-		    if (name === 'date' || name === 'signDate' || name === 'lastCalibration') {
-		      value = value.replace(/\D/g, '').slice(0, 8);
-		      if (value.length > 4) value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`;
-		      else if (value.length > 2) value = `${value.slice(0, 2)}/${value.slice(2)}`;
-		    }
-		    if (name === 'time') {			value = value.replace(/\D/g, "").slice(0, 4);
+		if (name === "rg") {
+			// Máscara de RG: Limite de 7 números
+			// Formato: x.xxx.xxx (7 dígitos) ou xxx.xxx (6 dígitos)
+			value = value.replace(/\D/g, "").slice(0, 7);
+			if (value.length === 7) {
+				value = value.replace(/(\d{1})(\d{3})(\d{3})/, "$1.$2.$3");
+			} else if (value.length > 3) {
+				value = value.replace(/(\d{3})(\d+)/, "$1.$2");
+			}
+		}
+		if (name === "date" || name === "signDate" || name === "lastCalibration") {
+			value = value.replace(/\D/g, "").slice(0, 8);
+			if (value.length > 4) value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`;
+			else if (value.length > 2) value = `${value.slice(0, 2)}/${value.slice(2)}`;
+		}
+		if (name === "time") {
+			value = value.replace(/\D/g, "").slice(0, 4);
 			if (value.length > 2) value = `${value.slice(0, 2)}:${value.slice(2)}`;
 		}
 		setFormData((prev) => ({ ...prev, [name]: value }));
@@ -428,11 +438,15 @@ const UploadDefense = () => {
 				case "cpf":
 					if (!isValidCPF(value)) error = "CPF inválido.";
 					break;
-                case 'cnh': if (value.length !== 11) error = "CNH deve ter 11 dígitos."; break;
-                case 'aitNumber': if (value.length !== 10) error = "AIT deve ter 10 caracteres."; break;
-				case 'rg': 
+				case "cnh":
+					if (value.length !== 11) error = "CNH deve ter 11 dígitos.";
+					break;
+				case "aitNumber":
+					if (value.length !== 10) error = "AIT deve ter 10 caracteres.";
+					break;
+				case "rg":
 					const rgRegex = /^(\d{3}\.\d{3}|\d{1}\.\d{3}\.\d{3})$/;
-					if (!rgRegex.test(value)) error = "RG inválido."; 
+					if (!rgRegex.test(value)) error = "RG inválido.";
 					break;
 				case "email":
 					if (!value.includes("@") || !value.includes(".")) error = "E-mail inválido.";
@@ -514,17 +528,17 @@ const UploadDefense = () => {
 			});
 			if (response && response.success) {
 				const { article, description, legalText } = response.data;
-				setFormData((prev) => ({ 
-                    ...prev, 
-                    article: article || prev.article,
-                    infractionDescription: description || prev.infractionDescription,
-                    // Se legalText não vier da API, usamos a descrição como fallback para preencher o campo Dispositivo Legal
-                    legalText: legalText || description || prev.legalText
-                }));
-                setIsManualInfraction(false);
+				setFormData((prev) => ({
+					...prev,
+					article: article || prev.article,
+					infractionDescription: description || prev.infractionDescription,
+					// Se legalText não vier da API, usamos a descrição como fallback para preencher o campo Dispositivo Legal
+					legalText: legalText || description || prev.legalText,
+				}));
+				setIsManualInfraction(false);
 			} else {
-                setShowCodeNotFoundModal(true);
-            }
+				setShowCodeNotFoundModal(true);
+			}
 		} catch (error) {
 			setShowCodeNotFoundModal(true);
 		} finally {
@@ -537,36 +551,36 @@ const UploadDefense = () => {
 	const handlePreAnalysis = async (e, bypass = false) => {
 		if (e) e.preventDefault();
 
-        // Record bypass if applicable
-        const isAnonymous = !currentUser;
-        if (bypass) {
-            await rateLimiter.recordBypass('upload_case_analysis', currentUser);
-        }
+		// Record bypass if applicable
+		const isAnonymous = !currentUser;
+		if (bypass) {
+			await rateLimiter.recordBypass("upload_case_analysis", currentUser);
+		}
 
-        // Rate Limiting Check
-        const limitStatus = await rateLimiter.checkLimit('upload_case_analysis', currentUser); 
+		// Rate Limiting Check
+		const limitStatus = await rateLimiter.checkLimit("upload_case_analysis", currentUser);
 
-        if (limitStatus.hardBlocked) {
-            setHardBlockInfo({ 
-                expiresAt: limitStatus.expiresAt,
-                message: limitStatus.message
-            });
-            setShowHardBlockModal(true);
-            return;
-        }
+		if (limitStatus.hardBlocked) {
+			setHardBlockInfo({
+				expiresAt: limitStatus.expiresAt,
+				message: limitStatus.message,
+			});
+			setShowHardBlockModal(true);
+			return;
+		}
 
-        if (!bypass && !limitStatus.allowed) {
-             if (consecutiveDivergenceCount >= 2) {
-                 // Bypass
-             } else {
-                if (isAnonymous) {
-                    setShowLoginPrompt(true);
-                } else {
-                    setShowLimitModal(true);
-                }
-                return;
-             }
-        }
+		if (!bypass && !limitStatus.allowed) {
+			if (consecutiveDivergenceCount >= 2) {
+				// Bypass
+			} else {
+				if (isAnonymous) {
+					setShowLoginPrompt(true);
+				} else {
+					setShowLimitModal(true);
+				}
+				return;
+			}
+		}
 
 		if (!validateForm()) {
 			window.scrollTo({ top: 0, behavior: "smooth" });
@@ -575,20 +589,23 @@ const UploadDefense = () => {
 		setLoading(true);
 		try {
 			const response = await api.preAnalyze(formData);
-            await rateLimiter.recordUsage('upload_case_analysis', currentUser);
-            
+			await rateLimiter.recordUsage("upload_case_analysis", currentUser);
+
 			if (response.success) {
 				setAnalysisData(response.data);
 				if (response.data.divergence && response.data.divergence.isDivergent) {
-                    if (consecutiveDivergenceCount >= 2 || (!limitStatus.allowed && consecutiveDivergenceCount > 0)) {
-                         setStep("analysis");
-                         setConsecutiveDivergenceCount(0);
-                    } else {
-                        setConsecutiveDivergenceCount(prev => prev + 1);
-					    setShowDivergenceModal(true);
-                    }
+					if (
+						consecutiveDivergenceCount >= 2 ||
+						(!limitStatus.allowed && consecutiveDivergenceCount > 0)
+					) {
+						setStep("analysis");
+						setConsecutiveDivergenceCount(0);
+					} else {
+						setConsecutiveDivergenceCount((prev) => prev + 1);
+						setShowDivergenceModal(true);
+					}
 				} else {
-                    setConsecutiveDivergenceCount(0);
+					setConsecutiveDivergenceCount(0);
 					setStep("analysis");
 				}
 			}
@@ -652,12 +669,15 @@ const UploadDefense = () => {
 
 	const handleRefinementSubmit = async () => {
 		if (!refinementText.trim()) return;
-        
-        const currentCount = await rateLimiter.getRefinementCount(defenseId || 'temp_upload', currentUser);
-        if (currentCount <= 0) {
-            alert("Limite de edições via IA atingido para este recurso.");
-            return;
-        }
+
+		const currentCount = await rateLimiter.getRefinementCount(
+			defenseId || "temp_upload",
+			currentUser,
+		);
+		if (currentCount <= 0) {
+			alert("Limite de edições via IA atingido para este recurso.");
+			return;
+		}
 
 		setRefining(true);
 		try {
@@ -672,9 +692,9 @@ const UploadDefense = () => {
 				setResult(newText);
 				setIsRefining(false);
 				setRefinementText("");
-                
-                rateLimiter.decrementRefinementCount(defenseId || 'temp_upload');
-                setRefinementCount(currentCount - 1);
+
+				rateLimiter.decrementRefinementCount(defenseId || "temp_upload");
+				setRefinementCount(currentCount - 1);
 
 				await saveDefenseToHistory(newText);
 			}
@@ -767,427 +787,309 @@ const UploadDefense = () => {
 		</div>
 	);
 
-    const CodeNotFoundModal = () => (
-        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8">
-                <div className="text-center mb-6">
-                    <div className="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-600">
-                        <AlertTriangle size={32} />
-                    </div>
-                    <h2 className="text-2xl font-bold text-gray-900">Código não encontrado</h2>
-                </div>
-                <p className="text-gray-600 text-center mb-6">
-                    O código de infração informado não consta em nosso banco de dados. 
-                    Sugerimos verificar se foi digitado corretamente.
-                </p>
-                
-                <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-8 text-sm text-yellow-800">
-                    <p className="font-bold flex items-center gap-2 mb-2"><Info size={16}/> Atenção:</p>
-                    <p>
-                        Se optar por prosseguir manualmente, você deverá inserir o <strong>Amparo Legal</strong> e a <strong>Descrição</strong> por conta própria.
-                        <br/><br/>
-                        Nossa IA fará a defesa baseada no que você escrever, o que <strong>pode comprometer a qualidade técnica</strong> do recurso em comparação com infrações validadas pelo nosso sistema.
-                    </p>
-                </div>
+	const CodeNotFoundModal = () => (
+		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8">
+				<div className="text-center mb-6">
+					<div className="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-600">
+						<AlertTriangle size={32} />
+					</div>
+					<h2 className="text-2xl font-bold text-gray-900">Código não encontrado</h2>
+				</div>
+				<p className="text-gray-600 text-center mb-6">
+					O código de infração informado não consta em nosso banco de dados. Sugerimos verificar se
+					foi digitado corretamente.
+				</p>
 
-                <div className="flex flex-col gap-3">
-                    <button 
-                        onClick={() => {
-                            setShowCodeNotFoundModal(false);
-                            setFormData(prev => ({ ...prev, infractionCode: '', infractionSplit: '' }));
-                        }} 
-                        className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors"
-                    >
-                        Corrigir Código
-                    </button>
-                    <button 
-                        onClick={() => {
-                            setIsManualInfraction(true);
-                            setShowCodeNotFoundModal(false);
-                        }} 
-                        className="w-full bg-white border border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors"
-                    >
-                        Manter código e preencher manualmente
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
+				<div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-8 text-sm text-yellow-800">
+					<p className="font-bold flex items-center gap-2 mb-2">
+						<Info size={16} /> Atenção:
+					</p>
+					<p>
+						Se optar por prosseguir manualmente, você deverá inserir o <strong>Amparo Legal</strong>{" "}
+						e a <strong>Descrição</strong> por conta própria.
+						<br />
+						<br />
+						Nossa IA fará a defesa baseada no que você escrever, o que{" "}
+						<strong>pode comprometer a qualidade técnica</strong> do recurso em comparação com
+						infrações validadas pelo nosso sistema.
+					</p>
+				</div>
 
-		const DownloadConfirmModal = () => (
+				<div className="flex flex-col gap-3">
+					<button
+						onClick={() => {
+							setShowCodeNotFoundModal(false);
+							setFormData((prev) => ({ ...prev, infractionCode: "", infractionSplit: "" }));
+						}}
+						className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+						Corrigir Código
+					</button>
+					<button
+						onClick={() => {
+							setIsManualInfraction(true);
+							setShowCodeNotFoundModal(false);
+						}}
+						className="w-full bg-white border border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">
+						Manter código e preencher manualmente
+					</button>
+				</div>
+			</div>
+		</div>
+	);
 
-			<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+	const DownloadConfirmModal = () => (
+		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
+				<h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+					<CheckCircle className="text-green-500" /> Confirmar Versão Final
+				</h3>
 
-				<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
+				<p className="text-gray-600 mb-6">
+					Esta será a versão final do seu documento. Após confirmar, você será redirecionado.
+				</p>
 
-					<h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+				<div className="flex justify-end gap-3">
+					<button
+						onClick={() => setShowDownloadConfirm(false)}
+						className="px-4 py-2 text-gray-600 font-medium hover:bg-gray-100 rounded-lg">
+						Voltar e Revisar
+					</button>
 
-						<CheckCircle className="text-green-500" /> Confirmar Versão Final
+					<button
+						onClick={confirmDownload}
+						className="px-4 py-2 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700">
+						Sim, Baixar PDF
+					</button>
+				</div>
+			</div>
+		</div>
+	);
 
+	const PostDownloadModal = () => (
+		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8 max-h-[90vh] overflow-y-auto">
+				<div className="text-center mb-6">
+					<div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
+						<CheckCircle size={32} />
+					</div>
+					<h2 className="text-2xl font-bold text-gray-900">Download Iniciado!</h2>
+					<p className="text-gray-500 mt-2 text-sm">
+						Seu documento foi gerado com sucesso. Você pode baixá-lo novamente a qualquer momento em{" "}
+						<strong>"Minhas Defesas"</strong> no seu perfil.
+					</p>
+				</div>
+
+				<div className="bg-blue-50 rounded-xl p-6 mb-6">
+					<h3 className="font-bold text-blue-900 mb-4 flex items-center gap-2">
+						<HelpCircle size={20} /> O que fazer agora?
 					</h3>
 
-					<p className="text-gray-600 mb-6">
+					<div className="space-y-4">
+						<div>
+							<h4 className="font-bold text-blue-800 text-sm mb-2">
+								Opção 1: Via Correios ou Pessoalmente
+							</h4>
+							<ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
+								<li>Imprimir e Assinar o recurso;</li>
+								<li>Anexar Cópia da CNH/RG e CRLV;</li>
+								<li>Anexar a Notificação de Autuação/Penalidade.</li>
+							</ul>
+						</div>
 
-						Esta será a versão final do seu documento. Após confirmar, você será redirecionado.
+						<div className="border-t border-blue-200 pt-4">
+							<h4 className="font-bold text-blue-800 text-sm mb-2">
+								Opção 2: Protocolo Digital (Recomendado)
+							</h4>
+							<ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
+								<li>
+									Imprimir, Assinar e Escanear (ou assinar via <strong>gov.br</strong>);
+								</li>
+								<li>Acessar o site do órgão autuador (Detran, DER, PRF...);</li>
+								<li>
+									Enviar o PDF do recurso junto com as cópias dos documentos (CNH, CRLV,
+									Notificação).
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
 
+				<div className="flex flex-col gap-3">
+					<button
+						onClick={() => navigate("/profile")}
+						className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+						Ir para Minhas Defesas
+					</button>
+				</div>
+			</div>
+		</div>
+	);
+
+	const DivergenceWarningModal = () => (
+		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8">
+				<div className="text-center mb-6">
+					<div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600">
+						<AlertTriangle size={32} />
+					</div>
+
+					<h2 className="text-2xl font-bold text-gray-900">Contradição Identificada</h2>
+				</div>
+
+				<div className="space-y-4 text-gray-600 mb-8 text-left">
+					<p>
+						Foi identificada uma inconsistência severa entre o seu <strong>relato</strong> e a{" "}
+						<strong>materialidade da infração</strong>.
 					</p>
 
-					<div className="flex justify-end gap-3">
+					<div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+						<p className="text-sm font-bold text-red-800 mb-1">Qual é a contradição:</p>
 
-						<button
-
-							onClick={() => setShowDownloadConfirm(false)}
-
-							className="px-4 py-2 text-gray-600 font-medium hover:bg-gray-100 rounded-lg">
-
-							Voltar e Revisar
-
-						</button>
-
-						<button
-
-							onClick={confirmDownload}
-
-							className="px-4 py-2 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700">
-
-							Sim, Baixar PDF
-
-						</button>
-
+						<p className="text-sm text-red-700 italic">"{analysisData?.divergence?.message}"</p>
 					</div>
 
+					<p className="text-sm">
+						<strong>Atenção:</strong> Manter essas informações pode{" "}
+						<strong>não ser positivo</strong> para o recurso, proporcionando inconsistências
+						jurídicas e limitando significativamente os argumentos de defesa que a IA poderá
+						utilizar.
+					</p>
 				</div>
 
+				<div className="flex flex-col gap-3">
+					<button
+						onClick={() => setShowDivergenceModal(false)}
+						className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+						Alterar Relato (Recomendado)
+					</button>
+
+					<button
+						onClick={() => {
+							setShowDivergenceModal(false);
+
+							setStep("analysis");
+						}}
+						className="w-full bg-white border border-gray-300 text-gray-500 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">
+						Manter como está
+					</button>
+				</div>
 			</div>
-
-		);
-
-    const PostDownloadModal = () => (
-        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8 max-h-[90vh] overflow-y-auto">
-                <div className="text-center mb-6">
-                    <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
-                        <CheckCircle size={32} />
-                    </div>
-                    <h2 className="text-2xl font-bold text-gray-900">Download Iniciado!</h2>
-                    <p className="text-gray-500 mt-2 text-sm">
-                        Seu documento foi gerado com sucesso. Você pode baixá-lo novamente a qualquer momento em <strong>"Minhas Defesas"</strong> no seu perfil.
-                    </p>
-                </div>
-
-                <div className="bg-blue-50 rounded-xl p-6 mb-6">
-                    <h3 className="font-bold text-blue-900 mb-4 flex items-center gap-2">
-                        <HelpCircle size={20} /> O que fazer agora?
-                    </h3>
-                    
-                    <div className="space-y-4">
-                        <div>
-                            <h4 className="font-bold text-blue-800 text-sm mb-2">Opção 1: Via Correios ou Pessoalmente</h4>
-                            <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
-                                <li>Imprimir e Assinar o recurso;</li>
-                                <li>Anexar Cópia da CNH/RG e CRLV;</li>
-                                <li>Anexar a Notificação de Autuação/Penalidade.</li>
-                            </ul>
-                        </div>
-                        
-                        <div className="border-t border-blue-200 pt-4">
-                            <h4 className="font-bold text-blue-800 text-sm mb-2">Opção 2: Protocolo Digital (Recomendado)</h4>
-                            <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
-                                <li>Imprimir, Assinar e Escanear (ou assinar via <strong>gov.br</strong>);</li>
-                                <li>Acessar o site do órgão autuador (Detran, DER, PRF...);</li>
-                                <li>Enviar o PDF do recurso junto com as cópias dos documentos (CNH, CRLV, Notificação).</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                    <button 
-                        onClick={() => navigate('/profile')} 
-                        className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors"
-                    >
-                        Ir para Minhas Defesas
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-	
-
-			const DivergenceWarningModal = () => (
-
-	
-
-				<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-
-	
-
-					<div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8">
-
-	
-
-						<div className="text-center mb-6">
-
-	
-
-							<div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600">
-
-	
-
-								<AlertTriangle size={32} />
-
-	
-
-							</div>
-
-	
-
-							<h2 className="text-2xl font-bold text-gray-900">Contradição Identificada</h2>
-
-	
-
-						</div>
-
-	
-
-						<div className="space-y-4 text-gray-600 mb-8 text-left">
-
-	
-
-							<p>
-
-	
-
-								Foi identificada uma inconsistência severa entre o seu <strong>relato</strong> e a{" "}
-
-	
-
-								<strong>materialidade da infração</strong>.
-
-	
-
-							</p>
-
-	
-
-		
-
-	
-
-							<div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-
-	
-
-								<p className="text-sm font-bold text-red-800 mb-1">Qual é a contradição:</p>
-
-	
-
-								<p className="text-sm text-red-700 italic">"{analysisData?.divergence?.message}"</p>
-
-	
-
-							</div>
-
-	
-
-		
-
-	
-
-							<p className="text-sm">
-
-	
-
-								<strong>Atenção:</strong> Manter essas informações pode <strong>não ser positivo</strong> para
-
-	
-
-								o recurso, proporcionando inconsistências jurídicas e limitando significativamente os
-
-	
-
-								argumentos de defesa que a IA poderá utilizar.
-
-	
-
-							</p>
-
-	
-
-						</div>
-
-	
-
-						<div className="flex flex-col gap-3">
-
-	
-
-							<button
-
-	
-
-								onClick={() => setShowDivergenceModal(false)}
-
-	
-
-								className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
-
-	
-
-								Alterar Relato (Recomendado)
-
-	
-
-							</button>
-
-	
-
-							<button
-
-	
-
-								onClick={() => {
-
-	
-
-									setShowDivergenceModal(false);
-
-	
-
-									setStep("analysis");
-
-	
-
-								}}
-
-	
-
-								className="w-full bg-white border border-gray-300 text-gray-500 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">
-
-	
-
-								Manter como está
-
-	
-
-							</button>
-
-	
-
-						</div>
-
-	
-
-					</div>
-
-	
-
-				</div>
-
-	
-
-			);
-
-	
+		</div>
+	);
 
 	const LimitExceededModal = () => (
-        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <AlertTriangle className="text-red-500" /> Limite de Testes Excedido
-                </h3>
-                <p className="text-gray-600 mb-6">
-                    Você atingiu o limite de utilizações gratuitas da nossa IA por hora. 
-                    Para garantir a disponibilidade do serviço para todos, aguarde um pouco antes de tentar nova análise.
-                </p>
-                <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-6">
-                     <p className="text-sm text-blue-800 font-medium">
-                        Deseja pular a análise preliminar e ir direto para a elaboração do recurso final?
-                        <br/><span className="text-xs opacity-75">(Isso permitirá mais uma verificação gratuita no processo final)</span>
-                     </p>
-                </div>
-                <div className="flex flex-col gap-3">
-                    <button onClick={() => { 
-                        setShowLimitModal(false); 
-                        if (step === 'upload') handleUploadAndExtract(true);
-                        else handlePreAnalysis(null, true);
-                    }} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">Sim, prosseguir para Recurso</button>
-                    <button onClick={() => setShowLimitModal(false)} className="w-full bg-gray-100 text-gray-600 font-medium hover:bg-gray-200 py-3 rounded-xl">Aguardar e tentar depois</button>
-                </div>
-            </div>
-        </div>
-    );
-    
-    const LoginPromptModal = () => (
-        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
-                <div className="text-center mb-4">
-                    <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
-                        <User size={32} />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900">Limite Gratuito Atingido</h3>
-                </div>
-                <p className="text-gray-600 mb-6 text-center">
-                    Você atingiu o limite de 3 testes gratuitos como visitante. 
-                    <br/><br/>
-                    <strong>Crie sua conta ou faça login</strong> para continuar utilizando nossas ferramentas e desbloquear mais limites.
-                </p>
-                <div className="flex flex-col gap-3">
-                    <button onClick={() => { 
-                        localStorage.setItem('pendingDefenseData', JSON.stringify({ formData, source: 'upload' }));
-                        navigate('/register?redirect=/upload'); 
-                    }} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">Criar Conta Grátis</button>
-                    <button onClick={() => { 
-                        localStorage.setItem('pendingDefenseData', JSON.stringify({ formData, source: 'upload' }));
-                        navigate('/login?redirect=/upload'); 
-                    }} className="w-full bg-white border border-gray-300 text-blue-600 font-bold py-3 rounded-xl hover:bg-gray-50">Já tenho conta</button>
-                    <button onClick={() => setShowLoginPrompt(false)} className="w-full text-gray-400 text-sm hover:text-gray-600 py-2">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    );
+		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
+				<h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+					<AlertTriangle className="text-red-500" /> Limite de Testes Excedido
+				</h3>
+				<p className="text-gray-600 mb-6">
+					Você atingiu o limite de utilizações gratuitas da nossa IA por hora. Para garantir a
+					disponibilidade do serviço para todos, aguarde um pouco antes de tentar nova análise.
+				</p>
+				<div className="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-6">
+					<p className="text-sm text-blue-800 font-medium">
+						Deseja pular a análise preliminar e ir direto para a elaboração do recurso final?
+						<br />
+						<span className="text-xs opacity-75">
+							(Isso permitirá mais uma verificação gratuita no processo final)
+						</span>
+					</p>
+				</div>
+				<div className="flex flex-col gap-3">
+					<button
+						onClick={() => {
+							setShowLimitModal(false);
+							if (step === "upload") handleUploadAndExtract(true);
+							else handlePreAnalysis(null, true);
+						}}
+						className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
+						Sim, prosseguir para Recurso
+					</button>
+					<button
+						onClick={() => setShowLimitModal(false)}
+						className="w-full bg-gray-100 text-gray-600 font-medium hover:bg-gray-200 py-3 rounded-xl">
+						Aguardar e tentar depois
+					</button>
+				</div>
+			</div>
+		</div>
+	);
 
-		// --- RENDERS ---
+	const LoginPromptModal = () => (
+		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
+				<div className="text-center mb-4">
+					<div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+						<User size={32} />
+					</div>
+					<h3 className="text-xl font-bold text-gray-900">Limite Gratuito Atingido</h3>
+				</div>
+				<p className="text-gray-600 mb-6 text-center">
+					Você atingiu o limite de 3 testes gratuitos como visitante.
+					<br />
+					<br />
+					<strong>Crie sua conta ou faça login</strong> para continuar utilizando nossas ferramentas
+					e desbloquear mais limites.
+				</p>
+				<div className="flex flex-col gap-3">
+					<button
+						onClick={() => {
+							localStorage.setItem(
+								"pendingDefenseData",
+								JSON.stringify({ formData, source: "upload" }),
+							);
+							navigate("/register?redirect=/upload");
+						}}
+						className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
+						Criar Conta Grátis
+					</button>
+					<button
+						onClick={() => {
+							localStorage.setItem(
+								"pendingDefenseData",
+								JSON.stringify({ formData, source: "upload" }),
+							);
+							navigate("/login?redirect=/upload");
+						}}
+						className="w-full bg-white border border-gray-300 text-blue-600 font-bold py-3 rounded-xl hover:bg-gray-50">
+						Já tenho conta
+					</button>
+					<button
+						onClick={() => setShowLoginPrompt(false)}
+						className="w-full text-gray-400 text-sm hover:text-gray-600 py-2">
+						Cancelar
+					</button>
+				</div>
+			</div>
+		</div>
+	);
 
-	
+	// --- RENDERS ---
 
-		if (result) {
+	if (result) {
+		return (
+			<MainLayout>
+				<NavigationBlocker when={!!result} />
 
-			return (
+				{loading && (
+					<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
+						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
 
-				<MainLayout>
+						<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
 
-					<NavigationBlocker when={!!result} />
+						<p className="text-gray-600 max-w-md font-bold">{loadingText}</p>
 
-										{loading && (
+						<div className="mt-8 flex gap-2">
+							<div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
+								<div className="h-full bg-blue-600 animate-progress"></div>
+							</div>
+						</div>
 
-											<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
-
-												<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
-
-												<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
-
-												<p className="text-gray-600 max-w-md font-bold">
-
-													{loadingText}
-
-												</p>
-
-												<div className="mt-8 flex gap-2">
-
-													<div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
-
-														<div className="h-full bg-blue-600 animate-progress"></div>
-
-													</div>
-
-												</div>
-
-												<style
-
-													dangerouslySetInnerHTML={{
-
-														__html: `
+						<style
+							dangerouslySetInnerHTML={{
+								__html: `
 
 						                @keyframes progress {
 
@@ -1204,25 +1106,21 @@ const UploadDefense = () => {
 						                }
 
 						            `,
+							}}
+						/>
+					</div>
+				)}
 
-													}}
+				{showEditWarning && <EditWarningModal />}
 
-												/>
+				{showDownloadConfirm && <DownloadConfirmModal />}
 
-											</div>
+				{showPostDownloadModal && <PostDownloadModal />}
 
-										)}
-
-					{showEditWarning && <EditWarningModal />}
-
-					{showDownloadConfirm && <DownloadConfirmModal />}
-
-                    {showPostDownloadModal && <PostDownloadModal />}
-
-					{showDivergenceModal && <DivergenceWarningModal />}
-                    {showLimitModal && <LimitExceededModal />}
-                    {showLoginPrompt && <LoginPromptModal />}
-					{showHardBlockModal && <HardBlockModal />}
+				{showDivergenceModal && <DivergenceWarningModal />}
+				{showLimitModal && <LimitExceededModal />}
+				{showLoginPrompt && <LoginPromptModal />}
+				{showHardBlockModal && <HardBlockModal />}
 				<div className="max-w-5xl mx-auto py-8">
 					<div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4">
 						<div>
@@ -1252,7 +1150,7 @@ const UploadDefense = () => {
 						</div>
 					</div>
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-						<div className={`${isRefining ? 'lg:col-span-2' : 'lg:col-span-3'} order-2 lg:order-1`}>
+						<div className={`${isRefining ? "lg:col-span-2" : "lg:col-span-3"} order-2 lg:order-1`}>
 							{isEditing ? (
 								<textarea
 									value={result}
@@ -1268,10 +1166,14 @@ const UploadDefense = () => {
 						{isRefining && (
 							<div className="lg:col-span-1 space-y-6 order-1 lg:order-2">
 								<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <span className="text-xs font-bold uppercase tracking-wider text-blue-200">Refinamento com IA</span>
-                                        <span className="bg-blue-800 text-xs px-2 py-1 rounded-full">{refinementCount} restantes</span>
-                                    </div>
+									<div className="flex justify-between items-center mb-2">
+										<span className="text-xs font-bold uppercase tracking-wider text-blue-200">
+											Refinamento com IA
+										</span>
+										<span className="bg-blue-800 text-xs px-2 py-1 rounded-full">
+											{refinementCount} restantes
+										</span>
+									</div>
 									<textarea
 										value={refinementText}
 										onChange={(e) => setRefinementText(e.target.value)}
@@ -1283,7 +1185,7 @@ const UploadDefense = () => {
 										<button
 											onClick={handleRefinementSubmit}
 											disabled={!refinementText.trim() || refining || refinementCount <= 0}
-											className={`bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2 ${refinementCount <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}>
+											className={`bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2 ${refinementCount <= 0 ? "opacity-50 cursor-not-allowed" : ""}`}>
 											Atualizar <Send size={16} />
 										</button>
 									</div>
@@ -1298,7 +1200,7 @@ const UploadDefense = () => {
 
 	if (step === "analysis" && analysisData) {
 		const viability = analysisData.viability || "Possível";
-        const summary = analysisData.summary;
+		const summary = analysisData.summary;
 		const isHighViability = viability === "Alta" || viability === "Muito Alta";
 		const isPossibleViability = viability === "Possível";
 
@@ -1345,13 +1247,14 @@ const UploadDefense = () => {
 									<AlertCircle size={40} className="text-yellow-600" />
 								)}
 							</div>
-              <h2 className="text-2xl font-black text-gray-900 mb-2">Viabilidade {viability}</h2>
-              <p className="text-gray-600 font-medium px-4">{summary}</p>
-              <div className="mt-4 inline-block bg-blue-50 border border-blue-100 rounded-lg px-3 py-1 text-xs text-blue-700 font-medium">
-                Análise preliminar realizada com IA Standard. O recurso final utilizará o Modelo Pro (Advogado Virtual).
-              </div>
-            </div>
-            <div className="p-8">
+							<h2 className="text-2xl font-black text-gray-900 mb-2">Viabilidade {viability}</h2>
+							<p className="text-gray-600 font-medium px-4">{summary}</p>
+							<div className="mt-4 inline-block bg-blue-50 border border-blue-100 rounded-lg px-3 py-1 text-xs text-blue-700 font-medium">
+								Análise preliminar realizada com IA Standard. O recurso final utilizará o Modelo Pro
+								(Advogado Virtual).
+							</div>
+						</div>
+						<div className="p-8">
 							<h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
 								<Search size={16} /> Teses Identificadas pela IA
 							</h3>
@@ -1365,12 +1268,14 @@ const UploadDefense = () => {
 										</div>
 										<p className="text-gray-700 text-sm font-medium leading-relaxed">
 											{arg.substring(0, 50)}
-											<span style={{ maskImage: 'linear-gradient(to bottom right, black, transparent)', WebkitMaskImage: 'linear-gradient(to bottom right, black, transparent)' }}>
+											<span
+												style={{
+													maskImage: "linear-gradient(to bottom right, black, transparent)",
+													WebkitMaskImage: "linear-gradient(to bottom right, black, transparent)",
+												}}>
 												{arg.substring(50, 125)}
 											</span>
-											<span className="opacity-0">
-												{arg.substring(125)}
-											</span>
+											<span className="opacity-0">{arg.substring(125)}</span>
 										</p>
 									</div>
 								))}
@@ -1518,8 +1423,14 @@ const UploadDefense = () => {
 								<FileWarning size={22} /> 1. Defesa Prévia (Autuação)
 							</h3>
 							<p className="text-sm text-yellow-800 leading-relaxed">
-								É a primeira oportunidade de defesa, quando você recebe a <strong>Notificação de Autuação</strong> (ainda sem código de barras para pagamento).<br/><br/>
-                                <strong>Objetivo:</strong> Apontar <strong>erros formais</strong> (ex: placa errada, cor do veículo divergente, local inexistente) para anular a infração antes que ela se torne uma penalidade (multa).
+								É a primeira oportunidade de defesa, quando você recebe a{" "}
+								<strong>Notificação de Autuação</strong> (ainda sem código de barras para
+								pagamento).
+								<br />
+								<br />
+								<strong>Objetivo:</strong> Apontar <strong>erros formais</strong> (ex: placa errada,
+								cor do veículo divergente, local inexistente) para anular a infração antes que ela
+								se torne uma penalidade (multa).
 							</p>
 						</div>
 						<div className="flex justify-center text-gray-300">
@@ -1530,8 +1441,14 @@ const UploadDefense = () => {
 								<Gavel size={22} /> 2. Recurso à JARI (1ª Instância)
 							</h3>
 							<p className="text-sm text-blue-800 leading-relaxed">
-								Deve ser apresentado quando você já recebeu a <strong>Notificação de Penalidade</strong> (o boleto com valor a pagar) ou teve a Defesa Prévia indeferida.<br/><br/>
-                                <strong>Objetivo:</strong> Discutir o <strong>mérito da infração</strong>. Aqui argumentamos se a infração realmente ocorreu ou se houve justificativa legal, contestando a aplicação da penalidade.
+								Deve ser apresentado quando você já recebeu a{" "}
+								<strong>Notificação de Penalidade</strong> (o boleto com valor a pagar) ou teve a
+								Defesa Prévia indeferida.
+								<br />
+								<br />
+								<strong>Objetivo:</strong> Discutir o <strong>mérito da infração</strong>. Aqui
+								argumentamos se a infração realmente ocorreu ou se houve justificativa legal,
+								contestando a aplicação da penalidade.
 							</p>
 						</div>
 						<div className="flex justify-center text-gray-300">
@@ -1542,9 +1459,12 @@ const UploadDefense = () => {
 								<Scale size={22} /> 3. Recurso ao CETRAN (2ª Instância)
 							</h3>
 							<p className="text-sm text-purple-800 leading-relaxed">
-                                É a última tentativa na esfera administrativa, cabível apenas se o seu <strong>Recurso à JARI foi negado</strong>.<br/><br/>
-                                <strong>Objetivo:</strong> Levar o caso para um colegiado superior (Conselho Estadual de Trânsito) para reavaliar a decisão da JARI.
-                            </p>
+								É a última tentativa na esfera administrativa, cabível apenas se o seu{" "}
+								<strong>Recurso à JARI foi negado</strong>.<br />
+								<br />
+								<strong>Objetivo:</strong> Levar o caso para um colegiado superior (Conselho
+								Estadual de Trânsito) para reavaliar a decisão da JARI.
+							</p>
 						</div>
 					</div>
 				</div>
@@ -1620,8 +1540,9 @@ const UploadDefense = () => {
 							</div>
 							<h3 className="font-bold text-lg text-gray-800 mb-2">Defesa Prévia</h3>
 							<p className="text-sm text-gray-500 leading-relaxed">
-                                Recebi a <strong>Notificação de Autuação</strong> (sem código de barras). Quero apontar erros formais antes da penalidade.
-                            </p>
+								Recebi a <strong>Notificação de Autuação</strong> (sem código de barras). Quero
+								apontar erros formais antes da penalidade.
+							</p>
 						</button>
 						<button
 							onClick={() => {
@@ -1634,8 +1555,9 @@ const UploadDefense = () => {
 							</div>
 							<h3 className="font-bold text-lg text-gray-800 mb-2">Recurso JARI</h3>
 							<p className="text-sm text-gray-500 leading-relaxed">
-                                Recebi a <strong>Notificação de Penalidade</strong> (com boleto/valor). Quero contestar o mérito e cancelar a multa.
-                            </p>
+								Recebi a <strong>Notificação de Penalidade</strong> (com boleto/valor). Quero
+								contestar o mérito e cancelar a multa.
+							</p>
 						</button>
 						<button
 							onClick={() => {
@@ -1648,8 +1570,9 @@ const UploadDefense = () => {
 							</div>
 							<h3 className="font-bold text-lg text-gray-800 mb-2">CETRAN</h3>
 							<p className="text-sm text-gray-500 leading-relaxed">
-                                Meu recurso à JARI foi <strong>negado/indeferido</strong>. Quero recorrer à última instância administrativa.
-                            </p>
+								Meu recurso à JARI foi <strong>negado/indeferido</strong>. Quero recorrer à última
+								instância administrativa.
+							</p>
 						</button>
 					</div>
 
@@ -1667,44 +1590,50 @@ const UploadDefense = () => {
 
 	const HardBlockModal = () => {
 		const timeLeft = hardBlockInfo ? Math.ceil((hardBlockInfo.expiresAt - Date.now()) / 60000) : 0;
-		
+
 		return (
-		<div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in">
-			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8 text-center border-t-4 border-red-600">
-				<div className="mb-6 flex justify-center">
-					<div className="bg-red-100 p-4 rounded-full">
-						<Lock size={40} className="text-red-600" />
+			<div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in">
+				<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8 text-center border-t-4 border-red-600">
+					<div className="mb-6 flex justify-center">
+						<div className="bg-red-100 p-4 rounded-full">
+							<Lock size={40} className="text-red-600" />
+						</div>
 					</div>
+					<h3 className="text-2xl font-black text-gray-900 mb-2">
+						Acesso Temporariamente Bloqueado
+					</h3>
+					<p className="text-red-600 font-bold mb-4 bg-red-50 py-2 rounded-lg">
+						{hardBlockInfo?.message || "Limite de segurança atingido."}
+					</p>
+					<p className="text-gray-600 mb-8 leading-relaxed">
+						Você excedeu o limite de tentativas e bypass permitidos.
+						<br />
+						Para garantir a estabilidade do sistema, novas análises estão suspensas por:
+						<br />
+						<span className="text-3xl font-black text-gray-900 block mt-4">{timeLeft} minutos</span>
+					</p>
+
+					<button
+						onClick={() => {
+							setShowHardBlockModal(false);
+							navigate("/");
+						}}
+						className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-black transition-colors shadow-lg">
+						Voltar ao Início
+					</button>
 				</div>
-				<h3 className="text-2xl font-black text-gray-900 mb-2">
-					Acesso Temporariamente Bloqueado
-				</h3>
-				<p className="text-red-600 font-bold mb-4 bg-red-50 py-2 rounded-lg">
-					{hardBlockInfo?.message || "Limite de segurança atingido."}
-				</p>
-				<p className="text-gray-600 mb-8 leading-relaxed">
-					Você excedeu o limite de tentativas e bypass permitidos. 
-					<br/>
-					Para garantir a estabilidade do sistema, novas análises estão suspensas por:
-					<br/>
-					<span className="text-3xl font-black text-gray-900 block mt-4">{timeLeft} minutos</span>
-				</p>
-				
-				<button onClick={() => { setShowHardBlockModal(false); navigate('/'); }} className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-black transition-colors shadow-lg">
-					Voltar ao Início
-				</button>
 			</div>
-		</div>
-	  )};
+		);
+	};
 
 	if (step === "form") {
 		return (
 			<MainLayout>
-                {showLimitModal && <LimitExceededModal />}
-                {showLoginPrompt && <LoginPromptModal />}
+				{showLimitModal && <LimitExceededModal />}
+				{showLoginPrompt && <LoginPromptModal />}
 				{showHardBlockModal && <HardBlockModal />}
 				{showDivergenceModal && <DivergenceWarningModal />}
-                {showCodeNotFoundModal && <CodeNotFoundModal />}
+				{showCodeNotFoundModal && <CodeNotFoundModal />}
 				<div className="max-w-5xl mx-auto py-8">
 					<header className="mb-8">
 						<button
@@ -1733,9 +1662,7 @@ const UploadDefense = () => {
 							<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center">
 								<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
 								<h2 className="text-2xl font-bold text-gray-800 mb-2">Processando Análise...</h2>
-								<p className="text-gray-600 max-w-md font-bold">
-									{loadingText}
-								</p>
+								<p className="text-gray-600 max-w-md font-bold">{loadingText}</p>
 							</div>
 						)}
 
@@ -1769,7 +1696,6 @@ const UploadDefense = () => {
 										onChange={handleChange}
 										onBlur={handleBlur}
 										className={`input-form ${errors.cpf ? "border-red-500" : ""}`}
-										placeholder="000.000.000-00"
 										required
 									/>
 									{errors.cpf && <p className="text-red-500 text-xs mt-1">{errors.cpf}</p>}
@@ -1886,7 +1812,6 @@ const UploadDefense = () => {
 										onChange={handleChange}
 										onBlur={handleBlur}
 										className={`input-form ${errors.phone ? "border-red-500" : ""}`}
-										placeholder="(00) 00000-0000"
 										required
 									/>
 									{errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
@@ -2100,75 +2025,84 @@ const UploadDefense = () => {
 									)}
 								</div>
 								<div className="flex gap-2 items-end">
-                                    <div className="flex-1">
-                                        <label className="label-form">
-                                            Cód. Infração <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            name="infractionCode"
-                                            value={formData.infractionCode}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className={`input-form w-full ${errors.infractionCode ? "border-red-500" : ""}`}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="w-24">
-                                        <label className="label-form">Desd.</label>
-                                        <input
-                                            name="infractionSplit"
-                                            value={formData.infractionSplit}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className="input-form w-full text-center"
-                                            placeholder="0"
-                                        />
-                                    </div>
-                                    <div className="mt-auto pb-1">
-                                        <button
-                                            type="button"
-                                            onClick={handleSearchCode}
-                                            className="bg-blue-100 text-blue-600 p-2.5 rounded-xl hover:bg-blue-200 transition-colors h-[42px] w-[42px] flex items-center justify-center"
-                                            title="Buscar Código">
-                                            {searchingCode ? (
-                                                <Loader2 className="animate-spin" size={20} />
-                                            ) : (
-                                                <Search size={20} />
-                                            )}
-                                        </button>
-                                    </div>
+									<div className="flex-1">
+										<label className="label-form">
+											Cód. Infração <span className="text-red-500">*</span>
+										</label>
+										<input
+											name="infractionCode"
+											value={formData.infractionCode}
+											onChange={handleChange}
+											onBlur={handleBlur}
+											className={`input-form w-full ${errors.infractionCode ? "border-red-500" : ""}`}
+											required
+										/>
+									</div>
+									<div className="w-24">
+										<label className="label-form">Desd.</label>
+										<input
+											name="infractionSplit"
+											value={formData.infractionSplit}
+											onChange={handleChange}
+											onBlur={handleBlur}
+											className="input-form w-full text-center"
+											placeholder="0"
+										/>
+									</div>
+									<div className="mt-auto pb-1">
+										<button
+											type="button"
+											onClick={handleSearchCode}
+											className="bg-blue-100 text-blue-600 p-2.5 rounded-xl hover:bg-blue-200 transition-colors h-[42px] w-[42px] flex items-center justify-center"
+											title="Buscar Código">
+											{searchingCode ? (
+												<Loader2 className="animate-spin" size={20} />
+											) : (
+												<Search size={20} />
+											)}
+										</button>
+									</div>
 								</div>
-									{errors.infractionCode && (
-										<p className="text-red-500 text-xs mt-1">{errors.infractionCode}</p>
-									)}
-								                <div className="md:col-span-3">
-								                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-								                        <div>
-								                            <label className="label-form">Amparo Legal</label>
-								                            <input
-								                                name="article"
-								                                value={formData.article}
-								                                onChange={handleChange}
-                                                                readOnly={!isManualInfraction}
-                                                                className={`input-form ${!isManualInfraction ? 'bg-gray-50 cursor-not-allowed' : 'bg-white border-yellow-400'}`}
-                                                                placeholder={isManualInfraction ? "Digite o Artigo (ex: Art. 218, I, CTB)" : "Aguardando preenchimento do Código da Infração..."}
-								                            />
-								                        </div>
-								                    </div>
-																	<p className="text-xs text-gray-500 mt-1">
-																		Preencha o Cód. Infração e clique na lupa para preencher automaticamente.
-																	</p>
-																</div>                                <div className="md:col-span-3">
-                                    <label className="label-form">Descrição da Infração</label>
-                                    <input 
-                                        name="infractionDescription" 
-                                        value={formData.infractionDescription || ''} 
-                                        onChange={handleChange}
-                                        readOnly={!isManualInfraction} 
-                                        className={`input-form ${!isManualInfraction ? 'bg-gray-50 text-gray-600 cursor-not-allowed' : 'bg-white border-yellow-400'}`} 
-                                        placeholder={isManualInfraction ? "Digite a descrição da infração" : "Aguardando preenchimento do Código da Infração..."} 
-                                    />
-                                </div>
+								{errors.infractionCode && (
+									<p className="text-red-500 text-xs mt-1">{errors.infractionCode}</p>
+								)}
+								<div className="md:col-span-3">
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+										<div>
+											<label className="label-form">Amparo Legal</label>
+											<input
+												name="article"
+												value={formData.article}
+												onChange={handleChange}
+												readOnly={!isManualInfraction}
+												className={`input-form ${!isManualInfraction ? "bg-gray-50 cursor-not-allowed" : "bg-white border-yellow-400"}`}
+												placeholder={
+													isManualInfraction
+														? "Digite o Artigo (ex: Art. 218, I, CTB)"
+														: "Aguardando preenchimento do Código da Infração..."
+												}
+											/>
+										</div>
+									</div>
+									<p className="text-xs text-gray-500 mt-1">
+										Preencha o Cód. Infração e clique na lupa para preencher automaticamente.
+									</p>
+								</div>{" "}
+								<div className="md:col-span-3">
+									<label className="label-form">Descrição da Infração</label>
+									<input
+										name="infractionDescription"
+										value={formData.infractionDescription || ""}
+										onChange={handleChange}
+										readOnly={!isManualInfraction}
+										className={`input-form ${!isManualInfraction ? "bg-gray-50 text-gray-600 cursor-not-allowed" : "bg-white border-yellow-400"}`}
+										placeholder={
+											isManualInfraction
+												? "Digite a descrição da infração"
+												: "Aguardando preenchimento do Código da Infração..."
+										}
+									/>
+								</div>
 								<div>
 									<label className="label-form">
 										Órgão Autuador <span className="text-red-500">*</span>
@@ -2250,7 +2184,7 @@ const UploadDefense = () => {
 										onChange={handleChange}
 										onBlur={handleBlur}
 										className="input-form"
-                                        placeholder="Ex: 12345678"
+										placeholder="Ex: 12345678"
 									/>
 								</div>
 								<div>
@@ -2261,10 +2195,28 @@ const UploadDefense = () => {
 										onChange={handleChange}
 										onBlur={handleBlur}
 										className="input-form"
-                                        placeholder="Ex: 10/10/2023"
+										placeholder="Ex: 10/10/2023"
 									/>
 								</div>
-								                <div className="md:col-span-2"><label className="label-form text-blue-900 font-bold mb-2">Relato <span className="text-red-500">*</span></label><textarea name="description" value={formData.description} onChange={handleChange} onBlur={handleBlur} rows={6} className={`input-form resize-none ${errors.description ? 'border-red-500' : ''}`} placeholder="Descreva com o máximo de detalhes possível os acontecimentos, fatos e informações que considere úteis para a possível nulidade da multa. Quanto mais detalhes, melhor a IA poderá argumentar a seu favor. Ex: 'O sinal estava encoberto por uma árvore', 'O agente não preencheu o campo observações', 'O local da infração não confere com a foto', etc." required />{errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}</div>							</div>
+								<div className="md:col-span-2">
+									<label className="label-form text-blue-900 font-bold mb-2">
+										Relato <span className="text-red-500">*</span>
+									</label>
+									<textarea
+										name="description"
+										value={formData.description}
+										onChange={handleChange}
+										onBlur={handleBlur}
+										rows={6}
+										className={`input-form resize-none ${errors.description ? "border-red-500" : ""}`}
+										placeholder="Descreva com o máximo de detalhes possível os acontecimentos, fatos e informações que considere úteis para a possível nulidade da multa. Quanto mais detalhes, melhor a IA poderá argumentar a seu favor. Ex: 'O sinal estava encoberto por uma árvore', 'O agente não preencheu o campo observações', 'O local da infração não confere com a foto', etc."
+										required
+									/>
+									{errors.description && (
+										<p className="text-red-500 text-xs mt-1">{errors.description}</p>
+									)}
+								</div>{" "}
+							</div>
 						</section>
 						<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 							<div className="flex items-center gap-2 border-b pb-4">
@@ -2329,8 +2281,8 @@ const UploadDefense = () => {
 
 	return (
 		<MainLayout>
-            {showLimitModal && <LimitExceededModal />}
-            {showLoginPrompt && <LoginPromptModal />}
+			{showLimitModal && <LimitExceededModal />}
+			{showLoginPrompt && <LoginPromptModal />}
 			{showHardBlockModal && <HardBlockModal />}
 			<div className="max-w-3xl mx-auto py-10">
 				<div className="mb-8 text-center">
@@ -2399,7 +2351,11 @@ const UploadDefense = () => {
 								<button
 									type="submit"
 									disabled={!file || loading || (currentUser && !currentUser.emailVerified)}
-									title={currentUser && !currentUser.emailVerified ? "Confirme seu email para utilizar" : ""}
+									title={
+										currentUser && !currentUser.emailVerified
+											? "Confirme seu email para utilizar"
+											: ""
+									}
 									className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && !loading && (!currentUser || currentUser.emailVerified) ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"}`}>
 									{loading ? (
 										<>
@@ -2415,14 +2371,19 @@ const UploadDefense = () => {
 					<div className="bg-gray-50 p-6 text-center border-t border-gray-100">
 						<p className="text-gray-500 text-sm mb-2">Não tem arquivo ou foto da infração?</p>
 						{currentUser && !currentUser.emailVerified ? (
-                            <button disabled className="text-gray-400 font-bold flex items-center justify-center gap-1 cursor-not-allowed" title="Confirme seu email para utilizar">
-                                <FileText size={16} /> Inserir dados manualmente
-                            </button>
-                        ) : (
-                            <Link to="/manual-defense" className="text-blue-600 font-bold hover:underline flex items-center justify-center gap-1">
-                                <FileText size={16} /> Inserir dados manualmente
-                            </Link>
-                        )}
+							<button
+								disabled
+								className="text-gray-400 font-bold flex items-center justify-center gap-1 cursor-not-allowed"
+								title="Confirme seu email para utilizar">
+								<FileText size={16} /> Inserir dados manualmente
+							</button>
+						) : (
+							<Link
+								to="/manual-defense"
+								className="text-blue-600 font-bold hover:underline flex items-center justify-center gap-1">
+								<FileText size={16} /> Inserir dados manualmente
+							</Link>
+						)}
 					</div>
 				</div>
 			</div>

@@ -12,10 +12,8 @@ const allowedOrigins = [
 
 const cors = require("cors")({
 	origin: (origin, callback) => {
-		// Permitir requisições sem origem (ex: curl, mobile apps) pode ser perigoso para API pública,
-		// mas para web apps, o browser sempre manda origin.
-		if (!origin) return callback(null, true);
-		if (allowedOrigins.indexOf(origin) !== -1) {
+		// Restringimos apenas às origens permitidas para maior segurança (impede acesso direto via scripts fora do browser)
+		if (allowedOrigins.indexOf(origin) !== -1 || !origin && process.env.NODE_ENV !== 'production') {
 			callback(null, true);
 		} else {
 			callback(new Error("Not allowed by CORS"));
@@ -178,52 +176,37 @@ exports.generateDefense = onRequest((req, res) => {
 				// --- LÓGICA DE REFINAMENTO (EDIÇÃO) ---
 				systemInstruction = `
           Você é um Editor Jurídico Sênior responsável por revisar e ajustar peças processuais.
-          SUA TAREFA: Alterar o documento fornecido seguindo ESTRITAMENTE as instruções do usuário.
+          SUA TAREFA: Alterar o documento fornecido seguindo ESTRITAMENTE as instruções do usuário dentro das tags <instrucoes_usuario>.
           
           REGRAS DE OURO:
-          1. O documento fornecido ("TEXTO BASE") é a fonte da verdade. NÃO gere uma nova defesa do zero baseada em metadados. Use o texto fornecido.
-          2. Faça APENAS as alterações solicitadas. Se o usuário pedir para mudar o argumento X, mantenha o resto do texto (Endereçamento, Qualificação, Fatos, Pedidos) INALTERADO.
-          3. Mantenha a formatação e o estilo do texto original.
-          4. Se a instrução for vaga (ex: "Melhore o texto"), apenas corrija gramática e fluidez, sem alterar a tese jurídica base.
-          5. Retorne o documento COMPLETO, pronto para uso/impressão.
+          1. O documento fornecido em <texto_base> é a única fonte da verdade.
+          2. Faça APENAS as alterações solicitadas.
+          3. Mantenha a formatação original.
+          4. Retorne o documento COMPLETO.
         `;
 
 				userPrompt = `
-          TEXTO BASE (DEFESA EXISTENTE):
-          """
+          <texto_base>
           ${data.previousDefense}
-          """
+          </texto_base>
 
-          INSTRUÇÕES DE ALTERAÇÃO DO USUÁRIO:
-          "${data.refinementInstructions}"
+          <instrucoes_usuario>
+          ${data.refinementInstructions}
+          </instrucoes_usuario>
 
-          Ação: Aplique as alterações no Texto Base e retorne o documento final completo.
+          Ação: Aplique as alterações do usuário no Texto Base e retorne o documento final completo.
         `;
 			} else {
 				// --- LÓGICA DE GERAÇÃO INICIAL ---
 				systemInstruction = `
-          Você é um Advogado Especialista em Direito de Trânsito com 20 anos de experiência em Recursos Administrativos.
-          Tarefa: Redigir uma defesa/recurso de multa de trânsito.
+          Você é um Advogado Especialista em Direito de Trânsito.
+          Tarefa: Redigir uma defesa de multa de trânsito baseada nos dados fornecidos.
           
-          DIRETRIZES DE ESTÉTICA E FORMATAÇÃO (IMPORTANTE):
-          1. **Visual Profissional:** Não use Markdown (negrito com **, itálico com _). Use formatação visual limpa que simule um documento Word/PDF.
-          2. **Títulos:** Use CAIXA ALTA para o Endereçamento e Títulos das Seções (DOS FATOS, DO DIREITO, DOS PEDIDOS).
-          3. **Espaçamento:** Deixe espaços claros entre os parágrafos para facilitar a leitura do julgador.
-          4. **Estilo:** Formal, respeitoso, técnico, mas direto. Evite juridiquês arcaico desnecessário ("data venia" excessivo), foque na clareza dos fatos e da lei.
-          
-          REGRAS DE CONTEÚDO:
-          1. Identifique qual fase da defesa é (Defesa Prévia, JARI ou CETRAN) com base no contexto.
-          2. **Omissão de Vazios:** Se uma informação não foi fornecida no prompt (ex: Categoria da CNH, marca do veículo), NÃO a invente e NÃO a mencione no texto. Não escreva "CNH: [Vazio]" ou "Categoria: ". Simplesmente omita o campo.
-          3. A qualificação deve fluir no texto. Ex: "FULANO DE TAL, brasileiro, solteiro, portador do RG nº X e CPF nº Y..." em vez de lista de tópicos.
-          4. Apresentar apenas o recurso, nada mais. Sem "Aqui está seu recurso" no início.
-          5. Não adicionar espaço para assinatura de advogado, apenas "Assinatura do Requerente/Condutor".
-          6. ANÁLISE DO RELATO DO USUÁRIO:
-             a) Verifique a congruência temática. Se o relato for sobre outro assunto, ignore-o.
-             b) Se for sobre o mesmo assunto, filtre o conteúdo: Utilize APENAS partes que ajudem na defesa.
-             c) Se o relato for fraco, prejudicial ("confissão de culpa") ou inútil, DESCONSIDERE-O total ou parcialmente e foque exclusivamente em teses técnicas e formais (ex: erro de notificação, aferição, sinalização).
-             d) Priorize sempre a melhor tese jurídica técnica sobre o relato leigo do usuário.
-          7. Seja prolixo e exaustivo na argumentação jurídica.
-          8. No final, adicione: "Nestes termos, pede deferimento. ${data.signCity || "Local"}, ${data.signDate || "Data"}."
+          DIRETRIZES:
+          1. Visual Profissional: Sem Markdown.
+          2. Use CAIXA ALTA para títulos.
+          3. Omissão de Vazios: Não invente dados.
+          4. Analise o relato do usuário em <relato_fatos> para extrair teses, mas priorize teses técnicas se o relato for prejudicial.
         `;
 
 				const defenseTypeMap = {
@@ -233,43 +216,21 @@ exports.generateDefense = onRequest((req, res) => {
 				};
 				const defenseTypeLabel = defenseTypeMap[data.defenseType] || "RECURSO ADMINISTRATIVO";
 
-				// Helper to format fields only if present
-				const fmt = (label, value, suffix = "") => (value ? `${label} ${value}${suffix}, ` : "");
-				const fmtDirect = (value, suffix = "") => (value ? `${value}${suffix}, ` : "");
-
-				// Constructing the prompt carefully to avoid empty labels
 				userPrompt = `
           TIPO DE PEÇA: ${defenseTypeLabel}
           
-          DADOS DO CASO (Use apenas o que estiver preenchido):
+          <dados_caso>
           Órgão: ${data.issuingBody || ""}
           AIT: ${data.aitNumber || ""}
-          
-          QUALIFICAÇÃO (Monte um parágrafo fluido com estes dados):
           Nome: ${data.name || ""}
-          Nacionalidade: ${data.nationality || "Brasileiro(a)"}
-          Estado Civil: ${data.maritalStatus === "Outro" ? "" : data.maritalStatus || ""}
-          Profissão: ${data.profession || ""}
-          RG: ${data.rg || ""} ${data.rgIssuer || ""}
           CPF: ${data.cpf || ""}
-          CNH: ${data.cnh || ""} ${data.cnhCategory ? `(Categoria ${data.cnhCategory})` : ""}
-          Endereço: ${data.address || ""}, ${data.addressNumber || ""} ${data.addressComplement || ""}
-          Bairro: ${data.neighborhood || ""}
-          Cidade/UF: ${data.city || ""}/${data.state || ""}
-          CEP: ${data.zipCode || ""}
-          Telefone/Email: (Apenas para cadastro, não precisa estar no corpo da qualificação pública se não quiser)
-          
-          DADOS DO VEÍCULO E INFRAÇÃO:
-          Placa: ${data.plate || ""} ${data.plateUF || ""}
-          Modelo: ${data.vehicleModel || ""}
+          Placa: ${data.plate || ""}
           Infração: ${data.article || ""}
-          Data/Hora: ${data.date || ""} às ${data.time || ""}
-          Local: ${data.location || ""}
-          Equipamento: ${data.equipmentNumber || ""}
-          Aferição: ${data.lastCalibration || ""}
+          </dados_caso>
           
-          RELATO DOS FATOS (Argumentos do Usuário):
-          "${data.description}"
+          <relato_fatos>
+          ${data.description}
+          </relato_fatos>
         `;
 			}
 
@@ -574,31 +535,16 @@ exports.analyzeDocument = onRequest((req, res) => {
 });
 
 exports.stripeWebhook = onRequest(async (req, res) => {
-	console.log("🔔 Webhook recebido! Headers:", JSON.stringify(req.headers));
-	console.log("🔔 Webhook recebido! Body Type:", typeof req.body);
-	console.log("🔔 Webhook recebido! Event Type (from body):", req.body?.type);
-
 	const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 	const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-	console.log(
-		`🔑 Webhook Secret configurado: ${endpointSecret ? "SIM (Inicia com " + endpointSecret.substring(0, 5) + ")" : "NÃO"}`,
-	);
-
 	if (!endpointSecret) {
-		console.warn(
-			"⚠️ AVISO: STRIPE_WEBHOOK_SECRET não está definido. A verificação de assinatura será pulada (INSEGURO EM PRODUÇÃO).",
-		);
-	}
-
-	let event;
-
-	if (!endpointSecret) {
-		console.error("❌ ERRO CRÍTICO: STRIPE_WEBHOOK_SECRET não está definido.");
+		console.error("❌ ERRO CRÍTICO: STRIPE_WEBHOOK_SECRET não está definido. Abortando por segurança.");
 		res.status(500).send("Configuration Error: Webhook Secret missing.");
 		return;
 	}
 
+	let event;
 	const sig = req.headers["stripe-signature"];
 
 	if (!req.rawBody) {
