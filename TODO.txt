@@ -133,6 +133,15 @@ Mudar checklist de lugar
 Em uploaddefense e ManualDefense, XXXX ascara para CNH e Numero do AITs
 1. Inverta a ordem no footer dos botões e do informe de direitos reservados, os botões devem vir antes (mesmo para displays maiores), centralize e aumente os botões "Como Funciona, Ajuda, Termos de Uso, Privacidade" e, abaixo deve vir o aviso "© 2026 AutoDefesa Software. Todos os direitos reservados."; 
 2. Em UploadDefense e em Manual defense, além de ser possível colocar o número do equipamento e a data de aferição (feat que já está funcional), deve haver uma opção selecionável como "Não disponível" para o usuário marcar (no caso de ManualDefense) ou para a IA auto-marcar (no caso de UploadDefense), e isso é importante pois a IA pode e deve utilizar a falta de sinalização de número de equipamento ou aferição na elaboração do recurso (portanto, se necessário, reforce essa info nas instruções da IA);
+- [x]  Revisão final de textos
+- [x]  Inverter ordem checklist
+- [x]  Revisão final de segurança
+- [x]  Tornar repo privado
+- [x]  Build
+- [x]  Deploy
+- [x]  Ajustar stripe
+- [x]  Ajustar ids pagamento stripe
+
 
 
 
@@ -141,20 +150,14 @@ Conferir:
 4. Em UploadDefense e em Manual defense, a IA deve utilizar a data do campo "Data assinatura" como a data constante no final do recurso (após a cidade) para assinatura. No meu teste a data veio como "[Data Atual]". Se necessário, ajuste as instruções da IA para corrigir isso;
 
 
-- [x]  Revisão final de textos
-- [x]  Inverter ordem checklist
-- [x]  Revisão final de segurança
-- [x]  Tornar repo privado
-- [x]  Build
-- [x]  Deploy
 
 
 - []  Ajustar domínios e email de confirmação (passos no txt na pasta geral da app)
 
-
 - []  Colocar limites na API/budget
 - []  SEO
 
+Para depois: melhorar recurso específico para cada fase (ex.: defesa prévia mais relacionada aos erros no AIT)
 
 
 

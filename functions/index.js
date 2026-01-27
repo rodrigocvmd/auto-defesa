@@ -105,8 +105,11 @@ async function checkIpRateLimit(req, limitCount = 3, windowHours = 1) {
 // --- CONFIGURAÇÃO DE MODELOS (HYBRID AI) ---
 // Flash: Para tarefas rápidas, OCR, extração e edições simples.
 // Pro: Para raciocínio jurídico complexo e redação da pseça inicial.
-const MODEL_FLASH = "gemini-3-flash-preview";
-const MODEL_PRO = "gemini-3-pro-preview";
+
+const MODEL_FLASH = "gemini-2.5-flash-lite";
+const MODEL_PRO = "gemini-2.5-flash-lite";
+// const MODEL_FLASH = "gemini-3-flash-preview";
+// const MODEL_PRO = "gemini-3-pro-preview";
 
 // --- FUNÇÃO 1: CONSULTA ---
 exports.getInfraction = onRequest((req, res) => {
@@ -216,8 +219,8 @@ exports.generateDefense = onRequest((req, res) => {
           2. Use CAIXA ALTA para títulos.
           3. Omissão de Vazios: Não invente dados.
           4. Analise o relato do usuário em <relato_fatos> para extrair teses, mas priorize teses técnicas se o relato for prejudicial.
-          5. EQUIPAMENTO/AFERIÇÃO: Se os campos 'Equipamento' ou 'Aferição' estiverem marcados como "Não disponível", "N/A" ou vazios, você DEVE arguir a NULIDADE do auto de infração por ausência de requisito formal obrigatório (falta de identificação do equipamento ou aferição vencida/ausente).
-          6. ASSINATURA: Ao final do documento, após "Nestes termos, pede deferimento", você DEVE usar EXATAMENTE a Cidade e Data fornecidas nos campos correspondentes. NÃO use a data atual do sistema. Exemplo: "[Cidade fornecida], [Data fornecida]".
+          5. EQUIPAMENTO/AFERIÇÃO: Analise os campos 'Equipamento' e 'Aferição' (mesmo que "Não disponível" ou vazios) em relação ao contexto. Valide se são argumentos legítimos considerando: (a) Se a aferição não é recente (vencida) e prejudicou a medição; (b) Se a infração REALMENTE exige equipamento (ex: velocidade, etilômetro, balança). Caso a materialidade não dependa de equipamento, dispense esse argumento e foque em outras falhas ou argumentos subjetivos do relato.
+          6. ASSINATURA: Ao final, após "Nestes termos, pede deferimento" e a data/local, insira uma linha de assinatura (______________________) e, logo abaixo, o NOME DO RECORRENTE.
         `;
 
 				const defenseTypeMap = {
@@ -283,9 +286,9 @@ exports.createCheckoutSession = onRequest((req, res) => {
 		// MAPA DE PREÇOS X CRÉDITOS (SEGURANÇA)
 		// Substitua os IDs abaixo pelos 'API ID' que aparecem no seu Dashboard do Stripe (Produtos > Preços)
 		const PRICE_CREDITS_MAP = {
-			price_1SsUk8Qphe4gmDmiJhdjZsL4: 1, // Ex: Recurso Único (R$ 29,90)
-			price_1SsUkvQphe4gmDmiExt4PDuw: 5, // Ex: Combo 5 Recursos (R$ 99,00)
-			price_1SsUlDQphe4gmDmimwZpXhQg: 10, // Ex: Combo Profissional 10 Recursos (R$ 149,00)
+			price_1SuFhiRTHGPeccd9UTYEE604: 1, // Recurso Expresso (R$ 16,90)
+			price_1SuFi7RTHGPeccd987NViaZP: 3, // Proteção Completa (R$ 27,90)
+			price_1SuFiORTHGPeccd9HKTxjPO7: 10, // Pacote Profissional (R$ 47,90)
 		};
 
 		const selectedPriceId = priceId || "price_H5ggYwtDq4fbrJ";
@@ -327,11 +330,22 @@ exports.createCheckoutSession = onRequest((req, res) => {
 
 exports.extractDataFromImage = onRequest((req, res) => {
 	cors(req, res, async () => {
-		const apiKey = process.env.GEMINI_API_KEY;
-		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
-
-		// Ferramenta pública, pode ser usada sem autenticação ou com autenticação opcional
-		// Se quisermos restringir, basta descomentar abaixo:
+		    const apiKey = process.env.GEMINI_API_KEY;
+		    if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
+		
+		    try {
+		      // RATE LIMIT: 10 tentativas por hora por IP para OCR (permite re-tentativas de fotos ruins)
+		      await checkIpRateLimit(req, 10, 1);
+		    } catch (e) {
+		      if (e.message === "RATE_LIMIT_EXCEEDED") {
+		        return res
+		          .status(429)
+		          .json({ error: "Muitas tentativas. Aguarde um pouco antes de enviar nova imagem." });
+		      }
+		      console.error("Erro Rate Limit:", e);
+		    }
+		
+		    // Ferramenta pública, pode ser usada sem autenticação ou com autenticação opcional		// Se quisermos restringir, basta descomentar abaixo:
 		// try { await verifyAuth(req); } catch (e) { return res.status(401).json({error: "Login necessário"}); }
 
 		const { image, mimeType } = req.body || {};
