@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
+import SEO from "../components/SEO";
 import { api } from "../services/api";
 import { jsPDF } from "jspdf";
 import { useAuth } from "../contexts/AuthContext";
@@ -885,7 +886,10 @@ const UploadDefense = () => {
 							<ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
 								<li>
 									Imprimir, Assinar e Escanear (ou assinar via{" "}
-									<a href="https://assinador.iti.br/assinatura" target="_blank" className="underline">
+									<a
+										href="https://assinador.iti.br/assinatura"
+										target="_blank"
+										className="underline">
 										<strong>gov.br</strong>
 									</a>
 									);
@@ -2327,6 +2331,11 @@ const UploadDefense = () => {
 
 	return (
 		<MainLayout>
+			<SEO 
+				title="Focado em Análise de Multa por Foto"
+				description="Envie a foto da sua notificação de autuação e nossa IA extrairá os dados e analisará a viabilidade do recurso gratuitamente."
+				keywords="analise multa foto, ocr multa, recurso ia, defesa transito"
+			/>
 			{showLimitModal && <LimitExceededModal />}
 			{showLoginPrompt && <LoginPromptModal />}
 			{showHardBlockModal && <HardBlockModal />}

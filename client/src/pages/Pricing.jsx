@@ -4,6 +4,7 @@ import { Check, Shield, Zap, Star, Briefcase, FileText, Scale } from "lucide-rea
 import { useAuth } from "../contexts/AuthContext";
 import { api } from "../services/api";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import SEO from "../components/SEO";
 
 const Pricing = () => {
 	const { currentUser } = useAuth();
@@ -19,7 +20,7 @@ const Pricing = () => {
 	// No Dashboard da Stripe, vá em Produtos > Clique no produto > Role até "Preços" > Copie o ID que começa com 'price_'.
 	const PLANS = [
 		{
-			id: "price_1SsUk8Qphe4gmDmiJhdjZsL4", // Substitua pelo ID real price_...
+			id: "price_1SuFhiRTHGPeccd9UTYEE604", // Substitua pelo ID real price_...
 			name: "Recurso Expresso",
 			price: "R$ 16,90",
 			credits: 1,
@@ -37,7 +38,7 @@ const Pricing = () => {
 			color: "gray",
 		},
 		{
-			id: "price_1SsUkvQphe4gmDmiExt4PDuw", // Substitua pelo ID real price_...
+			id: "price_1SuFi7RTHGPeccd987NViaZP", // Substitua pelo ID real price_...
 			name: "Proteção Completa",
 			price: "R$ 27,90",
 			credits: 3,
@@ -56,7 +57,7 @@ const Pricing = () => {
 			color: "blue",
 		},
 		{
-			id: "price_1SsUlDQphe4gmDmimwZpXhQg", // Substitua pelo ID real price_...
+			id: "price_1SuFiORTHGPeccd9HKTxjPO7", // Substitua pelo ID real price_...
 			name: "Pacote Profissional",
 			price: "R$ 47,90",
 			credits: 10,
@@ -102,6 +103,11 @@ const Pricing = () => {
 
 	return (
 		<MainLayout>
+			<SEO
+				title="Planos e Preços"
+				description="Escolha o melhor plano para sua defesa. A partir de R$ 16,90. Recurso profissional gerado por IA. Sem mensalidades."
+				keywords="preço recurso multa, valor advogado transito, comprar recurso multa, planos autodefesa"
+			/>
 			<div className="max-w-6xl mx-auto py-12 px-4">
 				<div className="text-center mb-16">
 					<h1 className="text-4xl font-black text-gray-900 mb-4">

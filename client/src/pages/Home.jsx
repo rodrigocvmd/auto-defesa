@@ -12,10 +12,16 @@ import {
 	Star,
 } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
+import SEO from "../components/SEO";
 
 const Home = () => {
 	return (
 		<MainLayout>
+			<SEO 
+				title="Recorra de Multas com IA | Advogado Virtual"
+				description="Anule sua multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
+				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online, anular multa"
+			/>
 			<div className="flex flex-col gap-20 pb-20">
 				{/* HERO SECTION */}
 				<section className="relative pt-8 pb-4 lg:pt-10 lg:pb-10 overflow-hidden">

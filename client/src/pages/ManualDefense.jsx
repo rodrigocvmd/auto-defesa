@@ -37,6 +37,7 @@ import { db } from "../firebaseConfig";
 import { collection, addDoc, serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import { NavigationBlocker } from "../components/NavigationBlocker";
 import { rateLimiter } from "../services/rateLimiter";
+import SEO from "../components/SEO";
 
 const ManualDefense = () => {
 	const { currentUser, userData } = useAuth();
@@ -1188,6 +1189,11 @@ const ManualDefense = () => {
 	if (result) {
 		return (
 			<MainLayout>
+				<SEO 
+					title="Resultado da Defesa"
+					description="Seu recurso foi gerado com sucesso. Baixe agora."
+					noIndex={true} 
+				/>
 				{loading && (
 					<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
 						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
@@ -1522,6 +1528,11 @@ const ManualDefense = () => {
 	if (step === "form") {
 		return (
 			<MainLayout>
+				<SEO 
+					title="Focada em Inserção de Dados Manualmente"
+					description="Preencha os dados da sua multa manualmente e gere seu recurso personalizado com IA."
+					keywords="recurso manual, preencher multa, advogado virtual"
+				/>
 				{showTestModal && <TestInfoModal />}
 				{showCodeNotFoundModal && <CodeNotFoundModal />}
 				{showDivergenceModal && <DivergenceWarningModal />}
@@ -2244,6 +2255,11 @@ const ManualDefense = () => {
 	// 3. TELA DE SELEÇÃO (DEFAULT)
 	return (
 		<MainLayout>
+			<SEO 
+				title="Focada em Inserção de Dados Manualmente"
+				description="Preencha os dados da sua multa manualmente e gere seu recurso personalizado com IA."
+				keywords="recurso manual, preencher multa, advogado virtual"
+			/>
 			{showHelpModal && <HelpModal />}
 			<div className="max-w-4xl mx-auto py-10">
 				<header className="mb-12 text-center">
