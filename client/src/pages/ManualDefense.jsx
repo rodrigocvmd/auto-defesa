@@ -930,28 +930,35 @@ const ManualDefense = () => {
 					<div className="space-y-4">
 						<div>
 							<h4 className="font-bold text-blue-800 text-sm mb-2">
-								Opção 1: Via Correios ou Pessoalmente
-							</h4>
-							<ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
-								<li>Imprimir e Assinar o recurso;</li>
-								<li>Anexar Cópia da CNH/RG e CRLV;</li>
-								<li>Anexar a Notificação de Autuação/Penalidade.</li>
-							</ul>
-						</div>
-
-						<div className="border-t border-blue-200 pt-4">
-							<h4 className="font-bold text-blue-800 text-sm mb-2">
-								Opção 2: Protocolo Digital (Recomendado)
+								Opção 1: Protocolo Digital (Recomendado)
 							</h4>
 							<ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
 								<li>
-									Imprimir, Assinar e Escanear (ou assinar via <strong>gov.br</strong>);
+									Imprimir, Assinar e Escanear (ou assinar via{" "}
+									<a
+										href="https://assinador.iti.br/assinatura"
+										target="_blank"
+										className="underline">
+										<strong>gov.br</strong>
+									</a>
+									);
 								</li>
 								<li>Acessar o site do órgão autuador (Detran, DER, PRF...);</li>
 								<li>
 									Enviar o PDF do recurso junto com as cópias dos documentos (CNH, CRLV,
 									Notificação).
 								</li>
+							</ul>
+						</div>
+
+						<div className="border-t border-blue-200 pt-4">
+							<h4 className="font-bold text-blue-800 text-sm mb-2">
+								Opção 2: Via Correios ou Pessoalmente
+							</h4>
+							<ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
+								<li>Imprimir e Assinar o recurso;</li>
+								<li>Anexar Cópia da CNH/RG e CRLV;</li>
+								<li>Anexar a Notificação de Autuação/Penalidade.</li>
 							</ul>
 						</div>
 					</div>
