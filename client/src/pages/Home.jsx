@@ -17,7 +17,7 @@ import SEO from "../components/SEO";
 const Home = () => {
 	return (
 		<MainLayout>
-			<SEO 
+			<SEO
 				title="Recorra de Multas com IA | Advogado Virtual"
 				description="Anule sua multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online, anular multa"
@@ -40,9 +40,9 @@ const Home = () => {
 						</h1>
 
 						<p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
-							Não gaste R$ 300,00 com advogados. Nossa IA analisa seu caso gratuitamente e gera um{" "}
-							<strong>recurso jurídico completo</strong>, fundamentado na lei,{" "}
-							<strong>pronto para assinar e protocolar</strong>.
+							Não gaste R$ 400,00 com advogados. Nossa IA analisa seu caso gratuitamente e gera um{" "}
+							<strong>recurso administrativo profissional</strong>, fundamentado na lei, completo e{" "}
+							<strong>pronto para assinatura e protocolo</strong>.
 						</p>
 
 						<div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">

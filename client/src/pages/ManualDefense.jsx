@@ -349,7 +349,7 @@ const ManualDefense = () => {
 			nationality: "Brasileiro",
 			maritalStatus: "Solteiro(a)",
 			profession: "Motorista",
-			rg: "12.345.678-9",
+			rg: "1.234.567",
 			rgIssuer: "SSP/SP",
 			cpf: "069.268.226-03",
 			cnh: "12345678900",
@@ -377,6 +377,8 @@ const ManualDefense = () => {
 			infractionDescription: "Transitar em velocidade superior à máxima permitida em até 20%",
 			legalText: "Transitar em velocidade superior à máxima permitida para o local...",
 			description: "O sinal estava encoberto por uma árvore e não havia sinalização visível...",
+			equipmentNumber: "12345678",
+			lastCalibration: "10/10/2023",
 			signCity: "São Paulo",
 			signDate: "01/01/2024",
 		});
@@ -391,7 +393,7 @@ const ManualDefense = () => {
 		setAnalysisData(null);
 		setIsTestMode(false);
 		setHasTested(true);
-		navigate("/manual-defense/form");
+		navigate("/upload");
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
@@ -472,6 +474,8 @@ const ManualDefense = () => {
 					infractionSplit: "0",
 					article: "Art. 218, I, CTB",
 					description: "Transitar em velocidade superior à máxima permitida em até 20%",
+					equipmentNumber: "12345678",
+					lastCalibration: "10/10/2023",
 					signCity: "São Paulo",
 					signDate: "01/01/2024",
 				};

@@ -2344,7 +2344,7 @@ const UploadDefense = () => {
 					</Link>
 					<h1 className="text-3xl font-bold text-gray-900">Análise de Documento</h1>
 					<p className="text-gray-500 mt-2">
-						Envie a foto da multa. A IA irá preencher os dados para você.
+						Envie o arquivo ou imagem da multa. A IA irá preencher os dados para você.
 					</p>
 				</div>
 				<div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
