@@ -23,6 +23,7 @@ import { updateProfile, updatePassword } from 'firebase/auth';
 import { doc, getDoc, setDoc, collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { jsPDF } from 'jspdf';
+import { formatDefenseToHtml } from "../utils/textToHtml";
 
 export default function Profile() {
     const { currentUser, userData, updateUserEmail, deleteUserAccount } = useAuth();
@@ -200,30 +201,51 @@ export default function Profile() {
         setLoading(false);
     }
 
-    const downloadPDF = (defense) => {
+    const downloadPDF = async (defense) => {
         if (!defense.defenseText) {
             alert("Texto da defesa não encontrado.");
             return;
         }
 
-        const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-        doc.setFont("times", "normal");
-        doc.setFontSize(12);
-        const splitText = doc.splitTextToSize(defense.defenseText, 160);
-        let cursorY = 25;
-        splitText.forEach(line => {
-            if (cursorY > 270) { doc.addPage(); cursorY = 25; }
-            const isTitle = line.length < 50 && line === line.toUpperCase() && line.trim().length > 0;
-            if (isTitle) {
-                doc.setFont("times", "bold");
-                doc.text(line, 105, cursorY, { align: "center" });
-                doc.setFont("times", "normal");
-            } else {
-                doc.text(line, 25, cursorY, { align: "justify", maxWidth: 160 });
-            }
-            cursorY += 6;
-        });
-        doc.save(`Defesa_${defense.licensePlate || 'Recurso'}.pdf`);
+        let contentHtml = defense.defenseText;
+        // Simple heuristic: if it doesn't contain HTML tags, format it
+        if (!contentHtml.match(/<p|<h[1-6]|<div/)) {
+             contentHtml = formatDefenseToHtml(contentHtml);
+        }
+
+        try {
+            const tempContainer = document.createElement("div");
+            tempContainer.innerHTML = contentHtml;
+            tempContainer.style.width = "794px";
+            tempContainer.style.padding = "25mm";
+            tempContainer.style.fontSize = "12pt";
+            tempContainer.style.fontFamily = "'Times New Roman', serif";
+            tempContainer.style.color = "black";
+            tempContainer.style.background = "white";
+            tempContainer.style.lineHeight = "1.5";
+            tempContainer.style.textAlign = "justify";
+            tempContainer.style.position = "absolute";
+            tempContainer.style.left = "-9999px";
+            tempContainer.style.top = "0";
+            
+            document.body.appendChild(tempContainer);
+
+            const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+            
+            await doc.html(tempContainer, {
+                callback: function (doc) {
+                    doc.save(`Defesa_${defense.licensePlate || 'Recurso'}.pdf`);
+                    document.body.removeChild(tempContainer);
+                },
+                x: 0,
+                y: 0,
+                width: 210,
+                windowWidth: 794
+            });
+        } catch (err) {
+            console.error("Erro ao gerar PDF:", err);
+            alert("Erro ao gerar PDF.");
+        }
     };
 
     if (pageLoading) {

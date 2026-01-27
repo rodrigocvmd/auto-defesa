@@ -35,6 +35,9 @@ import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
 import { api } from "../services/api";
 import { jsPDF } from "jspdf";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { formatDefenseToHtml } from "../utils/textToHtml";
 import { useAuth } from "../contexts/AuthContext";
 import { useDefense } from "../contexts/DefenseContext";
 import { db } from "../firebaseConfig";
@@ -602,14 +605,15 @@ const UploadDefense = () => {
 		try {
 			const response = await api.generateDefense({ ...formData, userId: currentUser?.uid });
 			if (response.success) {
-				setResult(response.data.defenseText);
+				const formattedText = formatDefenseToHtml(response.data.defenseText);
+				setResult(formattedText);
 				if (currentUser) {
 					try {
 						const docRef = await addDoc(collection(db, "defenses"), {
 							userId: currentUser.uid,
 							infractionType: "Análise de Upload",
 							licensePlate: formData.plate,
-							defenseText: response.data.defenseText,
+							defenseText: formattedText,
 							status: "completed",
 							createdAt: serverTimestamp(),
 							fileName: file ? file.name : "upload",
@@ -670,7 +674,7 @@ const UploadDefense = () => {
 				userId: currentUser?.uid,
 			});
 			if (response.success) {
-				const newText = response.data.defenseText;
+				const newText = formatDefenseToHtml(response.data.defenseText);
 				setResult(newText);
 				setIsRefining(false);
 				setRefinementText("");
@@ -709,34 +713,47 @@ const UploadDefense = () => {
 		handleFinalizePDF();
 	};
 
-	const handleFinalizePDF = () => {
+	const handleFinalizePDF = async () => {
 		if (!result || typeof result !== "string") {
 			alert("Nenhum conteúdo válido para baixar.");
 			return;
 		}
 		try {
+			// Create a temporary container to render the HTML for PDF generation
+			const tempContainer = document.createElement("div");
+			tempContainer.innerHTML = result;
+			// Styles to match A4 PDF look
+			tempContainer.style.width = "794px"; // A4 width at 96dpi
+			tempContainer.style.padding = "25mm";
+			tempContainer.style.fontSize = "12pt";
+			tempContainer.style.fontFamily = "'Times New Roman', serif";
+			tempContainer.style.color = "black";
+			tempContainer.style.background = "white";
+			tempContainer.style.lineHeight = "1.5";
+			tempContainer.style.textAlign = "justify";
+			
+			// Fix for justification in html2canvas/jspdf sometimes needing specific structure
+			// We append it to body but keep it hidden from view, yet visible for renderer
+			tempContainer.style.position = "absolute";
+			tempContainer.style.left = "-9999px";
+			tempContainer.style.top = "0";
+			
+			document.body.appendChild(tempContainer);
+
 			const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
-			doc.setFont("times", "normal");
-			doc.setFontSize(12);
-			const splitText = doc.splitTextToSize(result, 160);
-			let cursorY = 25;
-			splitText.forEach((line) => {
-				if (cursorY > 270) {
-					doc.addPage();
-					cursorY = 25;
-				}
-				const isTitle = line.length < 50 && line === line.toUpperCase() && line.trim().length > 0;
-				if (isTitle) {
-					doc.setFont("times", "bold");
-					doc.text(line, 105, cursorY, { align: "center" });
-					doc.setFont("times", "normal");
-				} else {
-					doc.text(line, 25, cursorY, { align: "justify", maxWidth: 160 });
-				}
-				cursorY += 6;
+			
+			await doc.html(tempContainer, {
+				callback: function (doc) {
+					doc.save(`Defesa_${formData.plate || "Recurso"}.pdf`);
+					document.body.removeChild(tempContainer);
+					setShowPostDownloadModal(true);
+				},
+				x: 0,
+				y: 0,
+				width: 210, // A4 Width in mm
+				windowWidth: 794 // Window width in px corresponding to A4
 			});
-			doc.save(`Defesa_${formData.plate || "Recurso"}.pdf`);
-			setShowPostDownloadModal(true);
+
 		} catch (err) {
 			console.error("Erro ao gerar PDF:", err);
 			alert("Ocorreu um erro ao gerar o PDF. Tente novamente.");
@@ -1143,17 +1160,40 @@ const UploadDefense = () => {
 					</div>
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 						<div className={`${isRefining ? "lg:col-span-2" : "lg:col-span-3"} order-2 lg:order-1`}>
-							{isEditing ? (
-								<textarea
-									value={result}
-									onChange={(e) => setResult(e.target.value)}
-									className="w-full p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-								/>
-							) : (
-								<div className="bg-white p-12 shadow-2xl min-h-[800px] font-serif text-gray-900 leading-relaxed text-justify border border-gray-200 whitespace-pre-wrap">
-									{result}
+							<div className="bg-gray-200/50 p-8 rounded-xl border border-gray-200 overflow-auto flex justify-center">
+								<div className="bg-white shadow-2xl min-h-[1123px] w-[794px] mx-auto text-gray-900 relative">
+									<style>
+										{`
+											.ql-container { font-family: 'Times New Roman', serif !important; font-size: 12pt !important; height: 100%; border: none !important; }
+											.ql-editor { padding: 25mm !important; line-height: 1.5 !important; text-align: justify !important; min-height: 1123px; }
+											.ql-toolbar { border: none !important; border-bottom: 1px solid #e5e7eb !important; background: #f9fafb; border-radius: 8px 8px 0 0; position: sticky; top: 0; z-index: 10; }
+											.ql-editor h3 { text-align: center; font-weight: bold; margin-top: 20px; margin-bottom: 10px; font-size: 14pt; }
+											.ql-editor p { margin-bottom: 10px; }
+										`}
+									</style>
+									{isEditing ? (
+										<ReactQuill
+											theme="snow"
+											value={result}
+											onChange={setResult}
+											modules={{
+												toolbar: [
+													[{ 'header': [3, false] }],
+													['bold', 'italic', 'underline'],
+													[{ 'align': [] }],
+													[{ 'list': 'ordered' }, { 'list': 'bullet' }],
+													['clean']
+												]
+											}}
+										/>
+									) : (
+										<div 
+											className="ql-editor"
+											dangerouslySetInnerHTML={{ __html: result }}
+										/>
+									)}
 								</div>
-							)}
+							</div>
 						</div>
 						{isRefining && (
 							<div className="lg:col-span-1 space-y-6 order-1 lg:order-2">
