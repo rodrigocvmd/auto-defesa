@@ -684,11 +684,12 @@ const ManualDefense = () => {
 			tempContainer.style.lineHeight = "1.5";
 			tempContainer.style.textAlign = "justify";
 			
-			// Fix for justification in html2canvas/jspdf sometimes needing specific structure
-			// We append it to body but keep it hidden from view, yet visible for renderer
-			tempContainer.style.position = "absolute";
-			tempContainer.style.left = "-9999px";
+			// Fix for blank PDF: Element must be in viewport but we can hide it via z-index
+			tempContainer.style.position = "fixed";
+			tempContainer.style.left = "0";
 			tempContainer.style.top = "0";
+			tempContainer.style.zIndex = "-9999";
+			tempContainer.style.visibility = "visible"; // Essential for html2canvas
 			
 			document.body.appendChild(tempContainer);
 
@@ -1266,7 +1267,15 @@ const ManualDefense = () => {
 									<style>
 										{`
 											.ql-container { font-family: 'Times New Roman', serif !important; font-size: 12pt !important; height: 100%; border: none !important; }
-											.ql-editor { padding: 25mm !important; line-height: 1.5 !important; text-align: justify !important; min-height: 1123px; }
+											.ql-editor { 
+												padding: 25mm !important; 
+												line-height: 1.5 !important; 
+												text-align: justify !important; 
+												min-height: 1123px;
+												/* Visual Page Break Indicator */
+												background: linear-gradient(to bottom, transparent 1122px, #E5E7EB 1122px, #E5E7EB 1123px, transparent 1123px) repeat-y;
+												background-size: 100% 1123px; /* A4 Height @ 96 DPI */
+											}
 											.ql-toolbar { border: none !important; border-bottom: 1px solid #e5e7eb !important; background: #f9fafb; border-radius: 8px 8px 0 0; position: sticky; top: 0; z-index: 10; }
 											.ql-editor h3 { text-align: center; font-weight: bold; margin-top: 20px; margin-bottom: 10px; font-size: 14pt; }
 											.ql-editor p { margin-bottom: 10px; }

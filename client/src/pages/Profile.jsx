@@ -224,9 +224,13 @@ export default function Profile() {
             tempContainer.style.background = "white";
             tempContainer.style.lineHeight = "1.5";
             tempContainer.style.textAlign = "justify";
-            tempContainer.style.position = "absolute";
-            tempContainer.style.left = "-9999px";
+            
+            // Fix for blank PDF: Element must be in viewport but we can hide it via z-index
+            tempContainer.style.position = "fixed";
+            tempContainer.style.left = "0";
             tempContainer.style.top = "0";
+            tempContainer.style.zIndex = "-9999";
+            tempContainer.style.visibility = "visible"; // Essential for html2canvas
             
             document.body.appendChild(tempContainer);
 
