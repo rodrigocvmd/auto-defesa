@@ -191,22 +191,32 @@ const MainLayout = ({ children }) => {
 
 			{/* Footer Responsivo */}
 			<footer className="bg-white border-t border-gray-200 mt-auto">
-				<div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-					<p>&copy; 2026 AutoDefesa Software. Todos os direitos reservados.</p>
-					<div className="flex gap-4">
-						<Link to="/how-it-works" className="hover:text-blue-600">
+				<div className="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center gap-6">
+					<div className="flex flex-wrap justify-center gap-6">
+						<Link
+							to="/how-it-works"
+							className="text-base md:text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors">
 							Como Funciona
 						</Link>
-						<Link to="/help" className="hover:text-blue-600">
+						<Link
+							to="/help"
+							className="text-base md:text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors">
 							Ajuda
 						</Link>
-						<Link to="/terms" className="hover:text-blue-600">
+						<Link
+							to="/terms"
+							className="text-base md:text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors">
 							Termos de Uso
 						</Link>
-						<Link to="/privacy" className="hover:text-blue-600">
+						<Link
+							to="/privacy"
+							className="text-base md:text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors">
 							Privacidade
 						</Link>
 					</div>
+					<p className="text-sm text-gray-500 text-center">
+						&copy; 2026 AutoDefesa Software. Todos os direitos reservados.
+					</p>
 				</div>
 			</footer>
 		</div>

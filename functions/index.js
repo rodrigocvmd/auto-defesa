@@ -216,6 +216,8 @@ exports.generateDefense = onRequest((req, res) => {
           2. Use CAIXA ALTA para títulos.
           3. Omissão de Vazios: Não invente dados.
           4. Analise o relato do usuário em <relato_fatos> para extrair teses, mas priorize teses técnicas se o relato for prejudicial.
+          5. EQUIPAMENTO/AFERIÇÃO: Se os campos 'Equipamento' ou 'Aferição' estiverem marcados como "Não disponível", "N/A" ou vazios, você DEVE arguir a NULIDADE do auto de infração por ausência de requisito formal obrigatório (falta de identificação do equipamento ou aferição vencida/ausente).
+          6. ASSINATURA: Ao final do documento, após "Nestes termos, pede deferimento", você DEVE usar EXATAMENTE a Cidade e Data fornecidas nos campos correspondentes. NÃO use a data atual do sistema. Exemplo: "[Cidade fornecida], [Data fornecida]".
         `;
 
 				const defenseTypeMap = {
@@ -235,6 +237,10 @@ exports.generateDefense = onRequest((req, res) => {
           CPF: ${data.cpf || ""}
           Placa: ${data.plate || ""}
           Infração: ${data.article || ""}
+          Equipamento: ${data.equipmentNumber || ""}
+          Aferição: ${data.lastCalibration || ""}
+          Cidade Assinatura: ${data.signCity || ""}
+          Data Assinatura: ${data.signDate || ""}
           </dados_caso>
           
           <relato_fatos>

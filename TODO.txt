@@ -131,16 +131,30 @@ Mudar checklist de lugar
 2. Em uploaddefense e ManualDefense, remova o botão fechar do Cheklist pós download, mantendo apenas o botão "Ir para minhas defesas";
 3. Quando o navbar estiver com o botão hamburguer, centralize horizontalmente os textos dos botões;
 Em uploaddefense e ManualDefense, XXXX ascara para CNH e Numero do AITs
+1. Inverta a ordem no footer dos botões e do informe de direitos reservados, os botões devem vir antes (mesmo para displays maiores), centralize e aumente os botões "Como Funciona, Ajuda, Termos de Uso, Privacidade" e, abaixo deve vir o aviso "© 2026 AutoDefesa Software. Todos os direitos reservados."; 
+2. Em UploadDefense e em Manual defense, além de ser possível colocar o número do equipamento e a data de aferição (feat que já está funcional), deve haver uma opção selecionável como "Não disponível" para o usuário marcar (no caso de ManualDefense) ou para a IA auto-marcar (no caso de UploadDefense), e isso é importante pois a IA pode e deve utilizar a falta de sinalização de número de equipamento ou aferição na elaboração do recurso (portanto, se necessário, reforce essa info nas instruções da IA);
+
+
+
+Conferir:
+3. Em UploadDefense e em Manual defense, no loading da geração do recurso, como o modelo pro é o utilizado, o loading demora um pouco mais. Acrescente um informe na loading screen que já existe de que o processamento pode demorar até 1 minuto e para o usuário não sair da página. Algo como Aguarde na página, o processamento das informações e elaboração do recurso pela nossa IA Pro pode demorar até 1 minuto.;
+4. Em UploadDefense e em Manual defense, a IA deve utilizar a data do campo "Data assinatura" como a data constante no final do recurso (após a cidade) para assinatura. No meu teste a data veio como "[Data Atual]". Se necessário, ajuste as instruções da IA para corrigir isso;
+
+
 - [x]  Revisão final de textos
 - [x]  Inverter ordem checklist
 - [x]  Revisão final de segurança
 - [x]  Tornar repo privado
-- []  Build
-- []  Deploy
+- [x]  Build
+- [x]  Deploy
+
 
 - []  Ajustar domínios e email de confirmação (passos no txt na pasta geral da app)
 
+
+- []  Colocar limites na API/budget
 - []  SEO
+
 
 
 

@@ -68,7 +68,7 @@ const ManualDefense = () => {
 	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
 	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
 	const [loadingText, setLoadingText] = useState(
-		"Analisando a congruência entre a materialidade da infração e o relato do usuário.",
+		"Aguarde na página, o processamento das informações e elaboração do recurso pela nossa IA Pro pode demorar até 1 minuto.",
 	);
 
 	// Rate Limiting States
@@ -78,22 +78,10 @@ const ManualDefense = () => {
 	const [refinementCount, setRefinementCount] = useState(5);
 
 	useEffect(() => {
-		let interval;
-		if (loading) {
-			interval = setInterval(() => {
-				setLoadingText((prev) =>
-					prev ===
-					"Analisando a congruência entre a materialidade da infração e o relato do usuário."
-						? "Nossa IA está identificando erros na multa e melhores argumentos de defesa."
-						: "Analisando a congruência entre a materialidade da infração e o relato do usuário.",
-				);
-			}, 3000);
-		} else {
-			setLoadingText(
-				"Analisando a congruência entre a materialidade da infração e o relato do usuário.",
-			);
-		}
-		return () => clearInterval(interval);
+		// Loading text is now static as requested
+		setLoadingText(
+			"Aguarde na página, o processamento das informações e elaboração do recurso pela nossa IA Pro pode demorar até 1 minuto.",
+		);
 	}, [loading]);
 
 	const initialFormState = {
@@ -248,6 +236,8 @@ const ManualDefense = () => {
 			"time",
 			"location",
 			"description",
+			"equipmentNumber",
+			"lastCalibration",
 			"signCity",
 			"signDate",
 		];
@@ -2085,26 +2075,76 @@ const ManualDefense = () => {
 							</div>
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 								<div>
-									<label className="label-form">Nº Equipamento</label>
-									<input
-										name="equipmentNumber"
-										value={formData.equipmentNumber}
-										onChange={handleChange}
-										onBlur={handleBlur}
-										className="input-form"
-										placeholder="Ex: 12345678"
-									/>
+									<label className="label-form">
+										Nº Equipamento <span className="text-red-500">*</span>
+									</label>
+									<div className="flex flex-col gap-2">
+										<input
+											name="equipmentNumber"
+											value={formData.equipmentNumber}
+											onChange={handleChange}
+											onBlur={handleBlur}
+											className={`input-form ${errors.equipmentNumber ? "border-red-500" : ""} ${formData.equipmentNumber === "Não disponível" ? "bg-gray-100 text-gray-500" : ""}`}
+											placeholder="Ex: 12345678"
+											disabled={formData.equipmentNumber === "Não disponível"}
+										/>
+										{errors.equipmentNumber && (
+											<p className="text-red-500 text-xs mt-1">{errors.equipmentNumber}</p>
+										)}
+										<label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+											<input
+												type="checkbox"
+												checked={formData.equipmentNumber === "Não disponível"}
+												onChange={(e) => {
+													setFormData((prev) => ({
+														...prev,
+														equipmentNumber: e.target.checked ? "Não disponível" : "",
+													}));
+													if (errors.equipmentNumber) {
+														setErrors((prev) => ({ ...prev, equipmentNumber: null }));
+													}
+												}}
+												className="rounded text-blue-600 focus:ring-blue-500"
+											/>
+											Não disponível
+										</label>
+									</div>
 								</div>
 								<div>
-									<label className="label-form">Aferição</label>
-									<input
-										name="lastCalibration"
-										value={formData.lastCalibration}
-										onChange={handleChange}
-										onBlur={handleBlur}
-										className="input-form"
-										placeholder="Ex: 10/10/2023"
-									/>
+									<label className="label-form">
+										Aferição <span className="text-red-500">*</span>
+									</label>
+									<div className="flex flex-col gap-2">
+										<input
+											name="lastCalibration"
+											value={formData.lastCalibration}
+											onChange={handleChange}
+											onBlur={handleBlur}
+											className={`input-form ${errors.lastCalibration ? "border-red-500" : ""} ${formData.lastCalibration === "Não disponível" ? "bg-gray-100 text-gray-500" : ""}`}
+											placeholder="Ex: 10/10/2023"
+											disabled={formData.lastCalibration === "Não disponível"}
+										/>
+										{errors.lastCalibration && (
+											<p className="text-red-500 text-xs mt-1">{errors.lastCalibration}</p>
+										)}
+										<label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+											<input
+												type="checkbox"
+												checked={formData.lastCalibration === "Não disponível"}
+												onChange={(e) => {
+													setFormData((prev) => ({
+														...prev,
+														lastCalibration: e.target.checked ? "Não disponível" : "",
+													}));
+													if (errors.lastCalibration) {
+														setErrors((prev) => ({ ...prev, lastCalibration: null }));
+													}
+												}}
+												className="rounded text-blue-600 focus:ring-blue-500"
+											/>
+											Não disponível
+										</label>
+									</div>
 								</div>
 								<div className="md:col-span-2">
 									<label className="label-form text-blue-900 font-bold mb-2">
