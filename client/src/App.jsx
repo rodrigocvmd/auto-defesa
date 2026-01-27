@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { DefenseProvider } from './contexts/DefenseContext';
 import Home from './pages/Home';
 import UploadDefense from './pages/UploadDefense';
 import ManualDefense from './pages/ManualDefense';
@@ -19,19 +20,27 @@ function App() {
     <Router>
       <ScrollToTop />
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/upload" element={<UploadDefense />} />
-          <Route path="/manual-defense" element={<ManualDefense />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/help" element={<Help />} />
-        </Routes>
+        <DefenseProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/pricing" element={<Pricing />} />
+            
+            {/* Rotas com parâmetro opcional para o fluxo de passos */}
+            <Route path="/upload" element={<UploadDefense />} />
+            <Route path="/upload/:step" element={<UploadDefense />} />
+            
+            <Route path="/manual-defense" element={<ManualDefense />} />
+            <Route path="/manual-defense/:step" element={<ManualDefense />} />
+            
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/help" element={<Help />} />
+          </Routes>
+        </DefenseProvider>
       </AuthProvider>
     </Router>
   );
