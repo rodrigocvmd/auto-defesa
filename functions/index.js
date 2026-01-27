@@ -13,7 +13,10 @@ const allowedOrigins = [
 const cors = require("cors")({
 	origin: (origin, callback) => {
 		// Restringimos apenas às origens permitidas para maior segurança (impede acesso direto via scripts fora do browser)
-		if (allowedOrigins.indexOf(origin) !== -1 || !origin && process.env.NODE_ENV !== 'production') {
+		if (
+			allowedOrigins.indexOf(origin) !== -1 ||
+			(!origin && process.env.NODE_ENV !== "production")
+		) {
 			callback(null, true);
 		} else {
 			callback(new Error("Not allowed by CORS"));
@@ -43,34 +46,37 @@ const db = admin.firestore();
 
 // --- HELPER: AUTHENTICATION (Security) ---
 async function verifyAuth(req) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    throw new Error('UNAUTHORIZED');
-  }
-  const token = authHeader.split('Bearer ')[1];
-  try {
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    return decodedToken.uid;
-  } catch (error) {
-    throw new Error('UNAUTHORIZED');
-  }
+	const authHeader = req.headers.authorization;
+	if (!authHeader || !authHeader.startsWith("Bearer ")) {
+		throw new Error("UNAUTHORIZED");
+	}
+	const token = authHeader.split("Bearer ")[1];
+	try {
+		const decodedToken = await admin.auth().verifyIdToken(token);
+		return decodedToken.uid;
+	} catch (error) {
+		throw new Error("UNAUTHORIZED");
+	}
 }
 
 // --- HELPER: RATE LIMIT (Backend) ---
 async function checkIpRateLimit(req, limitCount = 3, windowHours = 1) {
 	// Tenta pegar o IP real (considerando proxies do Firebase/Google)
 	let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-	
+
 	// Se houver múltiplos IPs (proxy chain), pega o primeiro (client real)
-	if (ip && ip.indexOf(',') !== -1) {
-		ip = ip.split(',')[0].trim();
+	if (ip && ip.indexOf(",") !== -1) {
+		ip = ip.split(",")[0].trim();
 	}
 
-	const ipHash = crypto.createHash("sha256").update(ip || "unknown").digest("hex");
-	
+	const ipHash = crypto
+		.createHash("sha256")
+		.update(ip || "unknown")
+		.digest("hex");
+
 	const rateRef = db.collection("rate_limits").doc(ipHash);
 	const now = admin.firestore.Timestamp.now();
-	
+
 	// Transação para garantir consistência
 	await db.runTransaction(async (t) => {
 		const doc = await t.get(rateRef);
@@ -78,17 +84,20 @@ async function checkIpRateLimit(req, limitCount = 3, windowHours = 1) {
 
 		// Se o tempo de janela expirou, reseta
 		if (now.toMillis() > data.resetAt.toMillis()) {
-			data = { count: 0, resetAt: admin.firestore.Timestamp.fromMillis(now.toMillis() + windowHours * 3600 * 1000) };
+			data = {
+				count: 0,
+				resetAt: admin.firestore.Timestamp.fromMillis(now.toMillis() + windowHours * 3600 * 1000),
+			};
 		}
 
 		if (data.count >= limitCount) {
 			throw new Error("RATE_LIMIT_EXCEEDED");
 		}
 
-		t.set(rateRef, { 
-			count: data.count + 1, 
+		t.set(rateRef, {
+			count: data.count + 1,
 			resetAt: data.resetAt,
-			lastIp: ip // Apenas para debug/audit se necessário
+			lastIp: ip, // Apenas para debug/audit se necessário
 		});
 	});
 }
@@ -96,8 +105,8 @@ async function checkIpRateLimit(req, limitCount = 3, windowHours = 1) {
 // --- CONFIGURAÇÃO DE MODELOS (HYBRID AI) ---
 // Flash: Para tarefas rápidas, OCR, extração e edições simples.
 // Pro: Para raciocínio jurídico complexo e redação da pseça inicial.
-const MODEL_FLASH = "gemini-2.5-flash-lite";
-const MODEL_PRO = "gemini-2.5-flash-lite";
+const MODEL_FLASH = "gemini-3-flash-preview";
+const MODEL_PRO = "gemini-3-pro-preview";
 
 // --- FUNÇÃO 1: CONSULTA ---
 exports.getInfraction = onRequest((req, res) => {
@@ -135,14 +144,14 @@ exports.generateDefense = onRequest((req, res) => {
 			return;
 		}
 
-    // --- SEGURANÇA: VERIFICAR TOKEN ---
-    let userId;
-    try {
-      userId = await verifyAuth(req);
-    } catch (e) {
-      res.status(401).json({ error: "Usuário não autenticado." });
-      return;
-    }
+		// --- SEGURANÇA: VERIFICAR TOKEN ---
+		let userId;
+		try {
+			userId = await verifyAuth(req);
+		} catch (e) {
+			res.status(401).json({ error: "Usuário não autenticado." });
+			return;
+		}
 
 		let data = req.body || {};
 		// O userId vem do token agora, ignoramos o body.userId
@@ -253,17 +262,17 @@ exports.createCheckoutSession = onRequest((req, res) => {
 		// Para teste rápido, substitua abaixo, mas NÃO COMITE em produção real.
 		const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-    // --- SEGURANÇA: VERIFICAR TOKEN ---
-    let userId;
-    try {
-      userId = await verifyAuth(req);
-    } catch (e) {
-      res.status(401).json({ error: "Usuário não autenticado." });
-      return;
-    }
+		// --- SEGURANÇA: VERIFICAR TOKEN ---
+		let userId;
+		try {
+			userId = await verifyAuth(req);
+		} catch (e) {
+			res.status(401).json({ error: "Usuário não autenticado." });
+			return;
+		}
 
 		const { priceId, successUrl, cancelUrl, mode } = req.body;
-    // Ignoramos req.body.userId por segurança e usamos o userId do token
+		// Ignoramos req.body.userId por segurança e usamos o userId do token
 
 		// MAPA DE PREÇOS X CRÉDITOS (SEGURANÇA)
 		// Substitua os IDs abaixo pelos 'API ID' que aparecem no seu Dashboard do Stripe (Produtos > Preços)
@@ -314,10 +323,10 @@ exports.extractDataFromImage = onRequest((req, res) => {
 	cors(req, res, async () => {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
-    
-    // Ferramenta pública, pode ser usada sem autenticação ou com autenticação opcional
-    // Se quisermos restringir, basta descomentar abaixo:
-    // try { await verifyAuth(req); } catch (e) { return res.status(401).json({error: "Login necessário"}); }
+
+		// Ferramenta pública, pode ser usada sem autenticação ou com autenticação opcional
+		// Se quisermos restringir, basta descomentar abaixo:
+		// try { await verifyAuth(req); } catch (e) { return res.status(401).json({error: "Login necessário"}); }
 
 		const { image, mimeType } = req.body || {};
 
@@ -374,28 +383,30 @@ exports.preAnalyze = onRequest((req, res) => {
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
 
 		const { image, mimeType, ...userData } = req.body || {};
-		
-    // Tenta verificar se está autenticado. Se sim, bypass rate limit (ou aumente).
-    // Se não, aplica rate limit por IP.
-    let userId = null;
-    try {
-      userId = await verifyAuth(req);
-    } catch(e) {
-      // Não autenticado
-    }
 
-    if (!userId) {
-      try {
-        // RATE LIMIT BACKEND: 5 tentativas por hora por IP para pré-análise
-        // Isso protege sua cota da OpenAI/Gemini contra scripts de loop
-        await checkIpRateLimit(req, 5, 1);
-      } catch (e) {
-        if (e.message === "RATE_LIMIT_EXCEEDED") {
-          return res.status(429).json({ error: "Muitas tentativas. Tente novamente em 1 hora ou faça login." });
-        }
-        console.error("Erro Rate Limit:", e);
-      }
-    }
+		// Tenta verificar se está autenticado. Se sim, bypass rate limit (ou aumente).
+		// Se não, aplica rate limit por IP.
+		let userId = null;
+		try {
+			userId = await verifyAuth(req);
+		} catch (e) {
+			// Não autenticado
+		}
+
+		if (!userId) {
+			try {
+				// RATE LIMIT BACKEND: 5 tentativas por hora por IP para pré-análise
+				// Isso protege sua cota da OpenAI/Gemini contra scripts de loop
+				await checkIpRateLimit(req, 5, 1);
+			} catch (e) {
+				if (e.message === "RATE_LIMIT_EXCEEDED") {
+					return res
+						.status(429)
+						.json({ error: "Muitas tentativas. Tente novamente em 1 hora ou faça login." });
+				}
+				console.error("Erro Rate Limit:", e);
+			}
+		}
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
@@ -463,18 +474,18 @@ exports.analyzeDocument = onRequest((req, res) => {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
 
-    // --- SEGURANÇA: VERIFICAR TOKEN ---
-    let userId;
-    try {
-      userId = await verifyAuth(req);
-    } catch (e) {
-      res.status(401).json({ error: "Usuário não autenticado." });
-      return;
-    }
+		// --- SEGURANÇA: VERIFICAR TOKEN ---
+		let userId;
+		try {
+			userId = await verifyAuth(req);
+		} catch (e) {
+			res.status(401).json({ error: "Usuário não autenticado." });
+			return;
+		}
 
 		// Recebe Imagem + Dados Complementares do Passo 2
 		const { image, mimeType, ...userData } = req.body || {};
-    // ignoramos req.body.userId
+		// ignoramos req.body.userId
 
 		try {
 			// Verificar e debitar créditos
@@ -539,7 +550,9 @@ exports.stripeWebhook = onRequest(async (req, res) => {
 	const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 	if (!endpointSecret) {
-		console.error("❌ ERRO CRÍTICO: STRIPE_WEBHOOK_SECRET não está definido. Abortando por segurança.");
+		console.error(
+			"❌ ERRO CRÍTICO: STRIPE_WEBHOOK_SECRET não está definido. Abortando por segurança.",
+		);
 		res.status(500).send("Configuration Error: Webhook Secret missing.");
 		return;
 	}
@@ -561,7 +574,7 @@ exports.stripeWebhook = onRequest(async (req, res) => {
 	} catch (err) {
 		console.error(`❌ Webhook Signature Error: ${err.message}`);
 		console.error(
-			`Dica: Verifique se o segredo 'whsec_...' gerado pelo 'stripe listen' é o mesmo que está no seu .env.`, 
+			`Dica: Verifique se o segredo 'whsec_...' gerado pelo 'stripe listen' é o mesmo que está no seu .env.`,
 		);
 		res.status(400).send(`Webhook Error: ${err.message}`);
 		return;

@@ -132,17 +132,17 @@ Mudar checklist de lugar
 3. Quando o navbar estiver com o botão hamburguer, centralize horizontalmente os textos dos botões;
 Em uploaddefense e ManualDefense, XXXX ascara para CNH e Numero do AITs
 - [x]  Revisão final de textos
-
-
-Inverter ordem checklist
-
-- []  Refatorar
+- [x]  Inverter ordem checklist
+- [x]  Revisão final de segurança
+- [x]  Tornar repo privado
 - []  Build
 - []  Deploy
 
+- []  Ajustar domínios e email de confirmação (passos no txt na pasta geral da app)
+
 - []  SEO
 
-- []  Ajustar domínios e email de confirmação (passos no txt na pasta geral da app)
+
 
 
 
