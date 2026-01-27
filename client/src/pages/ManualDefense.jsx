@@ -29,10 +29,11 @@ import {
 	Info,
 	Coins,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../services/api";
 import { jsPDF } from "jspdf";
 import { useAuth } from "../contexts/AuthContext";
+import { useDefense } from "../contexts/DefenseContext";
 import { db } from "../firebaseConfig";
 import { collection, addDoc, serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import { NavigationBlocker } from "../components/NavigationBlocker";
@@ -42,20 +43,35 @@ import SEO from "../components/SEO";
 const ManualDefense = () => {
 	const { currentUser, userData } = useAuth();
 	const navigate = useNavigate();
+	const { step: routeStep } = useParams();
 
-	const [step, setStep] = useState("selection");
+	// Context
+	const {
+		formData,
+		setFormData,
+		analysisData,
+		setAnalysisData,
+		defenseResult: result,
+		setDefenseResult: setResult,
+		defenseId,
+		setDefenseId,
+		resetDefense,
+		initialFormState
+	} = useDefense();
+
+	// Computed step from route
+	const step = routeStep || "selection";
+
+	// Local UI States
 	const [showHelpModal, setShowHelpModal] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [refining, setRefining] = useState(false);
 	const [searchingCode, setSearchingCode] = useState(false);
 	const [loadingCep, setLoadingCep] = useState(false);
-	const [result, setResult] = useState(null);
 	const [isRefining, setIsRefining] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 	const [refinementText, setRefinementText] = useState("");
 	const [errors, setErrors] = useState({});
-	const [analysisData, setAnalysisData] = useState(null);
-	const [defenseId, setDefenseId] = useState(null);
 
 	const [showTestModal, setShowTestModal] = useState(false);
 	const [showCodeNotFoundModal, setShowCodeNotFoundModal] = useState(false);
@@ -85,47 +101,12 @@ const ManualDefense = () => {
 		);
 	}, [loading]);
 
-	const initialFormState = {
-		defenseType: "",
-		name: "",
-		nationality: "Brasileiro(a)",
-		maritalStatus: "",
-		profession: "",
-		rg: "",
-		rgIssuer: "",
-		cpf: "",
-		cnh: "",
-		cnhCategory: "",
-		address: "",
-		addressNumber: "",
-		addressComplement: "",
-		neighborhood: "",
-		city: "",
-		state: "",
-		zipCode: "",
-		phone: "",
-		email: "",
-		plate: "",
-		plateUF: "",
-		vehicleModel: "",
-		issuingBody: "",
-		aitNumber: "",
-		date: "",
-		time: "",
-		location: "",
-		article: "",
-		infractionCode: "",
-		infractionSplit: "",
-		infractionDescription: "", // Nova descrição simples da infração
-		legalText: "", // Novo texto do dispositivo legal
-		description: "",
-		equipmentNumber: "",
-		lastCalibration: "",
-		signCity: "",
-		signDate: new Date().toLocaleDateString("pt-BR"),
-	};
-
-	const [formData, setFormData] = useState(initialFormState);
+	// Reset state if user navigates back to selection (Clean Slate)
+	useEffect(() => {
+		if (step === "selection" && result) {
+			resetDefense();
+		}
+	}, [step, result, resetDefense]);
 
 	// EFEITO PARA RESTAURAR DADOS PENDENTES APÓS LOGIN
 	useEffect(() => {
@@ -136,7 +117,7 @@ const ManualDefense = () => {
 				if (parsedData.source === "manual") {
 					setFormData(parsedData.formData);
 					setAnalysisData(parsedData.analysisData);
-					setStep("analysis");
+					navigate("/manual-defense/analysis");
 					localStorage.removeItem("pendingDefenseData");
 				}
 			} catch (e) {
@@ -410,7 +391,7 @@ const ManualDefense = () => {
 		setAnalysisData(null);
 		setIsTestMode(false);
 		setHasTested(true);
-		setStep("form");
+		navigate("/manual-defense/form");
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
@@ -501,7 +482,7 @@ const ManualDefense = () => {
 					const response = await api.preAnalyze(testData);
 					if (response.success) {
 						setAnalysisData(response.data);
-						setStep("analysis");
+						navigate("/manual-defense/analysis");
 					}
 				} catch (err) {
 					alert("Erro na análise preliminar. Tente novamente.");
@@ -539,7 +520,7 @@ const ManualDefense = () => {
 						consecutiveDivergenceCount >= 2 ||
 						(!limitStatus.allowed && consecutiveDivergenceCount > 0)
 					) {
-						setStep("analysis");
+						navigate("/manual-defense/analysis");
 						setConsecutiveDivergenceCount(0);
 					} else {
 						setConsecutiveDivergenceCount((prev) => prev + 1);
@@ -547,7 +528,7 @@ const ManualDefense = () => {
 					}
 				} else {
 					setConsecutiveDivergenceCount(0); // Reset se passar
-					setStep("analysis");
+					navigate("/manual-defense/analysis");
 				}
 			}
 		} catch (err) {
@@ -584,6 +565,7 @@ const ManualDefense = () => {
 						console.error("Erro ao salvar no histórico:", fsError);
 					}
 				}
+				navigate("/manual-defense/result");
 			}
 		} catch (err) {
 			if (err.message && err.message.includes("Créditos insuficientes")) {
@@ -877,7 +859,7 @@ const ManualDefense = () => {
 					<CheckCircle className="text-green-500" /> Confirmar Versão Final
 				</h3>
 				<p className="text-gray-600 mb-6">
-					Esta será a versão final do seu documento PDF. Após confirmar, você será redirecionado e{" "}
+					Esta será a version final do seu documento PDF. Após confirmar, você será redirecionado e{" "}
 					<strong>não poderá mais alterar este documento</strong> nesta sessão.
 					<br />
 					<br />
@@ -957,7 +939,10 @@ const ManualDefense = () => {
 
 				<div className="flex flex-col gap-3">
 					<button
-						onClick={() => navigate("/profile")}
+						onClick={() => {
+							resetDefense();
+							navigate("/profile");
+						}}
 						className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
 						Ir para Minhas Defesas
 					</button>
@@ -1000,7 +985,7 @@ const ManualDefense = () => {
 					<button
 						onClick={() => {
 							setShowDivergenceModal(false);
-							setStep("analysis");
+							navigate("/manual-defense/analysis");
 						}}
 						className="w-full bg-white border border-gray-300 text-gray-500 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">
 						Manter como está
@@ -1186,7 +1171,9 @@ const ManualDefense = () => {
 		);
 	};
 
-	if (result) {
+	// --- RENDERS ---
+
+	if (step === "result" && result) {
 		return (
 			<MainLayout>
 				<SEO
@@ -1514,7 +1501,7 @@ const ManualDefense = () => {
 							</div>
 							{!isTestMode && (
 								<button
-									onClick={() => setStep("form")}
+									onClick={() => navigate("/manual-defense/form")}
 									className="w-full text-center text-gray-400 text-sm mt-6 hover:text-gray-600">
 									Voltar e editar dados
 								</button>
@@ -1527,8 +1514,6 @@ const ManualDefense = () => {
 		);
 	}
 
-	// ... (step === 'form' and default return remain the same)
-	// Reusing the rest of the file logic...
 	if (step === "form") {
 		return (
 			<MainLayout>
@@ -1546,7 +1531,7 @@ const ManualDefense = () => {
 				<div className="max-w-5xl mx-auto">
 					<header className="mb-8">
 						<button
-							onClick={() => setStep("selection")}
+							onClick={() => navigate("/manual-defense")}
 							className="text-gray-500 hover:text-blue-600 flex items-center mb-4 font-medium">
 							<ArrowLeft size={20} className="mr-1" /> Voltar
 						</button>
@@ -2278,7 +2263,7 @@ const ManualDefense = () => {
 					<button
 						onClick={() => {
 							setFormData((prev) => ({ ...prev, defenseType: "previa" }));
-							setStep("form");
+							navigate("/manual-defense/form");
 						}}
 						className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-yellow-400 transition-all text-left hover:shadow-md h-full flex flex-col">
 						<div className="bg-yellow-100 w-12 h-12 rounded-xl flex items-center justify-center text-yellow-600 mb-4">
@@ -2293,7 +2278,7 @@ const ManualDefense = () => {
 					<button
 						onClick={() => {
 							setFormData((prev) => ({ ...prev, defenseType: "jari" }));
-							setStep("form");
+							navigate("/manual-defense/form");
 						}}
 						className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-blue-500 transition-all text-left hover:shadow-md h-full flex flex-col">
 						<div className="bg-blue-100 w-12 h-12 rounded-xl flex items-center justify-center text-blue-600 mb-4">
@@ -2308,7 +2293,7 @@ const ManualDefense = () => {
 					<button
 						onClick={() => {
 							setFormData((prev) => ({ ...prev, defenseType: "cetran" }));
-							setStep("form");
+							navigate("/manual-defense/form");
 						}}
 						className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-purple-500 transition-all text-left hover:shadow-md h-full flex flex-col">
 						<div className="bg-purple-100 w-12 h-12 rounded-xl flex items-center justify-center text-purple-600 mb-4">

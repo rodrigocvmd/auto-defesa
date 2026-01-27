@@ -30,12 +30,13 @@ import {
 	Copy,
 	Coins,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
 import { api } from "../services/api";
 import { jsPDF } from "jspdf";
 import { useAuth } from "../contexts/AuthContext";
+import { useDefense } from "../contexts/DefenseContext";
 import { db } from "../firebaseConfig";
 import { collection, addDoc, serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import { NavigationBlocker } from "../components/NavigationBlocker";
@@ -44,11 +45,28 @@ import { rateLimiter } from "../services/rateLimiter";
 const UploadDefense = () => {
 	const { currentUser, userData } = useAuth();
 	const navigate = useNavigate();
-	const [step, setStep] = useState("upload");
+	const { step: routeStep } = useParams();
+	
+	// Context
+	const {
+		formData,
+		setFormData,
+		analysisData,
+		setAnalysisData,
+		defenseResult: result,
+		setDefenseResult: setResult,
+		defenseId,
+		setDefenseId,
+		resetDefense
+	} = useDefense();
+
+	// Computed step from route
+	const step = routeStep || "upload";
+
+	// Local UI States
 	const [file, setFile] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [loadingCep, setLoadingCep] = useState(false);
-	const [result, setResult] = useState(null);
 	const [error, setError] = useState(null);
 	const [isDragging, setIsDragging] = useState(false);
 	const [isRefining, setIsRefining] = useState(false);
@@ -56,9 +74,7 @@ const UploadDefense = () => {
 	const [refinementText, setRefinementText] = useState("");
 	const [refining, setRefining] = useState(false);
 	const [errors, setErrors] = useState({});
-	const [analysisData, setAnalysisData] = useState(null);
 	const [searchingCode, setSearchingCode] = useState(false);
-	const [defenseId, setDefenseId] = useState(null);
 	const [showHelpModal, setShowHelpModal] = useState(false);
 	const [showCodeNotFoundModal, setShowCodeNotFoundModal] = useState(false);
 	const [isManualInfraction, setIsManualInfraction] = useState(false);
@@ -78,6 +94,13 @@ const UploadDefense = () => {
 	const [consecutiveDivergenceCount, setConsecutiveDivergenceCount] = useState(0);
 	const [refinementCount, setRefinementCount] = useState(5);
 
+	// Set default defense type if not set
+	useEffect(() => {
+		if (!formData.defenseType) {
+			setFormData(prev => ({ ...prev, defenseType: "Análise de Upload" }));
+		}
+	}, []);
+
 	useEffect(() => {
 		// Loading text is now static as requested
 		setLoadingText(
@@ -85,47 +108,12 @@ const UploadDefense = () => {
 		);
 	}, [loading]);
 
-	const initialFormState = {
-		defenseType: "Análise de Upload", // Default
-		name: "",
-		nationality: "Brasileiro(a)",
-		maritalStatus: "",
-		profession: "",
-		rg: "",
-		rgIssuer: "",
-		cpf: "",
-		cnh: "",
-		cnhCategory: "",
-		address: "",
-		addressNumber: "",
-		addressComplement: "",
-		neighborhood: "",
-		city: "",
-		state: "",
-		zipCode: "",
-		phone: "",
-		email: "",
-		plate: "",
-		plateUF: "",
-		vehicleModel: "",
-		issuingBody: "",
-		aitNumber: "",
-		date: "",
-		time: "",
-		location: "",
-		infractionCode: "",
-		infractionSplit: "",
-		article: "",
-		infractionDescription: "",
-		legalText: "",
-		description: "",
-		equipmentNumber: "",
-		lastCalibration: "",
-		signCity: "",
-		signDate: new Date().toLocaleDateString("pt-BR"),
-	};
-
-	const [formData, setFormData] = useState(initialFormState);
+	// Reset state if user navigates back to start (Clean Slate)
+	useEffect(() => {
+		if (step === "upload" && result) {
+			resetDefense();
+		}
+	}, [step, result, resetDefense]);
 
 	// EFEITO PARA RESTAURAR DADOS PENDENTES APÓS LOGIN
 	useEffect(() => {
@@ -136,7 +124,7 @@ const UploadDefense = () => {
 				if (parsedData.source === "upload") {
 					setFormData(parsedData.formData);
 					setAnalysisData(parsedData.analysisData);
-					setStep("analysis");
+					navigate("/upload/analysis");
 					localStorage.removeItem("pendingDefenseData");
 				}
 			} catch (e) {
@@ -301,12 +289,12 @@ const UploadDefense = () => {
 
 					if (detectedType) {
 						setFormData((prev) => ({ ...prev, defenseType: detectedType }));
-						setStep("phaseConfirmation");
+						navigate("/upload/phaseConfirmation");
 					} else {
-						setStep("phaseSelection");
+						navigate("/upload/phaseSelection");
 					}
 				} else {
-					setStep("phaseSelection");
+					navigate("/upload/phaseSelection");
 				}
 			}
 		} catch (e) {
@@ -315,7 +303,7 @@ const UploadDefense = () => {
 				"Não foi possível ler os dados da imagem automaticamente. Mas você pode preencher manualmente.",
 			);
 			// Se der erro na leitura, ainda assim pergunta a fase, pois o usuário vai preencher manual
-			setTimeout(() => setStep("phaseSelection"), 2000);
+			setTimeout(() => navigate("/upload/phaseSelection"), 2000);
 		} finally {
 			setLoading(false);
 		}
@@ -591,7 +579,7 @@ const UploadDefense = () => {
 						consecutiveDivergenceCount >= 2 ||
 						(!limitStatus.allowed && consecutiveDivergenceCount > 0)
 					) {
-						setStep("analysis");
+						navigate("/upload/analysis");
 						setConsecutiveDivergenceCount(0);
 					} else {
 						setConsecutiveDivergenceCount((prev) => prev + 1);
@@ -599,7 +587,7 @@ const UploadDefense = () => {
 					}
 				} else {
 					setConsecutiveDivergenceCount(0);
-					setStep("analysis");
+					navigate("/upload/analysis");
 				}
 			}
 		} catch (err) {
@@ -631,6 +619,7 @@ const UploadDefense = () => {
 						console.error("Erro ao salvar no histórico:", fsError);
 					}
 				}
+				navigate("/upload/result");
 			}
 		} catch (err) {
 			if (err.message && err.message.includes("Créditos insuficientes")) {
@@ -917,7 +906,10 @@ const UploadDefense = () => {
 
 				<div className="flex flex-col gap-3">
 					<button
-						onClick={() => navigate("/profile")}
+						onClick={() => {
+							resetDefense();
+							navigate("/profile");
+						}}
 						className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
 						Ir para Minhas Defesas
 					</button>
@@ -968,7 +960,7 @@ const UploadDefense = () => {
 						onClick={() => {
 							setShowDivergenceModal(false);
 
-							setStep("analysis");
+							navigate("/upload/analysis");
 						}}
 						className="w-full bg-white border border-gray-300 text-gray-500 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">
 						Manter como está
@@ -1068,7 +1060,7 @@ const UploadDefense = () => {
 
 	// --- RENDERS ---
 
-	if (result) {
+	if (step === "result" && result) {
 		return (
 			<MainLayout>
 				<NavigationBlocker when={!!result} />
@@ -1398,7 +1390,7 @@ const UploadDefense = () => {
 								</div>
 							</div>
 							<button
-								onClick={() => setStep("form")}
+								onClick={() => navigate("/upload/form")}
 								className="w-full text-center text-gray-400 text-sm mt-6 hover:text-gray-600">
 								Voltar e editar dados
 							</button>
@@ -1500,12 +1492,12 @@ const UploadDefense = () => {
 
 						<div className="flex flex-col gap-3">
 							<button
-								onClick={() => setStep("form")}
+								onClick={() => navigate("/upload/form")}
 								className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-colors shadow-lg">
 								Correto, prosseguir com {detectedLabel}
 							</button>
 							<button
-								onClick={() => setStep("phaseSelection")}
+								onClick={() => navigate("/upload/phaseSelection")}
 								className="text-gray-500 font-medium hover:text-gray-700 py-2">
 								Não, escolher outra fase manualmente
 							</button>
@@ -1523,7 +1515,7 @@ const UploadDefense = () => {
 				<div className="max-w-4xl mx-auto py-10">
 					<header className="mb-12 text-center">
 						<button
-							onClick={() => setStep("upload")}
+							onClick={() => navigate("/upload")}
 							className="inline-flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors">
 							<ArrowLeft size={20} className="mr-1" /> Voltar
 						</button>
@@ -1536,7 +1528,7 @@ const UploadDefense = () => {
 						<button
 							onClick={() => {
 								setFormData((prev) => ({ ...prev, defenseType: "previa" }));
-								setStep("form");
+								navigate("/upload/form");
 							}}
 							className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-yellow-400 transition-all text-left group hover:shadow-md h-full flex flex-col">
 							<div className="bg-yellow-100 w-12 h-12 rounded-xl flex items-center justify-center text-yellow-600 mb-4 group-hover:scale-110 transition-transform">
@@ -1551,7 +1543,7 @@ const UploadDefense = () => {
 						<button
 							onClick={() => {
 								setFormData((prev) => ({ ...prev, defenseType: "jari" }));
-								setStep("form");
+								navigate("/upload/form");
 							}}
 							className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-blue-500 transition-all text-left group hover:shadow-md h-full flex flex-col">
 							<div className="bg-blue-100 w-12 h-12 rounded-xl flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
@@ -1566,7 +1558,7 @@ const UploadDefense = () => {
 						<button
 							onClick={() => {
 								setFormData((prev) => ({ ...prev, defenseType: "cetran" }));
-								setStep("form");
+								navigate("/upload/form");
 							}}
 							className="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-purple-500 transition-all text-left group hover:shadow-md h-full flex flex-col">
 							<div className="bg-purple-100 w-12 h-12 rounded-xl flex items-center justify-center text-purple-600 mb-4 group-hover:scale-110 transition-transform">
@@ -1641,7 +1633,7 @@ const UploadDefense = () => {
 				<div className="max-w-5xl mx-auto py-8">
 					<header className="mb-8">
 						<button
-							onClick={() => setStep("upload")}
+							onClick={() => navigate("/upload")}
 							className="text-gray-500 hover:text-blue-600 flex items-center mb-4 transition-colors font-medium">
 							<ArrowLeft size={20} className="mr-1" /> Voltar
 						</button>
