@@ -215,26 +215,76 @@ export default function Profile() {
 
         try {
             const tempContainer = document.createElement("div");
-            tempContainer.innerHTML = contentHtml;
-            tempContainer.style.width = "794px";
-            tempContainer.style.padding = "25mm";
+            
+            // WRAPPER FIX: Wrap content in ql-editor to ensure Quill styles apply
+            // and inject the necessary CSS directly
+            tempContainer.innerHTML = `<div class="ql-container ql-snow"><div class="ql-editor">${contentHtml}</div></div>`;
+            
+            // Styles to match A4 PDF look
+            tempContainer.style.width = "794px"; // A4 width at 96dpi
+            tempContainer.style.minHeight = "1123px"; // A4 height at 96dpi
             tempContainer.style.fontSize = "12pt";
             tempContainer.style.fontFamily = "'Times New Roman', serif";
             tempContainer.style.color = "black";
             tempContainer.style.background = "white";
             tempContainer.style.lineHeight = "1.5";
             tempContainer.style.textAlign = "justify";
+            tempContainer.style.boxSizing = "border-box";
             
-            // Fix for blank PDF: Element must be in viewport but we can hide it via z-index
+            // Inject styles manually because external CSS might not load in time for html2canvas
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .ql-container { 
+                    box-sizing: border-box; 
+                    font-family: 'Times New Roman', serif !important; 
+                    font-size: 12pt !important;
+                    height: 100%;
+                    border: none !important;
+                }
+                .ql-editor { 
+                    padding: 25mm !important; 
+                    box-sizing: border-box !important;
+                    width: 100% !important;
+                    line-height: 1.5 !important;
+                    text-align: justify !important;
+                    color: #000000 !important;
+                    background-color: #ffffff !important;
+                }
+                .ql-editor p { margin-bottom: 10px; color: #000000 !important; }
+                .ql-editor h3 { text-align: center; font-weight: bold; margin-top: 20px; margin-bottom: 10px; font-size: 14pt; color: #000000 !important; }
+                .ql-align-center { text-align: center; }
+                .ql-align-justify { text-align: justify; }
+                .ql-align-right { text-align: right; }
+            `;
+            tempContainer.appendChild(style);
+            
+            // Styles to match A4 PDF look
+            tempContainer.style.width = "794px"; // A4 width at 96dpi
+            tempContainer.style.minHeight = "1123px"; // A4 height at 96dpi
+            tempContainer.style.fontSize = "12pt";
+            tempContainer.style.fontFamily = "'Times New Roman', serif";
+            tempContainer.style.color = "#000000"; // Force Black Text
+            tempContainer.style.backgroundColor = "#ffffff"; // Force White Background
+            tempContainer.style.lineHeight = "1.5";
+            tempContainer.style.textAlign = "justify";
+            tempContainer.style.boxSizing = "border-box";
+            
+            // Fix for blank PDF: Element must be in viewport but we can hide it via positioning
+            // Note: z-index -9999 allows it to be 'visible' to html2canvas but hidden from user
             tempContainer.style.position = "fixed";
             tempContainer.style.left = "0";
             tempContainer.style.top = "0";
             tempContainer.style.zIndex = "-9999";
-            tempContainer.style.visibility = "visible"; // Essential for html2canvas
+            tempContainer.style.visibility = "visible"; 
             
             document.body.appendChild(tempContainer);
 
-            const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+            const doc = new jsPDF({ 
+                orientation: 'p', 
+                unit: 'mm', 
+                format: 'a4',
+                compress: true 
+            });
             
             await doc.html(tempContainer, {
                 callback: function (doc) {
@@ -243,8 +293,15 @@ export default function Profile() {
                 },
                 x: 0,
                 y: 0,
-                width: 210,
-                windowWidth: 794
+                width: 210, // A4 Width in mm
+                windowWidth: 794, // Window width in px
+                margin: 0,
+                autoPaging: 'text',
+                html2canvas: {
+                    scale: 1, // Standard scale to prevent huge page count
+                    backgroundColor: "#ffffff",
+                    useCORS: true // Help with loading images if any
+                }
             });
         } catch (err) {
             console.error("Erro ao gerar PDF:", err);

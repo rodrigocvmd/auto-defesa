@@ -330,22 +330,22 @@ exports.createCheckoutSession = onRequest((req, res) => {
 
 exports.extractDataFromImage = onRequest((req, res) => {
 	cors(req, res, async () => {
-		    const apiKey = process.env.GEMINI_API_KEY;
-		    if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
-		
-		    try {
-		      // RATE LIMIT: 10 tentativas por hora por IP para OCR (permite re-tentativas de fotos ruins)
-		      await checkIpRateLimit(req, 10, 1);
-		    } catch (e) {
-		      if (e.message === "RATE_LIMIT_EXCEEDED") {
-		        return res
-		          .status(429)
-		          .json({ error: "Muitas tentativas. Aguarde um pouco antes de enviar nova imagem." });
-		      }
-		      console.error("Erro Rate Limit:", e);
-		    }
-		
-		    // Ferramenta pública, pode ser usada sem autenticação ou com autenticação opcional		// Se quisermos restringir, basta descomentar abaixo:
+		const apiKey = process.env.GEMINI_API_KEY;
+		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
+
+		try {
+			// RATE LIMIT: 10 tentativas por hora por IP para OCR (permite re-tentativas de fotos ruins)
+			await checkIpRateLimit(req, 10, 1);
+		} catch (e) {
+			if (e.message === "RATE_LIMIT_EXCEEDED") {
+				return res
+					.status(429)
+					.json({ error: "Muitas tentativas. Aguarde um pouco antes de enviar nova imagem." });
+			}
+			console.error("Erro Rate Limit:", e);
+		}
+
+		// Ferramenta pública, pode ser usada sem autenticação ou com autenticação opcional		// Se quisermos restringir, basta descomentar abaixo:
 		// try { await verifyAuth(req); } catch (e) { return res.status(401).json({error: "Login necessário"}); }
 
 		const { image, mimeType } = req.body || {};

@@ -34,7 +34,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
 import { api } from "../services/api";
-import { jsPDF } from "jspdf";
+import html2pdf from "html2pdf.js";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { formatDefenseToHtml } from "../utils/textToHtml";
@@ -714,47 +714,44 @@ const UploadDefense = () => {
 	};
 
 	const handleFinalizePDF = async () => {
-		if (!result || typeof result !== "string") {
-			alert("Nenhum conteúdo válido para baixar.");
+		const originalElement = document.getElementById("defense-preview-content");
+		if (!originalElement) {
+			alert("Erro: Visualização não encontrada.");
 			return;
 		}
+		
 		try {
-			// Create a temporary container to render the HTML for PDF generation
-			const tempContainer = document.createElement("div");
-			tempContainer.innerHTML = result;
-			// Styles to match A4 PDF look
-			tempContainer.style.width = "794px"; // A4 width at 96dpi
-			tempContainer.style.padding = "25mm";
-			tempContainer.style.fontSize = "12pt";
-			tempContainer.style.fontFamily = "'Times New Roman', serif";
-			tempContainer.style.color = "black";
-			tempContainer.style.background = "white";
-			tempContainer.style.lineHeight = "1.5";
-			tempContainer.style.textAlign = "justify";
+			// Clone the exact element user is seeing to ensure 100% fidelity
+			const element = originalElement.cloneNode(true);
 			
-			// Fix for blank PDF: Element must be in viewport but we can hide it via z-index
-			tempContainer.style.position = "fixed";
-			tempContainer.style.left = "0";
-			tempContainer.style.top = "0";
-			tempContainer.style.zIndex = "-9999";
-			tempContainer.style.visibility = "visible"; // Essential for html2canvas
-			
-			document.body.appendChild(tempContainer);
+			// Remove screen-only styles that don't belong in print
+			element.classList.remove("shadow-2xl", "mx-auto", "my-8");
+			element.style.margin = "0";
+			element.style.boxShadow = "none";
+			// Ensure it takes full width of the PDF generation container
+			element.style.width = "100%"; 
+			element.style.maxWidth = "none";
+			element.style.minHeight = "auto"; // Let content dictate height
 
-			const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
-			
-			await doc.html(tempContainer, {
-				callback: function (doc) {
-					doc.save(`Defesa_${formData.plate || "Recurso"}.pdf`);
-					document.body.removeChild(tempContainer);
-					setShowPostDownloadModal(true);
+			// Options for high-fidelity A4 print
+			const opt = {
+				margin:       0, // Margins are already inside the element padding
+				filename:     `Defesa_${formData.plate || "Recurso"}.pdf`,
+				image:        { type: 'jpeg', quality: 0.98 },
+				html2canvas:  { 
+					scale: 2, 
+					useCORS: true, 
+					backgroundColor: "#ffffff",
+					scrollY: 0,
+					windowWidth: 794 // Match the A4 pixel width @ 96dpi
 				},
-				x: 0,
-				y: 0,
-				width: 210, // A4 Width in mm
-				windowWidth: 794 // Window width in px corresponding to A4
-			});
+				jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+				pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+			};
 
+			await html2pdf().set(opt).from(element).save();
+			
+			setShowPostDownloadModal(true);
 		} catch (err) {
 			console.error("Erro ao gerar PDF:", err);
 			alert("Ocorreu um erro ao gerar o PDF. Tente novamente.");
@@ -846,7 +843,7 @@ const UploadDefense = () => {
 				</h3>
 
 				<p className="text-gray-600 mb-6">
-					Esta será a versão final do seu documento. Após confirmar, você será redirecionado.
+					Esta será a versão final do seu documento PDF. Após confirmar, você será redirecionado.
 				</p>
 
 				<div className="flex justify-end gap-3">
@@ -1162,7 +1159,7 @@ const UploadDefense = () => {
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 						<div className={`${isRefining ? "lg:col-span-2" : "lg:col-span-3"} order-2 lg:order-1`}>
 							<div className="bg-gray-200/50 p-8 rounded-xl border border-gray-200 overflow-auto flex justify-center">
-								<div className="bg-white shadow-2xl min-h-[1123px] w-[794px] mx-auto text-gray-900 relative">
+								<div id="defense-preview-content" className="bg-white shadow-2xl min-h-[1123px] w-[794px] mx-auto text-gray-900 relative">
 									<style>
 										{`
 											.ql-container { font-family: 'Times New Roman', serif !important; font-size: 12pt !important; height: 100%; border: none !important; }

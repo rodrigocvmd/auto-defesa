@@ -143,6 +143,24 @@ Em uploaddefense e ManualDefense, XXXX ascara para CNH e Numero do AITs
 - [x]  Ajustar ids pagamento stripe
 
 
+falar sobre formatação final na página de edição
+
+add preview? ou melhor ainda, a página de edição já ser o preview fidedigno, pois atualmente está apresentando sem qualquer formatação, mas quando baixa o pdf ele vem formatado.
+
+
+
+instruir ia para: formatação justificada para endereçamento, parágrafos, e pedidos; e centralizada para títulos, tópicos e conclusão (Nestes termos, pede deferimento.), data e nome para assinatura.
+ainda, deve manter o padrão para partes semelhantes (por exemplo: títulos devem manter o mesmo padrão entre si, dados do veículo devem manter o mesmo padrão  entre si, parágrafos de corpo de texto seguir o mesmo padrão entre si, etc.)
+
+No perfil, unir seções "Dados e Preferências" e "Segurança" em uma só, chamar de "Dados e Segurança", e os campos devem ser, em ordem: Nome Completo, Email, seção Alterar Senha com campos Nova Senha e Confirmar Nova Senha e seção Zona de Perigo ao final. Campo "Placa Padrão" deve ser removido.
+
+órgão emissor não ser required
+
+Para eu fazer: afastar perfil do footer
+
+alterar modelos
+
+
 
 
 Conferir:
