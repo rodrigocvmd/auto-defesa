@@ -33,6 +33,8 @@ export default function Profile() {
     const [pageLoading, setPageLoading] = useState(true);
     const [message, setMessage] = useState({ type: '', content: '' });
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
+    const [selectedDefense, setSelectedDefense] = useState(null);
 
     // Estados do Formulário de Perfil
     const [displayName, setDisplayName] = useState('');
@@ -201,8 +203,16 @@ export default function Profile() {
         setLoading(false);
     }
 
-    const downloadPDF = async (defense) => {
-        if (!defense.defenseText) {
+    const downloadPDF = (defense) => {
+        setSelectedDefense(defense);
+        setShowPrintInstructionModal(true);
+    };
+
+    const executePrint = async () => {
+        setShowPrintInstructionModal(false);
+        const defense = selectedDefense;
+        
+        if (!defense || !defense.defenseText) {
             alert("Texto da defesa não encontrado.");
             return;
         }
@@ -244,29 +254,49 @@ export default function Profile() {
             
             document.body.appendChild(tempContainer);
 
-            // Alert the user (optional, but consistent with other pages)
-            alert("A janela de impressão será aberta. Selecione 'Salvar como PDF' para baixar.");
-
             printJS({
                 printable: 'defense-content-print',
                 type: 'html',
-                targetStyles: ['*'],
+                // Use whitelist to avoid copying screen-layout styles
+                targetStyles: [
+                    'font-family', 'font-size', 'font-weight', 'font-style', 'color', 
+                    'background-color', 'text-align', 'line-height', 'text-decoration', 
+                    'margin', 'padding', 'border', 'list-style-type', 'list-style-position'
+                ],
                 style: `
                     @media print {
                         @page { size: A4 portrait; margin: 0; }
-                        body { margin: 0; padding: 0; }
+                        body { margin: 0; padding: 0; background-color: white; }
                         #defense-content-print { 
-                            width: 100% !important; 
-                            margin: 0 !important; 
-                            position: relative !important;
-                            z-index: auto !important;
+                            width: 210mm !important;
+                            max-width: 210mm !important;
+                            margin: 0 auto !important; 
+                            padding: 0 !important;
+                            position: static !important;
+                            overflow: visible !important;
                             box-shadow: none !important;
+                            border: none !important;
+                            box-sizing: border-box !important;
+                            background-color: white !important;
                         }
                         .ql-container { border: none !important; }
                         .ql-editor {
+                            width: 100% !important;
+                            box-sizing: border-box !important;
                             padding: 20mm !important; 
                             min-height: auto !important;
+                            height: auto !important;
+                            overflow: visible !important;
+                            white-space: pre-wrap !important;
+                            text-align: justify !important;
                         }
+                        h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
+                        p { orphans: 2; widows: 2; }
+                        
+                        /* Fix Alignment */
+                        .ql-align-center { text-align: center !important; }
+                        .ql-align-right { text-align: right !important; }
+                        .ql-align-justify { text-align: justify !important; }
                     }
                 `,
                 documentTitle: `Defesa_${defense.licensePlate || 'Recurso'}`,
@@ -282,6 +312,71 @@ export default function Profile() {
             alert("Erro ao abrir janela de impressão.");
         }
     };
+
+    const PrintInstructionModal = () => (
+        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8">
+                <div className="text-center mb-6">
+                    <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+                        <Download size={32} />
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900">Salvar ou Imprimir</h2>
+                </div>
+                
+                <div className="space-y-4 mb-8">
+                    <p className="text-gray-600 text-center text-sm">
+                        Utilizaremos a função de impressão do seu navegador para gerar um arquivo leve e com texto nítido.
+                    </p>
+
+                    <div className="bg-amber-50 border border-amber-100 p-3 rounded-xl text-xs text-amber-800 leading-relaxed">
+                        <p>
+                            <strong>Dica:</strong> Você poderá verificar a formatação final na janela que se abrirá.
+                        </p>
+                    </div>
+                    
+                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-700 space-y-4">
+                        <div>
+                            <p className="font-bold text-blue-700 mb-1 flex items-center gap-2">
+                                <FileText size={16}/> Para Salvar o Arquivo (PDF):
+                            </p>
+                            <ol className="list-decimal list-inside space-y-1 ml-1 text-xs text-gray-600">
+                                <li>Em <strong>Destino</strong>, selecione <strong>"Salvar como PDF"</strong>.</li>
+                                <li>Clique em <strong>Salvar</strong>.</li>
+                            </ol>
+                        </div>
+                        
+                        <div className="border-t border-gray-200 pt-3">
+                            <p className="font-bold text-gray-700 mb-1 flex items-center gap-2">
+                                <CheckCircle size={16}/> Para Imprimir Diretamente:
+                            </p>
+                            <ol className="list-decimal list-inside space-y-1 ml-1 text-xs text-gray-600">
+                                <li>Selecione sua <strong>Impressora</strong> na lista.</li>
+                                <li>Clique em <strong>Imprimir</strong>.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div className="bg-blue-50 p-3 rounded-lg text-xs text-blue-800 text-center font-medium">
+                        <Info size={14} className="inline mr-1 -mt-0.5"/>
+                        Este arquivo já está salvo no seu Histórico.
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                    <button
+                        onClick={executePrint}
+                        className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
+                        Entendi, Abrir Janela <ArrowDown size={20} />
+                    </button>
+                    <button
+                        onClick={() => setShowPrintInstructionModal(false)}
+                        className="w-full text-gray-500 font-medium hover:bg-gray-100 py-3 rounded-xl transition-colors">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 
     if (pageLoading) {
         return (
@@ -558,6 +653,8 @@ export default function Profile() {
 
                 </div>
             </div>
+
+            {showPrintInstructionModal && <PrintInstructionModal />}
 
             {showDeleteModal && (
                 <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">

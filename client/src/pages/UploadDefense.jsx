@@ -83,6 +83,7 @@ const UploadDefense = () => {
 	const [isManualInfraction, setIsManualInfraction] = useState(false);
 	const [showPostDownloadModal, setShowPostDownloadModal] = useState(false);
 	const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
+	const [showProfileButton, setShowProfileButton] = useState(false);
 
 	// Novos estados para alertas
 	const [showEditWarning, setShowEditWarning] = useState(false);
@@ -705,6 +706,7 @@ const UploadDefense = () => {
 		setIsEditing(true);
 	};
 	const handleDownloadClick = async () => {
+		setShowProfileButton(true);
 		await saveDefenseToHistory(result);
 		handleFinalizePDF();
 	};
@@ -724,28 +726,50 @@ const UploadDefense = () => {
 			printJS({
 				printable: 'defense-preview-content',
 				type: 'html',
-				targetStyles: ['*'], 
+				// Use whitelist to avoid copying screen-layout styles
+				targetStyles: [
+					'font-family', 'font-size', 'font-weight', 'font-style', 'color', 
+					'background-color', 'text-align', 'line-height', 'text-decoration', 
+					'margin', 'padding', 'border', 'list-style-type', 'list-style-position'
+				], 
 				style: `
 					@media print {
 						@page { size: A4 portrait; margin: 0; }
-						body { margin: 0; padding: 0; }
+						body { margin: 0; padding: 0; background-color: white; }
 						#defense-preview-content { 
-							width: 100%; 
-							margin: 0; 
+							width: 210mm !important;
+							max-width: 210mm !important;
+							margin: 0 auto !important; 
+							padding: 0 !important;
+							position: static !important;
+							overflow: visible !important;
 							box-shadow: none !important;
 							border: none !important;
+							box-sizing: border-box !important;
+							background-color: white !important;
 						}
 						.ql-editor {
+							width: 100% !important;
+							box-sizing: border-box !important;
 							padding: 20mm !important; 
 							min-height: auto !important;
+							height: auto !important;
+							overflow: visible !important;
+							white-space: pre-wrap !important;
+							text-align: justify !important;
 						}
+						h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
+						p { orphans: 2; widows: 2; }
+						
+						/* Fix Alignment */
+						.ql-align-center { text-align: center !important; }
+						.ql-align-right { text-align: right !important; }
+						.ql-align-justify { text-align: justify !important; }
 					}
 				`,
 				documentTitle: `Defesa_${formData.plate || "Recurso"}`,
 				onPrintDialogClose: () => {
-					setTimeout(() => {
-						navigate('/profile');
-					}, 500);
+					setShowProfileButton(true);
 				}
 			});
 		} catch (err) {
@@ -878,10 +902,6 @@ const UploadDefense = () => {
 						<Info size={14} className="inline mr-1 -mt-0.5"/>
 						O arquivo também ficará salvo no seu <strong>Histórico</strong> para acesso futuro.
 					</div>
-					
-					<p className="text-center text-xs text-gray-500 mt-4">
-						Após concluir, você será redirecionado automaticamente para a página <strong>Minhas Defesas</strong>.
-					</p>
 				</div>
 
 				<div className="flex flex-col gap-3">
@@ -1098,6 +1118,16 @@ const UploadDefense = () => {
 							<p className="text-xs text-gray-500">Revise o documento abaixo antes de finalizar.</p>
 						</div>
 						<div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+							<button
+								onClick={() => navigate("/profile")}
+								disabled={!showProfileButton}
+								className={`px-4 py-2 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${
+									!showProfileButton 
+										? "bg-gray-100 text-gray-400 cursor-not-allowed border border-transparent" 
+										: "bg-white border border-blue-200 text-blue-600 hover:bg-blue-50 shadow-sm"
+								}`}>
+								<ArrowLeft size={18} /> Minhas Defesas
+							</button>
 							<button
 								onClick={handleEditClick}
 								className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center justify-center gap-2">
