@@ -79,13 +79,13 @@ const ManualDefense = () => {
 	const [showTestModal, setShowTestModal] = useState(false);
 	const [showCodeNotFoundModal, setShowCodeNotFoundModal] = useState(false);
 	const [showPostDownloadModal, setShowPostDownloadModal] = useState(false);
+	const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
 	const [isManualInfraction, setIsManualInfraction] = useState(false);
 	const [isTestMode, setIsTestMode] = useState(false);
 	const [hasTested, setHasTested] = useState(false);
 
 	// Novos estados para alertas
 	const [showEditWarning, setShowEditWarning] = useState(false);
-	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
 	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
 	const [loadingText, setLoadingText] = useState(
 		"Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem aplicadas...",
@@ -655,12 +655,7 @@ const ManualDefense = () => {
 		setIsEditing(true);
 	};
 
-	const handleDownloadClick = () => {
-		setShowDownloadConfirm(true);
-	};
-
-	const confirmDownload = async () => {
-		setShowDownloadConfirm(false);
+	const handleDownloadClick = async () => {
 		await saveDefenseToHistory(result);
 		handleFinalizePDF();
 	};
@@ -671,15 +666,16 @@ const ManualDefense = () => {
 			alert("Erro: Visualização não encontrada.");
 			return;
 		}
-		
-		try {
-			// Alert the user about the native print dialog for vector quality
-			alert("A janela de impressão será aberta. \n\nPara obter um PDF de alta qualidade (Texto/Vector) e tamanho leve:\n1. Selecione o destino 'Salvar como PDF'.\n2. Clique em Salvar.");
+		setShowPrintInstructionModal(true);
+	};
 
+	const executePrint = () => {
+		setShowPrintInstructionModal(false);
+		try {
 			printJS({
 				printable: 'defense-preview-content',
 				type: 'html',
-				targetStyles: ['*'], // Inherit all styles for fidelity
+				targetStyles: ['*'], 
 				style: `
 					@media print {
 						@page { size: A4 portrait; margin: 0; }
@@ -691,15 +687,19 @@ const ManualDefense = () => {
 							border: none !important;
 						}
 						.ql-editor {
-							padding: 20mm !important; /* Ensure print padding */
+							padding: 20mm !important; 
 							min-height: auto !important;
 						}
 					}
 				`,
 				documentTitle: `Defesa_${formData.plate || "Recurso"}`,
-				onPrintDialogClose: () => setShowPostDownloadModal(true)
+				onPrintDialogClose: () => {
+					// Give a small delay to ensure the print dialog is fully closed/processed
+					setTimeout(() => {
+						navigate('/profile');
+					}, 500);
+				}
 			});
-
 		} catch (err) {
 			console.error("Erro ao iniciar impressão:", err);
 			alert("Ocorreu um erro. Tente novamente.");
@@ -867,99 +867,69 @@ const ManualDefense = () => {
 		</div>
 	);
 
-	const DownloadConfirmModal = () => (
-		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-6">
-				<h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-					<CheckCircle className="text-green-500" /> Confirmar Versão Final
-				</h3>
-				<p className="text-gray-600 mb-6">
-					Esta será a version final do seu documento PDF. Após confirmar, você será redirecionado e{" "}
-					<strong>não poderá mais alterar este documento</strong> nesta sessão.
-					<br />
-					<br />
-					Revisou tudo?
-				</p>
-				<div className="flex justify-end gap-3">
-					<button
-						onClick={() => setShowDownloadConfirm(false)}
-						className="px-4 py-2 text-gray-600 font-medium hover:bg-gray-100 rounded-lg">
-						Voltar e Revisar
-					</button>
-					<button
-						onClick={confirmDownload}
-						className="px-4 py-2 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700">
-						Sim, Baixar PDF
-					</button>
-				</div>
-			</div>
-		</div>
-	);
-
-	const PostDownloadModal = () => (
-		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-			<div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8 max-h-[90vh] overflow-y-auto">
+	const PrintInstructionModal = () => (
+		<div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8">
 				<div className="text-center mb-6">
-					<div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
-						<CheckCircle size={32} />
+					<div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+						<Download size={32} />
 					</div>
-					<h2 className="text-2xl font-bold text-gray-900">Download Iniciado!</h2>
-					<p className="text-gray-500 mt-2 text-sm">
-						Seu documento foi gerado com sucesso. Você pode baixá-lo novamente a qualquer momento em{" "}
-						<strong>"Minhas Defesas"</strong> no seu perfil.
-					</p>
+					<h2 className="text-2xl font-bold text-gray-900">Salvar ou Imprimir</h2>
 				</div>
+				
+				<div className="space-y-4 mb-8">
+					<p className="text-gray-600 text-center text-sm">
+						Utilizaremos a função de impressão do seu navegador para gerar um arquivo leve e com texto nítido.
+					</p>
 
-				<div className="bg-blue-50 rounded-xl p-6 mb-6">
-					<h3 className="font-bold text-blue-900 mb-4 flex items-center gap-2">
-						<HelpCircle size={20} /> O que fazer agora?
-					</h3>
-
-					<div className="space-y-4">
+					<div className="bg-amber-50 border border-amber-100 p-3 rounded-xl text-xs text-amber-800 leading-relaxed">
+						<p>
+							<strong>Dica:</strong> Você poderá verificar a formatação final na janela que se abrirá. Se precisar ajustar algo, basta fechá-la, editar o texto e clicar em baixar novamente.
+						</p>
+					</div>
+					
+					<div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-700 space-y-4">
 						<div>
-							<h4 className="font-bold text-blue-800 text-sm mb-2">
-								Opção 1: Protocolo Digital (Recomendado)
-							</h4>
-							<ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
-								<li>
-									Imprimir, Assinar e Escanear (ou assinar via{" "}
-									<a
-										href="https://assinador.iti.br/assinatura"
-										target="_blank"
-										className="underline">
-										<strong>gov.br</strong>
-									</a>
-									);
-								</li>
-								<li>Acessar o site do órgão autuador (Detran, DER, PRF...);</li>
-								<li>
-									Enviar o PDF do recurso junto com as cópias dos documentos (CNH, CRLV e
-									Notificação).
-								</li>
-							</ul>
+							<p className="font-bold text-blue-700 mb-1 flex items-center gap-2">
+								<FileText size={16}/> Para Salvar o Arquivo (PDF):
+							</p>
+							<ol className="list-decimal list-inside space-y-1 ml-1 text-xs text-gray-600">
+								<li>Em <strong>Destino</strong>, selecione <strong>"Salvar como PDF"</strong>.</li>
+								<li>Clique em <strong>Salvar</strong>.</li>
+							</ol>
 						</div>
-
-						<div className="border-t border-blue-200 pt-4">
-							<h4 className="font-bold text-blue-800 text-sm mb-2">
-								Opção 2: Via Correios ou Pessoalmente
-							</h4>
-							<ul className="text-sm text-blue-700 space-y-1 list-disc list-inside pl-2">
-								<li>Imprimir e Assinar o recurso;</li>
-								<li>Anexar Cópia da CNH/RG e CRLV;</li>
-								<li>Anexar a Notificação de Autuação/Penalidade.</li>
-							</ul>
+						
+						<div className="border-t border-gray-200 pt-3">
+							<p className="font-bold text-gray-700 mb-1 flex items-center gap-2">
+								<CheckCircle size={16}/> Para Imprimir Diretamente:
+							</p>
+							<ol className="list-decimal list-inside space-y-1 ml-1 text-xs text-gray-600">
+								<li>Selecione sua <strong>Impressora</strong> na lista.</li>
+								<li>Clique em <strong>Imprimir</strong>.</li>
+							</ol>
 						</div>
 					</div>
+
+					<div className="bg-blue-50 p-3 rounded-lg text-xs text-blue-800 text-center font-medium">
+						<Info size={14} className="inline mr-1 -mt-0.5"/>
+						O arquivo também ficará salvo no seu <strong>Histórico</strong> para acesso futuro.
+					</div>
+					
+					<p className="text-center text-xs text-gray-500 mt-4">
+						Após concluir, você será redirecionado automaticamente para a página <strong>Minhas Defesas</strong>.
+					</p>
 				</div>
 
 				<div className="flex flex-col gap-3">
 					<button
-						onClick={() => {
-							resetDefense();
-							navigate("/profile");
-						}}
-						className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
-						Ir para Minhas Defesas
+						onClick={executePrint}
+						className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
+						Entendi, Abrir Janela <ArrowDown size={20} />
+					</button>
+					<button
+						onClick={() => setShowPrintInstructionModal(false)}
+						className="w-full text-gray-500 font-medium hover:bg-gray-100 py-3 rounded-xl transition-colors">
+						Cancelar
 					</button>
 				</div>
 			</div>
@@ -1222,8 +1192,8 @@ const ManualDefense = () => {
 					</div>
 				)}
 				{showEditWarning && <EditWarningModal />}
-				{showDownloadConfirm && <DownloadConfirmModal />}
 				{showPostDownloadModal && <PostDownloadModal />}
+				{showPrintInstructionModal && <PrintInstructionModal />}
 				{showHardBlockModal && <HardBlockModal />}
 				<div className="max-w-5xl mx-auto py-8">
 					<div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4">

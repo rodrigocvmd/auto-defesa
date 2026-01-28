@@ -22,7 +22,7 @@ import {
 import { updateProfile, updatePassword } from 'firebase/auth';
 import { doc, getDoc, setDoc, collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { jsPDF } from 'jspdf';
+import printJS from "print-js";
 import { formatDefenseToHtml } from "../utils/textToHtml";
 
 export default function Profile() {
@@ -208,104 +208,78 @@ export default function Profile() {
         }
 
         let contentHtml = defense.defenseText;
-        // Simple heuristic: if it doesn't contain HTML tags, format it
         if (!contentHtml.match(/<p|<h[1-6]|<div/)) {
              contentHtml = formatDefenseToHtml(contentHtml);
         }
 
         try {
+            // Create a temporary container
             const tempContainer = document.createElement("div");
+            tempContainer.id = "defense-content-print";
             
-            // WRAPPER FIX: Wrap content in ql-editor to ensure Quill styles apply
-            // and inject the necessary CSS directly
-            tempContainer.innerHTML = `<div class="ql-container ql-snow"><div class="ql-editor">${contentHtml}</div></div>`;
-            
-            // Styles to match A4 PDF look
+            // Add specific styles to ensure white background and proper text color
             tempContainer.style.width = "794px"; // A4 width at 96dpi
             tempContainer.style.minHeight = "1123px"; // A4 height at 96dpi
             tempContainer.style.fontSize = "12pt";
             tempContainer.style.fontFamily = "'Times New Roman', serif";
-            tempContainer.style.color = "black";
-            tempContainer.style.background = "white";
+            tempContainer.style.color = "#000000";
+            tempContainer.style.backgroundColor = "#ffffff";
             tempContainer.style.lineHeight = "1.5";
             tempContainer.style.textAlign = "justify";
-            tempContainer.style.boxSizing = "border-box";
             
-            // Inject styles manually because external CSS might not load in time for html2canvas
-            const style = document.createElement('style');
-            style.innerHTML = `
-                .ql-container { 
-                    box-sizing: border-box; 
-                    font-family: 'Times New Roman', serif !important; 
-                    font-size: 12pt !important;
-                    height: 100%;
-                    border: none !important;
-                }
-                .ql-editor { 
-                    padding: 25mm !important; 
-                    box-sizing: border-box !important;
-                    width: 100% !important;
-                    line-height: 1.5 !important;
-                    text-align: justify !important;
-                    color: #000000 !important;
-                    background-color: #ffffff !important;
-                }
-                .ql-editor p { margin-bottom: 10px; color: #000000 !important; }
-                .ql-editor h3 { text-align: center; font-weight: bold; margin-top: 20px; margin-bottom: 10px; font-size: 14pt; color: #000000 !important; }
-                .ql-align-center { text-align: center; }
-                .ql-align-justify { text-align: justify; }
-                .ql-align-right { text-align: right; }
-            `;
-            tempContainer.appendChild(style);
-            
-            // Styles to match A4 PDF look
-            tempContainer.style.width = "794px"; // A4 width at 96dpi
-            tempContainer.style.minHeight = "1123px"; // A4 height at 96dpi
-            tempContainer.style.fontSize = "12pt";
-            tempContainer.style.fontFamily = "'Times New Roman', serif";
-            tempContainer.style.color = "#000000"; // Force Black Text
-            tempContainer.style.backgroundColor = "#ffffff"; // Force White Background
-            tempContainer.style.lineHeight = "1.5";
-            tempContainer.style.textAlign = "justify";
-            tempContainer.style.boxSizing = "border-box";
-            
-            // Fix for blank PDF: Element must be in viewport but we can hide it via positioning
-            // Note: z-index -9999 allows it to be 'visible' to html2canvas but hidden from user
+            // Fixed position to be visible for printJS but hidden from user flow
             tempContainer.style.position = "fixed";
             tempContainer.style.left = "0";
             tempContainer.style.top = "0";
             tempContainer.style.zIndex = "-9999";
-            tempContainer.style.visibility = "visible"; 
+            
+            // Inner content structure
+            tempContainer.innerHTML = `
+                <div class="ql-container ql-snow" style="border: none;">
+                    <div class="ql-editor" style="padding: 25mm; min-height: 1123px;">
+                        ${contentHtml}
+                    </div>
+                </div>
+            `;
             
             document.body.appendChild(tempContainer);
 
-            const doc = new jsPDF({ 
-                orientation: 'p', 
-                unit: 'mm', 
-                format: 'a4',
-                compress: true 
-            });
-            
-            await doc.html(tempContainer, {
-                callback: function (doc) {
-                    doc.save(`Defesa_${defense.licensePlate || 'Recurso'}.pdf`);
-                    document.body.removeChild(tempContainer);
-                },
-                x: 0,
-                y: 0,
-                width: 210, // A4 Width in mm
-                windowWidth: 794, // Window width in px
-                margin: 0,
-                autoPaging: 'text',
-                html2canvas: {
-                    scale: 1, // Standard scale to prevent huge page count
-                    backgroundColor: "#ffffff",
-                    useCORS: true // Help with loading images if any
+            // Alert the user (optional, but consistent with other pages)
+            alert("A janela de impressão será aberta. Selecione 'Salvar como PDF' para baixar.");
+
+            printJS({
+                printable: 'defense-content-print',
+                type: 'html',
+                targetStyles: ['*'],
+                style: `
+                    @media print {
+                        @page { size: A4 portrait; margin: 0; }
+                        body { margin: 0; padding: 0; }
+                        #defense-content-print { 
+                            width: 100% !important; 
+                            margin: 0 !important; 
+                            position: relative !important;
+                            z-index: auto !important;
+                            box-shadow: none !important;
+                        }
+                        .ql-container { border: none !important; }
+                        .ql-editor {
+                            padding: 20mm !important; 
+                            min-height: auto !important;
+                        }
+                    }
+                `,
+                documentTitle: `Defesa_${defense.licensePlate || 'Recurso'}`,
+                onPrintDialogClose: () => {
+                    if (document.body.contains(tempContainer)) {
+                        document.body.removeChild(tempContainer);
+                    }
                 }
             });
+
         } catch (err) {
-            console.error("Erro ao gerar PDF:", err);
-            alert("Erro ao gerar PDF.");
+            console.error("Erro ao iniciar impressão:", err);
+            alert("Erro ao abrir janela de impressão.");
         }
     };
 
