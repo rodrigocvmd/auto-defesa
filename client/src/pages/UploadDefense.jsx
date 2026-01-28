@@ -737,9 +737,9 @@ const UploadDefense = () => {
 			const opt = {
 				margin:       0, // Margins are already inside the element padding
 				filename:     `Defesa_${formData.plate || "Recurso"}.pdf`,
-				image:        { type: 'jpeg', quality: 0.98 },
+				image:        { type: 'png', quality: 1.0 }, // PNG for sharper text
 				html2canvas:  { 
-					scale: 2, 
+					scale: 4, // Higher scale for better resolution
 					useCORS: true, 
 					backgroundColor: "#ffffff",
 					scrollY: 0,

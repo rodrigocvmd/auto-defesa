@@ -687,15 +687,15 @@ const ManualDefense = () => {
 
 			// Options for high-fidelity A4 print
 			const opt = {
-				margin:       0, // Margins are already inside the element padding
+				margin:       0, 
 				filename:     `Defesa_${formData.plate || "Recurso"}.pdf`,
-				image:        { type: 'jpeg', quality: 0.98 },
+				image:        { type: 'png', quality: 1.0 }, // PNG for sharper text, lossless
 				html2canvas:  { 
-					scale: 2, 
+					scale: 4, // Higher scale (approx 384dpi) for better zoom quality
 					useCORS: true, 
 					backgroundColor: "#ffffff",
 					scrollY: 0,
-					windowWidth: 794 // Match the A4 pixel width @ 96dpi
+					windowWidth: 794
 				},
 				jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
 				pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
