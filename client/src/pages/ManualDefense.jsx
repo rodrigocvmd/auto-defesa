@@ -685,12 +685,12 @@ const ManualDefense = () => {
 				], 
 				style: `
 					@media print {
-						@page { size: A4 portrait; margin: 0; }
+						@page { size: A4 portrait; margin: 20mm !important; }
 						body { margin: 0; padding: 0; background-color: white; }
 						#defense-preview-content { 
-							width: 210mm !important;
-							max-width: 210mm !important;
-							margin: 0 auto !important; 
+							width: 100% !important;
+							max-width: 100% !important;
+							margin: 0 !important; 
 							padding: 0 !important;
 							position: static !important;
 							overflow: visible !important;
@@ -702,7 +702,7 @@ const ManualDefense = () => {
 						.ql-editor {
 							width: 100% !important;
 							box-sizing: border-box !important;
-							padding: 20mm !important; 
+							padding: 0 !important; /* Margins handled by @page */
 							min-height: auto !important;
 							height: auto !important;
 							overflow: visible !important;
@@ -1257,34 +1257,35 @@ const ManualDefense = () => {
 						<div className={`${isRefining ? "lg:col-span-2" : "lg:col-span-3"} order-2 lg:order-1`}>
 							<div className="bg-gray-200/50 p-8 rounded-xl border border-gray-200 overflow-auto flex justify-center">
 								<div id="defense-preview-content" className="bg-white shadow-2xl min-h-[1123px] w-[794px] mx-auto text-gray-900 relative">
-									<style>
-										{`
-											.ql-container { font-family: 'Times New Roman', serif !important; font-size: 12pt !important; height: 100%; border: none !important; }
-											.ql-editor { 
-												padding: 25mm !important; 
-												line-height: 1.5 !important; 
-												text-align: justify !important; 
-												min-height: 1123px;
-												font-weight: normal !important; /* Fix for bold text issue */
-												/* Visual Page Break Indicator */
-												background: linear-gradient(to bottom, transparent 1122px, #E5E7EB 1122px, #E5E7EB 1123px, transparent 1123px) repeat-y;
-												background-size: 100% 1123px; /* A4 Height @ 96 DPI */
-											}
-											.ql-toolbar { border: none !important; border-bottom: 1px solid #e5e7eb !important; background: #f9fafb; border-radius: 8px 8px 0 0; position: sticky; top: 0; z-index: 10; }
-											.ql-editor h3 { text-align: center; font-weight: bold; margin-top: 20px; margin-bottom: 10px; font-size: 14pt; }
-											.ql-editor p { margin-bottom: 10px; }
-											
-											/* Toolbar Customization */
-											.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
-											.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
-												content: 'Título' !important;
-											}
-											.ql-snow .ql-picker.ql-header .ql-picker-label::before,
-											.ql-snow .ql-picker.ql-header .ql-picker-item::before {
-												content: 'Texto' !important;
-											}
-										`}
-									</style>
+																		<style>
+																			{`
+																				.ql-container { font-family: 'Times New Roman', serif !important; font-size: 12pt !important; height: 100%; border: none !important; }
+																															.ql-editor { 
+																																padding: 20mm !important; 
+																																line-height: 1.5 !important; 
+																																text-align: justify !important; 
+																																min-height: 1123px;
+																																font-weight: normal !important; 
+																																/* Visual Page Break Indicator */
+																																/* Repeats every 257mm (A4 297mm - 40mm margins) starting after top padding */
+																																background: linear-gradient(to bottom, transparent calc(100% - 1px), #ef4444 calc(100% - 1px), #ef4444 100%) repeat-y;
+																																background-size: 100% 257mm; 
+																																background-position: 0 20mm;
+																															}																				.ql-toolbar { border: none !important; border-bottom: 1px solid #e5e7eb !important; background: #f9fafb; border-radius: 8px 8px 0 0; position: sticky; top: 0; z-index: 10; }
+																				.ql-editor h3 { text-align: center; font-weight: bold; margin-top: 20px; margin-bottom: 10px; font-size: 14pt; }
+																				.ql-editor p { margin-bottom: 10px; }
+																				
+																				/* Toolbar Customization */
+																				.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+																				.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+																					content: 'Título' !important;
+																				}
+																				.ql-snow .ql-picker.ql-header .ql-picker-label::before,
+																				.ql-snow .ql-picker.ql-header .ql-picker-item::before {
+																					content: 'Texto' !important;
+																				}
+																			`}
+																		</style>
 									{isEditing ? (
 										<ReactQuill
 											theme="snow"
