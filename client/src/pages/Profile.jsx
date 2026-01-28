@@ -333,7 +333,7 @@ export default function Profile() {
 				</div>
 
 				{/* Navegação de Abas */}
-				<div className="flex flex-col md:flex-row md:overflow-x-auto gap-2 mb-6 pb-2 md:pb-0">
+				<div className="flex flex-col md:flex-row md:overflow-x-auto gap-2 mb-6 pb-2 md:pb-0 justify-center">
 					<button
 						onClick={() => setActiveTab("defenses")}
 						className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
@@ -513,14 +513,23 @@ export default function Profile() {
 									</div>
 								</div>
 
-								<div className="flex justify-end pt-4 border-t border-gray-50">
-									<button
-										type="submit"
-										disabled={loading}
-										className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition-all flex items-center gap-2 disabled:opacity-50 shadow-lg shadow-blue-100 transform hover:-translate-y-0.5 active:translate-y-0">
-										<Save size={18} /> Salvar Todas as Alterações
-									</button>
-								</div>
+								                                <div className="flex justify-center pt-4 border-t border-gray-50">
+
+								                                    <button
+
+								                                        type="submit"
+
+								                                        disabled={loading}
+
+								                                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition-all flex items-center gap-2 disabled:opacity-50 shadow-lg shadow-blue-100 transform hover:-translate-y-0.5 active:translate-y-0"
+
+								                                    >
+
+								                                        <Save size={18} /> Salvar Todas as Alterações
+
+								                                    </button>
+
+								                                </div>
 							</form>
 
 							<div className="pt-12 border-t border-gray-100">
@@ -528,7 +537,7 @@ export default function Profile() {
 									<h3 className="text-lg font-bold text-red-600 mb-4 flex items-center gap-2">
 										<AlertTriangle size={20} /> Excluir Conta
 									</h3>
-									<p className="text-sm text-red-700 mb-6 text-center max-w-4xl">
+									<p className="text-sm text-red-700 mb-6 text-center max-w-2xl">
 										Ao excluir sua conta, você perderá acesso imediato a todos os seus documentos
 										salvos, créditos restantes e histórico de defesas. Esta ação é irreversível e
 										seus dados não poderão ser recuperados.
