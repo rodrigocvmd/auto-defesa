@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MainLayout from "../layouts/MainLayout";
 import {
 	AlertCircle,
@@ -28,10 +28,11 @@ import {
 	Lock,
 	Info,
 	Coins,
+	Printer
 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../services/api";
-import printJS from "print-js";
+import html2pdf from 'html2pdf.js';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { formatDefenseToHtml } from "../utils/textToHtml";
@@ -47,6 +48,7 @@ const ManualDefense = () => {
 	const { currentUser, userData } = useAuth();
 	const navigate = useNavigate();
 	const { step: routeStep } = useParams();
+	const componentRef = useRef();
 
 	// Context
 	const {
@@ -72,7 +74,7 @@ const ManualDefense = () => {
 	const [searchingCode, setSearchingCode] = useState(false);
 	const [loadingCep, setLoadingCep] = useState(false);
 	const [isRefining, setIsRefining] = useState(false);
-	const [isEditing, setIsEditing] = useState(false);
+	const [isEditing, setIsEditing] = useState(true); 
 	const [refinementText, setRefinementText] = useState("");
 	const [errors, setErrors] = useState({});
 
@@ -88,6 +90,9 @@ const ManualDefense = () => {
 	// Novos estados para alertas
 	const [showEditWarning, setShowEditWarning] = useState(false);
 	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
+	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
+	const [showDownloadSuccess, setShowDownloadSuccess] = useState(false);
+	
 	const [loadingText, setLoadingText] = useState(
 		"Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem aplicadas...",
 	);
@@ -98,12 +103,150 @@ const ManualDefense = () => {
 	const [consecutiveDivergenceCount, setConsecutiveDivergenceCount] = useState(0);
 	const [refinementCount, setRefinementCount] = useState(5);
 
+	const handleGeneratePDF = async () => {
+		const sourceElement = componentRef.current.querySelector('.ql-editor');
+		
+		// Criar um wrapper para o conteúdo
+		// Usamos 170mm de largura pois o A4 tem 210mm e as margens laterais somam 40mm
+		const worker = document.createElement('div');
+		worker.style.width = '170mm';
+		worker.style.background = 'white';
+		worker.style.boxSizing = 'border-box';
+		
+		// Clonar o conteúdo
+		const content = document.createElement('div');
+		content.innerHTML = sourceElement.innerHTML;
+		
+		// Aplicar estilos base no content
+		content.style.fontFamily = '"Times New Roman", Times, serif';
+		content.style.fontSize = '12pt';
+		content.style.lineHeight = '1.5';
+		content.style.color = 'black';
+		content.style.textAlign = 'justify';
+
+		// Converter classes do Quill para estilos inline (crucial para alinhamento)
+		content.querySelectorAll('*').forEach(el => {
+			if (el.classList.contains('ql-align-center')) el.style.textAlign = 'center';
+			if (el.classList.contains('ql-align-right')) el.style.textAlign = 'right';
+			if (el.classList.contains('ql-align-justify')) el.style.textAlign = 'justify';
+			
+			if (el.tagName === 'H3') {
+				el.style.textAlign = 'center';
+				el.style.fontWeight = 'bold';
+				el.style.fontSize = '14pt';
+				el.style.marginTop = '20px';
+				el.style.marginBottom = '10px';
+			}
+			if (el.tagName === 'P') {
+				el.style.marginBottom = '10px';
+			}
+		});
+
+		worker.appendChild(content);
+
+		const opt = {
+			margin:       [20, 20, 20, 20], // Topo, Esquerda, Fundo, Direita
+			filename:     `Recurso_${formData.plate || "Final"}.pdf.pdf`,
+			image:        { type: 'jpeg', quality: 1 },
+			html2canvas:  { 
+				scale: 3, 
+				useCORS: true, 
+				letterRendering: true,
+				logging: false
+			},
+			jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+			pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+		};
+
+		try {
+			setShowDownloadConfirm(false);
+			setLoading(true);
+			setLoadingText("Gerando seu arquivo PDF profissional...");
+			
+			await html2pdf().set(opt).from(worker).save();
+			
+			setShowDownloadSuccess(true);
+			setShowProfileButton(true);
+		} catch (err) {
+			console.error("Erro ao gerar PDF:", err);
+			alert("Ocorreu um erro ao gerar o PDF. Tente novamente.");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const handleDownloadRequest = () => {
+		setShowDownloadConfirm(true);
+	};
+
+	const handleConfirmDownload = () => {
+		handleGeneratePDF();
+	};
+
+	const DownloadConfirmModal = () => (
+		<div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8">
+				<div className="text-center mb-6">
+					<div className="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-600">
+						<FileCheck size={32} />
+					</div>
+					<h2 className="text-2xl font-bold text-gray-900">Confirmar Versão Final?</h2>
+				</div>
+				<p className="text-gray-600 text-center mb-8 leading-relaxed">
+					Esta será a versão definitiva do seu recurso. <br/>
+					Após o download, <strong>não será possível realizar novas alterações</strong> neste documento.
+					<br/><br/>
+					Você revisou todos os dados, a argumentação e tem certeza que está tudo correto?
+				</p>
+				<div className="flex flex-col gap-3">
+					<button
+						onClick={handleConfirmDownload}
+						className="w-full bg-green-600 text-white font-bold py-3.5 rounded-xl hover:bg-green-700 transition-colors shadow-lg">
+						Sim, Confirmar e Baixar
+					</button>
+					<button
+						onClick={() => setShowDownloadConfirm(false)}
+						className="w-full bg-gray-100 text-gray-600 font-medium hover:bg-gray-200 py-3 rounded-xl transition-colors">
+						Voltar e Revisar
+					</button>
+				</div>
+			</div>
+		</div>
+	);
+
+	const DownloadSuccessModal = () => (
+		<div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8">
+				<div className="text-center mb-6">
+					<div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
+						<Download size={32} />
+					</div>
+					<h2 className="text-2xl font-bold text-gray-900">Download Iniciado!</h2>
+				</div>
+				<p className="text-gray-600 text-center mb-8 leading-relaxed">
+					O arquivo PDF está sendo gerado.
+					<br/><br/>
+					Uma cópia segura também foi salva em <strong>"Minhas Defesas"</strong> no seu perfil, para que você possa baixar novamente quando precisar.
+				</p>
+				<button
+					onClick={() => {
+						setShowDownloadSuccess(false);
+						navigate("/profile");
+					}}
+					className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors shadow-lg">
+					Ir para Minhas Defesas
+				</button>
+			</div>
+		</div>
+	);
+
 	useEffect(() => {
 		// Loading text is now static as requested
 		setLoadingText(
 			"Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem aplicadas...",
 		);
 	}, [loading]);
+
 
 	// Reset state if user navigates back to selection (Clean Slate)
 	useEffect(() => {
@@ -200,7 +343,6 @@ const ManualDefense = () => {
 			"name",
 			"cpf",
 			"rg",
-			"rgIssuer",
 			"nationality",
 			"maritalStatus",
 			"cnh",
@@ -719,7 +861,7 @@ const ManualDefense = () => {
 						.ql-align-justify { text-align: justify !important; }
 					}
 				`,
-				documentTitle: `Defesa_${formData.plate || "Recurso"}`,
+				documentTitle: `Recurso_${formData.plate || "Final"}`,
 				onPrintDialogClose: () => {
 					setShowProfileButton(true);
 				}
@@ -1212,16 +1354,18 @@ const ManualDefense = () => {
 					</div>
 				)}
 				{showEditWarning && <EditWarningModal />}
+				{showDownloadConfirm && <DownloadConfirmModal />}
+				{showDownloadSuccess && <DownloadSuccessModal />}
 				{showPostDownloadModal && <PostDownloadModal />}
 				{showPrintInstructionModal && <PrintInstructionModal />}
 				{showHardBlockModal && <HardBlockModal />}
-				<div className="max-w-5xl mx-auto py-8">
-					<div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4">
+				<div className="max-w-6xl mx-auto py-8">
+					<div className="sticky top-20 z-40 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4">
 						<div>
 							<h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-								<CheckCircle className="text-green-500" /> Defesa Gerada
+								<CheckCircle className="text-green-500" /> Revisão Final
 							</h2>
-							<p className="text-xs text-gray-500">Revise o documento abaixo antes de finalizar.</p>
+							<p className="text-xs text-gray-500">Leia atentamente. Use a IA para correções. Baixe apenas quando pronto.</p>
 						</div>
 						<div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
 							<button
@@ -1234,109 +1378,178 @@ const ManualDefense = () => {
 								}`}>
 								<ArrowLeft size={18} /> Minhas Defesas
 							</button>
-							<button
-								onClick={handleEditClick}
-								className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center justify-center gap-2">
-								<FileText size={18} /> {isEditing ? "Salvar Edição" : "Editar Texto"}
-							</button>
+							
+							{/* Botão de Ajuste IA Destacado */}
 							<button
 								onClick={() => setIsRefining(!isRefining)}
 								disabled={refining}
-								className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-bold hover:bg-gray-50 flex items-center justify-center gap-2">
+								className={`px-6 py-2 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${
+									isRefining 
+									? "bg-gray-100 text-gray-600 border border-gray-300" 
+									: "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-200 shadow-md animate-pulse"
+								}`}>
 								{refining ? <Loader2 className="animate-spin" size={18} /> : <PenTool size={18} />}
-								{isRefining ? "Cancelar" : "IA Ajustes"}
+								{isRefining ? "Fechar Painel IA" : "Solicitar Correção (IA)"}
 							</button>
+
 							<button
-								onClick={handleDownloadClick}
+								onClick={handleDownloadRequest}
 								className="bg-green-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-700 flex items-center justify-center gap-2 shadow-md">
 								<Download size={18} /> Baixar PDF Final
 							</button>
 						</div>
 					</div>
-					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-						<div className={`${isRefining ? "lg:col-span-2" : "lg:col-span-3"} order-2 lg:order-1`}>
-							<div className="bg-gray-200/50 p-8 rounded-xl border border-gray-200 overflow-auto flex justify-center">
-								<div id="defense-preview-content" className="bg-white shadow-2xl min-h-[1123px] w-[794px] mx-auto text-gray-900 relative">
-																		<style>
-																			{`
-																				.ql-container { font-family: 'Times New Roman', serif !important; font-size: 12pt !important; height: 100%; border: none !important; }
-																															.ql-editor { 
-																																padding: 20mm !important; 
-																																line-height: 1.5 !important; 
-																																text-align: justify !important; 
-																																min-height: 1123px;
-																																font-weight: normal !important; 
-																																/* Visual Page Break Indicator */
-																																/* Repeats every 257mm (A4 297mm - 40mm margins) starting after top padding */
-																																background: linear-gradient(to bottom, transparent calc(100% - 1px), #ef4444 calc(100% - 1px), #ef4444 100%) repeat-y;
-																																background-size: 100% 257mm; 
-																																background-position: 0 20mm;
-																															}																				.ql-toolbar { border: none !important; border-bottom: 1px solid #e5e7eb !important; background: #f9fafb; border-radius: 8px 8px 0 0; position: sticky; top: 0; z-index: 10; }
-																				.ql-editor h3 { text-align: center; font-weight: bold; margin-top: 20px; margin-bottom: 10px; font-size: 14pt; }
-																				.ql-editor p { margin-bottom: 10px; }
-																				
-																				/* Toolbar Customization */
-																				.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
-																				.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
-																					content: 'Título' !important;
-																				}
-																				.ql-snow .ql-picker.ql-header .ql-picker-label::before,
-																				.ql-snow .ql-picker.ql-header .ql-picker-item::before {
-																					content: 'Texto' !important;
-																				}
-																			`}
-																		</style>
-									{isEditing ? (
-										<ReactQuill
-											theme="snow"
-											value={result}
-											onChange={setResult}
-											modules={{
-												toolbar: [
-													[{ 'header': [3, false] }],
-													['bold', 'italic', 'underline'],
-													[{ 'align': [] }],
-													[{ 'list': 'ordered' }, { 'list': 'bullet' }],
-													['clean']
-												]
-											}}
-										/>
-									) : (
-										<div className="ql-container ql-snow" style={{ border: 'none' }}>
-											<div 
-												className="ql-editor"
-												dangerouslySetInnerHTML={{ __html: result }}
-											/>
-										</div>
-									)}
+					<div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+						{/* COLUNA DO DOCUMENTO (Centralizada ou Esquerda dependendo do painel IA) */}
+						<div className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
+							
+							{/* Aviso de Leitura */}
+							<div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r-lg flex gap-3 items-start">
+								<AlertCircle className="text-yellow-600 shrink-0 mt-0.5" size={20} />
+								<div>
+									<h4 className="font-bold text-yellow-800 text-sm">Modo de Leitura e Conferência</h4>
+									<p className="text-yellow-700 text-sm mt-1">
+										Este documento não pode ser editado manualmente para garantir a formatação. 
+										Leia todo o conteúdo. Se encontrar nomes errados, datas incorretas ou argumentos fracos, 
+										use o botão <strong>"Solicitar Correção (IA)"</strong> ao lado.
+									</p>
+								</div>
+							</div>
+
+							<div className="flex justify-center bg-gray-200/80 py-8 rounded-xl border border-gray-200 overflow-hidden relative min-h-screen">
+								<div ref={componentRef} className="print-content">
+									<style>{`
+										/* Estilos do Documento A4 na Tela */
+										.ql-container.ql-snow { border: none !important; }
+										/* ESCONDER TOOLBAR TOTALMENTE - MODO LEITURA */
+										.ql-toolbar.ql-snow { 
+											display: none !important;
+										}
+										
+										/* O Papel A4 */
+										.ql-editor {
+											width: 210mm;
+											min-height: 297mm;
+											background-color: white;
+											box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+											margin: 0 auto;
+											padding: 20mm !important; /* Margens A4 Padrão */
+											
+											/* Tipografia Final */
+											font-family: 'Times New Roman', Times, serif !important;
+											font-size: 12pt !important;
+											line-height: 1.5 !important;
+											color: #000 !important;
+											text-align: justify !important;
+											
+											/* Marcador Visual de Quebra de Página (A cada 297mm) */
+											background-image: linear-gradient(to bottom, transparent 296.5mm, #e5e7eb 296.5mm, #e5e7eb 297mm, transparent 297mm);
+											background-size: 100% 297mm;
+											background-repeat: repeat-y;
+										}
+										
+										/* Remover borda azul de seleção do editor quando readOnly */
+										.ql-editor.ql-blank::before { color: rgba(0,0,0,0.6); font-style: normal; }
+
+										/* Ajustes para Impressão Real */
+										@media print {
+											@page { 
+												size: A4; 
+												margin: 20mm; 
+											}
+											body { 
+												background: white; 
+												-webkit-print-color-adjust: exact;
+											}
+											body * { visibility: hidden; }
+											.print-content, .print-content * { visibility: visible; }
+											.print-content {
+												position: absolute;
+												left: 0;
+												top: 0;
+												width: 100%;
+												margin: 0;
+												padding: 0;
+											}
+											.ql-toolbar { display: none !important; }
+											.ql-editor {
+												width: 100% !important;
+												min-height: auto !important;
+												box-shadow: none !important;
+												margin: 0 !important;
+												padding: 0 !important; 
+												background-image: none !important;
+												overflow: visible !important;
+											}
+										}
+									`}</style>
+
+									<ReactQuill
+										theme="snow"
+										value={result}
+										readOnly={true} // BLOQUEIA EDIÇÃO MANUAL
+										modules={{ toolbar: false }} // DESATIVA TOOLBAR
+									/>
 								</div>
 							</div>
 						</div>
+
+						{/* PAINEL LATERAL DE IA (CONDICIONAL) */}
 						{isRefining && (
-							<div className="lg:col-span-1 space-y-6 order-1 lg:order-2">
-								<div className="bg-blue-600 p-6 rounded-2xl shadow-xl text-white sticky top-40">
-									<div className="flex justify-between items-center mb-2">
-										<span className="text-xs font-bold uppercase tracking-wider text-blue-200">
-											Refinamento com IA
-										</span>
-										<span className="bg-blue-800 text-xs px-2 py-1 rounded-full">
-											{refinementCount} restantes
-										</span>
+							<div className="lg:col-span-4 space-y-6 order-1 lg:order-2 animate-in slide-in-from-right-4 duration-300">
+								<div className="bg-white border border-blue-100 p-6 rounded-2xl shadow-xl sticky top-40">
+									<div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
+										<div className="bg-blue-100 p-2 rounded-lg text-blue-600">
+											<PenTool size={24} />
+										</div>
+										<div>
+											<h3 className="font-bold text-gray-900 leading-tight">Painel de Correção IA</h3>
+											<p className="text-xs text-gray-500">O seu assistente jurídico pessoal</p>
+										</div>
 									</div>
-									<textarea
-										value={refinementText}
-										onChange={(e) => setRefinementText(e.target.value)}
-										rows={6}
-										className="w-full p-3 rounded-xl text-gray-900 text-sm"
-										placeholder="Exemplos: 'Focar na falta de sinalização da via', 'Ajustar para tom mais formal', 'Remover argumento sobre a cor do veículo'."
-									/>
-									<div className="mt-4 flex justify-end">
+									
+									<div className="bg-blue-50 rounded-xl p-4 mb-6 text-sm text-blue-800 leading-relaxed">
+										<p className="font-bold mb-2 flex items-center gap-2"><Info size={16}/> Como utilizar:</p>
+										<ol className="list-decimal list-inside space-y-2">
+											<li>Leia o documento ao lado.</li>
+											<li>Identifique erros (ex: "A data está errada", "O modelo do carro é X", "Adicionar lei Y").</li>
+											<li>Descreva o ajuste abaixo e clique em <strong>Atualizar</strong>.</li>
+										</ol>
+									</div>
+
+									<div className="space-y-4">
+										<label className="text-sm font-bold text-gray-700 block">
+											O que precisa ser ajustado?
+										</label>
+										<textarea
+											value={refinementText}
+											onChange={(e) => setRefinementText(e.target.value)}
+											rows={6}
+											className="w-full p-4 rounded-xl border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+											placeholder="Ex: Corrigir a data da infração para 12/05/2024. Adicionar parágrafo alegando falta de visibilidade da placa."
+										/>
+										<div className="flex justify-between items-center text-xs text-gray-400 px-1">
+											<span>Seja específico nas instruções.</span>
+											<span>{refinementText.length} caracteres</span>
+										</div>
+										
 										<button
 											onClick={handleRefinementSubmit}
 											disabled={!refinementText.trim() || refining || refinementCount <= 0}
-											className={`bg-white text-blue-600 px-6 py-2 rounded-lg font-bold flex items-center gap-2 ${refinementCount <= 0 ? "opacity-50 cursor-not-allowed" : ""}`}>
-											Atualizar <Send size={16} />
+											className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${
+												refinementCount <= 0 
+												? "bg-gray-100 text-gray-400 cursor-not-allowed" 
+												: "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 transform hover:-translate-y-0.5"
+											}`}>
+											{refining ? <Loader2 className="animate-spin" size={20} /> : <Send size={20} />}
+											{refining ? "Processando Correções..." : "Aplicar Correções com IA"}
 										</button>
+
+										<div className="text-center">
+											<span className="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-full font-medium">
+												{refinementCount} revisões restantes
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -1674,7 +1887,7 @@ const ManualDefense = () => {
 								</div>
 								<div>
 									<label className="label-form">
-										Órgão Emissor <span className="text-red-500">*</span>
+										Órgão Emissor
 									</label>
 									<input
 										name="rgIssuer"
@@ -1682,7 +1895,6 @@ const ManualDefense = () => {
 										onChange={handleChange}
 										onBlur={handleBlur}
 										className={`input-form ${errors.rgIssuer ? "border-red-500" : ""}`}
-										required
 									/>
 									{errors.rgIssuer && (
 										<p className="text-red-500 text-xs mt-1">{errors.rgIssuer}</p>
