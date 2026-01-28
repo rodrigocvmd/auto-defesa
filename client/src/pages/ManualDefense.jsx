@@ -1269,6 +1269,7 @@ const ManualDefense = () => {
 												line-height: 1.5 !important; 
 												text-align: justify !important; 
 												min-height: 1123px;
+												font-weight: normal !important; /* Fix for bold text issue */
 												/* Visual Page Break Indicator */
 												background: linear-gradient(to bottom, transparent 1122px, #E5E7EB 1122px, #E5E7EB 1123px, transparent 1123px) repeat-y;
 												background-size: 100% 1123px; /* A4 Height @ 96 DPI */
@@ -1276,6 +1277,16 @@ const ManualDefense = () => {
 											.ql-toolbar { border: none !important; border-bottom: 1px solid #e5e7eb !important; background: #f9fafb; border-radius: 8px 8px 0 0; position: sticky; top: 0; z-index: 10; }
 											.ql-editor h3 { text-align: center; font-weight: bold; margin-top: 20px; margin-bottom: 10px; font-size: 14pt; }
 											.ql-editor p { margin-bottom: 10px; }
+											
+											/* Toolbar Customization */
+											.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+											.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+												content: 'Título' !important;
+											}
+											.ql-snow .ql-picker.ql-header .ql-picker-label::before,
+											.ql-snow .ql-picker.ql-header .ql-picker-item::before {
+												content: 'Texto' !important;
+											}
 										`}
 									</style>
 									{isEditing ? (
@@ -1294,10 +1305,12 @@ const ManualDefense = () => {
 											}}
 										/>
 									) : (
-										<div 
-											className="ql-editor"
-											dangerouslySetInnerHTML={{ __html: result }}
-										/>
+										<div className="ql-container ql-snow" style={{ border: 'none' }}>
+											<div 
+												className="ql-editor"
+												dangerouslySetInnerHTML={{ __html: result }}
+											/>
+										</div>
 									)}
 								</div>
 							</div>
