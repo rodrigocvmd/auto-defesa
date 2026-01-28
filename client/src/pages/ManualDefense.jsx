@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../services/api";
-import html2pdf from "html2pdf.js";
+import printJS from "print-js";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { formatDefenseToHtml } from "../utils/textToHtml";
@@ -673,40 +673,36 @@ const ManualDefense = () => {
 		}
 		
 		try {
-			// Clone the exact element user is seeing to ensure 100% fidelity
-			const element = originalElement.cloneNode(true);
-			
-			// Remove screen-only styles that don't belong in print
-			element.classList.remove("shadow-2xl", "mx-auto", "my-8");
-			element.style.margin = "0";
-			element.style.boxShadow = "none";
-			// Ensure it takes full width of the PDF generation container
-			element.style.width = "100%"; 
-			element.style.maxWidth = "none";
-			element.style.minHeight = "auto"; // Let content dictate height
+			// Alert the user about the native print dialog for vector quality
+			alert("A janela de impressão será aberta. \n\nPara obter um PDF de alta qualidade (Texto/Vector) e tamanho leve:\n1. Selecione o destino 'Salvar como PDF'.\n2. Clique em Salvar.");
 
-			// Options for high-fidelity A4 print
-			const opt = {
-				margin:       0, 
-				filename:     `Defesa_${formData.plate || "Recurso"}.pdf`,
-				image:        { type: 'png', quality: 1.0 }, // PNG for sharper text, lossless
-				html2canvas:  { 
-					scale: 4, // Higher scale (approx 384dpi) for better zoom quality
-					useCORS: true, 
-					backgroundColor: "#ffffff",
-					scrollY: 0,
-					windowWidth: 794
-				},
-				jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-				pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
-			};
+			printJS({
+				printable: 'defense-preview-content',
+				type: 'html',
+				targetStyles: ['*'], // Inherit all styles for fidelity
+				style: `
+					@media print {
+						@page { size: A4 portrait; margin: 0; }
+						body { margin: 0; padding: 0; }
+						#defense-preview-content { 
+							width: 100%; 
+							margin: 0; 
+							box-shadow: none !important;
+							border: none !important;
+						}
+						.ql-editor {
+							padding: 20mm !important; /* Ensure print padding */
+							min-height: auto !important;
+						}
+					}
+				`,
+				documentTitle: `Defesa_${formData.plate || "Recurso"}`,
+				onPrintDialogClose: () => setShowPostDownloadModal(true)
+			});
 
-			await html2pdf().set(opt).from(element).save();
-			
-			setShowPostDownloadModal(true);
 		} catch (err) {
-			console.error("Erro ao gerar PDF:", err);
-			alert("Ocorreu um erro ao gerar o PDF. Tente novamente.");
+			console.error("Erro ao iniciar impressão:", err);
+			alert("Ocorreu um erro. Tente novamente.");
 		}
 	};
 
