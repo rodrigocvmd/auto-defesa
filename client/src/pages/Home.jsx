@@ -29,7 +29,7 @@ const Home = () => {
 
 					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 						<div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-							<Star size={14} fill="currentColor" /> Tecnologia Jurídica Avançada
+							<Star size={14} fill="currentColor" /> Tecnologia Avançada de Recursos
 						</div>
 
 						<h1 className="text-5xl lg:text-7xl font-black text-gray-900 tracking-tight mb-6 leading-tight max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
@@ -39,7 +39,7 @@ const Home = () => {
 							</span>
 						</h1>
 
-						<p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
+						<p className="text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
 							Não gaste R$ 400,00 com advogados. Nossa IA analisa seu caso gratuitamente e gera um{" "}
 							<strong>recurso administrativo profissional</strong>, fundamentado na lei, completo e{" "}
 							<strong>pronto para assinatura e protocolo</strong>.
@@ -74,7 +74,7 @@ const Home = () => {
 				<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="text-center mb-16">
 						<h2 className="text-3xl font-black text-gray-900 mb-4">Como funciona?</h2>
-						<p className="text-gray-600 max-w-2xl mx-auto">
+						<p className="text-gray-600 max-w-3xl mx-auto">
 							Simplificamos a burocracia. Em poucos minutos você terá em mãos a defesa perfeita para
 							o seu caso.
 						</p>
@@ -133,7 +133,7 @@ const Home = () => {
 							</h2>
 							<p className="text-gray-400 max-w-3xl mx-auto text-lg">
 								Democratizamos o acesso à defesa de trânsito de qualidade. Compare e veja a
-								diferença.
+								diferença:
 							</p>
 						</div>
 
@@ -194,7 +194,7 @@ const Home = () => {
 								<Link
 									to="/upload"
 									className="mt-8 w-full block bg-gray-900 hover:bg-gray-800 text-white text-center font-bold py-4 rounded-xl transition-all">
-									Quero economizar agora
+									Analisar um Recurso gratuitamente agora
 								</Link>
 							</div>
 						</div>

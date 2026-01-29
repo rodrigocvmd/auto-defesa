@@ -127,6 +127,12 @@ export const useDefenseLogic = (step) => {
                 value = value.replace(/(\d{3})(\d+)/, "$1.$2");
             }
         }
+        if (name === "zipCode") {
+            value = value.replace(/\D/g, "").slice(0, 8);
+            if (value.length > 5) {
+                value = `${value.slice(0, 5)}-${value.slice(5)}`;
+            }
+        }
         if (name === "date" || name === "signDate" || name === "lastCalibration") {
             value = value.replace(/\D/g, "").slice(0, 8);
             if (value.length > 4) value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`;
@@ -172,6 +178,9 @@ export const useDefenseLogic = (step) => {
                     break;
                 case "email":
                     if (!value.includes("@") || !value.includes(".")) error = "E-mail inválido.";
+                    break;
+                case "zipCode":
+                    if (value.length < 9) error = "CEP incompleto (XXXXX-XXX).";
                     break;
                 case "date":
                 case "signDate":

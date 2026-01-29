@@ -320,7 +320,7 @@ export default function Profile() {
 				</div>
 
 				{/* Conteúdo das Abas */}
-				<div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+				<div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8 md:p-8">
 					{/* Feedback Message */}
 					{message.content && (
 						<div
