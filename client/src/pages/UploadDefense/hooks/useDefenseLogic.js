@@ -148,7 +148,7 @@ export const useDefenseLogic = (step) => {
     const validateField = (name, value) => {
         let error = null;
         const requiredFields = [
-            "name", "cpf", "rg", "nationality", "profession", "cnh", "phone", "email",
+            "name", "cpf", "rg", "rgIssuer", "preferredTreatment", "phone", "email",
             "zipCode", "address", "addressNumber", "neighborhood", "city", "state",
             "plate", "plateUF", "vehicleModel", "aitNumber", "infractionCode", "issuingBody",
             "date", "time", "location", "description", "equipmentNumber", "lastCalibration",
@@ -527,14 +527,11 @@ export const useDefenseLogic = (step) => {
         setFormData({
             ...initialFormState,
             name: "João da Silva",
-            nationality: "Brasileiro",
-            maritalStatus: "Solteiro(a)",
-            profession: "Motorista",
+            preferredTreatment: "O Recorrente",
             rg: "1.234.567",
-            rgIssuer: "SSP/SP",
+            rgIssuer: "SP",
             cpf: "069.268.226-03",
             cnh: "12345678900",
-            cnhCategory: "B",
             address: "Av. Paulista",
             addressNumber: "1000",
             addressComplement: "Apto 10",

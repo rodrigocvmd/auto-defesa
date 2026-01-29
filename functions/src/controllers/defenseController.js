@@ -102,6 +102,7 @@ exports.generateDefense = (req, res) => {
              - DEFESA PRÉVIA: Foque em ERROS FORMAIS (Art. 280/281 CTB) e aspectos técnicos.
              - RECURSO JARI: Ataque o mérito, cite jurisprudência e rebata eventual indeferimento anterior.
              - RECURSO CETRAN: Rebata a decisão da JARI, alegue falta de fundamentação se genérica e use argumentos de última instância.
+             - **ATENÇÃO AO DISTRITO FEDERAL (CONTRADIFE)**: Caso o órgão autuador seja o DER-DF ou outro órgão do Distrito Federal, e a fase seja de 2ª Instância (após JARI), o recurso NÃO deve ser endereçado ao CETRAN, mas sim ao CONTRADIFE (Conselho de Trânsito do Distrito Federal). Ajuste o endereçamento e as menções ao órgão julgador de acordo.
           5. Analise o relato do usuário em <relato_fatos> para extrair teses, mas priorize teses técnicas se o relato for prejudicial.
           6. EQUIPAMENTO/AFERIÇÃO: Analise os campos 'Equipamento' e 'Aferição' (mesmo que "Não disponível" ou vazios) em relação ao contexto. Valide se são argumentos legítimos considerando: (a) Se a aferição não é recente (vencida) e prejudicou a medição; (b) Se a infração REALMENTE exige equipamento (ex: velocidade, etilômetro, balança). Caso a materialidade não dependa de equipamento, dispense esse argumento e foque em outras falhas ou argumentos subjetivos do relato.
           7. ASSINATURA: Ao final, insira:
@@ -119,11 +120,19 @@ exports.generateDefense = (req, res) => {
 				userPrompt = `
           TIPO DE PEÇA: ${defenseTypeLabel}
           
+          DIRETRIZ DE GÊNERO/TRATAMENTO: O usuário escolheu ser tratado como '${data.preferredTreatment}'.
+             - Se 'O Recorrente': Use concordância masculina (ex: 'O Recorrente', 'o condutor', 'ele').
+             - Se 'A Recorrente': Use concordância feminina (ex: 'A Recorrente', 'a condutora', 'ela').
+             - Se 'Tratamento neutro': Use termos neutros como 'A Parte Recorrente', 'A Defesa', 'O Requerente'.
+
           <dados_caso>
           Órgão: ${data.issuingBody || ""}
           AIT: ${data.aitNumber || ""}
           Nome: ${data.name || ""}
+          RG: ${data.rg || ""} - ${data.rgIssuer || ""}
           CPF: ${data.cpf || ""}
+          CNH: ${data.cnh || "Não informada"}
+          Endereço: ${data.address}, ${data.addressNumber} ${data.addressComplement}, ${data.neighborhood}, ${data.city}/${data.state}, CEP ${data.zipCode}
           Placa: ${data.plate || ""}
           Infração: ${data.article || ""}
           Equipamento: ${data.equipmentNumber || ""}
@@ -146,6 +155,15 @@ exports.generateDefense = (req, res) => {
 
 			// Salvar no banco e debitar crédito APÓS geração com sucesso (se não for refinamento)
 			if (!isRefinement) {
+				// Helper para formatar nome do arquivo: Tipo_PrimeiroNome_Placa
+				const formatFileName = () => {
+					const type = (data.defenseType || "Recurso").split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+					const typeSuffix = data.defenseType === "previa" ? "_Previa" : (data.defenseType === "jari" ? "_JARI" : (data.defenseType === "cetran" ? "_CETRAN" : ""));
+					const firstName = (data.name || "Usuario").split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+					const cleanPlate = (data.plate || "").replace(/[^a-zA-Z0-9]/g, "");
+					return `${type}${typeSuffix}_${firstName}_${cleanPlate}`;
+				};
+
 				const defenseData = {
 					userId: userId,
 					infractionType: data.defenseType || "Análise de Upload",
@@ -153,7 +171,7 @@ exports.generateDefense = (req, res) => {
 					defenseText: defenseText,
 					status: "completed",
 					createdAt: FieldValue.serverTimestamp(),
-					fileName: data.fileName || "Defesa IA",
+					fileName: formatFileName(),
 				};
 
 				const docRef = await db.collection("defenses").add(defenseData);
@@ -363,10 +381,15 @@ exports.analyzeDocument = (req, res) => {
 			const prompt = `
         Aja como Advogado de Trânsito. Analise a imagem da multa.
         
+        DIRETRIZ DE GÊNERO/TRATAMENTO: O usuário escolheu ser tratado como '${userData.preferredTreatment}'.
+             - Se 'O Recorrente': Use concordância masculina (ex: 'O Recorrente', 'o condutor', 'ele').
+             - Se 'A Recorrente': Use concordância feminina (ex: 'A Recorrente', 'a condutora', 'ela').
+             - Se 'Tratamento neutro': Use termos neutros como 'A Parte Recorrente', 'A Defesa', 'O Requerente'.
+
         DADOS DO CONDUTOR (FORNECIDOS PELO USUÁRIO):
-        Nome: ${userData.name || "[NOME]"}, ${userData.nationality}, ${userData.maritalStatus}, ${userData.profession}.
-        RG: ${userData.rg} ${userData.rgIssuer}, CPF: ${userData.cpf}.
-        CNH: ${userData.cnh} ${userData.cnhCategory}.
+        Nome: ${userData.name || "[NOME]"}.
+        RG: ${userData.rg} - ${userData.rgIssuer || "UF"}, CPF: ${userData.cpf}.
+        CNH: ${userData.cnh || "Não informada"}.
         Endereço: ${userData.address}, ${userData.addressNumber} ${userData.addressComplement}, ${userData.neighborhood}, ${userData.city}/${userData.state}, CEP ${userData.zipCode}.
 
         RELATO DO CONDUTOR (Argumentos de defesa):
@@ -380,6 +403,7 @@ exports.analyzeDocument = (req, res) => {
            - Se for DEFESA PRÉVIA: Seja extremamente técnico. Foque obsessivamente em ERROS FORMAIS do AIT (falta de dados, erro de marca/cor, local inexistente, falta de aferição do radar) e na notificação fora do prazo (Art. 281 CTB).
            - Se for RECURSO À JARI: Amplie a argumentação. Ataque o mérito (a infração ocorreu mesmo?), cite jurisprudência e PRINCIPALMENTE rebata os motivos do indeferimento da Defesa Prévia (se houver menção no documento). Use argumentos mais subjetivos e princípios constitucionais (ampla defesa).
            - Se for RECURSO AO CETRAN: Esta é a última instância administrativa. A técnica deve ser impecável. Rebata ponto a ponto a decisão da JARI. Se a decisão da JARI foi genérica ("copia e cola"), alegue nulidade por falta de fundamentação.
+		   - **ATENÇÃO AO DISTRITO FEDERAL (CONTRADIFE)**: Caso o órgão autuador seja o DER-DF ou outro órgão do Distrito Federal, e a fase seja de 2ª Instância (após JARI), o recurso NÃO deve ser endereçado ao CETRAN, mas sim ao CONTRADIFE (Conselho de Trânsito do Distrito Federal). Ajuste o endereçamento e as menções ao órgão julgador de acordo.
         5. Escreva o RECURSO completo. A formatação da versão final não deve ser markdown, e sim formatação estética para leitura humana seguindo as boas práticas estéticas e de formatação de recursos administrativos e jurídicos.
         5. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo.
         6. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
@@ -406,6 +430,15 @@ exports.analyzeDocument = (req, res) => {
 			]);
 			const defenseText = result.response.text();
 
+			// Helper para formatar nome do arquivo: Tipo_PrimeiroNome_Placa
+			const formatFileName = () => {
+				const type = (userData.defenseType || "Recurso").split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+				const typeSuffix = userData.defenseType === "previa" ? "_Previa" : (userData.defenseType === "jari" ? "_JARI" : (userData.defenseType === "cetran" ? "_CETRAN" : ""));
+				const firstName = (userData.name || "Usuario").split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+				const cleanPlate = (userData.plate || "").replace(/[^a-zA-Z0-9]/g, "");
+				return `${type}${typeSuffix}_${firstName}_${cleanPlate}`;
+			};
+
 			const defenseData = {
 				userId: userId,
 				infractionType: defenseTypeLabel,
@@ -413,7 +446,7 @@ exports.analyzeDocument = (req, res) => {
 				defenseText: defenseText,
 				status: "completed",
 				createdAt: FieldValue.serverTimestamp(),
-				fileName: "Análise de Documento",
+				fileName: formatFileName(),
 			};
 
 			const docRef = await db.collection("defenses").add(defenseData);

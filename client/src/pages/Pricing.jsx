@@ -20,7 +20,7 @@ const Pricing = () => {
 	// No Dashboard da Stripe, vá em Produtos > Clique no produto > Role até "Preços" > Copie o ID que começa com 'price_'.
 	const PLANS = [
 		{
-			id: "price_1SuFhiRTHGPeccd9UTYEE604", // Substitua pelo ID real price_...
+			id: "price_1SsUk8Qphe4gmDmiJhdjZsL4", // Substitua pelo ID real price_...
 			name: "Recurso Expresso",
 			price: "R$ 16,90",
 			credits: 1,
@@ -38,7 +38,7 @@ const Pricing = () => {
 			color: "gray",
 		},
 		{
-			id: "price_1SuFi7RTHGPeccd987NViaZP", // Substitua pelo ID real price_...
+			id: "price_1SsUkvQphe4gmDmiExt4PDuw", // Substitua pelo ID real price_...
 			name: "Proteção Completa",
 			price: "R$ 27,90",
 			credits: 3,
@@ -57,7 +57,7 @@ const Pricing = () => {
 			color: "blue",
 		},
 		{
-			id: "price_1SuFiORTHGPeccd9HKTxjPO7", // Substitua pelo ID real price_...
+			id: "price_1SsUlDQphe4gmDmimwZpXhQg", // Substitua pelo ID real price_...
 			name: "Pacote Profissional",
 			price: "R$ 47,90",
 			credits: 10,

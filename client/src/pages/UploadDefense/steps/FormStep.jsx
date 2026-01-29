@@ -138,9 +138,9 @@ export const FormStep = ({
 						<User className="text-blue-600" />
 						<h3 className="text-xl font-bold text-gray-800">1. Qualificação</h3>
 					</div>
-					<div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+					<div className="grid grid-cols-1 md:grid-cols-10 gap-5">
 						{/* Linha 1 */}
-						<div className="md:col-span-2">
+						<div className="md:col-span-5">
 							<label className="label-form">
 								Nome Completo <span className="text-red-500">*</span>
 							</label>
@@ -154,7 +154,7 @@ export const FormStep = ({
 							/>
 							{errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
 						</div>
-						<div className="md:col-span-2">
+						<div className="md:col-span-5">
 							<label className="label-form">
 								CPF <span className="text-red-500">*</span>
 							</label>
@@ -170,7 +170,7 @@ export const FormStep = ({
 						</div>
 
 						{/* Linha 2 */}
-						<div className="md:col-span-1">
+						<div className="md:col-span-2">
 							<label className="label-form">
 								RG <span className="text-red-500">*</span>
 							</label>
@@ -184,58 +184,79 @@ export const FormStep = ({
 							/>
 							{errors.rg && <p className="text-red-500 text-xs mt-1">{errors.rg}</p>}
 						</div>
-						<div className="md:col-span-1">
-							<label className="label-form">Órgão Emissor</label>
-							<input
+						<div className="md:col-span-2">
+							<label className="label-form">
+								UF do RG <span className="text-red-500">*</span>
+							</label>
+							<select
 								name="rgIssuer"
 								value={formData.rgIssuer}
 								onChange={handleChange}
 								onBlur={handleBlur}
 								className={`input-form ${errors.rgIssuer ? "border-red-500" : ""}`}
-							/>
-							{errors.rgIssuer && <p className="text-red-500 text-xs mt-1">{errors.rgIssuer}</p>}
-						</div>
-						<div className="md:col-span-1">
-							<label className="label-form">
-								Nacionalidade <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="nationality"
-								value={formData.nationality}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.nationality ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.nationality && (
-								<p className="text-red-500 text-xs mt-1">{errors.nationality}</p>
-							)}
-						</div>
-								<div>
-									<label className="label-form">Estado Civil</label>
-									<select
-								name="maritalStatus"
-								value={formData.maritalStatus}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.maritalStatus ? "border-red-500" : ""}`}
 								required>
 								<option value="">Selecione...</option>
-								<option value="Solteiro(a)">Solteiro(a)</option>
-								<option value="Casado(a)">Casado(a)</option>
-								<option value="Divorciado(a)">Divorciado(a)</option>
-								<option value="Viúvo(a)">Viúvo(a)</option>
-								<option value="Outro">Outro</option>
+								{[
+									"AC",
+									"AL",
+									"AP",
+									"AM",
+									"BA",
+									"CE",
+									"DF",
+									"ES",
+									"GO",
+									"MA",
+									"MT",
+									"MS",
+									"MG",
+									"PA",
+									"PB",
+									"PR",
+									"PE",
+									"PI",
+									"RJ",
+									"RN",
+									"RS",
+									"RO",
+									"RR",
+									"SC",
+									"SP",
+									"SE",
+									"TO",
+								].map((uf) => (
+									<option key={uf} value={uf}>
+										{uf}
+									</option>
+								))}
 							</select>
-							{errors.maritalStatus && (
-								<p className="text-red-500 text-xs mt-1">{errors.maritalStatus}</p>
+							{errors.rgIssuer && <p className="text-red-500 text-xs mt-1">{errors.rgIssuer}</p>}
+						</div>
+						<div className="md:col-span-3">
+							<label className="label-form">
+								Como prefere ser tratado? <span className="text-red-500">*</span>
+							</label>
+							<select
+								name="preferredTreatment"
+								value={formData.preferredTreatment || ""}
+								onChange={handleChange}
+								onBlur={handleBlur}
+								className={`input-form ${errors.preferredTreatment ? "border-red-500" : ""}`}
+								required>
+								<option value="">Selecione...</option>
+								<option value="O Recorrente">O Recorrente (Masculino)</option>
+								<option value="A Recorrente">A Recorrente (Feminino)</option>
+								<option value="Tratamento neutro">Tratamento neutro</option>
+							</select>
+							{errors.preferredTreatment && (
+								<p className="text-red-500 text-xs mt-1">{errors.preferredTreatment}</p>
 							)}
 						</div>
 
 						{/* Linha 3 */}
-						<div className="md:col-span-1">
+						<div className="md:col-span-3">
 							<label className="label-form">
-								CNH <span className="text-red-500">*</span>
+								CNH
 							</label>
 							<input
 								name="cnh"
@@ -243,35 +264,14 @@ export const FormStep = ({
 								onChange={handleChange}
 								onBlur={handleBlur}
 								className={`input-form ${errors.cnh ? "border-red-500" : ""}`}
-								required
 							/>
 							{errors.cnh && <p className="text-red-500 text-xs mt-1">{errors.cnh}</p>}
 						</div>
-						<div className="md:col-span-1">
-							<label className="label-form">Categoria CNH</label>
-							<input
-								name="cnhCategory"
-								value={formData.cnhCategory}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className="input-form"
-							/>
-						</div>
-						<div className="md:col-span-2">
-							<label className="label-form">Profissão</label>
-							<input
-								name="profession"
-								value={formData.profession}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className="input-form"
-							/>
-						</div>
 
 						{/* Linha 4 */}
-						<div className="md:col-span-2">
+						<div className="md:col-span-5">
 							<label className="label-form">
-								Telefone <span className="text-red-500">*</span>
+								Telefone (para notificações do processo) <span className="text-red-500">*</span>
 							</label>
 							<input
 								name="phone"
@@ -283,9 +283,9 @@ export const FormStep = ({
 							/>
 							{errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
 						</div>
-						<div className="md:col-span-2">
+						<div className="md:col-span-5">
 							<label className="label-form">
-								E-mail <span className="text-red-500">*</span>
+								E-mail (para notificações do processo) <span className="text-red-500">*</span>
 							</label>
 							<input
 								name="email"

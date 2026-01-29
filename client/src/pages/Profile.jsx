@@ -237,7 +237,13 @@ export default function Profile() {
 			contentHtml = formatDefenseToHtml(contentHtml);
 		}
         
-        const fileName = `Recurso_${defense.licensePlate || "Final"}.pdf`;
+        let fileName = defense.fileName;
+        if (!fileName) {
+             fileName = `Recurso_${defense.licensePlate || "Final"}`;
+        }
+        if (!fileName.toLowerCase().endsWith(".pdf")) {
+            fileName += ".pdf";
+        }
 
 		try {
             // Chamada ao Backend via API
