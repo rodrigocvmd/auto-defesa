@@ -1,0 +1,117 @@
+const cors = require("../middleware/cors");
+const { verifyAuth } = require("../middleware/auth");
+const { db } = require("../services/firebase");
+
+// NOTE: Ensure STRIPE_SECRET_KEY is set in your environment variables
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+exports.createCheckoutSession = (req, res) => {
+	cors(req, res, async () => {
+		let userId;
+		try {
+			userId = await verifyAuth(req);
+		} catch (e) {
+			res.status(401).json({ error: "Usuário não autenticado." });
+			return;
+		}
+
+		const { priceId, successUrl, cancelUrl, mode } = req.body;
+		
+		const PRICE_CREDITS_MAP = {
+			price_1SuFhiRTHGPeccd9UTYEE604: 1, 
+			price_1SuFi7RTHGPeccd987NViaZP: 3, 
+			price_1SuFiORTHGPeccd9HKTxjPO7: 10,
+            // Fallback default for testing if needed, or remove
+             "price_H5ggYwtDq4fbrJ": 1
+		};
+
+		const selectedPriceId = priceId || "price_H5ggYwtDq4fbrJ";
+		const creditsAmount = PRICE_CREDITS_MAP[selectedPriceId];
+
+		if (!creditsAmount) {
+			console.error(`❌ Tentativa de compra com preço inválido: ${selectedPriceId}`);
+			res.status(400).json({ error: "Produto inválido." });
+			return;
+		}
+
+		try {
+			const session = await stripe.checkout.sessions.create({
+				payment_method_types: ["card", "boleto"],
+				locale: "pt-BR",
+				line_items: [
+					{
+						price: selectedPriceId,
+						quantity: 1,
+					},
+				],
+				mode: mode || "payment",
+				success_url: successUrl || "http://localhost:5173/profile?success=true",
+				cancel_url: cancelUrl || "http://localhost:5173/pricing?canceled=true",
+				client_reference_id: userId,
+				metadata: {
+					userId: userId,
+					credits: creditsAmount,
+				},
+			});
+
+			res.status(200).json({ sessionId: session.id, url: session.url });
+		} catch (error) {
+			console.error("Erro Stripe:", error);
+			res.status(500).json({ error: error.message });
+		}
+	});
+};
+
+exports.stripeWebhook = async (req, res) => {
+	const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+	if (!endpointSecret) {
+		console.error("❌ ERRO CRÍTICO: STRIPE_WEBHOOK_SECRET não está definido.");
+		res.status(500).send("Configuration Error: Webhook Secret missing.");
+		return;
+	}
+
+	let event;
+	const sig = req.headers["stripe-signature"];
+
+	if (!req.rawBody) {
+		console.error("❌ ERRO CRÍTICO: req.rawBody está undefined.");
+		res.status(400).send("Webhook Error: req.rawBody is missing.");
+		return;
+	}
+
+	try {
+		event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
+	} catch (err) {
+		console.error(`❌ Webhook Signature Error: ${err.message}`);
+		res.status(400).send(`Webhook Error: ${err.message}`);
+		return;
+	}
+
+	if (event.type === "checkout.session.completed") {
+		const session = event.data.object;
+		const userId = session.metadata.userId;
+		const creditsToAdd = parseInt(session.metadata.credits || "1", 10);
+
+		if (userId) {
+			try {
+				const userRef = db.collection("users").doc(userId);
+				await db.runTransaction(async (t) => {
+					const doc = await t.get(userRef);
+					const currentCredits = doc.exists ? doc.data().credits || 0 : 0;
+					const newCredits = currentCredits + creditsToAdd;
+
+					t.set(userRef, { credits: newCredits }, { merge: true });
+				});
+				console.log(`🎉 Créditos adicionados para ${userId}: +${creditsToAdd}`);
+			} catch (error) {
+				console.error("❌ ERRO ao atualizar créditos no Firestore:", error);
+				return res.status(500).send("Erro interno ao atualizar créditos");
+			}
+		} else {
+			console.error("❌ ERRO: UserId não encontrado nos metadados.");
+		}
+	}
+
+	res.send();
+};
