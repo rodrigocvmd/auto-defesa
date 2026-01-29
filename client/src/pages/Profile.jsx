@@ -31,7 +31,7 @@ import {
 	orderBy,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import html2pdf from "html2pdf.js";
+import { api } from "../services/api";
 import { formatDefenseToHtml } from "../utils/textToHtml";
 
 export default function Profile() {
@@ -236,61 +236,26 @@ export default function Profile() {
 		if (!contentHtml.match(/<p|<h[1-6]|<div/)) {
 			contentHtml = formatDefenseToHtml(contentHtml);
 		}
-
-		// Criar o mesmo worker formatado usado nas páginas de criação
-		const worker = document.createElement("div");
-		worker.style.width = "170mm";
-		worker.style.background = "white";
-		worker.style.boxSizing = "border-box";
-
-		const content = document.createElement("div");
-		content.innerHTML = contentHtml;
-
-		content.style.fontFamily = '"Times New Roman", Times, serif';
-		content.style.fontSize = "12pt";
-		content.style.lineHeight = "1.5";
-		content.style.color = "black";
-		content.style.textAlign = "justify";
-
-		// Converter classes do Quill para estilos inline (crucial para alinhamento)
-		content.querySelectorAll("*").forEach((el) => {
-			if (el.classList.contains("ql-align-center")) el.style.textAlign = "center";
-			if (el.classList.contains("ql-align-right")) el.style.textAlign = "right";
-			if (el.classList.contains("ql-align-justify")) el.style.textAlign = "justify";
-
-			if (el.tagName === "H3") {
-				el.style.textAlign = "center";
-				el.style.fontWeight = "bold";
-				el.style.fontSize = "14pt";
-				el.style.marginTop = "20px";
-				el.style.marginBottom = "10px";
-			}
-			if (el.tagName === "P") {
-				el.style.marginBottom = "10px";
-			}
-		});
-
-		worker.appendChild(content);
-
-		const opt = {
-			margin: [20, 20, 20, 20],
-			filename: `Recurso_${defense.licensePlate || "Final"}.pdf`,
-			image: { type: "jpeg", quality: 1 },
-			html2canvas: {
-				scale: 3,
-				useCORS: true,
-				letterRendering: true,
-				logging: false,
-			},
-			jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-			pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-		};
+        
+        const fileName = `Recurso_${defense.licensePlate || "Final"}.pdf`;
 
 		try {
-			await html2pdf().set(opt).from(worker).save();
+            // Chamada ao Backend via API
+			const blob = await api.generatePdf(contentHtml, fileName);
+            
+            // Download do Blob
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
 		} catch (err) {
 			console.error("Erro ao gerar PDF:", err);
-			alert("Ocorreu um erro ao baixar o PDF.");
+			alert(`Erro ao baixar o PDF: ${err.message}`);
 		} finally {
 			setLoading(false);
 		}

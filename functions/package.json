@@ -18,6 +18,7 @@
     "dotenv": "^17.2.3",
     "firebase-admin": "^11.8.0",
     "firebase-functions": "^7.0.3",
+    "puppeteer": "^24.36.1",
     "stripe": "^20.2.0"
   },
   "private": true
