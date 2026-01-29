@@ -238,15 +238,6 @@ export const ResultStep = ({
 			<div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 				<div
 					className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
-					
-					{/* Novo Aviso sobre Tamanho Ideal */}
-					<div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-4 rounded-r-lg flex gap-3 items-start">
-						<Info className="text-blue-600 shrink-0 mt-0.5" size={20} />
-						<p className="text-blue-800 text-sm leading-relaxed">
-							O recurso é pensado para ficar no tamanho ideal, sem ser prolixo ou extenso demais, tamanho que possui a melhor probabilidade de deferimento pelos órgãos julgadores.
-						</p>
-					</div>
-
 					<div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r-lg flex gap-3 items-start">
 						<AlertCircle className="text-yellow-600 shrink-0 mt-0.5" size={20} />
 						<div>

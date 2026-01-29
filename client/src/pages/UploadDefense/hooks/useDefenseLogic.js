@@ -148,7 +148,7 @@ export const useDefenseLogic = (step) => {
     const validateField = (name, value) => {
         let error = null;
         const requiredFields = [
-            "name", "cpf", "rg", "nationality", "maritalStatus", "cnh", "phone", "email",
+            "name", "cpf", "rg", "nationality", "profession", "cnh", "phone", "email",
             "zipCode", "address", "addressNumber", "neighborhood", "city", "state",
             "plate", "plateUF", "vehicleModel", "aitNumber", "infractionCode", "issuingBody",
             "date", "time", "location", "description", "equipmentNumber", "lastCalibration",

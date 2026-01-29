@@ -162,14 +162,13 @@ exports.generateDefense = (req, res) => {
 				await deductCredits(userId);
 			}
 
-			res.status(200).json({ 
-				success: true, 
-				data: { 
+			res.status(200).json({
+				success: true,
+				data: {
 					defenseText: defenseText,
-					defenseId: defenseId
-				} 
+					defenseId: defenseId,
+				},
 			});
-
 		} catch (error) {
 			if (error.message === "Créditos insuficientes.") {
 				res.status(402).json({ error: "Créditos insuficientes. Por favor, recarregue." });
@@ -385,7 +384,7 @@ exports.analyzeDocument = (req, res) => {
         5. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo.
         6. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
         7. ANÁLISE ESTRATÉGICA DO RELATO: Verifique se o relato do usuário é congruente e benéfico. Se o relato contiver argumentos fracos, prejudiciais (ex: confissão) ou inúteis, DESCONSIDERE essas partes e construa a defesa baseada em argumentos técnicos e erros formais. Utilize do relato apenas o que fortalecer a defesa.
-        8. Seja prolixo na defesa explorando a maior quantidade de pontos possível, mas nunca ultrapassando limites racionais ou legais.
+        8. Seja muito prolixo na defesa explorando a maior quantidade de pontos possível, mas nunca ultrapassando limites racionais ou legais. A defesa/recurso deve ficar grande, com um tamanho e quantidade de tópicos considerável, passando impressão de robustez em quantidade e qualidade dos argumentos.
         9. Não insira asteríscos ('*') de formatação desnecessários.
         10. IMPORTANTE: NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento (ex: "ILUSTRÍSSIMO SENHOR...").
         11. Finalize com: "Nestes termos, pede deferimento. ${userData.signCity || "Local"}, ${userData.signDate || "Data"}." e a linha de assinatura.
@@ -422,12 +421,12 @@ exports.analyzeDocument = (req, res) => {
 
 			await deductCredits(userId);
 
-			res.status(200).json({ 
-				success: true, 
-				data: { 
+			res.status(200).json({
+				success: true,
+				data: {
 					defenseText: defenseText,
-					defenseId: defenseId 
-				} 
+					defenseId: defenseId,
+				},
 			});
 		} catch (error) {
 			if (error.message === "Créditos insuficientes.") {

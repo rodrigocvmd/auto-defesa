@@ -211,11 +211,9 @@ export const FormStep = ({
 								<p className="text-red-500 text-xs mt-1">{errors.nationality}</p>
 							)}
 						</div>
-						<div className="md:col-span-1">
-							<label className="label-form">
-								Estado Civil <span className="text-red-500">*</span>
-							</label>
-							<select
+								<div>
+									<label className="label-form">Estado Civil</label>
+									<select
 								name="maritalStatus"
 								value={formData.maritalStatus}
 								onChange={handleChange}
