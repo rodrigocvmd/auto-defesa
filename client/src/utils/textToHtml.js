@@ -1,6 +1,13 @@
 
 export const formatDefenseToHtml = (text) => {
   if (!text) return "";
+
+  // Check if text is already HTML (basic check)
+  // If the AI returns HTML with inline styles, we return it directly to preserve formatting.
+  const trimmedText = text.trim();
+  if (trimmedText.startsWith("<") && (trimmedText.includes("</p>") || trimmedText.includes("</div>") || trimmedText.includes("</h3>"))) {
+      return text;
+  }
   
   // Normalize line endings
   const lines = text.split(/\r?\n/);

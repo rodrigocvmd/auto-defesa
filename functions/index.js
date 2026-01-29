@@ -215,8 +215,10 @@ exports.generateDefense = onRequest((req, res) => {
           Tarefa: Redigir uma defesa de multa de trânsito baseada nos dados fornecidos.
           
           DIRETRIZES:
-          1. Visual Profissional: Sem Markdown.
-          2. Use CAIXA ALTA para títulos.
+          1. FORMATO DE SAÍDA: HTML (sem markdown code blocks).
+          2. FORMATAÇÃO (CSS INLINE OBRIGATÓRIO):
+             - JUSTIFICADO (style="text-align: justify; font-family: 'Times New Roman', serif;"): Endereçamento, parágrafos do texto, pedidos.
+             - CENTRALIZADO (style="text-align: center; font-family: 'Times New Roman', serif;"): Títulos (em CAIXA ALTA e Negrito), frase de conclusão ("Nestes termos..."), Data e Assinatura.
           3. Omissão de Vazios: Não invente dados.
           4. ESTRATÉGIA POR FASE (CRUCIAL):
              - DEFESA PRÉVIA: Foque em ERROS FORMAIS (Art. 280/281 CTB) e aspectos técnicos.
@@ -224,7 +226,9 @@ exports.generateDefense = onRequest((req, res) => {
              - RECURSO CETRAN: Rebata a decisão da JARI, alegue falta de fundamentação se genérica e use argumentos de última instância.
           5. Analise o relato do usuário em <relato_fatos> para extrair teses, mas priorize teses técnicas se o relato for prejudicial.
           6. EQUIPAMENTO/AFERIÇÃO: Analise os campos 'Equipamento' e 'Aferição' (mesmo que "Não disponível" ou vazios) em relação ao contexto. Valide se são argumentos legítimos considerando: (a) Se a aferição não é recente (vencida) e prejudicou a medição; (b) Se a infração REALMENTE exige equipamento (ex: velocidade, etilômetro, balança). Caso a materialidade não dependa de equipamento, dispense esse argumento e foque em outras falhas ou argumentos subjetivos do relato.
-          7. ASSINATURA: Ao final, após "Nestes termos, pede deferimento" e a data/local, insira uma linha de assinatura (______________________) e, logo abaixo, o NOME DO RECORRENTE.
+          7. ASSINATURA: Ao final, insira:
+             <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
+             <p style="text-align: center;">NOME DO RECORRENTE</p>
         `;
 
 				const defenseTypeMap = {
@@ -545,14 +549,20 @@ exports.analyzeDocument = onRequest((req, res) => {
            - Se for DEFESA PRÉVIA: Seja extremamente técnico. Foque obsessivamente em ERROS FORMAIS do AIT (falta de dados, erro de marca/cor, local inexistente, falta de aferição do radar) e na notificação fora do prazo (Art. 281 CTB).
            - Se for RECURSO À JARI: Amplie a argumentação. Ataque o mérito (a infração ocorreu mesmo?), cite jurisprudência e PRINCIPALMENTE rebata os motivos do indeferimento da Defesa Prévia (se houver menção no documento). Use argumentos mais subjetivos e princípios constitucionais (ampla defesa).
            - Se for RECURSO AO CETRAN: Esta é a última instância administrativa. A técnica deve ser impecável. Rebata ponto a ponto a decisão da JARI. Se a decisão da JARI foi genérica ("copia e cola"), alegue nulidade por falta de fundamentação.
-        5. Escreva o RECURSO completo. A formatação da versão final não deve ser markdown, e sim formatação estética para leitura humana seguindo as boas práticas estéticas e de formatação de recursos administrativos e jurídicos.
-        5. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo.
-        6. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
-        7. ANÁLISE ESTRATÉGICA DO RELATO: Verifique se o relato do usuário é congruente e benéfico. Se o relato contiver argumentos fracos, prejudiciais (ex: confissão) ou inúteis, DESCONSIDERE essas partes e construa a defesa baseada em argumentos técnicos e erros formais. Utilize do relato apenas o que fortalecer a defesa.
-        8. Seja prolixo na defesa explorando a maior quantidade de pontos possível, mas nunca ultrapassando limites racionais ou legais.
-        9. Não insira asteríscos ('*') de formatação desnecessários.
+        5. Escreva o RECURSO completo em formato HTML.
+           - NÃO use markdown (```html). Retorne apenas o código HTML cru.
+           - Use tags <p>, <h3> (para títulos), <br> para quebras de linha.
+           - REGRAS RÍGIDAS DE FORMATAÇÃO (CSS INLINE OBRIGATÓRIO):
+             - TODOS os parágrafos de texto, endereçamento e os pedidos finais DEVEM ter style="text-align: justify; font-family: 'Times New Roman', serif; font-size: 12pt;".
+             - TODOS os Títulos e Tópicos DEVEM ter style="text-align: center; font-weight: bold; font-family: 'Times New Roman', serif;".
+             - A frase de conclusão ("Nestes termos, pede deferimento..."), a Data e a Assinatura DEVEM ter style="text-align: center; font-family: 'Times New Roman', serif;".
+             - Mantenha o padrão visual entre partes semelhantes.
+        6. Apresentar apenas o código HTML do recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento pronto.
+        7. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
+        8. ANÁLISE ESTRATÉGICA DO RELATO: Verifique se o relato do usuário é congruente e benéfico. Se o relato contiver argumentos fracos, prejudiciais (ex: confissão) ou inúteis, DESCONSIDERE essas partes e construa a defesa baseada em argumentos técnicos e erros formais. Utilize do relato apenas o que fortalecer a defesa.
+        9. Seja prolixo na defesa explorando a maior quantidade de pontos possível, mas nunca ultrapassando limites racionais ou legais.
         10. IMPORTANTE: NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento (ex: "ILUSTRÍSSIMO SENHOR...").
-        11. Finalize com: "Nestes termos, pede deferimento. ${userData.signCity || "Local"}, ${userData.signDate || "Data"}."
+        11. Finalize com: "Nestes termos, pede deferimento. ${userData.signCity || "Local"}, ${userData.signDate || "Data"}." e a linha de assinatura.
       `;
 
 			const defenseTypeMap = {
