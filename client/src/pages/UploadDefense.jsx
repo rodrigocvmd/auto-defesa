@@ -1447,11 +1447,6 @@ const UploadDefense = () => {
 											line-height: 1.5 !important;
 											color: #000 !important;
 											text-align: justify !important;
-											
-											/* Marcador Visual de Quebra de Página (A cada 297mm) */
-											background-image: linear-gradient(to bottom, transparent 296.5mm, #e5e7eb 296.5mm, #e5e7eb 297mm, transparent 297mm);
-											background-size: 100% 297mm;
-											background-repeat: repeat-y;
 										}
 										
 										/* Remover borda azul de seleção do editor quando readOnly */
@@ -2079,7 +2074,7 @@ const UploadDefense = () => {
 						</div>
 						<div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-4 gap-4">
 							<div className="text-sm text-red-600 font-medium">* Campos obrigatórios</div>
-							{!hasTested && (
+							{!hasTested && !file && (
 								<button
 									type="button"
 									onClick={() => setShowTestModal(true)}
