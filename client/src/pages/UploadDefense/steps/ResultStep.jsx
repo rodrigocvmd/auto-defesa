@@ -232,8 +232,8 @@ export const ResultStep = ({
 						<div>
 							<h4 className="font-bold text-yellow-800 text-sm">Modo de Conferência e Edição</h4>
 							<p className="text-yellow-700 text-sm mt-1">
-								Leia todo o conteúdo. Se encontrar nomes errados, datas incorretas ou argumentos
-								fracos, use o botão <strong>"Solicitar Correção via IA"</strong>.
+								Leia todo o conteúdo. Se, porventura, encontrar nomes errados, datas incorretas ou
+								argumentos indesejados, use o botão <strong>"Solicitar Correção via IA"</strong>.
 							</p>
 						</div>
 					</div>
@@ -320,7 +320,7 @@ export const ResultStep = ({
 								</div>
 								<div>
 									<h3 className="font-bold text-gray-900 leading-tight">Painel de Correção IA</h3>
-									<p className="text-xs text-gray-500">O seu assistente jurídico pessoal</p>
+									<p className="text-xs text-gray-500">O seu assistente pessoal de Recursos.</p>
 								</div>
 							</div>
 
@@ -335,7 +335,7 @@ export const ResultStep = ({
 										lei Y").
 									</li>
 									<li>
-										Descreva o ajuste abaixo e clique em <strong>Atualizar</strong>.
+										Descreva o ajuste abaixo e clique em <strong>Aplicar Correções com IA</strong>.
 									</li>
 								</ol>
 							</div>

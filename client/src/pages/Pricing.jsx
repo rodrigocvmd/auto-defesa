@@ -38,7 +38,7 @@ const Pricing = () => {
 			color: "gray",
 		},
 		{
-			id: "price_1SsUkvQphe4gmDmiExt4PDuw", // Substitua pelo ID real price_...
+			id: "price_1SuFi7RTHGPeccd987NViaZP", // Substitua pelo ID real price_...
 			name: "Proteção Completa",
 			price: "R$ 27,90",
 			credits: 3,
@@ -57,7 +57,7 @@ const Pricing = () => {
 			color: "blue",
 		},
 		{
-			id: "price_1SsUlDQphe4gmDmimwZpXhQg", // Substitua pelo ID real price_...
+			id: "price_1SuFiORTHGPeccd9HKTxjPO7", // Substitua pelo ID real price_...
 			name: "Pacote Profissional",
 			price: "R$ 47,90",
 			credits: 10,

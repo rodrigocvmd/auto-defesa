@@ -6,9 +6,9 @@ const { db } = require("../services/firebase");
 const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const MODEL_FLASH = "gemini-2.5-flash-lite";
-const MODEL_PRO = "gemini-2.5-flash-lite";
-const MODEL_FALLBACK = "gemini-1.5-flash";
+const MODEL_FLASH = "gemini-3-flash-preview";
+const MODEL_PRO = "gemini-3-pro-preview";
+const MODEL_FALLBACK = "gemini-2.5-flash";
 
 /**
  * Tenta gerar conteúdo com o modelo principal. Se der erro 503 (Overloaded),
@@ -108,7 +108,8 @@ exports.generateDefense = (req, res) => {
           7. EQUIPAMENTO/AFERIÇÃO: Analise os campos 'Equipamento' e 'Aferição' (mesmo que "Não disponível" ou vazios) em relação ao contexto. Valide se são argumentos legítimos considerando: (a) Se a aferição não é recente (vencida) e prejudicou a medição; (b) Se a infração REALMENTE exige equipamento (ex: velocidade, etilômetro, balança). Caso a materialidade não dependa de equipamento, dispense esse argumento e foque em outras falhas ou argumentos subjetivos do relato.
           8. FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com:
              "Nestes termos, pede deferimento.
-             ${data.signCity || "Local"}, ${data.signDate || "Data"}."
+             ${data.signCity || "Local"}, data: ${data.signDate || "Data"}.
+             (A data acima deve ser escrita por extenso no formato: CIDADE, DIA de MÊS_POR_EXTENSO de ANO)."
              
              <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
              <p style="text-align: center;">${(data.name || "NOME DO RECORRENTE").toUpperCase()}</p>
@@ -425,7 +426,7 @@ exports.analyzeDocument = (req, res) => {
         9. Não insira asteríscos ('*') de formatação desnecessários.
         10. IMPORTANTE: NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento (ex: "ILUSTRÍSSIMO SENHOR...").
         11. NUNCA utilize a expressão "por seu procurador infra-assinado" ou similares.
-        12. Finalize obrigatoriamente com: "Nestes termos, pede deferimento. ${userData.signCity || "Local"}, ${userData.signDate || "Data"}." seguido de uma linha de assinatura e o nome completo do recorrente: "${(userData.name || "NOME DO RECORRENTE").toUpperCase()}" centralizado abaixo da linha.
+        12. Finalize obrigatoriamente com: "Nestes termos, pede deferimento." seguido do local e data por extenso no formato "CIDADE, DIA de MÊS_POR_EXTENSO de ANO" (utilizando os valores de cidade: ${userData.signCity || "Local"} e data: ${userData.signDate || "Data"}), seguido de uma linha de assinatura e o nome completo do recorrente: "${(userData.name || "NOME DO RECORRENTE").toUpperCase()}" centralizado abaixo da linha.
       `;
 
 			const defenseTypeMap = {

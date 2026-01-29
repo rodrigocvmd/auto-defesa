@@ -536,7 +536,7 @@ export default function Profile() {
 							<h2 className="text-2xl font-bold text-gray-900">Tem certeza?</h2>
 						</div>
 
-						<div className="space-y-4 text-gray-600 mb-8 text-center text-sm">
+						<div className="space-y-4 text-gray-600 mb-8 text-center text-md">
 							<p>
 								Esta ação <strong>não pode ser desfeita</strong>.
 							</p>
@@ -544,7 +544,7 @@ export default function Profile() {
 								Você perderá todos os seus créditos ({userData?.credits || 0}) e o acesso a todos os
 								recursos salvos no histórico.
 							</p>
-							<div className="bg-blue-50 p-4 rounded-xl text-blue-800 text-xs">
+							<div className="bg-blue-50 p-4 rounded-xl text-blue-800 text-md">
 								<p className="font-bold mb-1">Está com algum problema?</p>
 								<p className="mb-2">Nossa equipe pode te ajudar antes de você decidir partir.</p>
 								<Link

@@ -16,13 +16,13 @@ exports.createCheckoutSession = (req, res) => {
 		}
 
 		const { priceId, successUrl, cancelUrl, mode } = req.body;
-		
+
 		const PRICE_CREDITS_MAP = {
-			price_1SsUk8Qphe4gmDmiJhdjZsL4: 1, 
-			price_1SsUkvQphe4gmDmiExt4PDuw: 3, 
-			price_1SsUlDQphe4gmDmimwZpXhQg: 10,
-            // Fallback default for testing if needed, or remove
-             "price_H5ggYwtDq4fbrJ": 1
+			price_1SuFhiRTHGPeccd9UTYEE604: 1,
+			price_1SuFi7RTHGPeccd987NViaZP: 3,
+			price_1SuFiORTHGPeccd9HKTxjPO7: 10,
+			// Fallback default for testing if needed, or remove
+			price_H5ggYwtDq4fbrJ: 1,
 		};
 
 		const selectedPriceId = priceId || "price_H5ggYwtDq4fbrJ";
