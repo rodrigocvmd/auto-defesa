@@ -355,18 +355,24 @@ exports.extractDataFromImage = onRequest((req, res) => {
 			const model = genAI.getGenerativeModel({ model: MODEL_FLASH });
 
 			const systemInstruction = `
-        Você é uma IA especializada em OCR de multas de trânsito brasileiras (AIT/Notificação).
-        Sua tarefa é extrair os dados da imagem e retornar EXATAMENTE o seguinte JSON preenchido.
+        Você é uma IA especializada em OCR de multas de trânsito e processos administrativos de trânsito brasileiros.
+        Sua tarefa é extrair os dados da imagem (que pode ser uma Notificação de Autuação, Penalidade ou uma DECISÃO de recurso) e retornar EXATAMENTE o seguinte JSON preenchido.
         Se um campo não for encontrado ou estiver ilegível, retorne uma string vazia "".
         Não invente dados.
         
+        IMPORTANTE SOBRE FASE DA DEFESA ("defensePhase"):
+        1. Se for uma "Notificação de Autuação" (sem boleto/código de barras): Retorne "previa".
+        2. Se for uma "Notificação de Penalidade" (com boleto/multa): Retorne "jari".
+        3. Se for uma DECISÃO ou NOTIFICAÇÃO comunicando o INDEFERIMENTO (negação) da Defesa Prévia: Retorne "jari" (pois o próximo passo é o Recurso à Jari).
+        4. Se for uma DECISÃO ou NOTIFICAÇÃO comunicando o INDEFERIMENTO (negação) do Recurso à Jari: Retorne "cetran" (pois o próximo passo é o Recurso ao Cetran).
+
         Campos requeridos no JSON:
         {
-          "name": "Nome do condutor, proprietário ou infrator (Busque por 'Nome', 'Proprietário', 'Condutor' ou próximo ao CPF)",
+          "name": "Nome do condutor, proprietário ou infrator",
           "plate": "Placa do veículo (ABC-1234)",
           "plateUF": "UF da placa (ex: SP)",
           "vehicleModel": "Marca/Modelo",
-          "issuingBody": "Órgão Autuador (ex: DETRAN-SP, PRF)",
+          "issuingBody": "Órgão Autuador (ex: DETRAN-SP, PRF, DER)",
           "aitNumber": "Número do Auto de Infração",
           "date": "Data da infração (DD/MM/AAAA)",
           "time": "Hora da infração (HH:MM)",
@@ -377,7 +383,7 @@ exports.extractDataFromImage = onRequest((req, res) => {
           "description": "Descrição da infração",
           "equipmentNumber": "Nº do Equipamento/Radar",
           "lastCalibration": "Data verificação/aferição",
-          "defensePhase": "Fase detectada: 'previa' (se Notificação de Autuação), 'jari' (se Notificação de Penalidade/Boleto), 'cetran' (se indeferimento JARI) ou ''"
+          "defensePhase": "previa, jari, ou cetran"
         }
       `;
 
