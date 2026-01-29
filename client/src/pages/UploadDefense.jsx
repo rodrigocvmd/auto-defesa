@@ -30,7 +30,8 @@ import {
 	Upload,
 	Copy,
 	Coins,
-	Printer
+	Printer,
+	ArrowRight
 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../services/api";
@@ -62,7 +63,8 @@ const UploadDefense = () => {
 		setDefenseResult: setResult,
 		defenseId,
 		setDefenseId,
-		resetDefense
+		resetDefense,
+		initialFormState
 	} = useDefense();
 
 	// Computed step from route
@@ -93,6 +95,15 @@ const UploadDefense = () => {
 	const [showDivergenceModal, setShowDivergenceModal] = useState(false);
 	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
 	const [showDownloadSuccess, setShowDownloadSuccess] = useState(false);
+
+	const [showTestModal, setShowTestModal] = useState(false);
+	const [isTestMode, setIsTestMode] = useState(false);
+	const [hasTested, setHasTested] = useState(false);
+
+	const handleManualEntry = () => {
+		resetDefense();
+		navigate("/upload/phaseSelection");
+	};
 
 	const [loadingText, setLoadingText] = useState(
 		"Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem aplicadas...",
@@ -279,6 +290,61 @@ const UploadDefense = () => {
 			}
 		}
 	}, [currentUser]);
+
+	const confirmTestMode = () => {
+		setFormData({
+			...initialFormState,
+			name: "João da Silva",
+			nationality: "Brasileiro",
+			maritalStatus: "Solteiro(a)",
+			profession: "Motorista",
+			rg: "1.234.567",
+			rgIssuer: "SSP/SP",
+			cpf: "069.268.226-03",
+			cnh: "12345678900",
+			cnhCategory: "B",
+			address: "Av. Paulista",
+			addressNumber: "1000",
+			addressComplement: "Apto 10",
+			neighborhood: "Bela Vista",
+			city: "São Paulo",
+			state: "SP",
+			zipCode: "01310-100",
+			phone: "(11) 99999-9999",
+			email: "joao@email.com",
+			plate: "ABC-1234",
+			plateUF: "SP",
+			vehicleModel: "Fiat Gol",
+			issuingBody: "DETRAN-SP",
+			aitNumber: "A012345678",
+			date: "01/01/2024",
+			time: "14:30",
+			location: "Av. Paulista, 1000",
+			infractionCode: "7455",
+			infractionSplit: "0",
+			article: "Art. 218, I, CTB",
+			infractionDescription: "Transitar em velocidade superior à máxima permitida em até 20%",
+			legalText: "Transitar em velocidade superior à máxima permitida para o local...",
+			description: "O sinal estava encoberto por uma árvore e não havia sinalização visível...",
+			equipmentNumber: "12345678",
+			lastCalibration: "10/10/2023",
+			signCity: "São Paulo",
+			signDate: "01/01/2024",
+			defenseType: formData.defenseType || "previa"
+		});
+		setIsTestMode(true);
+		setHasTested(true);
+		setShowTestModal(false);
+		setErrors({});
+	};
+
+	const handleReturnToRealData = () => {
+		resetDefense();
+		setIsTestMode(false);
+		setHasTested(true);
+		navigate("/upload");
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	};
 
 	// --- LÓGICA DE UPLOAD E EXTRAÇÃO ---
 
@@ -744,6 +810,7 @@ const UploadDefense = () => {
 	};
 
 	const handleUnlockDefense = async () => {
+		if (isTestMode) return;
 		setLoading(true);
 		try {
 			const response = await api.generateDefense({ ...formData, userId: currentUser?.uid });
@@ -1500,8 +1567,10 @@ const UploadDefense = () => {
 	}
 
 	if (step === "analysis" && analysisData) {
-		const viability = analysisData.viability || "Possível";
-		const summary = analysisData.summary;
+		const viability = isTestMode ? "Média" : analysisData.viability || "Possível";
+		const summary = isTestMode
+			? "Existem argumentos técnicos aplicáveis ao seu caso que podem ser explorados para contestar a infração."
+			: analysisData.summary;
 		const isHighViability = viability === "Alta" || viability === "Muito Alta";
 		const isPossibleViability = viability === "Possível";
 
@@ -1592,18 +1661,27 @@ const UploadDefense = () => {
 									identificadas
 								</span>
 							</div>
-							<div className="bg-blue-600 rounded-2xl p-6 text-white text-center shadow-lg shadow-blue-200">
+							<div className={`${isTestMode ? "bg-gray-800" : "bg-blue-600"} rounded-2xl p-6 text-white text-center shadow-lg shadow-blue-200 transition-colors`}>
 								<div className="flex items-center justify-center gap-2 mb-2 opacity-90">
 									<Lock size={16} />
 									<span className="text-sm font-medium">Recurso Completo Bloqueado</span>
 								</div>
-								<h3 className="text-xl font-bold mb-4">Desbloquear Defesa Pronta</h3>
-								<p className="text-blue-100 text-sm mb-6">
-									Nossa IA já estruturou toda a argumentação jurídica baseada nas teses acima. Baixe
-									o documento final editável agora.
+								<h3 className="text-xl font-bold mb-4">
+									{isTestMode ? "Modo de Demonstração" : "Desbloquear Defesa Pronta"}
+								</h3>
+								<p className={`${isTestMode ? "text-gray-300" : "text-blue-100"} text-sm mb-6`}>
+									{isTestMode
+										? "Estes são resultados baseados em dados fictícios. Para gerar um recurso válido juridicamente, insira seus dados reais."
+										: "Nossa IA já estruturou toda a argumentação jurídica baseada nas teses acima. Baixe o documento final editável agora."}
 								</p>
 
-								{!currentUser ? (
+								{isTestMode ? (
+									<button
+										onClick={handleReturnToRealData}
+										className="w-full bg-white text-gray-900 font-black py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2 mb-3">
+										Preencher Meus Dados Reais <PenTool size={20} />
+									</button>
+								) : !currentUser ? (
 									<div className="flex flex-col gap-3">
 										<p className="text-blue-100 text-sm mb-2 font-medium">
 											Você precisa estar logado para gerar o documento final.
@@ -1772,6 +1850,48 @@ const UploadDefense = () => {
 							</p>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	);
+
+	const TestInfoModal = () => (
+		<div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+			<div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8">
+				<button
+					onClick={() => setShowTestModal(false)}
+					className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+					<X size={24} />
+				</button>
+				<div className="text-center mb-6">
+					<div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+						<Info size={32} />
+					</div>
+					<h2 className="text-2xl font-bold text-gray-900">Modo de Demonstração</h2>
+				</div>
+				<p className="text-gray-600 text-center mb-8 leading-relaxed">
+					Você escolheu preencher com <strong>Dados de Exemplo</strong>. Isso permite que você veja
+					a inteligência artificial em ação sem precisar digitar seus dados agora.
+					<br />
+					<br />
+					<strong>Nota:</strong> Esta demonstração utiliza o modelo <em>Standard</em>. A versão paga
+					utiliza o modelo <em>Pro</em>, treinado com jurisprudência avançada.
+					<br />
+					<br />
+					Os créditos <strong>NÃO</strong> serão cobrados nesta simulação e o recurso final não
+					poderá ser desbloqueado até que você use dados reais.
+				</p>
+				<div className="flex flex-col gap-3">
+					<button
+						onClick={confirmTestMode}
+						className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+						Entendi, prosseguir com Teste
+					</button>
+					<button
+						onClick={() => setShowTestModal(false)}
+						className="w-full bg-gray-100 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-200 transition-colors">
+						Cancelar, vou usar meus dados
+					</button>
 				</div>
 			</div>
 		</div>
@@ -1957,7 +2077,17 @@ const UploadDefense = () => {
 								<strong>Resolução CONTRAN nº 900/2022</strong>.
 							</p>
 						</div>
-						<div className="mt-4 text-sm text-red-600 font-medium">* Campos obrigatórios</div>
+						<div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-4 gap-4">
+							<div className="text-sm text-red-600 font-medium">* Campos obrigatórios</div>
+							{!hasTested && (
+								<button
+									type="button"
+									onClick={() => setShowTestModal(true)}
+									className="text-blue-600 bg-blue-50 px-4 py-2 rounded-lg font-bold hover:bg-blue-100 transition-colors text-sm flex items-center gap-2">
+									<PenTool size={14} /> Preencher Dados de Teste
+								</button>
+							)}
+						</div>
 					</header>
 
 					<form
@@ -2737,11 +2867,11 @@ const UploadDefense = () => {
 								<FileText size={16} /> Inserir dados manualmente
 							</button>
 						) : (
-							<Link
-								to="/manual-defense"
-								className="text-blue-600 font-bold hover:underline flex items-center justify-center gap-1">
+							<button
+								onClick={handleManualEntry}
+								className="text-blue-600 font-bold hover:underline flex items-center justify-center gap-1 mx-auto">
 								<FileText size={16} /> Inserir dados manualmente
-							</Link>
+							</button>
 						)}
 					</div>
 				</div>
