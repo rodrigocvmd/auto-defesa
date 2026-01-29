@@ -5,7 +5,33 @@ const { checkAndDeductCredits } = require("../services/userService");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const MODEL_FLASH = "gemini-2.5-flash-lite";
-const MODEL_PRO = "gemini-2.5-flash-lite"; // Using Flash Lite for Pro temporarily as per original code
+const MODEL_PRO = "gemini-2.5-flash-lite";
+const MODEL_FALLBACK = "gemini-1.5-flash";
+
+/**
+ * Tenta gerar conteúdo com o modelo principal. Se der erro 503 (Overloaded),
+ * tenta automaticamente com o modelo de fallback (gemini-1.5-flash).
+ */
+async function generateWithFallback(genAI, primaryModelName, parts) {
+	try {
+		const model = genAI.getGenerativeModel({ model: primaryModelName });
+		return await model.generateContent(parts);
+	} catch (error) {
+		// Verifica erros comuns de sobrecarga ou indisponibilidade
+		if (
+			error.message.includes("503") ||
+			error.message.includes("overloaded") ||
+			error.status === 503
+		) {
+			console.warn(
+				`⚠️ Modelo ${primaryModelName} instável (${error.message}). Tentando fallback para ${MODEL_FALLBACK}...`,
+			);
+			const fallbackModel = genAI.getGenerativeModel({ model: MODEL_FALLBACK });
+			return await fallbackModel.generateContent(parts);
+		}
+		throw error;
+	}
+}
 
 exports.generateDefense = (req, res) => {
 	cors(req, res, async () => {
@@ -33,7 +59,6 @@ exports.generateDefense = (req, res) => {
 
 			const genAI = new GoogleGenerativeAI(apiKey);
 			const modelName = isRefinement ? MODEL_FLASH : MODEL_PRO;
-			const model = genAI.getGenerativeModel({ model: modelName });
 
 			let systemInstruction;
 			let userPrompt;
@@ -111,13 +136,15 @@ exports.generateDefense = (req, res) => {
         `;
 			}
 
-			const result = await model.generateContent([systemInstruction, userPrompt]);
+			// Chamada com Fallback
+			const result = await generateWithFallback(genAI, modelName, [systemInstruction, userPrompt]);
 			res.status(200).json({ success: true, data: { defenseText: result.response.text() } });
 		} catch (error) {
 			if (error.message === "Créditos insuficientes.") {
 				res.status(402).json({ error: "Créditos insuficientes. Por favor, recarregue." });
 			} else {
-				res.status(500).json({ error: error.message });
+				console.error("Erro na geração:", error);
+				res.status(500).json({ error: error.message || "Erro interno na geração." });
 			}
 		}
 	});
@@ -142,7 +169,8 @@ exports.extractDataFromImage = (req, res) => {
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: MODEL_FLASH });
+			// OCR usually works fine with Lite, but fallback is good
+			const modelName = MODEL_FLASH;
 
 			const systemInstruction = `
         Você é uma IA especializada em OCR de multas de trânsito e processos administrativos de trânsito brasileiros.
@@ -178,18 +206,20 @@ exports.extractDataFromImage = (req, res) => {
       `;
 
 			const imagePart = { inlineData: { data: image, mimeType: mimeType } };
-			const result = await model.generateContent([systemInstruction, imagePart]);
+
+			// Chamada com Fallback
+			const result = await generateWithFallback(genAI, modelName, [systemInstruction, imagePart]);
+
 			const responseText = result.response.text();
-			const cleanedText =
-				responseText
-					.replace(/```json/g, "")
-					.replace(/```/g, "")
-					.trim();
+			const cleanedText = responseText
+				.replace(/```json/g, "")
+				.replace(/```/g, "")
+				.trim();
 
 			res.status(200).json({ success: true, data: JSON.parse(cleanedText) });
 		} catch (error) {
 			console.error("Erro na extração:", error);
-			res.status(500).json({ error: "Erro ao ler a imagem." });
+			res.status(500).json({ error: "Erro ao ler a imagem. Tente novamente." });
 		}
 	});
 };
@@ -204,8 +234,7 @@ exports.preAnalyze = (req, res) => {
 		let userId = null;
 		try {
 			userId = await verifyAuth(req);
-		} catch (e) {
-		}
+		} catch (e) {}
 
 		if (!userId) {
 			try {
@@ -221,15 +250,15 @@ exports.preAnalyze = (req, res) => {
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: MODEL_FLASH });
+			const modelName = MODEL_FLASH;
 
 			const systemInstruction = `
-			        Você é um Analista Sênior de Multas de Trânsito. Sua função é avaliar a viabilidade de um recurso e vender a solução para o cliente. 
+			        Você é um Analista Sênior de Multas de Trânsito. Sua função é avaliar a viabilidade de um recurso e vender a solução para o cliente.
 			        
 			        Além da viabilidade, você DEVE verificar a congruência MATERIAL entre o relato do condutor e a infração.
 			        CRITÉRIO DE INCONGRUÊNCIA: Apenas alerte divergência se o relato tratar de um tema TOTALMENTE ALHEIO à infração (Ex: Infração de velocidade e relato sobre cinto de segurança; Infração de sinal vermelho e relato sobre documentação).
 			        CRITÉRIO DE ACEITAÇÃO: Se o relato tratar do mesmo objeto/materialidade da infração, mesmo que o argumento seja fraco, ruim, dispensável ou juridicamente inválido, NÃO considere como divergência. O foco é apenas a pertinência temática.
-		
+			
 			        Saída OBRIGATÓRIA em JSON:
 			        {
 			          "viability": "Muito Alta" | "Alta" | "Possível",
@@ -263,14 +292,14 @@ exports.preAnalyze = (req, res) => {
 				parts.push({ inlineData: { data: image, mimeType: mimeType } });
 			}
 
-			const result = await model.generateContent(parts);
+			// Chamada com Fallback
+			const result = await generateWithFallback(genAI, modelName, parts);
 			const responseText = result.response.text();
 
-			const cleanedText =
-				responseText
-					.replace(/```json/g, "")
-					.replace(/```/g, "")
-					.trim();
+			const cleanedText = responseText
+				.replace(/```json/g, "")
+				.replace(/```/g, "")
+				.trim();
 
 			res.status(200).json({ success: true, data: JSON.parse(cleanedText) });
 		} catch (error) {
@@ -299,10 +328,10 @@ exports.analyzeDocument = (req, res) => {
 			await checkAndDeductCredits(userId);
 
 			const genAI = new GoogleGenerativeAI(apiKey);
-			const model = genAI.getGenerativeModel({ model: MODEL_PRO });
+			const modelName = MODEL_PRO;
 
 			const prompt = `
-        Aja como Advogado de Trânsito. Analise a imagem da multa. 
+        Aja como Advogado de Trânsito. Analise a imagem da multa.
         
         DADOS DO CONDUTOR (FORNECIDOS PELO USUÁRIO):
         Nome: ${userData.name || "[NOME]"}, ${userData.nationality}, ${userData.maritalStatus}, ${userData.profession}.
@@ -339,7 +368,9 @@ exports.analyzeDocument = (req, res) => {
 			const defenseTypeLabel = defenseTypeMap[userData.defenseType] || "RECURSO ADMINISTRATIVO";
 
 			const imagePart = { inlineData: { data: image, mimeType: mimeType } };
-			const result = await model.generateContent([
+
+			// Chamada com Fallback
+			const result = await generateWithFallback(genAI, modelName, [
 				`TIPO DE PEÇA: ${defenseTypeLabel}\n` + prompt,
 				imagePart,
 			]);
@@ -349,7 +380,8 @@ exports.analyzeDocument = (req, res) => {
 			if (error.message === "Créditos insuficientes.") {
 				res.status(402).json({ error: "Créditos insuficientes. Por favor, recarregue." });
 			} else {
-				res.status(500).json({ error: error.message });
+				console.error("Erro na análise completa:", error);
+				res.status(500).json({ error: error.message || "Erro na geração do recurso." });
 			}
 		}
 	});
