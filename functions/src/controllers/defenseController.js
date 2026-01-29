@@ -137,8 +137,8 @@ exports.generateDefense = (req, res) => {
           Infração: ${data.article || ""}
           Equipamento: ${data.equipmentNumber || ""}
           Aferição: ${data.lastCalibration || ""}
-          Cidade Assinatura: ${data.signCity || ""}
-          Data Assinatura: ${data.signDate || ""}
+          Cidade de Assinatura: ${data.signCity || ""}
+          Data de Assinatura: ${data.signDate || ""}
           </dados_caso>
           
           <relato_fatos>
@@ -155,13 +155,22 @@ exports.generateDefense = (req, res) => {
 
 			// Salvar no banco e debitar crédito APÓS geração com sucesso (se não for refinamento)
 			if (!isRefinement) {
-				// Helper para formatar nome do arquivo: Tipo_PrimeiroNome_Placa
+				// Helper para formatar nome do arquivo: Tipo_Nome_Placa
 				const formatFileName = () => {
-					const type = (data.defenseType || "Recurso").split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-					const typeSuffix = data.defenseType === "previa" ? "_Previa" : (data.defenseType === "jari" ? "_JARI" : (data.defenseType === "cetran" ? "_CETRAN" : ""));
-					const firstName = (data.name || "Usuario").split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-					const cleanPlate = (data.plate || "").replace(/[^a-zA-Z0-9]/g, "");
-					return `${type}${typeSuffix}_${firstName}_${cleanPlate}`;
+					const defenseType = (data.defenseType || "").toLowerCase();
+					let typeStr = "Defesa_Previa";
+					if (defenseType.includes("jari")) typeStr = "Recurso_JARI";
+					else if (defenseType.includes("cetran") || defenseType.includes("contradife"))
+						typeStr = "Recurso_CETRAN";
+
+					const firstName = (data.name || "Usuario")
+						.trim()
+						.split(" ")[0]
+						.normalize("NFD")
+						.replace(/[\u0300-\u036f]/g, "");
+					const cleanPlate = (data.plate || "Placa").replace(/[^a-zA-Z0-9]/g, "");
+
+					return `${typeStr}_${firstName}_${cleanPlate}`;
 				};
 
 				const defenseData = {
@@ -430,13 +439,22 @@ exports.analyzeDocument = (req, res) => {
 			]);
 			const defenseText = result.response.text();
 
-			// Helper para formatar nome do arquivo: Tipo_PrimeiroNome_Placa
+			// Helper para formatar nome do arquivo: Tipo_Nome_Placa
 			const formatFileName = () => {
-				const type = (userData.defenseType || "Recurso").split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-				const typeSuffix = userData.defenseType === "previa" ? "_Previa" : (userData.defenseType === "jari" ? "_JARI" : (userData.defenseType === "cetran" ? "_CETRAN" : ""));
-				const firstName = (userData.name || "Usuario").split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-				const cleanPlate = (userData.plate || "").replace(/[^a-zA-Z0-9]/g, "");
-				return `${type}${typeSuffix}_${firstName}_${cleanPlate}`;
+				const defenseType = (userData.defenseType || "").toLowerCase();
+				let typeStr = "Defesa_Previa";
+				if (defenseType.includes("jari")) typeStr = "Recurso_JARI";
+				else if (defenseType.includes("cetran") || defenseType.includes("contradife"))
+					typeStr = "Recurso_CETRAN";
+
+				const firstName = (userData.name || "Usuario")
+					.trim()
+					.split(" ")[0]
+					.normalize("NFD")
+					.replace(/[\u0300-\u036f]/g, "");
+				const cleanPlate = (userData.plate || "Placa").replace(/[^a-zA-Z0-9]/g, "");
+
+				return `${typeStr}_${firstName}_${cleanPlate}`;
 			};
 
 			const defenseData = {

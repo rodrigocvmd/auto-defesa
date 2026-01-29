@@ -808,7 +808,7 @@ export const FormStep = ({
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 						<div>
 							<label className="label-form">
-								Cidade Assinatura <span className="text-red-500">*</span>
+								Cidade de Assinatura <span className="text-red-500">*</span>
 							</label>
 							<input
 								name="signCity"
@@ -822,7 +822,7 @@ export const FormStep = ({
 						</div>
 						<div>
 							<label className="label-form">
-								Data Assinatura <span className="text-red-500">*</span>
+								Data de Assinatura <span className="text-red-500">*</span>
 							</label>
 							<input
 								name="signDate"

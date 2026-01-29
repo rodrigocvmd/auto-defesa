@@ -198,23 +198,12 @@ export const ResultStep = ({
 					<h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
 						<CheckCircle className="text-green-500" /> Revisão Final
 					</h2>
-					<p className="text-sm text-gray-500">
+					<p className="text-md text-gray-500">
 						Leia atentamente; use a IA para correções; baixe quando pronto.
 					</p>
 				</div>
 
 				<div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-					<button
-						onClick={() => navigate("/profile")}
-						disabled={!showProfileButton && !showDownloadSuccess} // Enable if download success showed
-						className={`px-4 py-2 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${
-							!showProfileButton && !showDownloadSuccess
-								? "bg-gray-100 text-gray-400 cursor-not-allowed border border-transparent"
-								: "bg-white border border-blue-200 text-blue-600 hover:bg-blue-50 shadow-sm"
-						}`}>
-						<ArrowLeft size={18} /> Minhas Defesas
-					</button>
-
 					<button
 						onClick={() => setIsRefining(!isRefining)}
 						disabled={refining}
@@ -360,7 +349,7 @@ export const ResultStep = ({
 									onChange={(e) => setRefinementText(e.target.value)}
 									rows={6}
 									className="w-full p-4 rounded-xl border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-									placeholder="Ex: Corrigir a data da infração para 12/05/2024. Adicionar parágrafo alegando falta de visibilidade da placa."
+									placeholder="Ex: Corrigir a data da infração para 12/05/2024. Remover parte que menciona a velocidade da via. Adicionar parágrafo alegando falta de visibilidade da placa."
 								/>
 								<div className="flex justify-between items-center text-xs text-gray-400 px-1">
 									<span>Seja específico nas instruções.</span>

@@ -16,7 +16,16 @@ export const usePdfGenerator = (componentRef, formData, setShowDownloadSuccess) 
         }
 
         const htmlContent = sourceElement.innerHTML;
-        const fileName = `Recurso_${formData.plate || "Final"}.pdf`;
+        
+        const defenseType = (formData.defenseType || "").toLowerCase();
+        let typeStr = "Defesa_Previa";
+        if (defenseType.includes("jari")) typeStr = "Recurso_JARI";
+        else if (defenseType.includes("cetran") || defenseType.includes("contradife")) typeStr = "Recurso_CETRAN";
+
+        const firstName = (formData.name || "Usuario").trim().split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const cleanPlate = (formData.plate || "Placa").replace(/[^a-zA-Z0-9]/g, "");
+
+        const fileName = `${typeStr}_${firstName}_${cleanPlate}.pdf`;
 
         try {
             setLoading(true);

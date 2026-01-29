@@ -362,7 +362,7 @@ export default function Profile() {
 												</div>
 												<div>
 													<h3 className="font-semibold text-gray-900">
-														{defense.infractionType || "Infração não especificada"}
+														{defense.fileName ? defense.fileName.replace(/\.pdf$/i, "") : (defense.infractionType || "Infração não especificada")}
 													</h3>
 													<div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
 														<span className="flex items-center gap-1">
