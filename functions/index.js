@@ -218,9 +218,13 @@ exports.generateDefense = onRequest((req, res) => {
           1. Visual Profissional: Sem Markdown.
           2. Use CAIXA ALTA para títulos.
           3. Omissão de Vazios: Não invente dados.
-          4. Analise o relato do usuário em <relato_fatos> para extrair teses, mas priorize teses técnicas se o relato for prejudicial.
-          5. EQUIPAMENTO/AFERIÇÃO: Analise os campos 'Equipamento' e 'Aferição' (mesmo que "Não disponível" ou vazios) em relação ao contexto. Valide se são argumentos legítimos considerando: (a) Se a aferição não é recente (vencida) e prejudicou a medição; (b) Se a infração REALMENTE exige equipamento (ex: velocidade, etilômetro, balança). Caso a materialidade não dependa de equipamento, dispense esse argumento e foque em outras falhas ou argumentos subjetivos do relato.
-          6. ASSINATURA: Ao final, após "Nestes termos, pede deferimento" e a data/local, insira uma linha de assinatura (______________________) e, logo abaixo, o NOME DO RECORRENTE.
+          4. ESTRATÉGIA POR FASE (CRUCIAL):
+             - DEFESA PRÉVIA: Foque em ERROS FORMAIS (Art. 280/281 CTB) e aspectos técnicos.
+             - RECURSO JARI: Ataque o mérito, cite jurisprudência e rebata eventual indeferimento anterior.
+             - RECURSO CETRAN: Rebata a decisão da JARI, alegue falta de fundamentação se genérica e use argumentos de última instância.
+          5. Analise o relato do usuário em <relato_fatos> para extrair teses, mas priorize teses técnicas se o relato for prejudicial.
+          6. EQUIPAMENTO/AFERIÇÃO: Analise os campos 'Equipamento' e 'Aferição' (mesmo que "Não disponível" ou vazios) em relação ao contexto. Valide se são argumentos legítimos considerando: (a) Se a aferição não é recente (vencida) e prejudicou a medição; (b) Se a infração REALMENTE exige equipamento (ex: velocidade, etilômetro, balança). Caso a materialidade não dependa de equipamento, dispense esse argumento e foque em outras falhas ou argumentos subjetivos do relato.
+          7. ASSINATURA: Ao final, após "Nestes termos, pede deferimento" e a data/local, insira uma linha de assinatura (______________________) e, logo abaixo, o NOME DO RECORRENTE.
         `;
 
 				const defenseTypeMap = {
@@ -537,7 +541,11 @@ exports.analyzeDocument = onRequest((req, res) => {
         1. Extraia da imagem: Órgão, AIT, Placa, Marca/Modelo, Data/Hora, Local, Artigo, Equipamento e Fase Processual (se possível identificar).
         2. Mescle os dados extraídos com os dados do condutor acima.
         3. Identifique qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação.
-        4. Escreva o RECURSO completo. A formatação da versão final não deve ser markdown, e sim formatação estética para leitura humana seguindo as boas práticas estéticas e de formatação de recursos administrativos e jurídicos.
+        4. ESTRATÉGIA POR FASE (CRUCIAL):
+           - Se for DEFESA PRÉVIA: Seja extremamente técnico. Foque obsessivamente em ERROS FORMAIS do AIT (falta de dados, erro de marca/cor, local inexistente, falta de aferição do radar) e na notificação fora do prazo (Art. 281 CTB).
+           - Se for RECURSO À JARI: Amplie a argumentação. Ataque o mérito (a infração ocorreu mesmo?), cite jurisprudência e PRINCIPALMENTE rebata os motivos do indeferimento da Defesa Prévia (se houver menção no documento). Use argumentos mais subjetivos e princípios constitucionais (ampla defesa).
+           - Se for RECURSO AO CETRAN: Esta é a última instância administrativa. A técnica deve ser impecável. Rebata ponto a ponto a decisão da JARI. Se a decisão da JARI foi genérica ("copia e cola"), alegue nulidade por falta de fundamentação.
+        5. Escreva o RECURSO completo. A formatação da versão final não deve ser markdown, e sim formatação estética para leitura humana seguindo as boas práticas estéticas e de formatação de recursos administrativos e jurídicos.
         5. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo.
         6. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
         7. ANÁLISE ESTRATÉGICA DO RELATO: Verifique se o relato do usuário é congruente e benéfico. Se o relato contiver argumentos fracos, prejudiciais (ex: confissão) ou inúteis, DESCONSIDERE essas partes e construa a defesa baseada em argumentos técnicos e erros formais. Utilize do relato apenas o que fortalecer a defesa.
