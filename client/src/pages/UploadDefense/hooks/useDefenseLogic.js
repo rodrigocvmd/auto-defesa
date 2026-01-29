@@ -6,7 +6,7 @@ import { api } from '../../../services/api';
 import { rateLimiter } from '../../../services/rateLimiter';
 import { formatDefenseToHtml } from '../../../utils/textToHtml';
 import { db } from '../../../firebaseConfig';
-import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
+import { serverTimestamp, doc, updateDoc } from 'firebase/firestore';
 
 export const useDefenseLogic = (step) => {
     const { currentUser, userData } = useAuth();
@@ -440,26 +440,20 @@ export const useDefenseLogic = (step) => {
         if (isTestMode) return;
         setLoading(true);
         try {
-            const response = await api.generateDefense({ ...formData, userId: currentUser?.uid });
+            const payload = { 
+                ...formData, 
+                userId: currentUser?.uid,
+                fileName: file ? file.name : "upload" 
+            };
+            const response = await api.generateDefense(payload);
             if (response.success) {
                 const formattedText = formatDefenseToHtml(response.data.defenseText);
                 setResult(formattedText);
-                if (currentUser) {
-                    try {
-                        const docRef = await addDoc(collection(db, "defenses"), {
-                            userId: currentUser.uid,
-                            infractionType: "Análise de Upload",
-                            licensePlate: formData.plate,
-                            defenseText: formattedText,
-                            status: "completed",
-                            createdAt: serverTimestamp(),
-                            fileName: file ? file.name : "upload",
-                        });
-                        setDefenseId(docRef.id);
-                    } catch (fsError) {
-                        console.error("Erro ao salvar no histórico:", fsError);
-                    }
+                
+                if (response.data.defenseId) {
+                    setDefenseId(response.data.defenseId);
                 }
+                
                 navigate("/upload/result");
             }
         } catch (err) {

@@ -1,7 +1,9 @@
 const cors = require("../middleware/cors");
 const { verifyAuth } = require("../middleware/auth");
 const { checkIpRateLimit } = require("../middleware/rateLimit");
-const { checkAndDeductCredits } = require("../services/userService");
+const { checkCredits, deductCredits } = require("../services/userService");
+const { db } = require("../services/firebase");
+const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const MODEL_FLASH = "gemini-2.5-flash-lite";
@@ -54,7 +56,7 @@ exports.generateDefense = (req, res) => {
 
 		try {
 			if (!isRefinement) {
-				await checkAndDeductCredits(userId);
+				await checkCredits(userId);
 			}
 
 			const genAI = new GoogleGenerativeAI(apiKey);
@@ -138,7 +140,36 @@ exports.generateDefense = (req, res) => {
 
 			// Chamada com Fallback
 			const result = await generateWithFallback(genAI, modelName, [systemInstruction, userPrompt]);
-			res.status(200).json({ success: true, data: { defenseText: result.response.text() } });
+			const defenseText = result.response.text();
+
+			let defenseId = null;
+
+			// Salvar no banco e debitar crédito APÓS geração com sucesso (se não for refinamento)
+			if (!isRefinement) {
+				const defenseData = {
+					userId: userId,
+					infractionType: data.defenseType || "Análise de Upload",
+					licensePlate: data.plate || "",
+					defenseText: defenseText,
+					status: "completed",
+					createdAt: FieldValue.serverTimestamp(),
+					fileName: data.fileName || "Defesa IA",
+				};
+
+				const docRef = await db.collection("defenses").add(defenseData);
+				defenseId = docRef.id;
+
+				await deductCredits(userId);
+			}
+
+			res.status(200).json({ 
+				success: true, 
+				data: { 
+					defenseText: defenseText,
+					defenseId: defenseId
+				} 
+			});
+
 		} catch (error) {
 			if (error.message === "Créditos insuficientes.") {
 				res.status(402).json({ error: "Créditos insuficientes. Por favor, recarregue." });
@@ -325,7 +356,7 @@ exports.analyzeDocument = (req, res) => {
 		const { image, mimeType, ...userData } = req.body || {};
 
 		try {
-			await checkAndDeductCredits(userId);
+			await checkCredits(userId);
 
 			const genAI = new GoogleGenerativeAI(apiKey);
 			const modelName = MODEL_PRO;
@@ -374,8 +405,30 @@ exports.analyzeDocument = (req, res) => {
 				`TIPO DE PEÇA: ${defenseTypeLabel}\n` + prompt,
 				imagePart,
 			]);
+			const defenseText = result.response.text();
 
-			res.status(200).json({ success: true, data: { defenseText: result.response.text() } });
+			const defenseData = {
+				userId: userId,
+				infractionType: defenseTypeLabel,
+				licensePlate: userData.plate || "",
+				defenseText: defenseText,
+				status: "completed",
+				createdAt: FieldValue.serverTimestamp(),
+				fileName: "Análise de Documento",
+			};
+
+			const docRef = await db.collection("defenses").add(defenseData);
+			const defenseId = docRef.id;
+
+			await deductCredits(userId);
+
+			res.status(200).json({ 
+				success: true, 
+				data: { 
+					defenseText: defenseText,
+					defenseId: defenseId 
+				} 
+			});
 		} catch (error) {
 			if (error.message === "Créditos insuficientes.") {
 				res.status(402).json({ error: "Créditos insuficientes. Por favor, recarregue." });

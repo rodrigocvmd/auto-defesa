@@ -1,6 +1,23 @@
 const { db } = require("./firebase");
 
-async function checkAndDeductCredits(userId) {
+async function checkCredits(userId) {
+	const userRef = db.collection("users").doc(userId);
+	const doc = await userRef.get();
+	
+	if (!doc.exists) {
+		throw new Error("Usuário não encontrado.");
+	}
+	
+	const data = doc.data();
+	const credits = data.credits || 0;
+	
+	if (credits <= 0) {
+		throw new Error("Créditos insuficientes.");
+	}
+	return true;
+}
+
+async function deductCredits(userId) {
 	const userRef = db.collection("users").doc(userId);
 
 	await db.runTransaction(async (t) => {
@@ -11,8 +28,8 @@ async function checkAndDeductCredits(userId) {
 
 		const data = doc.data();
 		const credits = data.credits || 0;
-		console.log(`Verificando créditos para ${userId}: possui ${credits}`);
 
+		// Double check inside transaction
 		if (credits <= 0) {
 			throw new Error("Créditos insuficientes.");
 		}
@@ -21,4 +38,4 @@ async function checkAndDeductCredits(userId) {
 	});
 }
 
-module.exports = { checkAndDeductCredits };
+module.exports = { checkCredits, deductCredits };
