@@ -89,10 +89,10 @@ export function AuthProvider({ children }) {
             // Usamos a função de backend que tem privilégios de Admin
             // para evitar as limitações da proteção contra enumeração do Firebase
             const result = await api.checkEmail(email);
-            return result.exists;
+            return result; // Retorna { exists: true/false, providers: [] }
         } catch (error) {
             console.error("Erro ao verificar email via API:", error);
-            return false;
+            return { exists: false, providers: [] };
         }
     }
 
@@ -198,11 +198,15 @@ export function AuthProvider({ children }) {
                         }
 
                         // Create user doc if it doesn't exist AND it's the first load
+                        const providerId = user.providerData[0]?.providerId;
+                        const method = providerId === 'google.com' ? 'google' : 'email';
+
                         const defaultData = {
                             email: user.email,
                             emailVerified: user.emailVerified, // Estado inicial
                             credits: 0,
-                            createdAt: new Date()
+                            createdAt: new Date(),
+                            registrationMethod: method
                         };
                         await setDoc(userRef, defaultData);
                         setUserData(defaultData);

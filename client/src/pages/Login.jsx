@@ -46,11 +46,23 @@ export default function Login() {
                 } else if (err.code === 'auth/invalid-credential') {
                     // Firebase moderno retorna invalid-credential para email não encontrado tb (por privacidade)
                     // Fazemos uma checagem extra para cumprir o requisito de redirecionamento
-                    const exists = await checkEmailExists(email);
-                    if (!exists) {
+                    const userStatus = await checkEmailExists(email);
+                    
+                    if (!userStatus.exists) {
                         navigate(`/register?email=${encodeURIComponent(email)}`);
                         return;
                     }
+
+                    // Se existe, verificamos se é conta Google
+                    if (userStatus.providers && userStatus.providers.includes('google.com')) {
+                        setError(
+                            <span>
+                                Conta criada via Google. Entre com Google ou <button type="button" onClick={toggleMode} className="underline font-bold hover:text-red-700">redefina sua senha</button>.
+                            </span>
+                        );
+                        return;
+                    }
+
                     setError('Email ou senha incorretos.');
                 } else {
                     setError('Falha ao fazer login. Verifique suas credenciais.');

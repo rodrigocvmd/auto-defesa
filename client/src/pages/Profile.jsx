@@ -120,8 +120,8 @@ export default function Profile() {
 			// 1. Atualizar Email (se mudou)
 			if (email !== currentUser.email) {
 				// Verificação prévia de existência
-				const emailExists = await checkEmailExists(email);
-				if (emailExists) {
+				const emailStatus = await checkEmailExists(email);
+				if (emailStatus.exists) {
 					throw new Error("Este email já está em uso por outra conta.");
 				}
 

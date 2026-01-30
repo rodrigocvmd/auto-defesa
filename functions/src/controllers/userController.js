@@ -10,8 +10,9 @@ exports.checkEmail = (req, res) => {
 		}
 
 		try {
-			await admin.auth().getUserByEmail(email);
-			res.status(200).json({ exists: true });
+			const userRecord = await admin.auth().getUserByEmail(email);
+			const providers = userRecord.providerData.map((p) => p.providerId);
+			res.status(200).json({ exists: true, providers });
 		} catch (error) {
 			if (error.code === 'auth/user-not-found') {
 				res.status(200).json({ exists: false });
