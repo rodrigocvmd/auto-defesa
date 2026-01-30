@@ -62,6 +62,33 @@ exports.generateDefense = (req, res) => {
 			const genAI = new GoogleGenerativeAI(apiKey);
 			const modelName = isRefinement ? MODEL_FLASH : MODEL_PRO;
 
+            // Helper to format date
+            const formatDateFull = (dateStr) => {
+                if (!dateStr) return "Data";
+                try {
+                    // Tenta criar data. Formatos aceitos: YYYY-MM-DD ou DD/MM/YYYY
+                    let date;
+                    if (dateStr.includes('/')) {
+                        const [day, month, year] = dateStr.split('/');
+                        date = new Date(`${year}-${month}-${day}T12:00:00`);
+                    } else {
+                        date = new Date(dateStr + "T12:00:00");
+                    }
+                    
+                    if (isNaN(date.getTime())) return dateStr;
+
+                    return new Intl.DateTimeFormat('pt-BR', { 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    }).format(date);
+                } catch (e) {
+                    return dateStr;
+                }
+            };
+
+            const formattedSignDate = formatDateFull(data.signDate);
+
 			let systemInstruction;
 			let userPrompt;
 
@@ -110,7 +137,7 @@ exports.generateDefense = (req, res) => {
           9. FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com o bloco CENTRALIZADO exatamente como abaixo:
              
              <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-             <p style="text-align: center; margin-bottom: 40px;">${data.signCity || "Local"}, ${data.signDate || "Data"}.</p>
+             <p style="text-align: center; margin-bottom: 40px;">${data.signCity || "Local"}, ${formattedSignDate}.</p>
              
              <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
              <p style="text-align: center;">${(data.name || "NOME DO RECORRENTE").toUpperCase()}</p>
@@ -393,6 +420,33 @@ exports.analyzeDocument = (req, res) => {
 			const genAI = new GoogleGenerativeAI(apiKey);
 			const modelName = MODEL_PRO;
 
+            // Helper to format date
+            const formatDateFull = (dateStr) => {
+                if (!dateStr) return "Data";
+                try {
+                    // Tenta criar data. Formatos aceitos: YYYY-MM-DD ou DD/MM/YYYY
+                    let date;
+                    if (dateStr.includes('/')) {
+                        const [day, month, year] = dateStr.split('/');
+                        date = new Date(`${year}-${month}-${day}T12:00:00`);
+                    } else {
+                        date = new Date(dateStr + "T12:00:00");
+                    }
+                    
+                    if (isNaN(date.getTime())) return dateStr;
+
+                    return new Intl.DateTimeFormat('pt-BR', { 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    }).format(date);
+                } catch (e) {
+                    return dateStr;
+                }
+            };
+
+            const formattedSignDate = formatDateFull(userData.signDate);
+
 			const prompt = `
         Aja como Advogado de Trânsito. Analise a imagem da multa.
         
@@ -432,7 +486,7 @@ exports.analyzeDocument = (req, res) => {
         15. Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO, exatamente como abaixo:
             
             <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-            <p style="text-align: center; margin-bottom: 40px;">${userData.signCity || "Local"}, ${userData.signDate || "Data"}.</p>
+            <p style="text-align: center; margin-bottom: 40px;">${userData.signCity || "Local"}, ${formattedSignDate}.</p>
             
             <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
             <p style="text-align: center;">${(userData.name || "NOME DO RECORRENTE").toUpperCase()}</p>

@@ -29,14 +29,20 @@ export const AnalysisStep = ({
                 <div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
                     <Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
                     <h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
-                    <p className="text-gray-600 max-w-md font-medium">
-                        Aguarde na página, nossa IA está aplicando as melhores teses jurídicas e resoluções do
-                        CONTRAN para garantir a máxima qualidade do seu recurso.
-                    </p>
-                    <p className="text-gray-600 max-w-md font-medium">
-                        O processamento das informações e elaboração do recurso pela IA Pro pode demorar até 1
-                        minuto.
-                    </p>
+                    <div className="text-left space-y-3 max-w-md mx-auto mb-6">
+                        <div className="flex items-start gap-3 text-gray-700">
+                            <CheckCircle size={20} className="text-blue-600 shrink-0 mt-0.5" />
+                            <p className="font-medium">Aplicando teses jurídicas e resoluções do CONTRAN...</p>
+                        </div>
+                        <div className="flex items-start gap-3 text-gray-700">
+                            <CheckCircle size={20} className="text-blue-600 shrink-0 mt-0.5" />
+                            <p className="font-medium">Garantindo a máxima qualidade do seu recurso...</p>
+                        </div>
+                        <div className="flex items-start gap-3 text-gray-700">
+                            <CheckCircle size={20} className="text-blue-600 shrink-0 mt-0.5" />
+                            <p className="font-medium">Elaboração pela IA Pro em andamento (até 1 minuto)...</p>
+                        </div>
+                    </div>
                     <div className="mt-8 flex gap-2">
                         <div className="h-1.5 w-12 bg-blue-100 rounded-full overflow-hidden">
                             <div className="h-full bg-blue-600 animate-progress"></div>
