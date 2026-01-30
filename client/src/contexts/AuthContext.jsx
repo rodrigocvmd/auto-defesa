@@ -144,18 +144,42 @@ export function AuthProvider({ children }) {
             if (user) {
                 const userRef = doc(db, 'users', user.uid);
                 
-                // Sincronizar status do email UMA VEZ ao carregar/logar
-                // Isso evita o loop frenético dentro do onSnapshot
+                // Sincronizar dados do Auth com Firestore (Email, Verified, Nome, Foto)
                 try {
                     const docSnap = await getDoc(userRef);
                     if (docSnap.exists()) {
                         const data = docSnap.data();
+                        const updates = {};
+                        
+                        // 1. Sincronizar Email (Correção do problema de atualização de email)
+                        if (user.email && data.email !== user.email) {
+                            updates.email = user.email;
+                        }
+
+                        // 2. Sincronizar Status de Verificação
                         if (user.emailVerified !== data.emailVerified) {
-                             await updateDoc(userRef, { emailVerified: user.emailVerified });
+                            updates.emailVerified = user.emailVerified;
+                        }
+
+                        // 3. Sincronizar Nome (Correção do conflito Google OAuth)
+                        // Priorizamos o nome do Auth se o do banco estiver vazio ou diferente, 
+                        // assumindo que o login social ou update recente é a verdade.
+                        if (user.displayName && data.displayName !== user.displayName) {
+                             updates.displayName = user.displayName;
+                        }
+                        
+                        // 4. Sincronizar Foto (Opcional, mas bom para OAuth)
+                        if (user.photoURL && data.photoURL !== user.photoURL) {
+                            updates.photoURL = user.photoURL;
+                        }
+
+                        if (Object.keys(updates).length > 0) {
+                            console.log("Sincronizando dados do usuário com Firestore:", updates);
+                            await updateDoc(userRef, updates);
                         }
                     }
                 } catch (e) {
-                    console.error("Erro ao sincronizar emailVerified:", e);
+                    console.error("Erro ao sincronizar dados do usuário:", e);
                 }
 
                 // Subscribe to real-time updates
