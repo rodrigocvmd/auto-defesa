@@ -106,10 +106,11 @@ exports.generateDefense = (req, res) => {
           5. Analise o relato do usuário em <relato_fatos> para extrair teses, mas priorize teses técnicas se o relato for prejudicial.
           6. NUNCA utilize a expressão "por seu procurador infra-assinado" ou similares, pois a defesa é feita diretamente pelo recorrente.
           7. EQUIPAMENTO/AFERIÇÃO: Analise os campos 'Equipamento' e 'Aferição' (mesmo que "Não disponível" ou vazios) em relação ao contexto. Valide se são argumentos legítimos considerando: (a) Se a aferição não é recente (vencida) e prejudicou a medição; (b) Se a infração REALMENTE exige equipamento (ex: velocidade, etilômetro, balança). Caso a materialidade não dependa de equipamento, dispense esse argumento e foque em outras falhas ou argumentos subjetivos do relato.
-          8. FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com:
-             "Nestes termos, pede deferimento.
-             ${data.signCity || "Local"}, data: ${data.signDate || "Data"}.
-             (A data acima deve ser escrita por extenso no formato: CIDADE, DIA de MÊS_POR_EXTENSO de ANO)."
+          8. PROLIXIDADE E ROBUSTEZ: A defesa deve ser longa e detalhada. Desenvolva pelo menos 4 (QUATRO) argumentos de mérito. Se o AIT tiver dados ausentes, utilize isso como tese. Se faltarem fatos específicos, utilize teses genéricas (princípios constitucionais, falta de motivação, etc.).
+          9. FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com o bloco CENTRALIZADO exatamente como abaixo:
+             
+             <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
+             <p style="text-align: center; margin-bottom: 40px;">${data.signCity || "Local"}, ${data.signDate || "Data"}.</p>
              
              <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
              <p style="text-align: center;">${(data.name || "NOME DO RECORRENTE").toUpperCase()}</p>
@@ -419,14 +420,22 @@ exports.analyzeDocument = (req, res) => {
            - Se for RECURSO AO CETRAN: Esta é a última instância administrativa. A técnica deve ser impecável. Rebata ponto a ponto a decisão da JARI. Se a decisão da JARI foi genérica ("copia e cola"), alegue nulidade por falta de fundamentação.
 		   - **ATENÇÃO AO DISTRITO FEDERAL (CONTRADIFE)**: Caso o órgão autuador seja o DER-DF ou outro órgão do Distrito Federal, e a fase seja de 2ª Instância (após JARI), o recurso NÃO deve ser endereçado ao CETRAN, mas sim ao CONTRADIFE (Conselho de Trânsito do Distrito Federal). Ajuste o endereçamento e as menções ao órgão julgador de acordo.
         5. Escreva o RECURSO completo. A formatação da versão final não deve ser markdown, e sim formatação estética para leitura humana seguindo as boas práticas estéticas e de formatação de recursos administrativos e jurídicos.
-        5. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo.
-        6. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
-        7. ANÁLISE ESTRATÉGICA DO RELATO: Verifique se o relato do usuário é congruente e benéfico. Se o relato contiver argumentos fracos, prejudiciais (ex: confissão) ou inúteis, DESCONSIDERE essas partes e construa a defesa baseada em argumentos técnicos e erros formais. Utilize do relato apenas o que fortalecer a defesa.
-        8. Seja muito prolixo na defesa explorando a maior quantidade de pontos possível, mas nunca ultrapassando limites racionais ou legais. A defesa/recurso deve ficar grande, com um tamanho e quantidade de tópicos considerável, passando impressão de robustez em quantidade e qualidade dos argumentos.
-        9. Não insira asteríscos ('*') de formatação desnecessários.
-        10. IMPORTANTE: NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento (ex: "ILUSTRÍSSIMO SENHOR...").
-        11. NUNCA utilize a expressão "por seu procurador infra-assinado" ou similares.
-        12. Finalize obrigatoriamente com: "Nestes termos, pede deferimento." seguido do local e data por extenso no formato "CIDADE, DIA de MÊS_POR_EXTENSO de ANO" (utilizando os valores de cidade: ${userData.signCity || "Local"} e data: ${userData.signDate || "Data"}), seguido de uma linha de assinatura e o nome completo do recorrente: "${(userData.name || "NOME DO RECORRENTE").toUpperCase()}" centralizado abaixo da linha.
+        6. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo.
+        7. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
+        8. ANÁLISE ESTRATÉGICA DO RELATO: Verifique se o relato do usuário é congruente e benéfico. Se o relato contiver argumentos fracos, prejudiciais (ex: confissão) ou inúteis, DESCONSIDERE essas partes e construa a defesa baseada em argumentos técnicos e erros formais. Utilize do relato apenas o que fortalecer a defesa.
+        9. SEJA PROLIXO E ROBUSTO: A defesa deve ser extensa e detalhada. Desenvolva no mínimo 4 (QUATRO) tópicos completos de argumentação de mérito ou preliminar.
+        10. DADOS AUSENTES COMO ARGUMENTO: Se no AIT faltarem dados (ex: campo 'Equipamento', 'Aferição' ou 'Observações' em branco ou ilegível), explore isso exaustivamente como falha formal e cerceamento de defesa.
+        11. TESES GENÉRICAS: Se o caso for simples, utilize teses genéricas mas aplicáveis (ex: Princípio da Legalidade, Dupla Notificação, Sinalização Precária presumida, Falta de Motivação do Ato Administrativo).
+        12. Não insira asteríscos ('*') de formatação desnecessários.
+        13. IMPORTANTE: NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento (ex: "ILUSTRÍSSIMO SENHOR...").
+        14. NUNCA utilize a expressão "por seu procurador infra-assinado" ou similares.
+        15. Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO, exatamente como abaixo:
+            
+            <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
+            <p style="text-align: center; margin-bottom: 40px;">${userData.signCity || "Local"}, ${userData.signDate || "Data"}.</p>
+            
+            <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
+            <p style="text-align: center;">${(userData.name || "NOME DO RECORRENTE").toUpperCase()}</p>
       `;
 
 			const defenseTypeMap = {

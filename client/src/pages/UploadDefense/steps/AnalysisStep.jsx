@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Loader2, CheckCircle, AlertCircle, Search, Lock, PenTool, User, FileText, AlertTriangle, Coins } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -13,6 +13,8 @@ export const AnalysisStep = ({
 }) => {
     const { currentUser, userData } = useAuth();
     const navigate = useNavigate();
+
+    const exclusiveThesesCount = useMemo(() => Math.floor(Math.random() * (5 - 2 + 1)) + 2, []);
 
     const viability = isTestMode ? "Média" : analysisData.viability || "Possível";
     const summary = isTestMode
@@ -103,7 +105,7 @@ export const AnalysisStep = ({
                     <div className="flex items-center justify-center gap-2 mb-8 text-blue-600 font-bold bg-blue-50 p-3 rounded-lg border border-blue-100 border-dashed">
                         <Lock size={16} />
                         <span>
-                            + {Math.max(2, analysisData.arguments.length - 3 + 2)} teses exclusivas
+                            + {exclusiveThesesCount} teses exclusivas
                             identificadas
                         </span>
                     </div>

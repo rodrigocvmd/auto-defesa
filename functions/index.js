@@ -1,4 +1,5 @@
 const { onRequest } = require("firebase-functions/v2/https");
+const { onSchedule } = require("firebase-functions/v2/scheduler");
 require("dotenv").config();
 const logger = require("firebase-functions/logger");
 
@@ -6,6 +7,7 @@ const infractionController = require("./src/controllers/infractionController");
 const defenseController = require("./src/controllers/defenseController");
 const paymentController = require("./src/controllers/paymentController");
 const pdfController = require("./src/controllers/pdfController");
+const userService = require("./src/services/userService");
 
 // --- FUNÇÃO 1: CONSULTA ---
 exports.getInfraction = onRequest(infractionController.getInfraction);
@@ -30,3 +32,14 @@ exports.generatePdf = onRequest({ memory: "1GiB" }, pdfController.generatePdf); 
 
 // --- WEBHOOK STRIPE ---
 exports.stripeWebhook = onRequest(paymentController.stripeWebhook);
+
+// --- CRON JOB: LIMPEZA DE USUÁRIOS ---
+exports.cleanupUnverifiedUsers = onSchedule("every 24 hours", async (event) => {
+    logger.info("Starting cleanup of unverified users...");
+    try {
+        const deletedCount = await userService.deleteUnverifiedUsers();
+        logger.info(`Cleanup finished. Deleted ${deletedCount} unverified users.`);
+    } catch (error) {
+        logger.error("Error cleaning up users:", error);
+    }
+});

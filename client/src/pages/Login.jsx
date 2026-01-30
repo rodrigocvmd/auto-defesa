@@ -45,16 +45,7 @@ export default function Login() {
             if (isResetMode) {
                 setError('Falha ao redefinir a senha. Verifique se o email está correto.');
             } else {
-                // Se o erro for de usuário não encontrado ou credenciais inválidas
-                // Verificamos se o usuário existe para redirecionar ou apenas mostrar erro de senha
-                if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-                    const exists = await checkEmailExists(email);
-                    if (!exists) {
-                        // Se não existe, redireciona para cadastro com o email
-                        navigate(`/register?email=${encodeURIComponent(email)}`);
-                        return;
-                    }
-                }
+                // Apenas exibe mensagem de erro genérica para segurança
                 setError('Falha ao fazer login. Verifique suas credenciais.');
             }
         }

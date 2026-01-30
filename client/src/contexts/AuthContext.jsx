@@ -13,7 +13,7 @@ import {
     deleteUser,
     fetchSignInMethodsForEmail
 } from 'firebase/auth';
-import { doc, onSnapshot, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
+import { doc, onSnapshot, setDoc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
 
 const AuthContext = createContext();
@@ -101,7 +101,11 @@ export function AuthProvider({ children }) {
     }
 
     function updateUserEmail(newEmail) {
-        return verifyBeforeUpdateEmail(currentUser, newEmail);
+        const actionCodeSettings = {
+            url: `${window.location.origin}/profile?emailUpdated=true`,
+            handleCodeInApp: false,
+        };
+        return verifyBeforeUpdateEmail(currentUser, newEmail, actionCodeSettings);
     }
 
     useEffect(() => {
@@ -116,11 +120,18 @@ export function AuthProvider({ children }) {
                 // Subscribe to real-time updates
                 unsubscribeFirestore = onSnapshot(userRef, async (docSnap) => {
                     if (docSnap.exists()) {
-                        setUserData(docSnap.data());
+                        const data = docSnap.data();
+                        setUserData(data);
+
+                        // Sincronizar status do email se mudou
+                        if (user.emailVerified !== data.emailVerified) {
+                             await updateDoc(userRef, { emailVerified: user.emailVerified });
+                        }
                     } else {
                         // Create user doc if it doesn't exist
                         const defaultData = {
                             email: user.email,
+                            emailVerified: user.emailVerified, // Estado inicial
                             credits: 0,
                             createdAt: new Date()
                         };
