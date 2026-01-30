@@ -46,8 +46,14 @@ export const formatDefenseToHtml = (text) => {
 
   // Check if text is already HTML (basic check)
   const trimmedText = text.trim();
+  
+  // Evitar duplo wrapper se já for um documento completo
+  if (trimmedText.toLowerCase().includes("<html") || trimmedText.toLowerCase().includes("<!doctype")) {
+      return text;
+  }
+
   if (trimmedText.startsWith("<") && (trimmedText.includes("</p>") || trimmedText.includes("</div>") || trimmedText.includes("</h3>"))) {
-      // Se já for HTML, apenas envelopamos com os estilos globais para garantir a formatação no PDF
+      // Se já for HTML parcial (sem html/body), envelopamos com os estilos
       return wrapHtml(text);
   }
   

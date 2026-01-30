@@ -238,10 +238,9 @@ export default function Profile() {
 
 		setLoading(true);
 
-		let contentHtml = defense.defenseText;
-		if (!contentHtml.match(/<p|<h[1-6]|<div/)) {
-			contentHtml = formatDefenseToHtml(contentHtml);
-		}
+		// Sempre formatamos para garantir que o wrapper HTML/CSS completo seja aplicado,
+		// mesmo que o texto já tenha tags parciais (ex: <p>, <h3>) salvas no banco.
+		let contentHtml = formatDefenseToHtml(defense.defenseText);
         
         let fileName = defense.fileName;
         if (!fileName) {
