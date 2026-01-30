@@ -26,16 +26,10 @@ export default function Login() {
             setLoading(true);
             
             if (isResetMode) {
-                // Verificar se email existe antes de enviar
-                const exists = await checkEmailExists(email);
-                if (!exists) {
-                    setError('Este email não está cadastrado. Verifique ou crie uma nova conta.');
-                    setLoading(false);
-                    return;
-                }
-
+                // Em vez de verificar se existe (o que pode falhar com proteção de enumeração),
+                // enviamos diretamente. O Firebase cuidará de enviar ou não, mantendo a segurança.
                 await resetPassword(email);
-                setMessage('Verifique seu email para instruções de redefinição de senha (verifique também a caixa de spam).');
+                setMessage('Se o email estiver cadastrado, você receberá as instruções para redefinição de senha.');
             } else {
                 await login(email, password);
                 navigate(redirect);
@@ -45,8 +39,22 @@ export default function Login() {
             if (isResetMode) {
                 setError('Falha ao redefinir a senha. Verifique se o email está correto.');
             } else {
-                // Apenas exibe mensagem de erro genérica para segurança
-                setError('Falha ao fazer login. Verifique suas credenciais.');
+                // Se falhar o login, verificamos se o email existe para decidir o redirecionamento
+                if (err.code === 'auth/user-not-found') {
+                    navigate(`/register?email=${encodeURIComponent(email)}`);
+                    return;
+                } else if (err.code === 'auth/invalid-credential') {
+                    // Firebase moderno retorna invalid-credential para email não encontrado tb (por privacidade)
+                    // Fazemos uma checagem extra para cumprir o requisito de redirecionamento
+                    const exists = await checkEmailExists(email);
+                    if (!exists) {
+                        navigate(`/register?email=${encodeURIComponent(email)}`);
+                        return;
+                    }
+                    setError('Email ou senha incorretos.');
+                } else {
+                    setError('Falha ao fazer login. Verifique suas credenciais.');
+                }
             }
         }
 

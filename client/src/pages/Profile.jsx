@@ -35,7 +35,7 @@ import { api } from "../services/api";
 import { formatDefenseToHtml } from "../utils/textToHtml";
 
 export default function Profile() {
-	const { currentUser, userData, updateUserEmail, deleteUserAccount } = useAuth();
+	const { currentUser, userData, updateUserEmail, deleteUserAccount, checkEmailExists } = useAuth();
 	const navigate = useNavigate();
 	const [activeTab, setActiveTab] = useState("defenses");
 	const [loading, setLoading] = useState(false);
@@ -119,9 +119,15 @@ export default function Profile() {
 
 			// 1. Atualizar Email (se mudou)
 			if (email !== currentUser.email) {
+				// Verificação prévia de existência
+				const emailExists = await checkEmailExists(email);
+				if (emailExists) {
+					throw new Error("Este email já está em uso por outra conta.");
+				}
+
 				try {
 					await updateUserEmail(email);
-					successMsg += `Email de verificação enviado para ${email}. Confirme para concluir a alteração. `;
+					successMsg += `Email de verificação enviado para ${email}. Verifique a caixa de entrada e SPAM deste NOVO endereço para concluir. `;
 				} catch (error) {
 					if (error.code === "auth/requires-recent-login") {
 						throw new Error("Para alterar o email, faça login novamente por segurança.");

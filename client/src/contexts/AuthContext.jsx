@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
@@ -15,6 +15,7 @@ import {
 } from 'firebase/auth';
 import { doc, onSnapshot, setDoc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
+import { api } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -26,6 +27,8 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const unsubscribeFirestoreRef = useRef(null);
+    const dataLoadedRef = useRef(false);
 
     async function signup(email, password, name) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -49,11 +52,17 @@ export function AuthProvider({ children }) {
     async function deleteUserAccount() {
         if (!currentUser) return;
 
-        // 1. Deletar documento do Firestore
+        // 1. Parar de escutar mudanças para evitar recriação automática (Zombie User)
+        if (unsubscribeFirestoreRef.current) {
+            unsubscribeFirestoreRef.current();
+            unsubscribeFirestoreRef.current = null;
+        }
+
+        // 2. Deletar documento do Firestore
         const userRef = doc(db, 'users', currentUser.uid);
         await deleteDoc(userRef);
 
-        // 2. Deletar usuário do Authentication
+        // 3. Deletar usuário do Authentication
         await deleteUser(currentUser);
     }
 
@@ -77,12 +86,12 @@ export function AuthProvider({ children }) {
 
     async function checkEmailExists(email) {
         try {
-            const methods = await fetchSignInMethodsForEmail(auth, email);
-            return methods.length > 0;
+            // Usamos a função de backend que tem privilégios de Admin
+            // para evitar as limitações da proteção contra enumeração do Firebase
+            const result = await api.checkEmail(email);
+            return result.exists;
         } catch (error) {
-            // Em projetos novos com proteção contra enumeração, isso pode falhar ou retornar array vazio.
-            // Se falhar, assumimos falso ou tratamos o erro.
-            console.error("Erro ao verificar email:", error);
+            console.error("Erro ao verificar email via API:", error);
             return false;
         }
     }
@@ -93,6 +102,10 @@ export function AuthProvider({ children }) {
     }
 
     function logout() {
+        if (unsubscribeFirestoreRef.current) {
+            unsubscribeFirestoreRef.current();
+            unsubscribeFirestoreRef.current = null;
+        }
         return signOut(auth);
     }
 
@@ -100,35 +113,67 @@ export function AuthProvider({ children }) {
         return sendPasswordResetEmail(auth, email);
     }
 
-    function updateUserEmail(newEmail) {
+    async function updateUserEmail(newEmail) {
+        // Simplificamos a URL para reduzir chances de bloqueio ou erro de encoding
         const actionCodeSettings = {
-            url: `${window.location.origin}/profile?emailUpdated=true`,
+            url: `${window.location.origin}/profile`,
             handleCodeInApp: false,
         };
-        return verifyBeforeUpdateEmail(currentUser, newEmail, actionCodeSettings);
+        
+        console.log("Iniciando atualização de email para:", newEmail);
+        try {
+             await verifyBeforeUpdateEmail(currentUser, newEmail, actionCodeSettings);
+             console.log("Email de verificação enviado com sucesso.");
+        } catch (error) {
+            console.error("Erro ao enviar email de atualização:", error);
+            throw error;
+        }
     }
 
     useEffect(() => {
-        let unsubscribeFirestore = null;
-
         const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
             setCurrentUser(user);
+            dataLoadedRef.current = false; // Resetar flag de dados carregados
+
+            // Limpar listener anterior se existir
+            if (unsubscribeFirestoreRef.current) {
+                unsubscribeFirestoreRef.current();
+                unsubscribeFirestoreRef.current = null;
+            }
 
             if (user) {
                 const userRef = doc(db, 'users', user.uid);
                 
-                // Subscribe to real-time updates
-                unsubscribeFirestore = onSnapshot(userRef, async (docSnap) => {
+                // Sincronizar status do email UMA VEZ ao carregar/logar
+                // Isso evita o loop frenético dentro do onSnapshot
+                try {
+                    const docSnap = await getDoc(userRef);
                     if (docSnap.exists()) {
                         const data = docSnap.data();
-                        setUserData(data);
-
-                        // Sincronizar status do email se mudou
                         if (user.emailVerified !== data.emailVerified) {
                              await updateDoc(userRef, { emailVerified: user.emailVerified });
                         }
+                    }
+                } catch (e) {
+                    console.error("Erro ao sincronizar emailVerified:", e);
+                }
+
+                // Subscribe to real-time updates
+                unsubscribeFirestoreRef.current = onSnapshot(userRef, async (docSnap) => {
+                    if (docSnap.exists()) {
+                        setUserData(docSnap.data());
+                        dataLoadedRef.current = true; // Marcar como carregado
                     } else {
-                        // Create user doc if it doesn't exist
+                        // Se os dados já foram carregados antes e agora sumiram, 
+                        // significa que foram deletados (manualmente ou por outra lógica).
+                        // Não recriar.
+                        if (dataLoadedRef.current) {
+                            console.log("Usuário deletado do banco. Fazendo logout...");
+                            logout();
+                            return;
+                        }
+
+                        // Create user doc if it doesn't exist AND it's the first load
                         const defaultData = {
                             email: user.email,
                             emailVerified: user.emailVerified, // Estado inicial
@@ -137,21 +182,19 @@ export function AuthProvider({ children }) {
                         };
                         await setDoc(userRef, defaultData);
                         setUserData(defaultData);
+                        dataLoadedRef.current = true;
                     }
                 });
             } else {
                 setUserData(null);
-                if (unsubscribeFirestore) {
-                    unsubscribeFirestore();
-                }
             }
             setLoading(false);
         });
 
         return () => {
             unsubscribeAuth();
-            if (unsubscribeFirestore) {
-                unsubscribeFirestore();
+            if (unsubscribeFirestoreRef.current) {
+                unsubscribeFirestoreRef.current();
             }
         };
     }, []);

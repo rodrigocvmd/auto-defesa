@@ -160,6 +160,22 @@ export const api = {
     }
   },
 
+  // 8. Verificar existência de email no Admin
+  checkEmail: async (email) => {
+    try {
+      const response = await fetch(`${BASE_URL}/checkEmail`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (!response.ok) throw new Error('Erro ao verificar email');
+      return await response.json();
+    } catch (error) {
+      console.error("CheckEmail API Error:", error);
+      throw error;
+    }
+  },
+
   // 7. Gerar PDF no Backend (Puppeteer)
   generatePdf: async (htmlContent, fileName) => {
     try {

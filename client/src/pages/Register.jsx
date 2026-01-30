@@ -47,7 +47,11 @@ export default function Register() {
         } catch (err) {
             console.error(err);
             if (err.code === 'auth/email-already-in-use') {
-                setError('Este email já está cadastrado.');
+                setError(
+                    <span>
+                        Este email já possui cadastro. <Link to="/login" className="underline font-bold">Faça login aqui</Link>.
+                    </span>
+                );
             } else {
                 setError('Falha ao criar conta. Tente novamente.');
             }
