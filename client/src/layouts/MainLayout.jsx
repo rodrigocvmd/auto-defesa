@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Shield, Home, User, LogOut, Menu, X } from "lucide-react";
+import { Shield, User, LogOut, Menu, X } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import VerificationBanner from "../components/VerificationBanner";
 
@@ -42,7 +42,7 @@ const MainLayout = ({ children }) => {
 								<Link
 									to="/"
 									className="text-gray-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-2">
-									<Home size={18} /> Início
+									Início
 								</Link>
 							)}
 

@@ -1,5 +1,16 @@
 import React, { useState } from "react";
-import { ArrowLeft, Info, PenTool, User, Car, MapPin, Search, Gauge, Loader2 } from "lucide-react";
+import {
+	ArrowLeft,
+	Info,
+	PenTool,
+	User,
+	Car,
+	MapPin,
+	Search,
+	Gauge,
+	Loader2,
+	CheckCircle,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { LimitExceededModal } from "../components/modals/LimitExceededModal";
 import { LoginPromptModal } from "../components/modals/LoginPromptModal";
@@ -126,10 +137,13 @@ export const FormStep = ({
 					<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center">
 						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
 						<h2 className="text-2xl font-bold text-gray-800 mb-2">Processando Análise...</h2>
-						<p className="text-gray-600 max-w-md font-bold">
-							Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem
-							aplicadas...
-						</p>
+						<div className="flex items-start gap-3 text-gray-700">
+							<CheckCircle size={20} className="text-blue-600 shrink-0 mt-0.5" />
+							<p className="text-gray-600 max-w-md font-bold">
+								Analisando os dados para definir a viabilidade do recurso e possíveis teses a serem
+								aplicadas. Aguarde...
+							</p>
+						</div>
 					</div>
 				)}
 
@@ -255,9 +269,7 @@ export const FormStep = ({
 
 						{/* Linha 3 */}
 						<div className="md:col-span-3">
-							<label className="label-form">
-								CNH
-							</label>
+							<label className="label-form">CNH</label>
 							<input
 								name="cnh"
 								value={formData.cnh}
@@ -593,13 +605,10 @@ export const FormStep = ({
 								readOnly={!isManualInfraction}
 								className={`input-form ${!isManualInfraction ? "bg-gray-50 cursor-not-allowed" : "bg-white border-yellow-400"}`}
 								placeholder={
-									isManualInfraction
-										? "Digite o Artigo (ex: Art. 218, I, CTB)"
-										: "Preencha o Cód."
+									isManualInfraction ? "Digite o Artigo (ex: Art. 218, I, CTB)" : "Preencha o Cód."
 								}
 							/>
 						</div>
-						
 
 						<div className="md:col-span-2">
 							<label className="label-form">
@@ -632,7 +641,7 @@ export const FormStep = ({
 								<p className="text-red-500 text-xs mt-1">{errors.issuingBody}</p>
 							)}
 						</div>
-                        {/* Linha 4: Local */}
+						{/* Linha 4: Local */}
 						<div className="md:col-span-6">
 							<label className="label-form">
 								Local <span className="text-red-500">*</span>
@@ -682,7 +691,7 @@ export const FormStep = ({
 							{errors.time && <p className="text-red-500 text-xs mt-1">{errors.time}</p>}
 						</div>
 
-                        {/* Linha 2: Descrição */}
+						{/* Linha 2: Descrição */}
 						<div className="md:col-span-10">
 							<label className="label-form">Descrição da Infração</label>
 							<input
@@ -692,14 +701,10 @@ export const FormStep = ({
 								readOnly={!isManualInfraction}
 								className={`input-form ${!isManualInfraction ? "bg-gray-50 text-gray-600 cursor-not-allowed" : "bg-white border-yellow-400"}`}
 								placeholder={
-									isManualInfraction
-										? "Digite a descrição da infração"
-										: "Preencha o Cód. Infração"
+									isManualInfraction ? "Digite a descrição da infração" : "Preencha o Cód. Infração"
 								}
 							/>
 						</div>
-
-						
 					</div>
 				</section>
 				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">

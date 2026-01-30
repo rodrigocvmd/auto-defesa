@@ -6,9 +6,15 @@ const { db } = require("../services/firebase");
 const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const MODEL_FLASH = "gemini-3-flash-preview";
-const MODEL_PRO = "gemini-3-pro-preview";
-const MODEL_FALLBACK = "gemini-2.5-flash";
+// Produção:
+// const MODEL_FLASH = "gemini-3-flash-preview";
+// const MODEL_PRO = "gemini-3-pro-preview";
+// const MODEL_FALLBACK = "gemini-2.5-flash";
+
+// Lite:
+const MODEL_FLASH = "gemini-2.5-flash-lite";
+const MODEL_PRO = "gemini-2.5-flash-lite";
+const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
  * Tenta gerar conteúdo com o modelo principal. Se der erro 503 (Overloaded),
@@ -62,32 +68,32 @@ exports.generateDefense = (req, res) => {
 			const genAI = new GoogleGenerativeAI(apiKey);
 			const modelName = isRefinement ? MODEL_FLASH : MODEL_PRO;
 
-            // Helper to format date
-            const formatDateFull = (dateStr) => {
-                if (!dateStr) return "Data";
-                try {
-                    // Tenta criar data. Formatos aceitos: YYYY-MM-DD ou DD/MM/YYYY
-                    let date;
-                    if (dateStr.includes('/')) {
-                        const [day, month, year] = dateStr.split('/');
-                        date = new Date(`${year}-${month}-${day}T12:00:00`);
-                    } else {
-                        date = new Date(dateStr + "T12:00:00");
-                    }
-                    
-                    if (isNaN(date.getTime())) return dateStr;
+			// Helper to format date
+			const formatDateFull = (dateStr) => {
+				if (!dateStr) return "Data";
+				try {
+					// Tenta criar data. Formatos aceitos: YYYY-MM-DD ou DD/MM/YYYY
+					let date;
+					if (dateStr.includes("/")) {
+						const [day, month, year] = dateStr.split("/");
+						date = new Date(`${year}-${month}-${day}T12:00:00`);
+					} else {
+						date = new Date(dateStr + "T12:00:00");
+					}
 
-                    return new Intl.DateTimeFormat('pt-BR', { 
-                        day: 'numeric', 
-                        month: 'long', 
-                        year: 'numeric' 
-                    }).format(date);
-                } catch (e) {
-                    return dateStr;
-                }
-            };
+					if (isNaN(date.getTime())) return dateStr;
 
-            const formattedSignDate = formatDateFull(data.signDate);
+					return new Intl.DateTimeFormat("pt-BR", {
+						day: "numeric",
+						month: "long",
+						year: "numeric",
+					}).format(date);
+				} catch (e) {
+					return dateStr;
+				}
+			};
+
+			const formattedSignDate = formatDateFull(data.signDate);
 
 			let systemInstruction;
 			let userPrompt;
@@ -420,32 +426,32 @@ exports.analyzeDocument = (req, res) => {
 			const genAI = new GoogleGenerativeAI(apiKey);
 			const modelName = MODEL_PRO;
 
-            // Helper to format date
-            const formatDateFull = (dateStr) => {
-                if (!dateStr) return "Data";
-                try {
-                    // Tenta criar data. Formatos aceitos: YYYY-MM-DD ou DD/MM/YYYY
-                    let date;
-                    if (dateStr.includes('/')) {
-                        const [day, month, year] = dateStr.split('/');
-                        date = new Date(`${year}-${month}-${day}T12:00:00`);
-                    } else {
-                        date = new Date(dateStr + "T12:00:00");
-                    }
-                    
-                    if (isNaN(date.getTime())) return dateStr;
+			// Helper to format date
+			const formatDateFull = (dateStr) => {
+				if (!dateStr) return "Data";
+				try {
+					// Tenta criar data. Formatos aceitos: YYYY-MM-DD ou DD/MM/YYYY
+					let date;
+					if (dateStr.includes("/")) {
+						const [day, month, year] = dateStr.split("/");
+						date = new Date(`${year}-${month}-${day}T12:00:00`);
+					} else {
+						date = new Date(dateStr + "T12:00:00");
+					}
 
-                    return new Intl.DateTimeFormat('pt-BR', { 
-                        day: 'numeric', 
-                        month: 'long', 
-                        year: 'numeric' 
-                    }).format(date);
-                } catch (e) {
-                    return dateStr;
-                }
-            };
+					if (isNaN(date.getTime())) return dateStr;
 
-            const formattedSignDate = formatDateFull(userData.signDate);
+					return new Intl.DateTimeFormat("pt-BR", {
+						day: "numeric",
+						month: "long",
+						year: "numeric",
+					}).format(date);
+				} catch (e) {
+					return dateStr;
+				}
+			};
+
+			const formattedSignDate = formatDateFull(userData.signDate);
 
 			const prompt = `
         Aja como Advogado de Trânsito. Analise a imagem da multa.
