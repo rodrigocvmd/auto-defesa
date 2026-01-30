@@ -49,17 +49,19 @@ export const ResultStep = ({
 	const { handleGeneratePDF, loading: pdfLoading } = usePdfGenerator(
 		componentRef,
 		formData,
-		setShowDownloadSuccess,
+		null // Não mostramos o modal aqui, redirecionamos para o perfil
 	);
 
 	const handleDownloadRequest = () => {
 		setShowDownloadConfirm(true);
 	};
 
-	const handleConfirmDownload = () => {
-		handleGeneratePDF();
+	const handleConfirmDownload = async () => {
 		setShowDownloadConfirm(false);
-		// setShowDownloadSuccess is handled by the hook callback
+		const success = await handleGeneratePDF();
+		if (success) {
+			navigate("/profile", { state: { downloadStarted: true } });
+		}
 	};
 
 	const handleFinalizePDF = async () => {

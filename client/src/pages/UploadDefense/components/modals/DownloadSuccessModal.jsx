@@ -2,8 +2,17 @@ import React from 'react';
 import { Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-export const DownloadSuccessModal = ({ onClose }) => {
+export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick }) => {
     const navigate = useNavigate();
+
+    const handleClick = () => {
+        if (onBtnClick) {
+            onBtnClick();
+        } else {
+            onClose();
+            navigate("/profile");
+        }
+    };
 
     return (
         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
@@ -20,12 +29,9 @@ export const DownloadSuccessModal = ({ onClose }) => {
                     Uma cópia segura também foi salva em <strong>"Minhas Defesas"</strong> no seu perfil, para que você possa baixar novamente quando precisar.
                 </p>
                 <button
-                    onClick={() => {
-                        onClose();
-                        navigate("/profile");
-                    }}
+                    onClick={handleClick}
                     className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors shadow-lg">
-                    Ir para Minhas Defesas
+                    {btnText || "Ir para Minhas Defesas"}
                 </button>
             </div>
         </div>

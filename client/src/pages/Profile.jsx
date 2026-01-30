@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
+import { DownloadSuccessModal } from "./UploadDefense/components/modals/DownloadSuccessModal";
 import {
 	User,
 	FileText,
@@ -37,11 +38,13 @@ import { formatDefenseToHtml } from "../utils/textToHtml";
 export default function Profile() {
 	const { currentUser, userData, updateUserEmail, deleteUserAccount, checkEmailExists } = useAuth();
 	const navigate = useNavigate();
+    const location = useLocation();
 	const [activeTab, setActiveTab] = useState("defenses");
 	const [loading, setLoading] = useState(false);
 	const [pageLoading, setPageLoading] = useState(true);
 	const [message, setMessage] = useState({ type: "", content: "" });
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 	const [selectedDefense, setSelectedDefense] = useState(null);
 
 	// Estados do Formulário de Perfil
@@ -54,6 +57,14 @@ export default function Profile() {
 
 	// Estado do Histórico
 	const [defenses, setDefenses] = useState([]);
+    
+    useEffect(() => {
+        if (location.state?.downloadStarted) {
+            setShowSuccessModal(true);
+            // Limpa o state para não reabrir ao atualizar a página
+            navigate(location.pathname, { replace: true, state: {} });
+        }
+    }, [location, navigate]);
 
 	useEffect(() => {
 		if (!currentUser) {
@@ -577,6 +588,14 @@ export default function Profile() {
 					</div>
 				</div>
 			)}
+
+            {showSuccessModal && (
+                <DownloadSuccessModal 
+                    onClose={() => setShowSuccessModal(false)} 
+                    btnText="Fechar"
+                    onBtnClick={() => setShowSuccessModal(false)}
+                />
+            )}
 		</MainLayout>
 	);
 }
