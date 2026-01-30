@@ -68,8 +68,10 @@ export function AuthProvider({ children }) {
 
     async function sendVerificationEmail(user) {
         // Configurações para redirecionamento após o clique no email
+        // Mantemos handleCodeInApp: false para web padrão. 
+        // Para redirecionamento automático, configure a "Action URL" no Firebase Console.
         const actionCodeSettings = {
-            url: `${window.location.origin}/profile?verified=true`,
+            url: `${window.location.origin}/email-confirmation`,
             handleCodeInApp: false,
         };
         await sendEmailVerification(user, actionCodeSettings);
@@ -83,7 +85,6 @@ export function AuthProvider({ children }) {
             throw new Error("Usuário não identificado.");
         }
     }
-
     async function checkEmailExists(email) {
         try {
             // Usamos a função de backend que tem privilégios de Admin
@@ -112,11 +113,10 @@ export function AuthProvider({ children }) {
     function resetPassword(email) {
         return sendPasswordResetEmail(auth, email);
     }
-
     async function updateUserEmail(newEmail) {
-        // Simplificamos a URL para reduzir chances de bloqueio ou erro de encoding
+        // Redireciona para nossa página customizada de confirmação
         const actionCodeSettings = {
-            url: `${window.location.origin}/profile`,
+            url: `${window.location.origin}/email-confirmation`,
             handleCodeInApp: false,
         };
         

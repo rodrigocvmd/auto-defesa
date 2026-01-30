@@ -12,6 +12,7 @@ import Profile from './pages/Profile';
 import Pricing from './pages/Pricing';
 import HowItWorks from './pages/HowItWorks';
 import Help from './pages/Help';
+import EmailConfirmation from './pages/EmailConfirmation';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/email-confirmation" element={<EmailConfirmation />} />
             
             {/* Rotas com parâmetro opcional para o fluxo de passos */}
             <Route path="/upload" element={<UploadDefense />} />
