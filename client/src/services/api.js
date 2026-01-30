@@ -208,5 +208,29 @@ export const api = {
       console.error("PDF Generation Error:", error);
       throw error;
     }
+  },
+
+  // 9. Enviar Email de Suporte
+  sendSupportEmail: async (data) => {
+    try {
+      // Não exige auth header obrigatoriamente, mas se quiser proteger pode descomentar
+      // const headers = await getAuthHeaders();
+      const headers = { 'Content-Type': 'application/json' };
+      
+      const response = await fetch(`${BASE_URL}/sendSupportEmail`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || 'Erro ao enviar email');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Support Email Error:", error);
+      throw error;
+    }
   }
 };

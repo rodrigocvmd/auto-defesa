@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MainLayout from "../layouts/MainLayout";
-import { Mail, MessageCircle, FileQuestion, ChevronDown, ChevronUp, Send } from "lucide-react";
+import { Mail, MessageCircle, FileQuestion, ChevronDown, ChevronUp, Send, Loader2 } from "lucide-react";
+import { api } from "../services/api";
 
 const Help = () => {
 	const faqs = [
@@ -28,6 +29,7 @@ const Help = () => {
 		email: "",
 		message: "",
 	});
+	const [status, setStatus] = useState({ loading: false, success: false, error: null });
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -37,17 +39,27 @@ const Help = () => {
 		}));
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const subject = `Suporte AutoDefesa - Mensagem de ${formData.name}`;
-		const body = `Nome: ${formData.name}\nEmail: ${formData.email}\n\nMensagem:\n${formData.message}`;
+		setStatus({ loading: true, success: false, error: null });
 
-		// Construct mailto link
-		const mailtoLink = `mailto:rodrigocvmd@gmail.com?subject=${encodeURIComponent(
-			subject,
-		)}&body=${encodeURIComponent(body)}`;
+		try {
+			await api.sendSupportEmail(formData);
+			setStatus({ loading: false, success: true, error: null });
+			setFormData({ name: "", email: "", message: "" });
 
-		window.location.href = mailtoLink;
+			// Limpar mensagem de sucesso após 5 segundos
+			setTimeout(() => {
+				setStatus((prev) => ({ ...prev, success: false }));
+			}, 5000);
+		} catch (error) {
+			console.error("Erro ao enviar email:", error);
+			setStatus({
+				loading: false,
+				success: false,
+				error: "Não foi possível enviar a mensagem. Tente novamente.",
+			});
+		}
 	};
 
 	return (
@@ -115,10 +127,21 @@ const Help = () => {
 							</div>
 							<button
 								type="submit"
-								className="bg-gray-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors flex items-center gap-2">
-								<Send size={18} />
-								Enviar Mensagem
+								disabled={status.loading}
+								className="bg-gray-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+								{status.loading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+								{status.loading ? "Enviando..." : "Enviar Mensagem"}
 							</button>
+							{status.success && (
+								<div className="mt-4 p-4 bg-green-50 text-green-700 rounded-xl border border-green-100 animate-in fade-in slide-in-from-top-2">
+									Mensagem enviada com sucesso! Responderemos em breve.
+								</div>
+							)}
+							{status.error && (
+								<div className="mt-4 p-4 bg-red-50 text-red-700 rounded-xl border border-red-100 animate-in fade-in slide-in-from-top-2">
+									{status.error}
+								</div>
+							)}
 						</form>
 					</div>
 

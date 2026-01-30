@@ -10,7 +10,7 @@ const SEO = ({
 }) => {
   const siteName = 'AutoDefesa';
   const defaultDescription = 'Seu Advogado Virtual de Trânsito. Recorra de multas de trânsito com Inteligência Artificial. Defesa prévia, JARI e CETRAN.';
-  const baseUrl = 'https://autodefesa.web.app'; // Atualize com seu domínio final se houver
+  const baseUrl = 'https://meuautodefesa.com.br';
 
   const fullTitle = title ? `${title} | ${siteName}` : `${siteName} - Recorra de Multas com IA`;
   const fullDescription = description || defaultDescription;
