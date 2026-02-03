@@ -58,7 +58,7 @@ export default function Login() {
                     if (userStatus.providers && userStatus.providers.includes('google.com')) {
                         setError(
                             <span>
-                                Conta criada via Google. Entre com Google ou <button type="button" onClick={toggleMode} className="underline font-bold hover:text-red-700">redefina sua senha</button>.
+                                Conta criada via Google. Entre com Google ou <button type="button" onClick={toggleMode} className="underline font-bold hover:text-red-700">crie uma senha para acessar por email</button>.
                             </span>
                         );
                         return; // Sai da função, mas o finally vai executar o setLoading(false)
@@ -102,11 +102,11 @@ export default function Login() {
                             {isResetMode ? <KeyRound size={24} /> : <LogIn size={24} />}
                         </div>
                         <h2 className="text-2xl font-bold text-gray-900">
-                            {isResetMode ? 'Redefinir Senha' : 'Bem-vindo de volta'}
+                            {isResetMode ? 'Definir Senha' : 'Bem-vindo de volta'}
                         </h2>
                         <p className="text-gray-500 mt-2">
                             {isResetMode 
-                                ? 'Informe seu email para recuperar o acesso' 
+                                ? 'Informe seu email para definir uma nova senha' 
                                 : 'Acesse sua conta para continuar'}
                         </p>
                     </div>
@@ -170,7 +170,7 @@ export default function Login() {
                         >
                             {loading 
                                 ? 'Carregando...' 
-                                : (isResetMode ? 'Enviar email de recuperação' : 'Entrar')
+                                : (isResetMode ? 'Enviar email de redefinição' : 'Entrar')
                             }
                         </button>
                     </form>

@@ -111,7 +111,11 @@ export function AuthProvider({ children }) {
     }
 
     function resetPassword(email) {
-        return sendPasswordResetEmail(auth, email);
+        const actionCodeSettings = {
+            url: `${window.location.origin}/reset-password`,
+            handleCodeInApp: false,
+        };
+        return sendPasswordResetEmail(auth, email, actionCodeSettings);
     }
     async function updateUserEmail(newEmail) {
         // Redireciona para nossa página customizada de confirmação

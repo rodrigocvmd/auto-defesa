@@ -24,6 +24,13 @@ export default function EmailConfirmation() {
 		const oobCode = searchParams.get("oobCode");
 		const mode = searchParams.get("mode"); // verifyEmail, resetPassword, etc.
 
+		// Fallback de segurança: Se por algum erro de configuração o link de reset de senha
+		// estiver apontando para cá, redirecionamos para a página correta.
+		if (mode === "resetPassword" && oobCode) {
+			navigate(`/reset-password?oobCode=${oobCode}`);
+			return;
+		}
+
 		if (oobCode && (mode === "verifyEmail" || mode === "verifyAndChangeEmail")) {
 			// Modo Manual (Custom Handler)
 			applyActionCode(auth, oobCode)
