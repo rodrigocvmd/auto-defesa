@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
+import Testimonials from "../components/Testimonials";
 
 const Home = () => {
 	return (
@@ -239,6 +240,9 @@ const Home = () => {
 						</div>
 					</div>
 				</section>
+
+				{/* AVALIAÇÕES */}
+				<Testimonials />
 
 				{/* CTA FINAL */}
 				<div className="text-center px-4">

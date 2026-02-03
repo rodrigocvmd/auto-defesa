@@ -68,18 +68,41 @@ const MainLayout = ({ children }) => {
 							<div className="relative group h-16 flex items-center">
 								<Link
 									to="/recursos"
-									className="text-gray-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-1"
-								>
+									className="text-gray-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-1">
 									Recursos Úteis
 								</Link>
 								<div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 hidden group-hover:block p-2 animate-in fade-in slide-in-from-top-2">
-									<Link to="/recorrer/lei-seca" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">Lei Seca</Link>
-									<Link to="/recorrer/recusa-bafometro" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">Recusa ao Bafômetro</Link>
-									<Link to="/recorrer/excesso-velocidade" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">Excesso de Velocidade</Link>
-									<Link to="/recorrer/celular-direcao" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">Uso de Celular</Link>
-									<Link to="/recorrer/cnh-vencida" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">CNH Vencida</Link>
+									<Link
+										to="/recorrer/lei-seca"
+										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+										Lei Seca
+									</Link>
+									<Link
+										to="/recorrer/recusa-bafometro"
+										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+										Recusa ao Bafômetro
+									</Link>
+									<Link
+										to="/recorrer/excesso-velocidade"
+										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+										Excesso de Velocidade
+									</Link>
+									<Link
+										to="/recorrer/celular-direcao"
+										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+										Uso de Celular
+									</Link>
+									<Link
+										to="/recorrer/cnh-vencida"
+										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+										CNH Vencida
+									</Link>
 									<div className="h-px bg-gray-100 my-1"></div>
-									<Link to="/recursos" className="block px-4 py-3 text-sm font-bold text-blue-600 hover:bg-blue-50 rounded-lg text-center">Outras Infrações</Link>
+									<Link
+										to="/recursos"
+										className="block px-4 py-3 text-sm font-bold text-blue-600 hover:bg-blue-50 rounded-lg text-center">
+										Outras Infrações
+									</Link>
 								</div>
 							</div>
 
@@ -224,31 +247,53 @@ const MainLayout = ({ children }) => {
 			<VerificationBanner />
 
 			{/* Main Content Area */}
-			<main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-1 py-1">
+			<main className="flex-1 w-full max-w-8xl mx-auto px-4 sm:px-6 lg:px-1 py-1">
 				{children}
 				<footer className="border-t border-gray-100 py-6 mt-8 flex flex-col items-center">
 					{/* Recursos Úteis */}
 					<div className="w-full max-w-4xl mb-8 px-4">
-						<h4 className="text-gray-900 font-bold text-sm mb-4 text-center">Recursos Úteis</h4>
+						<h4 className="text-gray-900 font-bold text-md mb-4 text-center">Recursos Úteis</h4>
 						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
-							<Link to="/recorrer/lei-seca" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Lei Seca</Link>
-							<Link to="/recorrer/recusa-bafometro" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Recusa ao Bafômetro</Link>
-							<Link to="/recorrer/excesso-velocidade" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Excesso de Velocidade</Link>
-							<Link to="/recorrer/celular-direcao" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Uso de Celular</Link>
-							<Link to="/recorrer/cnh-vencida" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">CNH Vencida</Link>
-							<Link to="/recursos" className="text-blue-600 font-bold hover:text-blue-700 text-sm transition-colors">Outras Infrações</Link>
+							<Link
+								to="/recorrer/lei-seca"
+								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+								Lei Seca
+							</Link>
+							<Link
+								to="/recorrer/recusa-bafometro"
+								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+								Recusa ao Bafômetro
+							</Link>
+							<Link
+								to="/recorrer/excesso-velocidade"
+								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+								Excesso de Velocidade
+							</Link>
+							<Link
+								to="/recorrer/celular-direcao"
+								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+								Uso de Celular
+							</Link>
+							<Link
+								to="/recursos"
+								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+								Outras Infrações
+							</Link>
 						</div>
 					</div>
 
 					<p className="text-xs text-gray-400 max-w-2xl text-center mb-2">
-						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não substituímos a consultoria de um advogado.
+						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não
+						substituímos a consultoria de um advogado.
 					</p>
-					<p className="text-sm text-gray-500 mb-4">
-						Brasília, DF | contato@meuautodefesa.com.br
-					</p>
+					<p className="text-sm text-gray-500 mb-4">Brasília, DF | contato@meuautodefesa.com.br</p>
 					<div className="flex justify-center gap-4 text-sm text-gray-500">
-						<Link to="/terms" className="hover:underline">Termos de Uso</Link>
-						<Link to="/privacy" className="hover:underline">Privacidade</Link>
+						<Link to="/terms" className="hover:underline">
+							Termos de Uso
+						</Link>
+						<Link to="/privacy" className="hover:underline">
+							Privacidade
+						</Link>
 					</div>
 					<p className="text-xs text-gray-400 mt-4">
 						&copy; 2026 AutoDefesa Software. Todos os direitos reservados.
