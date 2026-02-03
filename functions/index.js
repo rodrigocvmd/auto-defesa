@@ -9,12 +9,16 @@ const paymentController = require("./src/controllers/paymentController");
 const pdfController = require("./src/controllers/pdfController");
 const userService = require("./src/services/userService");
 const userController = require("./src/controllers/userController");
+const supportController = require("./src/controllers/supportController");
 
 // --- FUNÇÃO 1: CONSULTA ---
 exports.getInfraction = onRequest(infractionController.getInfraction);
 
 // --- FUNÇÃO PARA VERIFICAR EMAIL ---
 exports.checkEmail = onRequest(userController.checkEmail);
+
+// --- FUNÇÃO DE SUPORTE ---
+exports.sendSupportEmail = onRequest(supportController.sendSupportEmail);
 
 // --- FUNÇÃO 2: MANUAL / REFINAMENTO ---
 exports.generateDefense = onRequest(defenseController.generateDefense);
