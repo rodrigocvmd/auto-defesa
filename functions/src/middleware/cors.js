@@ -2,6 +2,7 @@ const allowedOrigins = [
 	"http://localhost:5173",
 	"https://auto-defesa.web.app",
 	"https://auto-defesa.firebaseapp.com",
+    "https://meuautodefesa.com.br",
 ];
 
 const cors = require("cors")({
