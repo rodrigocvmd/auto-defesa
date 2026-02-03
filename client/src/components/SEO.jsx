@@ -1,7 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 
-const SEO = ({ title, description, keywords, canonical, type = "website" }) => {
+const SEO = ({ title, description, keywords, canonical, type = "website", faq }) => {
 	const siteName = "AutoDefesa";
 	// Descrição padrão focada na autoridade e especialidade
 	const defaultDescription =
@@ -13,7 +13,7 @@ const SEO = ({ title, description, keywords, canonical, type = "website" }) => {
 	const fullUrl = canonical ? `${baseUrl}${canonical}` : baseUrl;
 
 	// Schema.org JSON-LD para SoftwareApplication
-	const structuredData = {
+	let structuredData = {
 		"@context": "https://schema.org",
 		"@type": "SoftwareApplication",
 		name: "Auto Defesa",
@@ -32,6 +32,22 @@ const SEO = ({ title, description, keywords, canonical, type = "website" }) => {
 			hasCredential: "Bacharel em Direito",
 		},
 	};
+
+	if (faq && faq.length > 0) {
+		const faqSchema = {
+			"@context": "https://schema.org",
+			"@type": "FAQPage",
+			mainEntity: faq.map((item) => ({
+				"@type": "Question",
+				name: item.question,
+				acceptedAnswer: {
+					"@type": "Answer",
+					text: item.answer,
+				},
+			})),
+		};
+		structuredData = [structuredData, faqSchema];
+	}
 
 	return (
 		<Helmet>
