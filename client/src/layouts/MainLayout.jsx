@@ -187,38 +187,21 @@ const MainLayout = ({ children }) => {
 			<VerificationBanner />
 
 			{/* Main Content Area */}
-			<main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-1 py-1">{children}</main>
-
-			{/* Footer Responsivo */}
-			<footer className="bg-white border-t border-gray-200 mt-auto">
-				<div className="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center gap-6">
-					<div className="flex flex-wrap justify-center gap-6">
-						<Link
-							to="/how-it-works"
-							className="text-base md:text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors">
-							Como Funciona
-						</Link>
-						<Link
-							to="/help"
-							className="text-base md:text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors">
-							Ajuda
-						</Link>
-						<Link
-							to="/terms"
-							className="text-base md:text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors">
-							Termos de Uso
-						</Link>
-						<Link
-							to="/privacy"
-							className="text-base md:text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors">
-							Privacidade
-						</Link>
-					</div>
-					<p className="text-sm text-gray-500 text-center">
-						&copy; 2026 AutoDefesa Software. Todos os direitos reservados.
+			<main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-1 py-1">
+				{children}
+				<footer className="border-t border-gray-100 py-6 text-center text-sm text-gray-500 mt-8">
+					<p className="mb-2">
+						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não substitui a consultoria de um advogado.
 					</p>
-				</div>
-			</footer>
+					<p className="mb-2">
+						Brasília, DF | contato@meuautodefesa.com.br
+					</p>
+					<div className="flex justify-center gap-4">
+						<Link to="/terms" className="hover:underline">Termos de Uso</Link>
+						<Link to="/privacy" className="hover:underline">Privacidade</Link>
+					</div>
+				</footer>
+			</main>
 		</div>
 	);
 };

@@ -9,7 +9,8 @@ const SEO = ({
   type = 'website'
 }) => {
   const siteName = 'AutoDefesa';
-  const defaultDescription = 'Seu Advogado Virtual de Trânsito. Recorra de multas de trânsito com Inteligência Artificial. Defesa prévia, JARI e CETRAN.';
+  // Descrição padrão focada na autoridade e especialidade
+  const defaultDescription = 'Auto Defesa: A autoridade em recursos de multas de trânsito. Tecnologia jurídica avançada para anular infrações e proteger sua CNH com base no CTB.';
   const baseUrl = 'https://meuautodefesa.com.br';
 
   const fullTitle = title ? `${title} | ${siteName}` : `${siteName} - Recorra de Multas com IA`;
@@ -20,19 +21,13 @@ const SEO = ({
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "AutoDefesa",
+    "name": "Auto Defesa",
     "applicationCategory": "LegalApplication",
-    "operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "price": "16.90",
-      "priceCurrency": "BRL"
-    },
-    "description": fullDescription,
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
+    "author": {
+      "@type": "Person",
+      "name": "Rodrigo",
+      "jobTitle": "Fundador e Especialista Jurídico",
+      "hasCredential": "Bacharel em Direito"
     }
   };
 

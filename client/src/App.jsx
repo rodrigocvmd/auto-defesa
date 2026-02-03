@@ -15,6 +15,7 @@ import Help from './pages/Help';
 import EmailConfirmation from './pages/EmailConfirmation';
 import ResetPassword from './pages/ResetPassword';
 import ScrollToTop from './components/ScrollToTop';
+import InfractionPage from './pages/InfractionPage';
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function App() {
             <Route path="/upload" element={<UploadDefense />} />
             <Route path="/upload/:step" element={<UploadDefense />} />
             
+            {/* Páginas de Infração Específicas */}
+            <Route path="/recorrer/:slug" element={<InfractionPage />} />
+
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
