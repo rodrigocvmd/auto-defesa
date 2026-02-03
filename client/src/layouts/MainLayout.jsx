@@ -190,6 +190,18 @@ const MainLayout = ({ children }) => {
 			<main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-1 py-1">
 				{children}
 				<footer className="border-t border-gray-100 py-6 mt-8 flex flex-col items-center">
+					{/* Recursos Úteis */}
+					<div className="w-full max-w-4xl mb-8 px-4">
+						<h4 className="text-gray-900 font-bold text-sm mb-4 text-center">Recursos Úteis</h4>
+						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+							<Link to="/recorrer/lei-seca" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Lei Seca</Link>
+							<Link to="/recorrer/recusa-bafometro" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Recusa ao Bafômetro</Link>
+							<Link to="/recorrer/excesso-velocidade" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Excesso de Velocidade</Link>
+							<Link to="/recorrer/celular-direcao" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Uso de Celular</Link>
+							<Link to="/recorrer/cnh-vencida" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">CNH Vencida</Link>
+						</div>
+					</div>
+
 					<p className="text-xs text-gray-400 max-w-2xl text-center mb-2">
 						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não substituímos a consultoria de um advogado.
 					</p>
