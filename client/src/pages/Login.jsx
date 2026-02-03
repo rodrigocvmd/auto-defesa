@@ -40,17 +40,18 @@ export default function Login() {
                 setError('Falha ao redefinir a senha. Verifique se o email está correto.');
             } else {
                 // Se falhar o login, verificamos se o email existe para decidir o redirecionamento
-                if (err.code === 'auth/user-not-found') {
-                    navigate(`/register?email=${encodeURIComponent(email)}`);
-                    return;
-                } else if (err.code === 'auth/invalid-credential') {
-                    // Firebase moderno retorna invalid-credential para email não encontrado tb (por privacidade)
-                    // Fazemos uma checagem extra para cumprir o requisito de redirecionamento
+                // Tratamos user-not-found e invalid-credential da mesma forma para garantir a verificação via backend
+                if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
                     const userStatus = await checkEmailExists(email);
                     
+                    if (userStatus === null) {
+                         setError('Erro ao conectar com o servidor. Tente novamente mais tarde.');
+                         return; // Sai da função, mas o finally vai executar o setLoading(false)
+                    }
+
                     if (!userStatus.exists) {
                         navigate(`/register?email=${encodeURIComponent(email)}`);
-                        return;
+                        return; // Sai da função, mas o finally vai executar o setLoading(false)
                     }
 
                     // Se existe, verificamos se é conta Google
@@ -60,7 +61,7 @@ export default function Login() {
                                 Conta criada via Google. Entre com Google ou <button type="button" onClick={toggleMode} className="underline font-bold hover:text-red-700">redefina sua senha</button>.
                             </span>
                         );
-                        return;
+                        return; // Sai da função, mas o finally vai executar o setLoading(false)
                     }
 
                     setError('Email ou senha incorretos.');
@@ -68,9 +69,9 @@ export default function Login() {
                     setError('Falha ao fazer login. Verifique suas credenciais.');
                 }
             }
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     }
 
     async function handleGoogleLogin() {

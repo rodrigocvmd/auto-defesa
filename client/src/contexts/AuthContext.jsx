@@ -93,7 +93,7 @@ export function AuthProvider({ children }) {
             return result; // Retorna { exists: true/false, providers: [] }
         } catch (error) {
             console.error("Erro ao verificar email via API:", error);
-            return { exists: false, providers: [] };
+            return null;
         }
     }
 
