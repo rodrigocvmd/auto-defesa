@@ -15,8 +15,8 @@ const supportController = require("./src/controllers/supportController");
 exports.getInfraction = onRequest(infractionController.getInfraction);
 
 // --- FUNÇÃO PARA VERIFICAR EMAIL ---
-// Habilitando CORS nativo do Firebase Functions V2 para evitar problemas com middleware manual
-exports.checkEmail = onRequest({ cors: true }, userController.checkEmail);
+// CORS configurado manualmente no controller para garantir acesso
+exports.checkEmail = onRequest(userController.checkEmail);
 
 // --- FUNÇÃO DE SUPORTE ---
 exports.sendSupportEmail = onRequest(supportController.sendSupportEmail);

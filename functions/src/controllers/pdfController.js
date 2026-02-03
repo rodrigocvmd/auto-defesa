@@ -1,7 +1,8 @@
 const cors = require("../middleware/cors");
 const { verifyAuth } = require("../middleware/auth");
 const { checkAndDeductCredits } = require("../services/userService"); // Opcional: cobrar crédito por geração? Por enquanto não.
-const puppeteer = require("puppeteer");
+// Removido require global do puppeteer para evitar crash no startup se faltarem dependências
+// const puppeteer = require("puppeteer");
 
 exports.generatePdf = (req, res) => {
 	cors(req, res, async () => {
@@ -21,6 +22,9 @@ exports.generatePdf = (req, res) => {
 		}
 
 		try {
+            // Lazy load do Puppeteer apenas quando a função for chamada
+            const puppeteer = require("puppeteer");
+
 			console.log(`[PDF] Iniciando geração para usuário ${userId || "anônimo"}...`);
 			
 			// Lançar navegador headless

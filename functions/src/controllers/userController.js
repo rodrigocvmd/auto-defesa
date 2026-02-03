@@ -1,6 +1,18 @@
 const { admin } = require("../services/firebase");
 
 exports.checkEmail = async (req, res) => {
+    // Configuração Manual de CORS (Nuclear Option)
+    // Isso garante que os headers sejam enviados independentemente de middleware
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Responder imediatamente à requisição de Preflight (OPTIONS)
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+        return;
+    }
+
     const { email } = req.body || {};
     if (!email) {
         res.status(400).json({ error: "Email obrigatório." });

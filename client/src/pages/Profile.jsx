@@ -19,6 +19,8 @@ import {
 	Coins,
 	AlertTriangle,
 	Trash2,
+    Check,
+    X
 } from "lucide-react";
 import { updateProfile, updatePassword } from "firebase/auth";
 import {
@@ -55,9 +57,30 @@ export default function Profile() {
 	const [newPassword, setNewPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
+    // Password strength states
+    const [hasMinLength, setHasMinLength] = useState(false);
+    const [hasUpperCase, setHasUpperCase] = useState(false);
+    const [hasNumber, setHasNumber] = useState(false);
+    const [passwordsMatch, setPasswordsMatch] = useState(false);
+
 	// Estado do Histórico
 	const [defenses, setDefenses] = useState([]);
     
+    useEffect(() => {
+        if (newPassword) {
+            setHasMinLength(newPassword.length >= 6);
+            setHasUpperCase(/[A-Z]/.test(newPassword));
+            setHasNumber(/[0-9]/.test(newPassword));
+            setPasswordsMatch(newPassword === confirmPassword && newPassword !== '');
+        } else {
+             // Reset validation if password field is cleared
+            setHasMinLength(false);
+            setHasUpperCase(false);
+            setHasNumber(false);
+            setPasswordsMatch(false);
+        }
+    }, [newPassword, confirmPassword]);
+
     useEffect(() => {
         if (location.state?.downloadStarted) {
             setShowSuccessModal(true);
@@ -173,8 +196,8 @@ export default function Profile() {
 
 			// 4. Se houver nova senha, atualizar
 			if (newPassword) {
-				if (newPassword !== confirmPassword) {
-					throw new Error("As senhas não conferem.");
+				if (!passwordsMatch || !hasMinLength || !hasUpperCase || !hasNumber) {
+                    throw new Error("A senha não atende aos requisitos de segurança.");
 				}
 				await updatePassword(currentUser, newPassword);
 				successMsg += " Senha alterada com sucesso!";
@@ -484,18 +507,53 @@ export default function Profile() {
 												onChange={(e) => setNewPassword(e.target.value)}
 												placeholder="Mínimo 6 caracteres"
 											/>
+                                            {/* Password Feedback */}
+                                            {newPassword && (
+                                                <div className="mt-3 space-y-1">
+                                                    <p className="text-xs font-medium text-gray-500 mb-1">Sua senha deve ter:</p>
+                                                    <div className={`flex items-center gap-2 text-xs ${hasMinLength ? 'text-green-600' : 'text-gray-400'}`}>
+                                                        {hasMinLength ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
+                                                        Mínimo de 6 caracteres
+                                                    </div>
+                                                    <div className={`flex items-center gap-2 text-xs ${hasUpperCase ? 'text-green-600' : 'text-gray-400'}`}>
+                                                        {hasUpperCase ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
+                                                        Pelo menos 1 letra maiúscula
+                                                    </div>
+                                                    <div className={`flex items-center gap-2 text-xs ${hasNumber ? 'text-green-600' : 'text-gray-400'}`}>
+                                                        {hasNumber ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
+                                                        Pelo menos 1 número
+                                                    </div>
+                                                </div>
+                                            )}
 										</div>
 										<div>
 											<label className="block text-sm font-medium text-gray-700 mb-1">
 												Confirmar Nova Senha
 											</label>
-											<input
-												type="password"
-												className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-												value={confirmPassword}
-												onChange={(e) => setConfirmPassword(e.target.value)}
-												placeholder="Repita a senha"
-											/>
+                                            <div className="relative">
+                                                <input
+                                                    type="password"
+                                                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${
+                                                        confirmPassword && !passwordsMatch 
+                                                        ? 'border-red-300 focus:ring-red-200 focus:border-red-500' 
+                                                        : confirmPassword && passwordsMatch
+                                                        ? 'border-green-300 focus:ring-green-200 focus:border-green-500'
+                                                        : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                                                    }`}
+                                                    value={confirmPassword}
+                                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                                    placeholder="Repita a senha"
+                                                />
+                                                {confirmPassword && (
+                                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold">
+                                                        {passwordsMatch ? (
+                                                            <span className="text-green-600 flex items-center gap-1"><Check size={14} /> Iguais</span>
+                                                        ) : (
+                                                            <span className="text-red-500 flex items-center gap-1"><X size={14} /> Diferentes</span>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
 										</div>
 									</div>
 								</div>
