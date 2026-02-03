@@ -29,8 +29,14 @@ exports.generatePdf = (req, res) => {
 			
 			// Lançar navegador headless
 			const browser = await puppeteer.launch({
-				headless: true, // "new" as vezes causa problemas em versões mistas
-				args: ["--no-sandbox", "--disable-setuid-sandbox"],
+				headless: "new", // Modo headless mais recente e estável
+				args: [
+                    "--no-sandbox", 
+                    "--disable-setuid-sandbox",
+                    "--disable-dev-shm-usage", // Evita crash por falta de memória compartilhada
+                    "--disable-gpu", // Necessário em muitos ambientes headless
+                    "--font-render-hinting=none" // Melhora renderização de fontes
+                ],
 			});
 
 			const page = await browser.newPage();

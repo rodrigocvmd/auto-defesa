@@ -7,14 +7,14 @@ const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Produção:
-// const MODEL_FLASH = "gemini-3-flash-preview";
-// const MODEL_PRO = "gemini-3-pro-preview";
-// const MODEL_FALLBACK = "gemini-2.5-flash";
+const MODEL_FLASH = "gemini-3-flash-preview";
+const MODEL_PRO = "gemini-3-pro-preview";
+const MODEL_FALLBACK = "gemini-2.5-flash";
 
-// Lite:
-const MODEL_FLASH = "gemini-2.5-flash-lite";
-const MODEL_PRO = "gemini-2.5-flash-lite";
-const MODEL_FALLBACK = "gemini-2.5-flash-lite";
+// Testes / Lite:
+// const MODEL_FLASH = "gemini-2.5-flash-lite";
+// const MODEL_PRO = "gemini-2.5-flash-lite";
+// const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
  * Tenta gerar conteúdo com o modelo principal. Se der erro 503 (Overloaded),
@@ -95,6 +95,13 @@ exports.generateDefense = (req, res) => {
 
 			const formattedSignDate = formatDateFull(data.signDate);
 
+			const defenseTypeMap = {
+				previa: "DEFESA PRÉVIA DE AUTUAÇÃO",
+				jari: "RECURSO À JARI (1ª INSTÂNCIA)",
+				cetran: "RECURSO AO CETRAN (2ª INSTÂNCIA)",
+			};
+			const defenseTypeLabel = defenseTypeMap[data.defenseType] || "RECURSO ADMINISTRATIVO";
+
 			let systemInstruction;
 			let userPrompt;
 
@@ -127,19 +134,53 @@ exports.generateDefense = (req, res) => {
           Tarefa: Redigir uma defesa de multa de trânsito baseada nos dados fornecidos.
           
           DIRETRIZES:
-          1. Visual Profissional: Sem Markdown.
-		  2. Categorias iguais/pares iguais devem ter formatação igual entre si (ex: títulos devem ter formatação igual entre si, corpo de texto deve seguir um padrão de formatação igual em toda a peça)
-          2. Use CAIXA ALTA para títulos.
-		  3. Omissão de Vazios: Não invente dados.
-          4. ESTRATÉGIA POR FASE (CRUCIAL):
-             - DEFESA PRÉVIA: Foque em ERROS FORMAIS (Art. 280/281 CTB) e aspectos técnicos.
-             - RECURSO JARI: Ataque o mérito, cite jurisprudência e rebata eventual indeferimento anterior.
-             - RECURSO CETRAN: Rebata a decisão da JARI, alegue falta de fundamentação se genérica e use argumentos de última instância.
-             - **ATENÇÃO AO DISTRITO FEDERAL (CONTRADIFE)**: Caso o órgão autuador seja o DER-DF ou outro órgão do Distrito Federal, e a fase seja de 2ª Instância (após JARI), o recurso NÃO deve ser endereçado ao CETRAN, mas sim ao CONTRADIFE (Conselho de Trânsito do Distrito Federal). Ajuste o endereçamento e as menções ao órgão julgador de acordo.
-          5. Analise o relato do usuário em <relato_fatos> para extrair teses, mas priorize teses técnicas se o relato for prejudicial.
-          6. NUNCA utilize a expressão "por seu procurador infra-assinado" ou similares, pois a defesa é feita diretamente pelo recorrente.
-          7. EQUIPAMENTO/AFERIÇÃO: Analise os campos 'Equipamento' e 'Aferição' (mesmo que "Não disponível" ou vazios) em relação ao contexto. Valide se são argumentos legítimos considerando: (a) Se a aferição não é recente (vencida) e prejudicou a medição; (b) Se a infração REALMENTE exige equipamento (ex: velocidade, etilômetro, balança). Caso a materialidade não dependa de equipamento, dispense esse argumento e foque em outras falhas ou argumentos subjetivos do relato.
-          8. PROLIXIDADE E ROBUSTEZ: A defesa deve ser longa e detalhada. Desenvolva pelo menos 4 (QUATRO) argumentos de mérito. Se o AIT tiver dados ausentes, utilize isso como tese. Se faltarem fatos específicos, utilize teses genéricas (princípios constitucionais, falta de motivação, etc.).
+          1. FORMATO DE SAÍDA: HTML PURO (Não use Markdown, não use blocos de código \`\`\`).
+          
+          2. REGRAS DE ENDEREÇAMENTO (CRUCIAL):
+             - Defesa Prévia: "AO ILUSTRÍSSIMO SENHOR DIRETOR DO [ÓRGÃO AUTUADOR - UF]".
+             - JARI (1ª Instância): "AO ILUSTRÍSSIMO SENHOR PRESIDENTE DA JARI DO [ÓRGÃO AUTUADOR - UF]".
+             - CETRAN (2ª Instância): 
+                 * Regra Geral: "AO ILUSTRÍSSIMO SENHOR PRESIDENTE DO CONSELHO ESTADUAL DE TRÂNSITO DO ESTADO DE [UF] - CETRAN/[UF]".
+                 * **EXCEÇÃO DISTRITO FEDERAL:** Se o órgão for do DF (Detran-DF, DER-DF) e for recurso de 2ª instância, endereçar obrigatoriamente ao **CONTRADIFE** (Conselho de Trânsito do Distrito Federal).
+
+          3. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
+             *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
+             
+             - **Endereçamento:** Caixa Alta, Negrito, Alinhado à Esquerda/Justificado.
+               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 20px;">[ENDEREÇAMENTO]</p>
+             
+             - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
+               Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 20px;">REF.: AUTO DE INFRAÇÃO Nº ${data.aitNumber || "[NÚMERO]"}</p>
+             
+             - **Veículo e Infração:** Caixa Alta, Fonte Normal (Fina), Alinhado à Esquerda/Justificado, Tamanho Padrão.
+               Use: <p style="font-weight: normal; text-transform: uppercase; text-align: justify; margin-bottom: 10px;">PLACA: ${data.plate || "[PLACA]"} | INFRAÇÃO: ${data.article || "[ARTIGO CTB]"}</p>
+             
+             - **Qualificação:** Texto corrido normal.
+             
+             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
+               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 30px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
+             
+             - **Capítulos (I., II.):** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
+               Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 10px;">I. DOS FATOS</h2>
+             
+             - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Alinhado à Esquerda/Justificado, Tamanho +2pt.
+               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: justify; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
+             
+             - **Corpo do Texto:** Tamanho padrão, Justificado. Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
+
+          4. CONTEÚDO E ESTRATÉGIA:
+             - Omissão de Vazios: Não invente dados.
+             - Estratégia por Fase:
+                - DEFESA PRÉVIA: Foque em ERROS FORMAIS (Art. 280/281 CTB) e aspectos técnicos.
+                - RECURSO JARI: Ataque o mérito, cite jurisprudência e rebata indeferimento anterior.
+                - RECURSO CETRAN/CONTRADIFE: Rebata a decisão da JARI, alegue falta de fundamentação se genérica.
+             - Analise o relato do usuário em <relato_fatos>.
+             - EQUIPAMENTO/AFERIÇÃO: Analise 'Equipamento' e 'Aferição'. Se vencida ou ausente em infração que exige medição, use como tese principal.
+             - PROLIXIDADE: Desenvolva pelo menos 4 argumentos de mérito.
+
+          5. FINALIZAÇÃO:
+             - NUNCA use "por seu procurador".
+             - Encerre com o bloco CENTRALIZADO padrão fornecido abaixo.
           9. FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com o bloco CENTRALIZADO exatamente como abaixo:
              
              <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
@@ -148,13 +189,6 @@ exports.generateDefense = (req, res) => {
              <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
              <p style="text-align: center;">${(data.name || "NOME DO RECORRENTE").toUpperCase()}</p>
         `;
-
-				const defenseTypeMap = {
-					previa: "DEFESA PRÉVIA DE AUTUAÇÃO",
-					jari: "RECURSO À JARI (1ª INSTÂNCIA)",
-					cetran: "RECURSO AO CETRAN (2ª INSTÂNCIA)",
-				};
-				const defenseTypeLabel = defenseTypeMap[data.defenseType] || "RECURSO ADMINISTRATIVO";
 
 				userPrompt = `
           TIPO DE PEÇA: ${defenseTypeLabel}
@@ -453,6 +487,13 @@ exports.analyzeDocument = (req, res) => {
 
 			const formattedSignDate = formatDateFull(userData.signDate);
 
+			const defenseTypeMap = {
+				previa: "DEFESA PRÉVIA",
+				jari: "RECURSO À JARI",
+				cetran: "RECURSO AO CETRAN",
+			};
+			const defenseTypeLabel = defenseTypeMap[userData.defenseType] || "RECURSO ADMINISTRATIVO";
+
 			const prompt = `
         Aja como Advogado de Trânsito. Analise a imagem da multa.
         
@@ -470,25 +511,54 @@ exports.analyzeDocument = (req, res) => {
         RELATO DO CONDUTOR (Argumentos de defesa):
         "${userData.description || "Não informado. Analise apenas os erros formais da imagem."}"
 
-        INSTRUÇÕES:
-        1. Extraia da imagem: Órgão, AIT, Placa, Marca/Modelo, Data/Hora, Local, Artigo, Equipamento e Fase Processual (se possível identificar).
-        2. Mescle os dados extraídos com os dados do condutor acima.
-        3. Identifique qual fase da defesa é para que a defesa/recurso seja adequado no endereçamento, direcionamento e argumentação.
-        4. ESTRATÉGIA POR FASE (CRUCIAL):
-           - Se for DEFESA PRÉVIA: Seja extremamente técnico. Foque obsessivamente em ERROS FORMAIS do AIT (falta de dados, erro de marca/cor, local inexistente, falta de aferição do radar) e na notificação fora do prazo (Art. 281 CTB).
-           - Se for RECURSO À JARI: Amplie a argumentação. Ataque o mérito (a infração ocorreu mesmo?), cite jurisprudência e PRINCIPALMENTE rebata os motivos do indeferimento da Defesa Prévia (se houver menção no documento). Use argumentos mais subjetivos e princípios constitucionais (ampla defesa).
-           - Se for RECURSO AO CETRAN: Esta é a última instância administrativa. A técnica deve ser impecável. Rebata ponto a ponto a decisão da JARI. Se a decisão da JARI foi genérica ("copia e cola"), alegue nulidade por falta de fundamentação.
-		   - **ATENÇÃO AO DISTRITO FEDERAL (CONTRADIFE)**: Caso o órgão autuador seja o DER-DF ou outro órgão do Distrito Federal, e a fase seja de 2ª Instância (após JARI), o recurso NÃO deve ser endereçado ao CETRAN, mas sim ao CONTRADIFE (Conselho de Trânsito do Distrito Federal). Ajuste o endereçamento e as menções ao órgão julgador de acordo.
-        5. Escreva o RECURSO completo. A formatação da versão final não deve ser markdown, e sim formatação estética para leitura humana seguindo as boas práticas estéticas e de formatação de recursos administrativos e jurídicos.
-        6. Apresentar apenas o recurso, nada mais, sem cumprimento ao usuário, sem sugestões ao final, apenas o documento do recurso pronto para protocolo.
-        7. Não adicionar nada sobre advogado ao final do documento, apenas espaço para assinatura do usuário.
-        8. ANÁLISE ESTRATÉGICA DO RELATO: Verifique se o relato do usuário é congruente e benéfico. Se o relato contiver argumentos fracos, prejudiciais (ex: confissão) ou inúteis, DESCONSIDERE essas partes e construa a defesa baseada em argumentos técnicos e erros formais. Utilize do relato apenas o que fortalecer a defesa.
-        9. SEJA PROLIXO E ROBUSTO: A defesa deve ser extensa e detalhada. Desenvolva no mínimo 4 (QUATRO) tópicos completos de argumentação de mérito ou preliminar.
-        10. DADOS AUSENTES COMO ARGUMENTO: Se no AIT faltarem dados (ex: campo 'Equipamento', 'Aferição' ou 'Observações' em branco ou ilegível), explore isso exaustivamente como falha formal e cerceamento de defesa.
-        11. TESES GENÉRICAS: Se o caso for simples, utilize teses genéricas mas aplicáveis (ex: Princípio da Legalidade, Dupla Notificação, Sinalização Precária presumida, Falta de Motivação do Ato Administrativo).
-        12. Não insira asteríscos ('*') de formatação desnecessários.
-        13. IMPORTANTE: NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento (ex: "ILUSTRÍSSIMO SENHOR...").
-        14. NUNCA utilize a expressão "por seu procurador infra-assinado" ou similares.
+        INSTRUÇÕES DE ELABORAÇÃO:
+        1. Extraia da imagem: Órgão, AIT, Placa, Marca/Modelo, Data/Hora, Local, Artigo, Equipamento e Fase Processual.
+        2. Mescle com dados do condutor.
+        3. Identifique a FASE da defesa para o endereçamento correto.
+
+        4. REGRAS DE ENDEREÇAMENTO (CRUCIAL):
+             - Defesa Prévia: "AO ILUSTRÍSSIMO SENHOR DIRETOR DO [ÓRGÃO AUTUADOR - UF]".
+             - JARI (1ª Instância): "AO ILUSTRÍSSIMO SENHOR PRESIDENTE DA JARI DO [ÓRGÃO AUTUADOR - UF]".
+             - CETRAN (2ª Instância): 
+                 * Regra Geral: "AO ILUSTRÍSSIMO SENHOR PRESIDENTE DO CONSELHO ESTADUAL DE TRÂNSITO DO ESTADO DE [UF] - CETRAN/[UF]".
+                 * **EXCEÇÃO DISTRITO FEDERAL:** Se o órgão for do DF (Detran-DF, DER-DF) e for recurso de 2ª instância, endereçar obrigatoriamente ao **CONTRADIFE** (Conselho de Trânsito do Distrito Federal).
+
+        5. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
+             *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
+             
+             - **Endereçamento:** Caixa Alta, Negrito, Alinhado à Esquerda/Justificado.
+               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 20px;">[ENDEREÇAMENTO]</p>
+             
+             - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
+               Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 20px;">REF.: AUTO DE INFRAÇÃO Nº [NÚMERO]</p>
+             
+             - **Veículo e Infração:** Caixa Alta, Fonte Normal (Fina), Alinhado à Esquerda/Justificado, Tamanho Padrão.
+               Use: <p style="font-weight: normal; text-transform: uppercase; text-align: justify; margin-bottom: 10px;">PLACA: [PLACA] | INFRAÇÃO: [ARTIGO CTB]</p>
+             
+             - **Qualificação:** Texto corrido normal.
+             
+             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
+               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 30px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
+             
+             - **Capítulos (I., II.):** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
+               Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 10px;">I. DOS FATOS</h2>
+             
+             - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Alinhado à Esquerda/Justificado, Tamanho +2pt.
+               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: justify; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
+             
+             - **Corpo do Texto:** Tamanho padrão, Justificado. Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
+
+        6. ESTRATÉGIA POR FASE:
+           - DEFESA PRÉVIA: Foque obsessivamente em ERROS FORMAIS do AIT.
+           - RECURSO JARI: Ataque o mérito, cite jurisprudência e rebata indeferimento anterior.
+           - RECURSO CETRAN/CONTRADIFE: Rebata a decisão da JARI, alegue falta de fundamentação.
+        
+        7. ANÁLISE ESTRATÉGICA DO RELATO: Use o relato do usuário apenas se fortalecer a defesa técnica. Se for confissão ou prejudicial, descarte.
+        8. SEJA PROLIXO: Desenvolva no mínimo 4 tópicos completos.
+        9. DADOS AUSENTES: Explore a falta de dados no AIT como cerceamento de defesa.
+        10. NUNCA utilize a expressão "por seu procurador infra-assinado".
+        11. NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento HTML.
+        12. Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO.
         15. Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO, exatamente como abaixo:
             
             <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
@@ -497,13 +567,6 @@ exports.analyzeDocument = (req, res) => {
             <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
             <p style="text-align: center;">${(userData.name || "NOME DO RECORRENTE").toUpperCase()}</p>
       `;
-
-			const defenseTypeMap = {
-				previa: "DEFESA PRÉVIA",
-				jari: "RECURSO À JARI",
-				cetran: "RECURSO AO CETRAN",
-			};
-			const defenseTypeLabel = defenseTypeMap[userData.defenseType] || "RECURSO ADMINISTRATIVO";
 
 			const imagePart = { inlineData: { data: image, mimeType: mimeType } };
 
