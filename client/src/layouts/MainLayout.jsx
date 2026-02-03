@@ -58,6 +58,25 @@ const MainLayout = ({ children }) => {
 								Preços
 							</Link>
 
+							{/* Recursos Úteis Dropdown */}
+							<div className="relative group h-16 flex items-center">
+								<Link
+									to="/recursos"
+									className="text-gray-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-1"
+								>
+									Recursos Úteis
+								</Link>
+								<div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 hidden group-hover:block p-2 animate-in fade-in slide-in-from-top-2">
+									<Link to="/recorrer/lei-seca" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">Lei Seca</Link>
+									<Link to="/recorrer/recusa-bafometro" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">Recusa ao Bafômetro</Link>
+									<Link to="/recorrer/excesso-velocidade" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">Excesso de Velocidade</Link>
+									<Link to="/recorrer/celular-direcao" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">Uso de Celular</Link>
+									<Link to="/recorrer/cnh-vencida" className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">CNH Vencida</Link>
+									<div className="h-px bg-gray-100 my-1"></div>
+									<Link to="/recursos" className="block px-4 py-3 text-sm font-bold text-blue-600 hover:bg-blue-50 rounded-lg text-center">Outras Infrações</Link>
+								</div>
+							</div>
+
 							<Link
 								to="/help"
 								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
@@ -138,6 +157,12 @@ const MainLayout = ({ children }) => {
 								Preços
 							</Link>
 							<Link
+								to="/recursos"
+								onClick={() => setIsMenuOpen(false)}
+								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+								Recursos Úteis
+							</Link>
+							<Link
 								to="/help"
 								onClick={() => setIsMenuOpen(false)}
 								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
@@ -199,6 +224,7 @@ const MainLayout = ({ children }) => {
 							<Link to="/recorrer/excesso-velocidade" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Excesso de Velocidade</Link>
 							<Link to="/recorrer/celular-direcao" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Uso de Celular</Link>
 							<Link to="/recorrer/cnh-vencida" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">CNH Vencida</Link>
+							<Link to="/recursos" className="text-blue-600 font-bold hover:text-blue-700 text-sm transition-colors">Outras Infrações</Link>
 						</div>
 					</div>
 
