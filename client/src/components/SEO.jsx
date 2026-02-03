@@ -1,71 +1,63 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import React from "react";
+import { Helmet } from "react-helmet-async";
 
-const SEO = ({ 
-  title, 
-  description, 
-  keywords,
-  canonical,
-  type = 'website'
-}) => {
-  const siteName = 'AutoDefesa';
-  // Descrição padrão focada na autoridade e especialidade
-  const defaultDescription = 'Auto Defesa: A autoridade em recursos de multas de trânsito. Tecnologia jurídica avançada para anular infrações e proteger sua CNH com base no CTB.';
-  const baseUrl = 'https://meuautodefesa.com.br';
+const SEO = ({ title, description, keywords, canonical, type = "website" }) => {
+	const siteName = "AutoDefesa";
+	// Descrição padrão focada na autoridade e especialidade
+	const defaultDescription =
+		"Auto Defesa: A autoridade em recursos de multas de trânsito. Tecnologia jurídica avançada para anular infrações e proteger sua CNH com base no CTB.";
+	const baseUrl = "https://meuautodefesa.com.br";
 
-  const fullTitle = title ? `${title} | ${siteName}` : `${siteName} - Recorra de Multas com IA`;
-  const fullDescription = description || defaultDescription;
-  const fullUrl = canonical ? `${baseUrl}${canonical}` : baseUrl;
+	const fullTitle = title ? `${title} | ${siteName}` : `${siteName} - Recorra de Multas com IA`;
+	const fullDescription = description || defaultDescription;
+	const fullUrl = canonical ? `${baseUrl}${canonical}` : baseUrl;
 
-  // Schema.org JSON-LD para SoftwareApplication
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Auto Defesa",
-    "applicationCategory": "LegalApplication",
-    "image": "https://meuautodefesa.com.br/favicon.svg",
-    "description": fullDescription,
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "BRL"
-    },
-    "author": {
-      "@type": "Person",
-      "name": "Rodrigo",
-      "jobTitle": "Fundador e Especialista Jurídico",
-      "hasCredential": "Bacharel em Direito"
-    }
-  };
+	// Schema.org JSON-LD para SoftwareApplication
+	const structuredData = {
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		name: "Auto Defesa",
+		applicationCategory: "LegalApplication",
+		image: "https://meuautodefesa.com.br/favicon.svg",
+		description: fullDescription,
+		offers: {
+			"@type": "Offer",
+			price: "0",
+			priceCurrency: "BRL",
+		},
+		author: {
+			"@type": "Person",
+			name: "Rodrigo",
+			jobTitle: "Fundador e Especialista Jurídico",
+			hasCredential: "Bacharel em Direito",
+		},
+	};
 
-  return (
-    <Helmet>
-      {/* Standard Metadata */}
-      <title>{fullTitle}</title>
-      <meta name="description" content={fullDescription} />
-      {keywords && <meta name="keywords" content={keywords} />}
-      <link rel="canonical" href={fullUrl} />
-
-      {/* Open Graph / Facebook / WhatsApp */}
-      <meta property="og:type" content={type} />
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={fullDescription} />
-      <meta property="og:url" content={fullUrl} />
-      <meta property="og:site_name" content={siteName} />
-      <meta property="og:image" content={`${baseUrl}/og-image.jpg`} /> {/* Ideal: Criar uma imagem og-image.jpg em public/ */}
-
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={fullDescription} />
-      <meta name="twitter:image" content={`${baseUrl}/og-image.jpg`} />
-
-      {/* Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify(structuredData)}
-      </script>
-    </Helmet>
-  );
+	return (
+		<Helmet>
+			{/* Standard Metadata */}
+			<title>{fullTitle}</title>
+			<meta name="description" content={fullDescription} />
+			<meta name="robots" content="index, follow" />
+			{keywords && <meta name="keywords" content={keywords} />}
+			<link rel="canonical" href={fullUrl} />
+			{/* Open Graph / Facebook / WhatsApp */}
+			<meta property="og:type" content={type} />
+			<meta property="og:title" content={fullTitle} />
+			<meta property="og:description" content={fullDescription} />
+			<meta property="og:url" content={fullUrl} />
+			<meta property="og:site_name" content={siteName} />
+			<meta property="og:image" content={`${baseUrl}/og-image.jpg`} />{" "}
+			{/* Ideal: Criar uma imagem og-image.jpg em public/ */}
+			{/* Twitter */}
+			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:title" content={fullTitle} />
+			<meta name="twitter:description" content={fullDescription} />
+			<meta name="twitter:image" content={`${baseUrl}/og-image.jpg`} />
+			{/* Structured Data */}
+			<script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+		</Helmet>
+	);
 };
 
 export default SEO;

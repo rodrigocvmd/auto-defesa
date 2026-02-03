@@ -5,4 +5,4 @@ Disallow: /checkout
 Disallow: /login
 Disallow: /register
 
-Sitemap: https://autodefesa.web.app/sitemap.xml
+Sitemap: https://meuautodefesa.com.br/sitemap.xml
