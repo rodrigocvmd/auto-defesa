@@ -76,38 +76,9 @@ const ArticlePage = () => {
               </div>
             </header>
 
-            {/* Conteúdo do Artigo (Placeholders) */}
+            {/* Conteúdo do Artigo */}
             <div className="prose prose-lg prose-blue max-w-none text-gray-700 space-y-8">
-              <p>
-                [Introdução: Contextualização do problema e a dor do motorista ao receber esta multa. Explicar que é possível recorrer.]
-              </p>
-
-              <h2 className="text-2xl font-bold text-gray-900">O que diz a Lei?</h2>
-              <p>
-                [Explicação detalhada do artigo do CTB mencionado no título. Traduzir o "juridiquês" para linguagem simples.]
-              </p>
-
-              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 my-8 rounded-r-xl">
-                <h4 className="font-bold text-yellow-800 mb-2">Atenção ao Prazo!</h4>
-                <p className="text-sm text-yellow-800">
-                  Você tem um prazo limitado para apresentar sua defesa prévia. Não deixe para a última hora.
-                </p>
-              </div>
-
-              <h2 className="text-2xl font-bold text-gray-900">Principais Argumentos de Defesa</h2>
-              <p>
-                [Listar 3 a 5 pontos técnicos que costumam anular essa infração, ex: erro de preenchimento, falta de aferição do radar, ausência de notificação, etc.]
-              </p>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>Argumento técnico 1: [Detalhes]</li>
-                <li>Argumento técnico 2: [Detalhes]</li>
-                <li>Argumento técnico 3: [Detalhes]</li>
-              </ul>
-
-              <h2 className="text-2xl font-bold text-gray-900">Como funciona o recurso com IA?</h2>
-              <p>
-                [Explicar como o Auto Defesa utiliza a inteligência artificial para identificar esses erros automaticamente.]
-              </p>
+              {article.content}
             </div>
 
             {/* FAQ Section do Artigo */}
