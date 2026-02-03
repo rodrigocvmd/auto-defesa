@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Shield, User, LogOut, Menu, X } from "lucide-react";
+import { Shield, User, LogOut, Menu, X, BookOpen } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import VerificationBanner from "../components/VerificationBanner";
 
@@ -45,6 +45,12 @@ const MainLayout = ({ children }) => {
 									Início
 								</Link>
 							)}
+
+							<Link
+								to="/guia"
+								className="text-gray-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-1">
+								<BookOpen size={18} /> Guia
+							</Link>
 
 							<Link
 								to="/how-it-works"
@@ -144,6 +150,12 @@ const MainLayout = ({ children }) => {
 									Início
 								</Link>
 							)}
+							<Link
+								to="/guia"
+								onClick={() => setIsMenuOpen(false)}
+								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100 flex items-center justify-center gap-2">
+								<BookOpen size={18} /> Guia de Multas
+							</Link>
 							<Link
 								to="/how-it-works"
 								onClick={() => setIsMenuOpen(false)}

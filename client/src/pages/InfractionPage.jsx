@@ -3,11 +3,11 @@ import { useParams, Link } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
 import { Shield, HelpCircle, CheckCircle, ArrowRight } from "lucide-react";
-import { infractionData } from "../utils/infractionData";
+import { articles } from "../data/articles";
 
 const InfractionPage = () => {
 	const { slug } = useParams();
-	const data = infractionData[slug];
+	const data = articles.find(article => article.slug === slug);
 
 	// Estado para slug não encontrado (fallback genérico)
 	if (!data) {
