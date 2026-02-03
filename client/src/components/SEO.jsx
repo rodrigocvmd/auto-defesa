@@ -23,6 +23,13 @@ const SEO = ({
     "@type": "SoftwareApplication",
     "name": "Auto Defesa",
     "applicationCategory": "LegalApplication",
+    "image": "https://meuautodefesa.com.br/favicon.svg",
+    "description": fullDescription,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    },
     "author": {
       "@type": "Person",
       "name": "Rodrigo",

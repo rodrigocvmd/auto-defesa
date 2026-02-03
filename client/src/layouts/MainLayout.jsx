@@ -189,17 +189,20 @@ const MainLayout = ({ children }) => {
 			{/* Main Content Area */}
 			<main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-1 py-1">
 				{children}
-				<footer className="border-t border-gray-100 py-6 text-center text-sm text-gray-500 mt-8">
-					<p className="mb-2">
-						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não substitui a consultoria de um advogado.
+				<footer className="border-t border-gray-100 py-6 mt-8 flex flex-col items-center">
+					<p className="text-xs text-gray-400 max-w-2xl text-center mb-2">
+						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não substituímos a consultoria de um advogado.
 					</p>
-					<p className="mb-2">
+					<p className="text-sm text-gray-500 mb-4">
 						Brasília, DF | contato@meuautodefesa.com.br
 					</p>
-					<div className="flex justify-center gap-4">
+					<div className="flex justify-center gap-4 text-sm text-gray-500">
 						<Link to="/terms" className="hover:underline">Termos de Uso</Link>
 						<Link to="/privacy" className="hover:underline">Privacidade</Link>
 					</div>
+					<p className="text-xs text-gray-400 mt-4">
+						&copy; 2026 AutoDefesa Software. Todos os direitos reservados.
+					</p>
 				</footer>
 			</main>
 		</div>
