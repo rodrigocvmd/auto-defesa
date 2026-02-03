@@ -266,6 +266,35 @@ export const ResultStep = ({
                                     color: #000 !important;
                                     text-align: justify !important;
                                 }
+
+                                /* Forçar estilos nos elementos internos para vencer o CSS do Tailwind/Quill */
+                                .ql-editor p {
+                                    margin-bottom: 10px !important;
+                                    text-align: justify !important;
+                                    font-family: 'Times New Roman', Times, serif !important;
+                                }
+                                .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4 {
+                                    font-family: 'Times New Roman', Times, serif !important;
+                                    font-weight: bold !important;
+                                    text-align: center !important;
+                                    margin-top: 20px !important;
+                                    margin-bottom: 10px !important;
+                                    line-height: 1.2 !important;
+                                }
+                                .ql-editor h1 { font-size: 16pt !important; text-transform: uppercase !important; }
+                                .ql-editor h2 { font-size: 14pt !important; }
+                                .ql-editor h3 { font-size: 12pt !important; text-decoration: underline !important; }
+                                
+                                .ql-editor strong, .ql-editor b { font-weight: bold !important; }
+                                .ql-editor em, .ql-editor i { font-style: italic !important; }
+                                
+                                .ql-editor ul, .ql-editor ol { margin-left: 20px !important; padding-left: 0 !important; }
+                                .ql-editor li { margin-bottom: 5px !important; padding-left: 5px !important; }
+
+                                /* Alinhamentos específicos do Quill */
+                                .ql-editor .ql-align-center { text-align: center !important; }
+                                .ql-editor .ql-align-right { text-align: right !important; }
+                                .ql-editor .ql-align-justify { text-align: justify !important; }
                                 
                                 /* Remover borda azul de seleção do editor quando readOnly */
                                 .ql-editor.ql-blank::before { color: rgba(0,0,0,0.6); font-style: normal; }
