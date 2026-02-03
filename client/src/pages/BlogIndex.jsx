@@ -52,7 +52,7 @@ const BlogIndex = () => {
                 </p>
                 
                 <Link 
-                  to={`/recorrer/${article.slug}`} 
+                  to={`/artigo/${article.slug}`} 
                   className="inline-flex items-center text-blue-600 font-bold text-sm hover:text-blue-800 transition-colors group"
                 >
                   Ler Artigo <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />

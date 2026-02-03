@@ -47,12 +47,6 @@ const MainLayout = ({ children }) => {
 							)}
 
 							<Link
-								to="/guia"
-								className="text-gray-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-1">
-								<BookOpen size={18} /> Guia
-							</Link>
-
-							<Link
 								to="/how-it-works"
 								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
 								Como Funciona
@@ -62,6 +56,12 @@ const MainLayout = ({ children }) => {
 								to="/pricing"
 								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
 								Preços
+							</Link>
+
+							<Link
+								to="/guia"
+								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+								Artigos
 							</Link>
 
 							{/* Recursos Úteis Dropdown */}
@@ -153,8 +153,8 @@ const MainLayout = ({ children }) => {
 							<Link
 								to="/guia"
 								onClick={() => setIsMenuOpen(false)}
-								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100 flex items-center justify-center gap-2">
-								<BookOpen size={18} /> Guia de Multas
+								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+								Artigos
 							</Link>
 							<Link
 								to="/how-it-works"

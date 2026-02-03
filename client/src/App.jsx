@@ -18,6 +18,7 @@ import ScrollToTop from './components/ScrollToTop';
 import InfractionPage from './pages/InfractionPage';
 import AllInfractionsPage from './pages/AllInfractionsPage';
 import BlogIndex from './pages/BlogIndex';
+import ArticlePage from './pages/ArticlePage';
 
 function App() {
   return (
@@ -38,8 +39,11 @@ function App() {
             <Route path="/upload" element={<UploadDefense />} />
             <Route path="/upload/:step" element={<UploadDefense />} />
             
-            {/* Páginas de Infração */}
+            {/* Páginas de Conteúdo */}
+            <Route path="/artigo/:slug" element={<ArticlePage />} />
             <Route path="/guia" element={<BlogIndex />} />
+            
+            {/* Páginas de Infração (Legado/Landing Pages Específicas) */}
             <Route path="/recursos" element={<AllInfractionsPage />} />
             <Route path="/recorrer/:slug" element={<InfractionPage />} />
 
