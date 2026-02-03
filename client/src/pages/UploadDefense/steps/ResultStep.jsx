@@ -283,7 +283,10 @@ export const ResultStep = ({
                                 }
                                 .ql-editor h1 { font-size: 16pt !important; text-transform: uppercase !important; }
                                 .ql-editor h2 { font-size: 14pt !important; }
-                                .ql-editor h3 { font-size: 12pt !important; text-decoration: underline !important; }
+                                .ql-editor h3 { font-size: 12pt !important; text-align: center !important; }
+                                
+                                /* Garantir que nada seja sublinhado por padrão, a menos que seja um link (que não deve haver) */
+                                .ql-editor * { text-decoration: none !important; }
                                 
                                 .ql-editor strong, .ql-editor b { font-weight: bold !important; }
                                 .ql-editor em, .ql-editor i { font-style: italic !important; }
