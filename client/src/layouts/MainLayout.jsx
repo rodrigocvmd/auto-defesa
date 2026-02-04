@@ -302,6 +302,9 @@ const MainLayout = ({ children }) => {
 						</a>{" "}
 					</p>
 					<div className="flex justify-center gap-4 text-sm text-gray-500 mb-4">
+						<Link to="/about" className="hover:underline">
+							Sobre Nós
+						</Link>
 						<Link to="/terms" className="hover:underline">
 							Termos de Uso
 						</Link>

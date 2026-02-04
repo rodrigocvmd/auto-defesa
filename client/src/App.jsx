@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import UploadDefense from './pages/UploadDefense';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
@@ -49,6 +50,7 @@ function App() {
 
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/about" element={<About />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/help" element={<Help />} />
           </Routes>
