@@ -82,9 +82,10 @@ const HtmlToPdf = ({ html }) => {
 
       // Handle Paragraphs
       if (domNode.name === 'p') {
+        const hasIndent = domNode.attribs && domNode.attribs.style && domNode.attribs.style.includes('text-indent');
         return (
           <View style={styles.p}>
-            <Text>{domToReact(domNode.children, options)}</Text>
+            <Text style={hasIndent ? { textIndent: 50 } : {}}>{domToReact(domNode.children, options)}</Text>
           </View>
         );
       }
