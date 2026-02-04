@@ -100,7 +100,7 @@ const REVIEWS = [
 	},
 	{
 		id: 13,
-		name: "Rodrigo M.",
+		name: "Renato M.",
 		rating: 5,
 		date: "Há 4 meses",
 		comment:
