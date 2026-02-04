@@ -24,7 +24,7 @@ export const HardBlockModal = ({ hardBlockInfo, onClose }) => {
 					<br />
 					Para garantir a estabilidade do sistema, novas análises estão suspensas por:
 					<br />
-					<span className="text-3xl font-black text-gray-900 block mt-4">{timeLeft} minutos</span>
+					<span className="text-3xl font-black text-gray-900 block mt-4 mb-4">{timeLeft} minutos</span>
 					{""} Caso entenda que isso tenha sido um erro ou queira elaborar o recurso final agora,
 					entre em contato com nosso pronto{" "}
 					<Link className="underline" to="/help">

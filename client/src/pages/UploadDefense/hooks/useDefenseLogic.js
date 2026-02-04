@@ -454,6 +454,9 @@ export const useDefenseLogic = (step) => {
                     setDefenseId(response.data.defenseId);
                 }
                 
+                // Reset free limits after using a credit
+                await rateLimiter.resetLimits(currentUser);
+                
                 navigate("/upload/result");
             }
         } catch (err) {
