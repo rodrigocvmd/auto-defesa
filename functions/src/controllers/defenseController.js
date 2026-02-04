@@ -525,7 +525,7 @@ exports.analyzeDocument = (req, res) => {
         5. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
              *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
              
-             - **Endereçamento:** Caixa Alta, Negrito, Alinhado à Esquerda/Justificado.
+             - **Endereçamento:** Caixa Alta, Negrito, Alinhado Centralizado/Justificado.
                Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
              
              - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.

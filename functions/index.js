@@ -6,7 +6,6 @@ const logger = require("firebase-functions/logger");
 const infractionController = require("./src/controllers/infractionController");
 const defenseController = require("./src/controllers/defenseController");
 const paymentController = require("./src/controllers/paymentController");
-const pdfController = require("./src/controllers/pdfController");
 const userService = require("./src/services/userService");
 const userController = require("./src/controllers/userController");
 const supportController = require("./src/controllers/supportController");
@@ -35,9 +34,6 @@ exports.preAnalyze = onRequest(defenseController.preAnalyze);
 
 // --- FUNÇÃO 6: ANÁLISE COMPLETA (UPLOAD) ---
 exports.analyzeDocument = onRequest(defenseController.analyzeDocument);
-
-// --- FUNÇÃO 7: GERAR PDF ---
-exports.generatePdf = onRequest({ memory: "1GiB" }, pdfController.generatePdf); // Mais memória para Chrome Headless
 
 // --- WEBHOOK STRIPE ---
 exports.stripeWebhook = onRequest(paymentController.stripeWebhook);
