@@ -264,12 +264,12 @@ const MainLayout = ({ children }) => {
 					{/* Recursos Úteis */}
 					{!location.pathname.startsWith("/upload") && (
 						<div className="w-full max-w-4xl mb-8 px-4">
-							<h4 className="text-gray-900 font-bold text-md mb-4 text-center">Recursos Úteis</h4>
-							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+							<h4 className="text-gray-900 font-bold text-md mb-5 text-center">Recursos Úteis</h4>
+							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center ">
 								<Link
 									to="/recorrer/lei-seca"
 									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
-									Lei Seca
+									Recurso à Lei Seca
 								</Link>
 								<Link
 									to="/recorrer/recusa-bafometro"
@@ -284,24 +284,24 @@ const MainLayout = ({ children }) => {
 								<Link
 									to="/recorrer/celular-direcao"
 									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
-									Uso de Celular
+									Utilização de Celular
 								</Link>
 								<Link
 									to="/recursos"
 									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
-									Outras Infrações
+									Ver Outras Infrações
 								</Link>
 							</div>
 						</div>
 					)}
 
-					<p className="text-sm text-gray-500 mb-4">
+					<p className="text-md text-gray-500 mb-4">
 						Brasília/DF |{" "}
 						<a className="underline" href="mailto:suporte@meuatodefesa.com.br">
 							suporte@meuatodefesa.com.br
 						</a>{" "}
 					</p>
-					<div className="flex justify-center gap-4 text-sm text-gray-500 mb-4">
+					<div className="flex justify-center gap-4 text-md text-gray-500 mb-4">
 						<Link to="/about" className="hover:underline">
 							Sobre Nós
 						</Link>

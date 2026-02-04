@@ -38,6 +38,7 @@ const UploadDefense = () => {
         setShowDivergenceModal,
         analysisData,
         handleUploadAndExtract,
+        handlePreAnalysis,
         formData
     } = logic;
 
@@ -75,9 +76,13 @@ const UploadDefense = () => {
             {showLimitModal && (
                 <LimitExceededModal 
                     onClose={() => setShowLimitModal(false)} 
-                    onProceed={() => {
+                    onProceed={(e) => {
                         setShowLimitModal(false);
-                        handleUploadAndExtract(true);
+                        if (step === "form") {
+                            handlePreAnalysis(e, true);
+                        } else {
+                            handleUploadAndExtract(true);
+                        }
                     }}
                     step={step}
                 />

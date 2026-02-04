@@ -12,7 +12,6 @@ import {
 	CheckCircle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { LimitExceededModal } from "../components/modals/LimitExceededModal";
 import { LoginPromptModal } from "../components/modals/LoginPromptModal";
 import { HardBlockModal } from "../components/modals/HardBlockModal";
 import { DivergenceWarningModal } from "../components/modals/DivergenceWarningModal";
@@ -64,12 +63,6 @@ export const FormStep = ({
 
 	return (
 		<div className="max-w-5xl mx-auto py-8">
-			{showLimitModal && (
-				<LimitExceededModal
-					onClose={() => setShowLimitModal(false)}
-					onProceed={(e) => handlePreAnalysis(e, true)}
-				/>
-			)}
 			{showLoginPrompt && (
 				<LoginPromptModal
 					onClose={() => setShowLoginPrompt(false)}

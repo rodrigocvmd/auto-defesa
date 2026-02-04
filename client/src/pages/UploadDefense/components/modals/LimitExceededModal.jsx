@@ -24,7 +24,7 @@ export const LimitExceededModal = ({ onClose, onProceed, step }) => (
                 <button
                     onClick={onProceed}
                     className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
-                    Sim, prosseguir para Recurso
+                    Sim, prosseguir para análise
                 </button>
                 <button
                     onClick={onClose}

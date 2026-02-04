@@ -23,7 +23,7 @@ const Home = () => {
 				description="Anule sua multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online, anular multa"
 			/>
-			<div className="flex flex-col gap-20 pb-20">
+			<div className="flex flex-col gap-20 pb-8">
 				{/* HERO SECTION */}
 				<section className="relative pt-8 pb-4 lg:pt-10 lg:pb-10 overflow-hidden">
 					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/50 via-gray-50 to-white"></div>
@@ -116,52 +116,6 @@ const Home = () => {
 								Receba o <strong>documento completo em PDF</strong>. Basta imprimir ou assinar
 								digitalmente e enviar ou protocolar junto ao órgão autuador.
 							</p>
-						</div>
-					</div>
-				</section>
-
-				{/* NÚMEROS POSITIVOS */}
-				<section className="relative py-24 overflow-hidden">
-					<div className="absolute inset-0 -z-10 bg-gray-50/50"></div>
-					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent"></div>
-
-					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-								<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
-									<FileText size={24} />
-								</div>
-								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+4.800</div>
-								<div className="text-gray-500 font-medium">Recursos Elaborados</div>
-								<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
-							</div>
-
-							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-								<div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform">
-									<DollarSign size={24} />
-								</div>
-								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">R$ 517</div>
-								<div className="text-gray-500 font-medium">Economia Média p/ Usuário</div>
-								<div className="mt-4 h-1 w-12 bg-green-600 rounded-full"></div>
-							</div>
-
-							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-								<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform">
-									<Star size={24} fill="currentColor" />
-								</div>
-								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">92%</div>
-								<div className="text-gray-500 font-medium">Satisfação Garantida</div>
-								<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
-							</div>
-
-							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-								<div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform">
-									<Clock size={24} />
-								</div>
-								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">&lt; 3min</div>
-								<div className="text-gray-500 font-medium">Tempo Médio de Geração</div>
-								<div className="mt-4 h-1 w-12 bg-indigo-600 rounded-full"></div>
-							</div>
 						</div>
 					</div>
 				</section>
@@ -283,6 +237,54 @@ const Home = () => {
 								automaticamente o artigo e materialidade da infração e os detalhes para montar a
 								melhor defesa possível.
 							</p>
+						</div>
+					</div>
+				</section>
+
+				{/* NÚMEROS POSITIVOS */}
+				<section className="relative overflow-hidden">
+					<div className="absolute inset-0 -z-10 bg-gray-50/50"></div>
+					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent"></div>
+
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+								<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
+									<FileText size={24} />
+								</div>
+								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+493</div>
+								<div className="text-gray-500 font-medium">Recursos Elaborados</div>
+								<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
+							</div>
+
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+								<div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform">
+									<DollarSign size={24} />
+								</div>
+								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">R$ 517</div>
+								<div className="text-gray-500 font-medium">Economia Média p/ Usuário</div>
+								<div className="mt-4 h-1 w-12 bg-green-600 rounded-full"></div>
+							</div>
+
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+								<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform">
+									<Star size={24} fill="currentColor" />
+								</div>
+								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">93%</div>
+								<div className="text-gray-500 font-medium">Satisfação dos Usuários</div>
+								<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
+							</div>
+
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+								<div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform">
+									<Clock size={24} />
+								</div>
+								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
+									&lt; 3min
+								</div>
+								<div className="text-gray-500 font-medium">Tempo Médio de Geração</div>
+								<div className="mt-4 h-1 w-12 bg-indigo-600 rounded-full"></div>
+							</div>
 						</div>
 					</div>
 				</section>

@@ -329,7 +329,7 @@ const Testimonials = () => {
 
 					<div className="flex-col">
 						<div className="flex items-center justify-center gap-2 mt-4 text-yellow-500 font-bold">
-							<span className="text-2xl text-gray-900">4.8</span>
+							<span className="text-2xl text-gray-900">4.7</span>
 							<div className="flex">
 								{[...Array(5)].map((_, i) => (
 									<Star
@@ -342,7 +342,7 @@ const Testimonials = () => {
 							</div>
 						</div>
 						<span className="text-sm text-gray-500 font-normal">
-							(Baseado em <strong>647 avaliações</strong>)
+							(Baseado em <strong>38 avaliações</strong>)
 						</span>
 					</div>
 				</div>
