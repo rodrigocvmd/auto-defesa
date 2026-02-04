@@ -4,11 +4,11 @@ import { Star, User, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 const REVIEWS = [
 	{
 		id: 1,
-		name: "Carlos Eduardo",
+		name: "carlos eduardo",
 		rating: 5,
 		date: "Há 2 dias",
 		comment:
-			"Eu estava desesperado com uma multa de Lei Seca. A plataforma me ajudou a montar um recurso super técnico. O atendimento no suporte também foi nota 10.",
+			"Eu estava desesperado com uma multa de Lei Seca. A plataforma me ajudou a montar um recurso super técnico. O atendimento no suporte tambem foi nota 10.",
 	},
 	{
 		id: 2,
@@ -16,15 +16,15 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 1 semana",
 		comment:
-			"Muito prático. Tirei a foto da notificação e em minutos já tinha uma prévia da defesa. Recomendo para quem não quer gastar com despachante.",
+			"Muito pratico. Tirei a foto da notificação e em minutos ja tinha uma previa da defesa. Recomendo pra quem não quer gastar com despachante.",
 	},
 	{
 		id: 3,
-		name: "Roberto Almeida",
-		rating: 4,
+		name: "ROBERTO ALMEIDA",
+		rating: 3,
 		date: "Há 2 semanas",
 		comment:
-			"O sistema é bom, mas tive uma dúvida na hora de pagar. O suporte me ajudou rápido, mas poderia ser mais claro no site. O recurso em si ficou excelente.",
+			"O sistema é bom, mas tive uma dúvida na hora de pagar e demorei a entender. O suporte me ajudou rápido, mas o site podia ser mais claro no checkout. O recurso em si ficou excelente.",
 	},
 	{
 		id: 4,
@@ -32,15 +32,15 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 3 semanas",
 		comment:
-			"Consegui anular uma multa de velocidade que eu nem lembrava de ter levado. A argumentação sobre a aferição do radar foi o ponto chave. Obrigada!",
+			"Consegui anular uma multa de velocidade que eu nem lembrava de ter levado... A argumentação sobre a aferição do radar foi o ponto chave. Obrigada!",
 	},
 	{
 		id: 5,
-		name: "Ricardo Oliveira",
+		name: "ricardo oliveira",
 		rating: 5,
 		date: "Há 1 mês",
 		comment:
-			"Impressionante a qualidade do texto jurídico. Parece escrito por um advogado especialista mesmo. Valeu cada centavo.",
+			"Impressionante a qualidade do texto juridico. Parece escrito por um advogado especialista mesmo. Valeu cada centavo!!",
 	},
 	{
 		id: 6,
@@ -56,15 +56,15 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 1 mês",
 		comment:
-			"Minha PPD estava em risco. Fiz o recurso para ganhar tempo e acabou que a multa caducou. Salvei minha carteira!",
+			"Minha PPD estava em risco. Fiz o recurso para ganhar tempo e acabo q a multa caducou. Salvei minha carteira!",
 	},
 	{
 		id: 8,
-		name: "Lucas G.",
+		name: "lucas g.",
 		rating: 5,
 		date: "Há 2 meses",
 		comment:
-			"Interface limpa e fácil de usar. Não precisei falar com ninguém, fiz tudo pelo celular no horário do almoço.",
+			"Interface limpa e facil de usar. Nao precisei falar com ninguem, fiz tudo pelo celular no horario do almoço.",
 	},
 	{
 		id: 9,
@@ -72,7 +72,7 @@ const REVIEWS = [
 		rating: 3,
 		date: "Há 2 meses",
 		comment:
-			"O recurso é bom, mas demorei um pouco pra entender onde baixar o PDF final. Depois que achei, foi tranquilo.",
+			"O recurso é bom, mas demorei um pouco pra entender onde baixar o PDF final. Depois que achei, foi tranquilo. O suporte podia responder mais rapido no chat.",
 	},
 	{
 		id: 10,
@@ -96,7 +96,7 @@ const REVIEWS = [
 		rating: 4,
 		date: "Há 4 meses",
 		comment:
-			"Bom serviço. Tive um problema com o login mas resolvi rápido redefinindo a senha. O recurso valeu a pena.",
+			"Bom serviço. Tive um problema com o login mas resolvi rapido redefinindo a senha. O recurso valeu a pena.",
 	},
 	{
 		id: 13,
@@ -116,7 +116,7 @@ const REVIEWS = [
 	},
 	{
 		id: 15,
-		name: "Pedro Henrique",
+		name: "PEDRO HENRIQUE",
 		rating: 4,
 		date: "Há 5 meses",
 		comment:
