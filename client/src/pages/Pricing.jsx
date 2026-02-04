@@ -22,7 +22,7 @@ const Pricing = () => {
 		{
 			id: "price_1SsUk8Qphe4gmDmiJhdjZsL4", // Substitua pelo ID real price_...
 			name: "Recurso Expresso",
-			price: "R$ 17,90",
+			price: "R$ 16,90",
 			credits: 1,
 			mode: "payment", // Pagamento Único
 			icon: <FileText size={24} />,
@@ -105,7 +105,7 @@ const Pricing = () => {
 		<MainLayout>
 			<SEO
 				title="Planos e Preços"
-				description="Escolha o melhor plano para sua defesa. A partir de R$ 17,90. Recurso profissional gerado por IA. Sem mensalidades."
+				description="Escolha o melhor plano para sua defesa. A partir de R$ 16,90. Recurso profissional gerado por IA. Sem mensalidades."
 				keywords="preço recurso multa, valor advogado transito, comprar recurso multa, planos autodefesa"
 			/>
 			<div className="max-w-6xl mx-auto py-12 px-4">

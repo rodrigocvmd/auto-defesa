@@ -218,7 +218,7 @@ const Home = () => {
 									<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
 										<span className="font-medium text-gray-600">Custo</span>
 										<span className="font-black text-green-600 text-xl sm:text-2xl">
-											Apenas R$ 17,90
+											Apenas R$ 16,90
 										</span>
 									</li>
 									<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">

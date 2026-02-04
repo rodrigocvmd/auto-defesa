@@ -176,40 +176,6 @@ export const api = {
     }
   },
 
-  // 7. Gerar PDF no Backend (Puppeteer)
-  generatePdf: async (htmlContent, fileName) => {
-    try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${BASE_URL}/generatePdf`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ htmlContent, fileName }),
-      });
-
-      // Verificar se a resposta é OK e se é realmente um PDF
-      const contentType = response.headers.get("content-type");
-      
-      if (!response.ok || (contentType && !contentType.includes("application/pdf"))) {
-        // Tenta ler o erro como JSON ou Texto
-        const errText = await response.text();
-        let errMsg = "Erro ao gerar PDF";
-        try {
-            const json = JSON.parse(errText);
-            errMsg = json.error || errMsg;
-        } catch (e) {
-            errMsg = errText || errMsg; // Se não for JSON, usa o texto puro (pode ser erro HTML do servidor)
-        }
-        throw new Error(errMsg);
-      }
-      
-      // Retorna o BLOB do arquivo com tipo explícito
-      return await response.blob();
-    } catch (error) {
-      console.error("PDF Generation Error:", error);
-      throw error;
-    }
-  },
-
   // 9. Enviar Email de Suporte
   sendSupportEmail: async (data) => {
     try {

@@ -25,10 +25,17 @@ export default function ResetPassword() {
     const [passwordsMatch, setPasswordsMatch] = useState(false);
 
     useEffect(() => {
-        setHasMinLength(password.length >= 6);
-        setHasUpperCase(/[A-Z]/.test(password));
-        setHasNumber(/[0-9]/.test(password));
-        setPasswordsMatch(password === confirmPassword && password !== '');
+        if (password) {
+            setHasMinLength(password.length >= 6);
+            setHasUpperCase(/[A-Z]/.test(password));
+            setHasNumber(/[0-9]/.test(password));
+            setPasswordsMatch(password === confirmPassword && password !== '');
+        } else {
+            setHasMinLength(false);
+            setHasUpperCase(false);
+            setHasNumber(false);
+            setPasswordsMatch(false);
+        }
     }, [password, confirmPassword]);
 
     useEffect(() => {
@@ -141,21 +148,23 @@ export default function ResetPassword() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                             {/* Password Feedback */}
-                            <div className="mt-3 space-y-1">
-                                <p className="text-xs font-medium text-gray-500 mb-1">Sua senha deve ter:</p>
-                                <div className={`flex items-center gap-2 text-xs ${hasMinLength ? 'text-green-600' : 'text-gray-400'}`}>
-                                    {hasMinLength ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
-                                    Mínimo de 6 caracteres
+                            {password && (
+                                <div className="mt-3 space-y-1">
+                                    <p className="text-xs font-medium text-gray-500 mb-1">Sua senha deve ter:</p>
+                                    <div className={`flex items-center gap-2 text-xs ${hasMinLength ? 'text-green-600' : 'text-gray-400'}`}>
+                                        {hasMinLength ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
+                                        Mínimo de 6 caracteres
+                                    </div>
+                                    <div className={`flex items-center gap-2 text-xs ${hasUpperCase ? 'text-green-600' : 'text-gray-400'}`}>
+                                        {hasUpperCase ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
+                                        Pelo menos 1 letra maiúscula
+                                    </div>
+                                    <div className={`flex items-center gap-2 text-xs ${hasNumber ? 'text-green-600' : 'text-gray-400'}`}>
+                                        {hasNumber ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
+                                        Pelo menos 1 número
+                                    </div>
                                 </div>
-                                <div className={`flex items-center gap-2 text-xs ${hasUpperCase ? 'text-green-600' : 'text-gray-400'}`}>
-                                    {hasUpperCase ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
-                                    Pelo menos 1 letra maiúscula
-                                </div>
-                                <div className={`flex items-center gap-2 text-xs ${hasNumber ? 'text-green-600' : 'text-gray-400'}`}>
-                                    {hasNumber ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
-                                    Pelo menos 1 número
-                                </div>
-                            </div>
+                            )}
                         </div>
 
                         <div>

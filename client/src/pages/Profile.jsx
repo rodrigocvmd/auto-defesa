@@ -36,6 +36,8 @@ import {
 import { db } from "../firebaseConfig";
 import { api } from "../services/api";
 import { formatDefenseToHtml } from "../utils/textToHtml";
+import { pdf } from "@react-pdf/renderer";
+import DefenseDocument from "../components/DefensePDF";
 
 export default function Profile() {
 	const { currentUser, userData, updateUserEmail, deleteUserAccount, checkEmailExists } = useAuth();
@@ -285,8 +287,8 @@ export default function Profile() {
         }
 
 		try {
-            // Chamada ao Backend via API
-			const blob = await api.generatePdf(contentHtml, fileName);
+            // Gera o PDF no cliente usando @react-pdf/renderer (mesmo motor do UploadDefense)
+			const blob = await pdf(<DefenseDocument content={contentHtml} />).toBlob();
             
             // Download do Blob
             const url = window.URL.createObjectURL(blob);
