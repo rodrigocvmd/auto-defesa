@@ -11,6 +11,15 @@ const MainLayout = ({ children }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const isHome = location.pathname === "/";
 
+	const data = new Date();
+
+	const updatedDate = data.toLocaleDateString("pt-BR", {
+		month: "long",
+		year: "numeric",
+	});
+
+	const formattedDate = updatedDate.charAt(0).toUpperCase() + updatedDate.slice(1);
+
 	async function handleLogout() {
 		try {
 			await logout();
@@ -19,6 +28,8 @@ const MainLayout = ({ children }) => {
 			console.error("Erro ao sair", error);
 		}
 	}
+
+	const ano = data.getFullYear();
 
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col font-sans">
@@ -251,43 +262,46 @@ const MainLayout = ({ children }) => {
 				{children}
 				<footer className="border-t border-gray-100 py-6 mt-8 flex flex-col items-center">
 					{/* Recursos Úteis */}
-					<div className="w-full max-w-4xl mb-8 px-4">
-						<h4 className="text-gray-900 font-bold text-md mb-4 text-center">Recursos Úteis</h4>
-						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
-							<Link
-								to="/recorrer/lei-seca"
-								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
-								Lei Seca
-							</Link>
-							<Link
-								to="/recorrer/recusa-bafometro"
-								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
-								Recusa ao Bafômetro
-							</Link>
-							<Link
-								to="/recorrer/excesso-velocidade"
-								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
-								Excesso de Velocidade
-							</Link>
-							<Link
-								to="/recorrer/celular-direcao"
-								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
-								Uso de Celular
-							</Link>
-							<Link
-								to="/recursos"
-								className="text-gray-500 hover:text-blue-600 text-md transition-colors">
-								Outras Infrações
-							</Link>
+					{!location.pathname.startsWith("/upload") && (
+						<div className="w-full max-w-4xl mb-8 px-4">
+							<h4 className="text-gray-900 font-bold text-md mb-4 text-center">Recursos Úteis</h4>
+							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+								<Link
+									to="/recorrer/lei-seca"
+									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+									Lei Seca
+								</Link>
+								<Link
+									to="/recorrer/recusa-bafometro"
+									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+									Recusa ao Bafômetro
+								</Link>
+								<Link
+									to="/recorrer/excesso-velocidade"
+									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+									Excesso de Velocidade
+								</Link>
+								<Link
+									to="/recorrer/celular-direcao"
+									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+									Uso de Celular
+								</Link>
+								<Link
+									to="/recursos"
+									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+									Outras Infrações
+								</Link>
+							</div>
 						</div>
-					</div>
+					)}
 
-					<p className="text-xs text-gray-400 max-w-2xl text-center mb-2">
-						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não
-						substituímos a consultoria de um advogado.
+					<p className="text-sm text-gray-500 mb-4">
+						Brasília/DF |{" "}
+						<a className="underline" href="mailto:suporte@meuatodefesa.com.br">
+							suporte@meuatodefesa.com.br
+						</a>{" "}
 					</p>
-					<p className="text-sm text-gray-500 mb-4">Brasília, DF | contato@meuautodefesa.com.br</p>
-					<div className="flex justify-center gap-4 text-sm text-gray-500">
+					<div className="flex justify-center gap-4 text-sm text-gray-500 mb-4">
 						<Link to="/terms" className="hover:underline">
 							Termos de Uso
 						</Link>
@@ -295,8 +309,14 @@ const MainLayout = ({ children }) => {
 							Privacidade
 						</Link>
 					</div>
+
+					<p className="text-xs text-gray-400 max-w-3xl text-center mb-1">
+						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não
+						substituímos a consultoria de um advogado.
+					</p>
+
 					<p className="text-xs text-gray-400 mt-4">
-						&copy; 2026 AutoDefesa Software. Todos os direitos reservados.
+						&copy; {ano} AutoDefesa Software. Todos os direitos reservados.
 					</p>
 				</footer>
 			</main>

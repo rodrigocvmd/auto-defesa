@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import MainLayout from "../layouts/MainLayout";
-import { Mail, MessageCircle, FileQuestion, ChevronDown, ChevronUp, Send, Loader2 } from "lucide-react";
+import {
+	Mail,
+	MessageCircle,
+	FileQuestion,
+	ChevronDown,
+	ChevronUp,
+	Send,
+	Loader2,
+} from "lucide-react";
 import { api } from "../services/api";
 
 const Help = () => {
@@ -72,9 +80,9 @@ const Help = () => {
 					</p>
 				</header>
 
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 items-start">
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 items-stretch">
 					{/* Contact Form - Takes 2 columns on large screens */}
-					<div className="lg:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+					<div className="lg:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
 						<div className="flex items-center gap-4 mb-6">
 							<div className="bg-blue-100 p-3 rounded-full text-blue-600">
 								<Mail size={24} />
@@ -87,7 +95,7 @@ const Help = () => {
 							</div>
 						</div>
 
-						<form onSubmit={handleSubmit} className="space-y-4">
+						<form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col">
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
 									<label className="block text-sm font-medium text-gray-700 mb-1">Seu Nome</label>
@@ -114,22 +122,25 @@ const Help = () => {
 									/>
 								</div>
 							</div>
-							<div>
+							<div className="flex-1 flex flex-col">
 								<label className="block text-sm font-medium text-gray-700 mb-1">Mensagem</label>
 								<textarea
 									name="message"
 									required
 									value={formData.message}
 									onChange={handleInputChange}
-									rows="6"
-									className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+									className="w-full flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none min-h-[150px]"
 									placeholder="Descreva sua dúvida ou problema..."></textarea>
 							</div>
 							<button
 								type="submit"
 								disabled={status.loading}
 								className="bg-gray-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
-								{status.loading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+								{status.loading ? (
+									<Loader2 size={18} className="animate-spin" />
+								) : (
+									<Send size={18} />
+								)}
 								{status.loading ? "Enviando..." : "Enviar Mensagem"}
 							</button>
 							{status.success && (
@@ -145,23 +156,43 @@ const Help = () => {
 						</form>
 					</div>
 
-					{/* WhatsApp Card - Takes 1 column */}
-					<div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-md transition-shadow sticky top-8">
-						<div className="bg-green-100 p-4 rounded-full text-green-600 mb-4">
-							<MessageCircle size={32} />
+					{/* Contact Cards - Takes 1 column */}
+					<div className="flex flex-col gap-6">
+						{/* Email Support Card */}
+						<div className="flex-1 bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow">
+							<div className="bg-blue-100 p-4 rounded-full text-blue-600 mb-4">
+								<Mail size={32} />
+							</div>
+							<h3 className="font-bold text-xl text-gray-900 mb-2">E-mail</h3>
+							<p className="text-gray-500 mb-6 text-sm">
+								Suporte técnico e comercial por e-mail com resposta em até 24h.
+							</p>
+							<a
+								href="mailto:suporte@meuautodefesa.com.br"
+								className="bg-gray-900 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+								<Mail size={20} />
+								Enviar E-mail
+							</a>
 						</div>
-						<h3 className="font-bold text-xl text-gray-900 mb-2">WhatsApp</h3>
-						<p className="text-gray-500 mb-6 text-sm">
-							Atendimento rápido para dúvidas, pagamentos ou suporte em geral.
-						</p>
-						<a
-							href="https://wa.me/5561999662404?text=Ol%C3%A1%2C%20estou%20precisando%20de%20suporte%20para%20o%20app%20AutoDefesa."
-							target="_blank"
-							rel="noopener noreferrer"
-							className="bg-green-600 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
-							<MessageCircle size={20} />
-							Falar no WhatsApp
-						</a>
+
+						{/* WhatsApp Card */}
+						<div className="flex-1 bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow">
+							<div className="bg-green-100 p-4 rounded-full text-green-600 mb-4">
+								<MessageCircle size={32} />
+							</div>
+							<h3 className="font-bold text-xl text-gray-900 mb-2">WhatsApp</h3>
+							<p className="text-gray-500 mb-6 text-sm">
+								Atendimento rápido para dúvidas, pagamentos ou suporte em geral.
+							</p>
+							<a
+								href="https://wa.me/5561999662404?text=Ol%C3%A1%2C%20estou%20precisando%20de%20suporte%20para%20o%20app%20AutoDefesa."
+								target="_blank"
+								rel="noopener noreferrer"
+								className="bg-green-600 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+								<MessageCircle size={20} />
+								Falar no WhatsApp
+							</a>
+						</div>
 					</div>
 				</div>
 

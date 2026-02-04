@@ -4,6 +4,15 @@ import { ArrowLeft, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Terms = () => {
+	const data = new Date();
+
+	const updatedDate = data.toLocaleDateString("pt-BR", {
+		month: "long",
+		year: "numeric",
+	});
+
+	const formattedDate = updatedDate.charAt(0).toUpperCase() + updatedDate.slice(1);
+
 	return (
 		<MainLayout>
 			<div className="max-w-4xl mx-auto py-12 px-4">
@@ -93,13 +102,9 @@ const Terms = () => {
 
 						<h3>9. Contato</h3>
 						<p>
-							Para dúvidas sobre estes termos, entre em contato através do número{" "}
-							<a
-								href="https://wa.me/5561999662404"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="text-gray-500 hover:text-blue-600 font-medium transition-colors underline">
-								+5561999662404
+							Para dúvidas sobre estes termos, entre em contato por meio do email{" "}
+							<a className="underline" href="mailto:suporte@meuatodefesa.com.br">
+								suporte@meuatodefesa.com.br
 							</a>{" "}
 							ou pelo{" "}
 							<Link
@@ -110,7 +115,7 @@ const Terms = () => {
 							&nbsp;de contato.
 						</p>
 						<br></br>
-						<p className="lead">Atualizado em Janeiro de 2026.</p>
+						<p className="lead">Atualizado em {formattedDate}.</p>
 					</div>
 				</div>
 			</div>

@@ -59,22 +59,22 @@ export const UploadStep = ({
 	};
 
 	return (
-		<div className="max-w-3xl mx-auto py-10">
+		<div className="max-w-3xl mx-auto pt-5 pb-10">
 			<div className="mb-8 text-center">
 				<Link
 					to="/"
-					className="inline-flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors">
+					className="inline-flex items-center text-gray-500 hover:text-blue-600 mb-5 transition-colors">
 					<ArrowLeft size={20} className="mr-1" /> Início
 				</Link>
 				<h1 className="text-3xl font-bold text-gray-900">Análise de Documento</h1>
-				<p className="text-gray-500 mt-2">
-					Envie a foto da <strong>Notificação de Autuação</strong>, <strong>Multa (Boleto)</strong>{" "}
-					ou da <strong>Decisão que negou</strong> seu recurso anterior.
+				<p className="text-gray-500 mt-2 mb-8">
+					Envie a foto da <strong>Notificação de Autuação</strong>, <strong>Multa/Boleto</strong> ou
+					da <strong>Decisão que negou</strong> seu recurso anterior.
 					<br />A IA identificará a fase e preencherá os dados automaticamente.
 				</p>
 			</div>
 			<div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
-				<div className="p-6 md:p-10">
+				<div className="p-6 md:p-8">
 					{error && (
 						<div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl flex gap-3 text-red-700 items-start">
 							<AlertTriangle className="shrink-0" />
@@ -86,9 +86,9 @@ export const UploadStep = ({
 							e.preventDefault();
 							handleUploadAndExtract();
 						}}
-						className="space-y-8">
+						className="space-y-6">
 						<div
-							className={`border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center text-center transition-all cursor-pointer min-h-[300px] relative ${isDragging ? "border-blue-500 bg-blue-50" : "border-gray-200 bg-gray-50"} ${file ? "border-blue-500 bg-blue-50/30" : ""}`}
+							className={`border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center text-center transition-all cursor-pointer min-h-[220px] relative ${isDragging ? "border-blue-500 bg-blue-50" : "border-gray-200 bg-gray-50"} ${file ? "border-blue-500 bg-blue-50/30" : ""}`}
 							onDragOver={handleDragOver}
 							onDragLeave={handleDragLeave}
 							onDrop={handleDrop}>
@@ -124,7 +124,7 @@ export const UploadStep = ({
 								</div>
 							)}
 						</div>
-						<div className="flex justify-center pt-4 border-t border-gray-100">
+						<div className="flex flex-col items-center gap-6 pt-4 border-t border-gray-100">
 							<button
 								type="submit"
 								disabled={!file || loading || (currentUser && !currentUser.emailVerified)}
@@ -142,25 +142,28 @@ export const UploadStep = ({
 									"Analisar com IA"
 								)}
 							</button>
+
+							<div className="text-center">
+								<p className="text-gray-500 text-sm mb-1">
+									Não tem o arquivo ou imagem da infração?
+								</p>
+								{currentUser && !currentUser.emailVerified ? (
+									<button
+										disabled
+										className="text-gray-400 font-bold flex text-sm items-center justify-center gap-1 mx-auto cursor-not-allowed"
+										title="Confirme seu email para utilizar">
+										<FileText size={14} /> Inserir dados manualmente
+									</button>
+								) : (
+									<button
+										onClick={handleManualEntry}
+										className="text-blue-600 font-bold hover:text-blue-700 transition-colors flex items-center justify-center gap-1 mx-auto bg-blue-50 px-4 py-2 rounded-lg border border-blue-100">
+										<FileText size={16} /> Inserir dados manualmente
+									</button>
+								)}
+							</div>
 						</div>
 					</form>
-				</div>
-				<div className="bg-gray-50 p-6 text-center border-t border-gray-100">
-					<p className="text-gray-500 text-md mb-2">Não tem o arquivo ou imagem da infração?</p>
-					{currentUser && !currentUser.emailVerified ? (
-						<button
-							disabled
-							className="text-gray-400 font-bold flex !text-lg items-center justify-center gap-1 cursor-not-allowed"
-							title="Confirme seu email para utilizar">
-							<FileText size={16} /> Inserir dados manualmente
-						</button>
-					) : (
-						<button
-							onClick={handleManualEntry}
-							className="text-blue-600 font-bold hover:underline flex items-center justify-center gap-1 mx-auto">
-							<FileText size={16} /> Inserir dados manualmente
-						</button>
-					)}
 				</div>
 			</div>
 		</div>

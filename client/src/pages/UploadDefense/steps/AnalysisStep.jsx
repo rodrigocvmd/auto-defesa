@@ -52,7 +52,7 @@ export const AnalysisStep = ({
 						<div className="flex items-start gap-3 text-gray-700">
 							<CheckCircle size={20} className="text-blue-600 shrink-0 mt-0.5" />
 							<p className="font-medium">
-								Aguarde na página. A elaboração pela IA Pro pode durar até 1 minuto.
+								Aguarde na página. A elaboração pela IA Pro pode levar até 1 minuto.
 							</p>
 						</div>
 					</div>
@@ -235,12 +235,14 @@ export const AnalysisStep = ({
 						)}
 
 						<div className="mt-4 flex flex-col items-center">
-							<span className="text-blue-200 text-xs uppercase font-bold tracking-widest mb-1">
+							<span id="saldoAtualRecurso" className="text-blue-200 text-xs uppercase font-bold tracking-widest mb-1">
 								Seu Saldo Atual
 							</span>
 							<div className="bg-white/20 px-4 py-1 rounded-full text-white font-black text-lg flex items-center gap-2">
 								{userData ? userData.credits : <Loader2 size={14} className="animate-spin" />}{" "}
-								<span className="text-sm font-normal opacity-80">créditos</span>
+								<span className="text-sm font-normal opacity-80">
+									{userData?.credits <= 1 ? "crédito" : "créditos"}
+								</span>
 							</div>
 						</div>
 					</div>

@@ -25,9 +25,9 @@ const HowItWorks = () => {
 		},
 		{
 			icon: <CheckCircle size={32} />,
-			title: "4. Edite manualmente ou com IA",
+			title: "4. Peça alterações para nossa IA",
 			description:
-				"Após o recurso ser gerado, você pode editá-lo manualmente ou seguir utilizando nossa IA para sugerir mudanças pontuais específicas que entender serem benéficas.",
+				"Após o recurso ser gerado, você pode seguir utilizando nossa IA para requisitar mudanças específicas que entender serem benéficas ou necessárias.",
 		},
 		{
 			icon: <Download size={32} />,

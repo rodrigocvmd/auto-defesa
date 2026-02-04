@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { confirmPasswordReset, verifyPasswordResetCode } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import MainLayout from '../layouts/MainLayout';
-import { KeyRound, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { KeyRound, CheckCircle, AlertCircle, Loader2, Check, X } from 'lucide-react';
 
 export default function ResetPassword() {
     const [searchParams] = useSearchParams();
@@ -17,6 +17,19 @@ export default function ResetPassword() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
     const [email, setEmail] = useState('');
+
+    // Password strength states
+    const [hasMinLength, setHasMinLength] = useState(false);
+    const [hasUpperCase, setHasUpperCase] = useState(false);
+    const [hasNumber, setHasNumber] = useState(false);
+    const [passwordsMatch, setPasswordsMatch] = useState(false);
+
+    useEffect(() => {
+        setHasMinLength(password.length >= 6);
+        setHasUpperCase(/[A-Z]/.test(password));
+        setHasNumber(/[0-9]/.test(password));
+        setPasswordsMatch(password === confirmPassword && password !== '');
+    }, [password, confirmPassword]);
 
     useEffect(() => {
         if (!oobCode) {
@@ -41,12 +54,8 @@ export default function ResetPassword() {
     async function handleSubmit(e) {
         e.preventDefault();
         
-        if (password !== confirmPassword) {
-            return setError('As senhas não coincidem.');
-        }
-
-        if (password.length < 6) {
-            return setError('A senha deve ter pelo menos 6 caracteres.');
+        if (!passwordsMatch || !hasMinLength || !hasUpperCase || !hasNumber) {
+            return setError('Por favor, atenda a todos os requisitos de senha.');
         }
 
         try {
@@ -127,28 +136,61 @@ export default function ResetPassword() {
                                 type="password"
                                 required
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                                placeholder="Mínimo 6 caracteres"
+                                placeholder="Crie uma senha forte"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
+                            {/* Password Feedback */}
+                            <div className="mt-3 space-y-1">
+                                <p className="text-xs font-medium text-gray-500 mb-1">Sua senha deve ter:</p>
+                                <div className={`flex items-center gap-2 text-xs ${hasMinLength ? 'text-green-600' : 'text-gray-400'}`}>
+                                    {hasMinLength ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
+                                    Mínimo de 6 caracteres
+                                </div>
+                                <div className={`flex items-center gap-2 text-xs ${hasUpperCase ? 'text-green-600' : 'text-gray-400'}`}>
+                                    {hasUpperCase ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
+                                    Pelo menos 1 letra maiúscula
+                                </div>
+                                <div className={`flex items-center gap-2 text-xs ${hasNumber ? 'text-green-600' : 'text-gray-400'}`}>
+                                    {hasNumber ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
+                                    Pelo menos 1 número
+                                </div>
+                            </div>
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Confirmar Nova Senha</label>
-                            <input
-                                type="password"
-                                required
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                                placeholder="Repita a senha"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
+                            <div className="relative">
+                                <input
+                                    type="password"
+                                    required
+                                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${
+                                        confirmPassword && !passwordsMatch 
+                                        ? 'border-red-300 focus:ring-red-200 focus:border-red-500' 
+                                        : confirmPassword && passwordsMatch
+                                        ? 'border-green-300 focus:ring-green-200 focus:border-green-500'
+                                        : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                                    }`}
+                                    placeholder="Repita a senha"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                />
+                                {confirmPassword && (
+                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold">
+                                        {passwordsMatch ? (
+                                            <span className="text-green-600 flex items-center gap-1"><Check size={14} /> Iguais</span>
+                                        ) : (
+                                            <span className="text-red-500 flex items-center gap-1"><X size={14} /> Diferentes</span>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         <button
                             type="submit"
-                            disabled={loading}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-colors disabled:opacity-50"
+                            disabled={loading || !passwordsMatch || !hasMinLength || !hasUpperCase || !hasNumber}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? 'Redefinindo...' : 'Redefinir Senha'}
                         </button>

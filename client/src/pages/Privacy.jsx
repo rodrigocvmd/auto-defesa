@@ -4,6 +4,19 @@ import { ArrowLeft, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Privacy = () => {
+	const data = new Date();
+
+	const updatedDate = data.toLocaleDateString("pt-BR", {
+		month: "long",
+		year: "numeric",
+	});
+
+	const formattedDate = updatedDate.charAt(0).toUpperCase() + updatedDate.slice(1);
+
+	{
+		formattedDate;
+	}
+
 	return (
 		<MainLayout>
 			<div className="max-w-4xl mx-auto py-12 px-4">
@@ -90,13 +103,9 @@ const Privacy = () => {
 						<h3>7. Contato do Encarregado (DPO)</h3>
 						<p>
 							Para exercer seus direitos ou tirar dúvidas sobre privacidade, entre em contato com
-							nosso Encarregado de Proteção de Dados pelo número{" "}
-							<a
-								href="https://wa.me/5561999662404"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="text-gray-500 hover:text-blue-600 font-medium transition-colors underline">
-								+5561999662404
+							nosso Encarregado de Proteção de Dados por meio do email{" "}
+							<a className="underline" href="mailto:suporte@meuatodefesa.com.br">
+								suporte@meuatodefesa.com.br
 							</a>{" "}
 							ou pelo{" "}
 							<Link
@@ -107,7 +116,7 @@ const Privacy = () => {
 							&nbsp;de contato.
 						</p>
 						<br></br>
-						<p className="lead">Atualizado em Janeiro de 2026.</p>
+						<p className="lead">Atualizado em {formattedDate}</p>
 					</div>
 				</div>
 			</div>

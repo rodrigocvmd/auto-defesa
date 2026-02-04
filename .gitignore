@@ -20,3 +20,5 @@ scripts/serviceAccountKey.json
 
 # Dados brutos
 scripts/*.csv
+
+.cache/

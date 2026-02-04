@@ -7,14 +7,14 @@ const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Produção:
-const MODEL_FLASH = "gemini-3-flash-preview";
-const MODEL_PRO = "gemini-3-pro-preview";
-const MODEL_FALLBACK = "gemini-2.5-flash";
+// const MODEL_FLASH = "gemini-3-flash-preview";
+// const MODEL_PRO = "gemini-3-pro-preview";
+// const MODEL_FALLBACK = "gemini-2.5-flash";
 
 // Testes / Lite:
-// const MODEL_FLASH = "gemini-2.5-flash-lite";
-// const MODEL_PRO = "gemini-2.5-flash-lite";
-// const MODEL_FALLBACK = "gemini-2.5-flash-lite";
+const MODEL_FLASH = "gemini-2.5-flash-lite";
+const MODEL_PRO = "gemini-2.5-flash-lite";
+const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
  * Tenta gerar conteúdo com o modelo principal. Se der erro 503 (Overloaded),
@@ -146,16 +146,15 @@ exports.generateDefense = (req, res) => {
           3. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
              *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
              
-             - **Endereçamento:** Caixa Alta, Negrito, Alinhado à Esquerda/Justificado.
-               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 20px;">[ENDEREÇAMENTO]</p>
+             - **Endereçamento:** Caixa Alta, Negrito, Alinhado à Centralizado/Justificado.
+               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
              
              - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
-               Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 20px;">REF.: AUTO DE INFRAÇÃO Nº ${data.aitNumber || "[NÚMERO]"}</p>
+               Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº ${data.aitNumber || "[NÚMERO]"}</p>
              
-             - **Veículo e Infração:** Caixa Alta, Fonte Normal (Fina), Alinhado à Esquerda/Justificado, Tamanho Padrão.
-               Use: <p style="font-weight: normal; text-transform: uppercase; text-align: justify; margin-bottom: 10px;">PLACA: ${data.plate || "[PLACA]"} | INFRAÇÃO: ${data.article || "[ARTIGO CTB]"}</p>
-             
-             - **Qualificação:** Texto corrido normal.
+             - **Qualificação (COM VEÍCULO/INFRAÇÃO):** Texto corrido normal, iniciando com o nome do recorrente. 
+               *INSTRUÇÃO:* Inclua os dados do veículo (Placa ${data.plate}) e da infração (Art. ${data.article}) dentro deste parágrafo de qualificação, de forma fluida no texto.
+               Use: <p style="text-align: justify; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas ${data.plate || "[PLACA]"}, vem apresentar defesa referente à infração do Art. ${data.article}...</p>
              
              - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
                Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 30px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
@@ -163,8 +162,8 @@ exports.generateDefense = (req, res) => {
              - **Capítulos (I., II.):** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
                Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 10px;">I. DOS FATOS</h2>
              
-             - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Alinhado à Esquerda/Justificado, Tamanho +2pt.
-               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: justify; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
+             - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Centralizado, Tamanho +2pt.
+               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
              
              - **Corpo do Texto:** Tamanho padrão, Justificado. Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
 
@@ -184,9 +183,9 @@ exports.generateDefense = (req, res) => {
           9. FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com o bloco CENTRALIZADO exatamente como abaixo:
              
              <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-             <p style="text-align: center; margin-bottom: 40px;">${data.signCity || "Local"}, ${formattedSignDate}.</p>
+             <p style="text-align: center; margin-bottom: 90px;">${data.signCity || "Local"}, ${formattedSignDate}.</p>
              
-             <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
+             <p style="text-align: center; margin-top: 90px;">___________________________________________________</p>
              <p style="text-align: center;">${(data.name || "NOME DO RECORRENTE").toUpperCase()}</p>
         `;
 
@@ -527,15 +526,14 @@ exports.analyzeDocument = (req, res) => {
              *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
              
              - **Endereçamento:** Caixa Alta, Negrito, Alinhado à Esquerda/Justificado.
-               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 20px;">[ENDEREÇAMENTO]</p>
+               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
              
              - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
-               Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 20px;">REF.: AUTO DE INFRAÇÃO Nº [NÚMERO]</p>
+               Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº [NÚMERO]</p>
              
-             - **Veículo e Infração:** Caixa Alta, Fonte Normal (Fina), Alinhado à Esquerda/Justificado, Tamanho Padrão.
-               Use: <p style="font-weight: normal; text-transform: uppercase; text-align: justify; margin-bottom: 10px;">PLACA: [PLACA] | INFRAÇÃO: [ARTIGO CTB]</p>
-             
-             - **Qualificação:** Texto corrido normal.
+             - **Qualificação (COM VEÍCULO/INFRAÇÃO):** Texto corrido normal, iniciando com o nome do recorrente. 
+               *INSTRUÇÃO:* Inclua os dados do veículo (Placa [PLACA]) e da infração (Art. [ARTIGO CTB]) dentro deste parágrafo de qualificação, de forma fluida no texto.
+               Use: <p style="text-align: justify; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas [PLACA], vem apresentar defesa referente à infração do Art. [ARTIGO CTB]...</p>
              
              - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
                Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 30px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
@@ -543,8 +541,8 @@ exports.analyzeDocument = (req, res) => {
              - **Capítulos (I., II.):** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
                Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 10px;">I. DOS FATOS</h2>
              
-             - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Alinhado à Esquerda/Justificado, Tamanho +2pt.
-               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: justify; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
+             - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Centralizado, Tamanho +2pt.
+               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
              
              - **Corpo do Texto:** Tamanho padrão, Justificado. Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
 
@@ -562,9 +560,9 @@ exports.analyzeDocument = (req, res) => {
         15. Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO, exatamente como abaixo:
             
             <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-            <p style="text-align: center; margin-bottom: 40px;">${userData.signCity || "Local"}, ${formattedSignDate}.</p>
+            <p style="text-align: center; margin-bottom: 90px;">${userData.signCity || "Local"}, ${formattedSignDate}.</p>
             
-            <p style="text-align: center; margin-top: 40px;">___________________________________________________</p>
+            <p style="text-align: center; margin-top: 90px;">___________________________________________________</p>
             <p style="text-align: center;">${(userData.name || "NOME DO RECORRENTE").toUpperCase()}</p>
       `;
 

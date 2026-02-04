@@ -120,6 +120,52 @@ const Home = () => {
 					</div>
 				</section>
 
+				{/* NÚMEROS POSITIVOS */}
+				<section className="relative py-24 overflow-hidden">
+					<div className="absolute inset-0 -z-10 bg-gray-50/50"></div>
+					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent"></div>
+
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+								<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
+									<FileText size={24} />
+								</div>
+								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+4.800</div>
+								<div className="text-gray-500 font-medium">Recursos Elaborados</div>
+								<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
+							</div>
+
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+								<div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform">
+									<DollarSign size={24} />
+								</div>
+								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">R$ 517</div>
+								<div className="text-gray-500 font-medium">Economia Média p/ Usuário</div>
+								<div className="mt-4 h-1 w-12 bg-green-600 rounded-full"></div>
+							</div>
+
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+								<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform">
+									<Star size={24} fill="currentColor" />
+								</div>
+								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">92%</div>
+								<div className="text-gray-500 font-medium">Satisfação Garantida</div>
+								<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
+							</div>
+
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+								<div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform">
+									<Clock size={24} />
+								</div>
+								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">&lt; 3min</div>
+								<div className="text-gray-500 font-medium">Tempo Médio de Geração</div>
+								<div className="mt-4 h-1 w-12 bg-indigo-600 rounded-full"></div>
+							</div>
+						</div>
+					</div>
+				</section>
+
 				{/* VALOR / COMPARATIVO */}
 				<section className="bg-gray-900 rounded-[3rem] py-20 mx-4 sm:mx-8 text-white relative overflow-hidden">
 					<div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
@@ -172,7 +218,7 @@ const Home = () => {
 									<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
 										<span className="font-medium text-gray-600">Custo</span>
 										<span className="font-black text-green-600 text-xl sm:text-2xl">
-											Apenas R$ 16,90
+											Apenas R$ 17,90
 										</span>
 									</li>
 									<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
