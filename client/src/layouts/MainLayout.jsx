@@ -9,6 +9,7 @@ const MainLayout = ({ children }) => {
 	const navigate = useNavigate();
 	const { currentUser, logout } = useAuth();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
 	const isHome = location.pathname === "/";
 
 	const data = new Date();
@@ -64,56 +65,73 @@ const MainLayout = ({ children }) => {
 							</Link>
 
 							<Link
+								to="/about"
+								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+								Sobre
+							</Link>
+
+							<Link
 								to="/pricing"
 								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
 								Preços
 							</Link>
 
-							<Link
-								to="/guia"
-								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
-								Artigos
-							</Link>
-
-							{/* Recursos Úteis Dropdown */}
+							{/* Utilidades Dropdown */}
 							<div className="relative group h-16 flex items-center">
-								<Link
-									to="/recursos"
-									className="text-gray-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-1">
-									Recursos Úteis
-								</Link>
-								<div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 hidden group-hover:block p-2 animate-in fade-in slide-in-from-top-2">
-									<Link
-										to="/recorrer/lei-seca"
-										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-										Lei Seca
-									</Link>
-									<Link
-										to="/recorrer/recusa-bafometro"
-										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-										Recusa ao Bafômetro
-									</Link>
-									<Link
-										to="/recorrer/excesso-velocidade"
-										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-										Excesso de Velocidade
-									</Link>
-									<Link
-										to="/recorrer/celular-direcao"
-										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-										Uso de Celular
-									</Link>
-									<Link
-										to="/recorrer/cnh-vencida"
-										className="block px-4 py-3 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-										CNH Vencida
-									</Link>
-									<div className="h-px bg-gray-100 my-1"></div>
-									<Link
-										to="/recursos"
-										className="block px-4 py-3 text-sm font-bold text-blue-600 hover:bg-blue-50 rounded-lg text-center">
-										Outras Infrações
-									</Link>
+								<button className="text-gray-500 group-hover:text-blue-600 font-medium transition-colors flex items-center gap-1">
+									Utilidades
+									<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="Stack9 5l7 7-7 7" />
+									</svg>
+								</button>
+								<div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 hidden group-hover:block p-3 animate-in fade-in slide-in-from-top-2">
+									<div className="px-4 py-2 mb-2">
+										<h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">1. Artigos</h4>
+										<Link
+											to="/guia"
+											className="flex items-center gap-3 mt-2 p-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all">
+											<BookOpen size={18} className="text-blue-500" />
+											<span className="font-bold">Ver Artigos e Guias</span>
+										</Link>
+									</div>
+									
+									<div className="h-px bg-gray-100 my-2"></div>
+									
+									<div className="px-4 py-2">
+										<h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">2. Recursos Úteis</h4>
+										<div className="grid grid-cols-1 gap-1">
+											<Link
+												to="/recorrer/lei-seca"
+												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+												Lei Seca
+											</Link>
+											<Link
+												to="/recorrer/recusa-bafometro"
+												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+												Recusa ao Bafômetro
+											</Link>
+											<Link
+												to="/recorrer/excesso-velocidade"
+												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+												Excesso de Velocidade
+											</Link>
+											<Link
+												to="/recorrer/celular-direcao"
+												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+												Uso de Celular
+											</Link>
+											<Link
+												to="/recorrer/cnh-vencida"
+												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+												CNH Vencida
+											</Link>
+											<Link
+												to="/recursos"
+												className="block px-3 py-2 text-sm font-bold text-blue-600 hover:bg-blue-50 rounded-lg">
+												Outras Infrações
+											</Link>
+										</div>
+									</div>
 								</div>
 							</div>
 
@@ -175,43 +193,69 @@ const MainLayout = ({ children }) => {
 				{/* Mobile Menu Overlay */}
 				{isMenuOpen && (
 					<div className="md:hidden bg-white border-b border-gray-200 absolute w-full left-0 top-16 z-40 shadow-lg animate-in slide-in-from-top-2">
-						<div className="px-4 py-4 space-y-4 text-center">
+						<div className="px-4 py-4 space-y-2 text-center">
 							{!isHome && (
 								<Link
 									to="/"
 									onClick={() => setIsMenuOpen(false)}
-									className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+									className="block text-gray-600 hover:text-blue-600 font-medium py-3 border-b border-gray-100">
 									Início
 								</Link>
 							)}
-							<Link
-								to="/guia"
-								onClick={() => setIsMenuOpen(false)}
-								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
-								Artigos
-							</Link>
+							
 							<Link
 								to="/how-it-works"
 								onClick={() => setIsMenuOpen(false)}
-								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+								className="block text-gray-600 hover:text-blue-600 font-medium py-3 border-b border-gray-100">
 								Como Funciona
 							</Link>
+
+							<Link
+								to="/about"
+								onClick={() => setIsMenuOpen(false)}
+								className="block text-gray-600 hover:text-blue-600 font-medium py-3 border-b border-gray-100">
+								Sobre Nós
+							</Link>
+
+							{/* Utilidades Mobile Dropdown */}
+							<div className="border-b border-gray-100">
+								<button
+									onClick={() => setIsUtilitiesOpen(!isUtilitiesOpen)}
+									className="w-full text-gray-600 hover:text-blue-600 font-medium py-3 flex items-center justify-center gap-2">
+									Utilidades
+									<svg className={`w-4 h-4 transition-transform ${isUtilitiesOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+									</svg>
+								</button>
+								{isUtilitiesOpen && (
+									<div className="bg-gray-50 py-2 space-y-1 animate-in fade-in slide-in-from-top-1">
+										<Link
+											to="/guia"
+											onClick={() => setIsMenuOpen(false)}
+											className="block text-gray-500 hover:text-blue-600 py-2 text-sm">
+											Artigos
+										</Link>
+										<Link
+											to="/recursos"
+											onClick={() => setIsMenuOpen(false)}
+											className="block text-gray-500 hover:text-blue-600 py-2 text-sm">
+											Recursos Úteis
+										</Link>
+									</div>
+								)}
+							</div>
+
 							<Link
 								to="/pricing"
 								onClick={() => setIsMenuOpen(false)}
-								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+								className="block text-gray-600 hover:text-blue-600 font-medium py-3 border-b border-gray-100">
 								Preços
 							</Link>
-							<Link
-								to="/recursos"
-								onClick={() => setIsMenuOpen(false)}
-								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
-								Recursos Úteis
-							</Link>
+
 							<Link
 								to="/help"
 								onClick={() => setIsMenuOpen(false)}
-								className="block text-gray-600 hover:text-blue-600 font-medium py-2 border-b border-gray-100">
+								className="block text-gray-600 hover:text-blue-600 font-medium py-3 border-b border-gray-100">
 								Ajuda
 							</Link>
 
