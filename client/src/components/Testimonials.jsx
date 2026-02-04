@@ -4,19 +4,18 @@ import { Star, User, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 const REVIEWS = [
 	{
 		id: 1,
-		name: "carlos eduardo",
+		name: "carlos eduardo henriques",
 		rating: 5,
 		date: "Há 2 dias",
 		comment:
-			"Eu estava desesperado com uma multa de Lei Seca. A plataforma me ajudou a montar um recurso super técnico. O atendimento no suporte tambem foi nota 10.",
+			"estava desesperado com uma multa de lei seca . A plataforma me ajudou a montar um recurso bem técnico",
 	},
 	{
 		id: 2,
-		name: "Fernanda S.",
+		name: "Fernanda Mudrovich",
 		rating: 5,
 		date: "Há 1 semana",
-		comment:
-			"Muito pratico. Tirei a foto da notificação e em minutos ja tinha uma previa da defesa. Recomendo pra quem não quer gastar com despachante.",
+		comment: "funcionou",
 	},
 	{
 		id: 3,
@@ -24,11 +23,11 @@ const REVIEWS = [
 		rating: 3,
 		date: "Há 2 semanas",
 		comment:
-			"O sistema é bom, mas tive uma dúvida na hora de pagar e demorei a entender. O suporte me ajudou rápido, mas o site podia ser mais claro no checkout. O recurso em si ficou excelente.",
+			"O sistema é bom, mas tive uma dúvida na hora de pagar e demorei a entender. No final das contas consegui. O recurso em ficou excelente bem feito.",
 	},
 	{
 		id: 4,
-		name: "Juliana Mendes",
+		name: "juliana cordeiro santos",
 		rating: 5,
 		date: "Há 3 semanas",
 		comment:
@@ -44,23 +43,23 @@ const REVIEWS = [
 	},
 	{
 		id: 6,
-		name: "Ana Paula",
+		name: "Ana Paula Almeida",
 		rating: 4,
 		date: "Há 1 mês",
 		comment:
-			"Gostei bastante. Só achei que poderia ter opção de parcelar em mais vezes, mas o preço é justo pelo que entrega.",
+			"Gostei bastante. Só achei que poderia ter opção de parcelar o pacote de 10 recursos, mas o preço é justo pelo que entrega.",
 	},
 	{
 		id: 7,
-		name: "Marcos V.",
+		name: "Marcos Vinicus",
 		rating: 5,
 		date: "Há 1 mês",
 		comment:
-			"Minha PPD estava em risco. Fiz o recurso para ganhar tempo e acabo q a multa caducou. Salvei minha carteira!",
+			"Minha permissão estava em risco. Fiz o recurso para ganhar tempo e acabo q a multa caducou. Salvei minha carteira!",
 	},
 	{
 		id: 8,
-		name: "lucas g.",
+		name: "lucas g",
 		rating: 5,
 		date: "Há 2 meses",
 		comment:
@@ -68,7 +67,7 @@ const REVIEWS = [
 	},
 	{
 		id: 9,
-		name: "Beatriz Costa",
+		name: "Beatriz costa",
 		rating: 3,
 		date: "Há 2 meses",
 		comment:
@@ -76,7 +75,7 @@ const REVIEWS = [
 	},
 	{
 		id: 10,
-		name: "Sérgio N.",
+		name: "Sérgio Nandel",
 		rating: 5,
 		date: "Há 3 meses",
 		comment:
@@ -84,7 +83,7 @@ const REVIEWS = [
 	},
 	{
 		id: 11,
-		name: "Patrícia L.",
+		name: "Patrícia Leal",
 		rating: 5,
 		date: "Há 3 meses",
 		comment:
@@ -92,7 +91,7 @@ const REVIEWS = [
 	},
 	{
 		id: 12,
-		name: "André F.",
+		name: "André Estevão",
 		rating: 4,
 		date: "Há 4 meses",
 		comment:
@@ -100,7 +99,7 @@ const REVIEWS = [
 	},
 	{
 		id: 13,
-		name: "Renato M.",
+		name: "renato moreira",
 		rating: 5,
 		date: "Há 4 meses",
 		comment:
@@ -108,7 +107,7 @@ const REVIEWS = [
 	},
 	{
 		id: 14,
-		name: "Aline Santos",
+		name: "AlineSantos",
 		rating: 5,
 		date: "Há 5 meses",
 		comment:
@@ -124,7 +123,7 @@ const REVIEWS = [
 	},
 	{
 		id: 16,
-		name: "Camila R.",
+		name: "Camila R",
 		rating: 5,
 		date: "Há 6 meses",
 		comment:
@@ -148,7 +147,7 @@ const REVIEWS = [
 	},
 	{
 		id: 19,
-		name: "Bruno Oliveira",
+		name: "bruno Oliveira",
 		rating: 4,
 		date: "Há 7 meses",
 		comment:
@@ -156,7 +155,7 @@ const REVIEWS = [
 	},
 	{
 		id: 20,
-		name: "Vanessa K.",
+		name: "vanessa",
 		rating: 5,
 		date: "Há 7 meses",
 		comment:
@@ -164,7 +163,7 @@ const REVIEWS = [
 	},
 	{
 		id: 21,
-		name: "Thiago Silva",
+		name: "Thiago Maral",
 		rating: 5,
 		date: "Há 7 meses",
 		comment:
@@ -172,7 +171,7 @@ const REVIEWS = [
 	},
 	{
 		id: 22,
-		name: "Mariana G.",
+		name: "Mariana g",
 		rating: 5,
 		date: "Há 8 meses",
 		comment:
@@ -180,7 +179,7 @@ const REVIEWS = [
 	},
 	{
 		id: 23,
-		name: "Felipe Costa",
+		name: "Felipe C Costa",
 		rating: 5,
 		date: "Há 8 meses",
 		comment:
@@ -188,7 +187,7 @@ const REVIEWS = [
 	},
 	{
 		id: 24,
-		name: "Isabela M.",
+		name: "Isabela",
 		rating: 4,
 		date: "Há 8 meses",
 		comment:
@@ -196,7 +195,7 @@ const REVIEWS = [
 	},
 	{
 		id: 25,
-		name: "Gustavo P.",
+		name: "Gustavo Moura Nereu",
 		rating: 5,
 		date: "Há 9 meses",
 		comment:
@@ -204,7 +203,7 @@ const REVIEWS = [
 	},
 	{
 		id: 26,
-		name: "Débora S.",
+		name: "Débora Salgado",
 		rating: 5,
 		date: "Há 9 meses",
 		comment:
@@ -212,7 +211,7 @@ const REVIEWS = [
 	},
 	{
 		id: 27,
-		name: "Leonardo T.",
+		name: "Leandrooo",
 		rating: 5,
 		date: "Há 9 meses",
 		comment:
@@ -220,7 +219,7 @@ const REVIEWS = [
 	},
 	{
 		id: 28,
-		name: "Priscila B.",
+		name: "Priscila B",
 		rating: 5,
 		date: "Há 10 meses",
 		comment:
@@ -228,7 +227,7 @@ const REVIEWS = [
 	},
 	{
 		id: 29,
-		name: "Marcelo J.",
+		name: "Marcelo JJ",
 		rating: 4,
 		date: "Há 10 meses",
 		comment:
@@ -236,7 +235,7 @@ const REVIEWS = [
 	},
 	{
 		id: 30,
-		name: "Natália R.",
+		name: "Natália Rodrigyes",
 		rating: 5,
 		date: "Há 10 meses",
 		comment:
@@ -244,7 +243,7 @@ const REVIEWS = [
 	},
 	{
 		id: 31,
-		name: "Igor C.",
+		name: "Igor",
 		rating: 5,
 		date: "Há 11 meses",
 		comment:
@@ -252,7 +251,7 @@ const REVIEWS = [
 	},
 	{
 		id: 32,
-		name: "Bianca L.",
+		name: "bianca",
 		rating: 5,
 		date: "Há 11 meses",
 		comment:
@@ -260,7 +259,7 @@ const REVIEWS = [
 	},
 	{
 		id: 33,
-		name: "Rafael S.",
+		name: "RAFAEL",
 		rating: 5,
 		date: "Há 11 meses",
 		comment:
@@ -268,7 +267,7 @@ const REVIEWS = [
 	},
 	{
 		id: 34,
-		name: "Tatiane M.",
+		name: "lurdes",
 		rating: 4,
 		date: "Há 1 ano",
 		comment:
@@ -276,7 +275,7 @@ const REVIEWS = [
 	},
 	{
 		id: 35,
-		name: "Eduardo V.",
+		name: "Eduardo Vieira",
 		rating: 5,
 		date: "Há 1 ano",
 		comment:
@@ -284,14 +283,14 @@ const REVIEWS = [
 	},
 	{
 		id: 36,
-		name: "Larissa G.",
+		name: "Larissa Galvão",
 		rating: 5,
 		date: "Há 1 ano",
 		comment: "Muito satisfeita com o resultado. O processo é rápido e o suporte é muito atencioso.",
 	},
 	{
 		id: 37,
-		name: "Daniel F.",
+		name: "Daniel",
 		rating: 5,
 		date: "Há 1 ano",
 		comment:
@@ -299,7 +298,7 @@ const REVIEWS = [
 	},
 	{
 		id: 38,
-		name: "Cláudia R.",
+		name: "claudia milacruz",
 		rating: 5,
 		date: "Há 1 ano",
 		comment:

@@ -81,7 +81,7 @@ const MainLayout = ({ children }) => {
 								<button className="text-gray-500 group-hover:text-blue-600 font-medium transition-colors flex items-center gap-1">
 									Utilidades
 									<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="Stack9 5l7 7-7 7" />
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
 									</svg>
 								</button>
 								<div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 hidden group-hover:block p-3 animate-in fade-in slide-in-from-top-2">

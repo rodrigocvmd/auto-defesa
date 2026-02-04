@@ -7,14 +7,14 @@ const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Produção:
-// const MODEL_FLASH = "gemini-3-flash-preview";
-// const MODEL_PRO = "gemini-3-pro-preview";
-// const MODEL_FALLBACK = "gemini-2.5-flash";
+const MODEL_FLASH = "gemini-3-flash-preview";
+const MODEL_PRO = "gemini-3-pro-preview";
+const MODEL_FALLBACK = "gemini-2.5-flash";
 
 // Testes / Lite:
-const MODEL_FLASH = "gemini-2.5-flash-lite";
-const MODEL_PRO = "gemini-2.5-flash-lite";
-const MODEL_FALLBACK = "gemini-2.5-flash-lite";
+// const MODEL_FLASH = "gemini-2.5-flash-lite";
+// const MODEL_PRO = "gemini-2.5-flash-lite";
+// const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
  * Tenta gerar conteúdo com o modelo principal. Se der erro 503 (Overloaded),
@@ -146,7 +146,7 @@ exports.generateDefense = (req, res) => {
           3. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
              *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
              
-             - **Endereçamento:** Caixa Alta, Negrito, Alinhado à Centralizado/Justificado.
+             - **Endereçamento:** Caixa Alta, Negrito, Centralizado/Justificado.
                Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
              
              - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
@@ -525,7 +525,7 @@ exports.analyzeDocument = (req, res) => {
         5. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
              *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
              
-             - **Endereçamento:** Caixa Alta, Negrito, Alinhado Centralizado/Justificado.
+             - **Endereçamento:** Caixa Alta, Negrito, Centralizado/Justificado.
                Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
              
              - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
