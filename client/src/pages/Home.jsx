@@ -28,34 +28,91 @@ const Home = () => {
 				<section className="relative pt-8 pb-4 lg:pt-10 lg:pb-10 overflow-hidden">
 					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/50 via-gray-50 to-white"></div>
 
-					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-						<div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-							<Star size={14} fill="currentColor" /> Tecnologia Avançada de Recursos
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div className="grid lg:grid-cols-2 gap-12 items-center">
+							{/* Texto Hero */}
+							<div className="text-center lg:text-left">
+								<div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+									<Star size={14} fill="currentColor" /> Tecnologia Avançada de Recursos
+								</div>
+
+								<h1 className="text-5xl lg:text-7xl font-black text-gray-900 tracking-tight mb-6 leading-tight animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
+									Anule sua Multa de Trânsito com{" "}
+									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+										Inteligência Artificial
+									</span>
+								</h1>
+
+								<p className="text-xl text-gray-600 mb-8 leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
+									Não gaste R$ 400,00 com advogados. Nossa IA analisa seu caso gratuitamente e gera um{" "}
+									<strong>recurso administrativo profissional</strong>, fundamentado na lei, completo
+									e <strong>pronto para assinatura e protocolo</strong>.
+								</p>
+
+								<div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 mb-12">
+									<Link
+										to="/upload"
+										className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-4 px-8 rounded-xl shadow-xl shadow-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2">
+										<Upload size={24} />
+										Analisar Multa Grátis
+									</Link>
+									<div className="text-sm text-gray-500 font-medium">
+										<div className="flex items-center gap-1 justify-center lg:justify-start">
+											<CheckCircle size={16} className="text-green-500" /> +50.000 multas
+											analisadas
+										</div>
+									</div>
+								</div>
+
+								{/* Trust Strip / Logos */}
+								<div className="border-t border-gray-100 pt-8 animate-in fade-in delay-500">
+									<p className="text-sm text-gray-400 font-medium mb-4 uppercase tracking-wider">
+										Visto em / Tecnologia usada por:
+									</p>
+									<div className="flex flex-wrap justify-center lg:justify-start gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+										{/* Placeholders de Logos - Substitua por logos reais */}
+										<div className="font-black text-xl text-gray-800">G1</div>
+										<div className="font-black text-xl text-gray-800">QUATRO RODAS</div>
+										<div className="font-black text-xl text-gray-800">UOL</div>
+										<div className="font-black text-xl text-gray-800">ESTADÃO</div>
+									</div>
+								</div>
+							</div>
+
+							{/* Imagem Hero */}
+							<div className="hidden lg:block relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-200">
+								<div className="absolute inset-0 bg-blue-600 rounded-[2.5rem] rotate-3 opacity-10 blur-3xl -z-10"></div>
+								<div className="relative rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl">
+									<img
+										src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+										alt="Motorista feliz segurando celular"
+										className="w-full h-full object-cover"
+									/>
+									{/* Float Card 1 */}
+									<div className="absolute top-10 right-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-3 animate-bounce duration-[3000ms]">
+										<div className="bg-green-100 p-2 rounded-full text-green-600">
+											<CheckCircle size={20} />
+										</div>
+										<div>
+											<p className="font-bold text-gray-900 text-sm">Recurso Deferido</p>
+											<p className="text-xs text-gray-500">Economia de R$ 293,47</p>
+										</div>
+									</div>
+									{/* Float Card 2 */}
+									<div className="absolute bottom-10 left-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-3 animate-pulse">
+										<div className="bg-blue-100 p-2 rounded-full text-blue-600">
+											<FileText size={20} />
+										</div>
+										<div>
+											<p className="font-bold text-gray-900 text-sm">PDF Gerado</p>
+											<p className="text-xs text-gray-500">Pronto em 2 minutos</p>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 
-						<h1 className="text-5xl lg:text-7xl font-black text-gray-900 tracking-tight mb-6 leading-tight max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-							Anule sua Multa de Trânsito com{" "}
-							<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-								Inteligência Artificial
-							</span>
-						</h1>
-
-						<p className="text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
-							Não gaste R$ 400,00 com advogados. Nossa IA analisa seu caso gratuitamente e gera um{" "}
-							<strong>recurso administrativo profissional</strong>, fundamentado na lei, completo e{" "}
-							<strong>pronto para assinatura e protocolo</strong>.
-						</p>
-
-						<div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
-							<Link
-								to="/upload"
-								className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-4 px-8 rounded-xl shadow-xl shadow-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2">
-								<Upload size={24} />
-								Analisar Multa Grátis
-							</Link>
-						</div>
-
-						<div className="mt-16 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-500 animate-in fade-in duration-1000 delay-500">
+						<div className="mt-16 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-500 animate-in fade-in duration-1000 delay-500 lg:hidden">
 							<div className="flex items-center gap-2">
 								<CheckCircle size={16} className="text-green-500" /> Baseado no CTB e Normativas
 								CONTRAN

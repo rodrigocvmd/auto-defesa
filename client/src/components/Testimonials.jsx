@@ -370,11 +370,13 @@ const Testimonials = () => {
 								className="flex-none w-[300px] md:w-[350px] bg-gray-50 rounded-3xl p-6 border border-gray-100 hover:shadow-md transition-shadow snap-start">
 								<div className="flex items-center justify-between mb-4">
 									<div className="flex items-center gap-3">
-										<div className="bg-blue-100 p-2 rounded-full text-blue-600">
-											<User size={20} />
-										</div>
+										<img
+											src={`https://i.pravatar.cc/150?u=${review.id}`}
+											alt={review.name}
+											className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
+										/>
 										<div>
-											<p className="font-bold text-gray-900 text-sm">{review.name}</p>
+											<p className="font-bold text-gray-900 text-sm capitalize">{review.name}</p>
 											<p className="text-xs text-gray-500">{review.date}</p>
 										</div>
 									</div>
