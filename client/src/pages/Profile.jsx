@@ -312,7 +312,7 @@ export default function Profile() {
 		<MainLayout>
 			<div className="max-w-4xl mx-auto">
 				{/* Header do Perfil */}
-				<div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-6 flex flex-col md:flex-row items-center gap-6">
+				<div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mx-2 mt-6 mb-6 flex flex-col md:flex-row items-center gap-6">
 					<div className="bg-blue-100 p-6 rounded-full text-blue-600">
 						<User size={48} />
 					</div>
@@ -345,10 +345,10 @@ export default function Profile() {
 				</div>
 
 				{/* Navegação de Abas */}
-				<div className="flex flex-col md:flex-row md:overflow-x-auto gap-2 mb-6 pb-2 md:pb-0 justify-center">
+				<div className="flex flex-col md:flex-row md:overflow-x-auto gap-2 mb-6 mx-2 pb-2 md:pb-0 justify-center">
 					<button
 						onClick={() => setActiveTab("defenses")}
-						className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
+						className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors justify-center ${
 							activeTab === "defenses"
 								? "bg-blue-600 text-white shadow-sm"
 								: "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
@@ -357,7 +357,7 @@ export default function Profile() {
 					</button>
 					<button
 						onClick={() => setActiveTab("data-security")}
-						className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
+						className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors justify-center ${
 							activeTab === "data-security"
 								? "bg-blue-600 text-white shadow-sm"
 								: "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
@@ -367,7 +367,7 @@ export default function Profile() {
 				</div>
 
 				{/* Conteúdo das Abas */}
-				<div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8 md:p-8">
+				<div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 md:p-6 mb-8 mx-2">
 					{/* Feedback Message */}
 					{message.content && (
 						<div

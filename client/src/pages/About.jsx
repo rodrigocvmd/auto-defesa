@@ -44,7 +44,7 @@ const About = () => {
 
 			{/* 1. Hero Section */}
 			<section className="bg-blue-50 border-b border-blue-100 overflow-hidden">
-				<div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative">
+				<div className="max-w-7xl mx-auto px-4 py-12 md:py-12 relative">
 					<div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl"></div>
 					<div className="max-w-3xl relative z-10">
 						<div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-blue-200">
@@ -60,7 +60,6 @@ const About = () => {
 						</p>
 					</div>
 				</div>
-				f
 			</section>
 
 			{/* 2. Nossa História (Storytelling) */}
@@ -107,7 +106,7 @@ const About = () => {
 			</section>
 
 			{/* 3. Como Funciona Nossa Tecnologia */}
-			<section className="py-24 bg-gray-50 border-y border-gray-100">
+			<section className="pt-16 pb-12 bg-gray-50 border-y border-gray-100">
 				<div className="max-w-7xl mx-auto px-4">
 					<div className="text-center max-w-3xl mx-auto mb-16">
 						<div className="inline-flex items-center gap-2 text-blue-600 font-bold mb-4 uppercase tracking-wider text-sm">
@@ -164,7 +163,7 @@ const About = () => {
 			</section>
 
 			{/* 4. Quem Faz Acontecer (Foco em E-E-A-T) */}
-			<section className="py-24 bg-white overflow-hidden">
+			<section className="pt-16 pb-12 bg-white overflow-hidden">
 				<div className="max-w-7xl mx-auto px-4">
 					<div className="bg-blue-900 rounded-[3rem] overflow-hidden shadow-2xl relative">
 						{/* Abstract Background Decoration */}
@@ -219,7 +218,7 @@ const About = () => {
 			</section>
 
 			{/* 5. Nossa Missão e Compromisso */}
-			<section className="py-24 bg-white">
+			<section className="pt-16 pb-12 bg-white">
 				<div className="max-w-7xl mx-auto px-4">
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 						<div>
@@ -310,7 +309,7 @@ const About = () => {
 			</section>
 
 			{/* 6. CTA Final (Rodapé da Seção) */}
-			<section className="pb-24 px-4">
+			<section className="pb-5 px-4">
 				<div className="max-w-5xl mx-auto bg-blue-600 rounded-[3rem] p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl shadow-blue-200">
 					{/* Decorative Blobs */}
 					<div className="absolute top-0 left-0 w-64 h-64 bg-blue-500 rounded-full blur-3xl -ml-32 -mt-32 opacity-50"></div>

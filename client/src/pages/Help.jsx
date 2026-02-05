@@ -72,7 +72,7 @@ const Help = () => {
 
 	return (
 		<MainLayout>
-			<div className="max-w-6xl mx-auto py-12 px-4">
+			<div className="max-w-6xl mx-auto pt-10 pb-1 px-4">
 				<header className="text-center mb-12">
 					<h1 className="text-4xl font-black text-gray-900 mb-4">Central de Ajuda</h1>
 					<p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -80,7 +80,7 @@ const Help = () => {
 					</p>
 				</header>
 
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 items-stretch">
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10 items-stretch">
 					{/* Contact Form - Takes 2 columns on large screens */}
 					<div className="lg:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
 						<div className="flex items-center gap-4 mb-6">

@@ -16,9 +16,9 @@ export const HelpModal = ({ onClose }) => (
                 <div className="space-y-4">
                     <div className="p-6 bg-yellow-50 rounded-2xl border border-yellow-100 shadow-sm hover:shadow-md transition-shadow">
                         <h3 className="font-bold text-lg text-yellow-900 mb-3 flex items-center gap-2">
-                            <FileWarning size={22} /> 1. Defesa Prévia (Autuação)
+                            <FileWarning size={28} /> 1. Defesa Prévia (Autuação)
                         </h3>
-                        <p className="text-sm text-yellow-800 leading-relaxed">
+                        <p className="text-MD text-yellow-800 leading-relaxed">
                             É a primeira oportunidade de defesa, quando você recebe a{" "}
                             <strong>Notificação de Autuação</strong> (ainda sem código de barras para
                             pagamento).
@@ -34,9 +34,9 @@ export const HelpModal = ({ onClose }) => (
                     </div>
                     <div className="p-6 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
                         <h3 className="font-bold text-lg text-blue-900 mb-3 flex items-center gap-2">
-                            <Gavel size={22} /> 2. Recurso à JARI (1ª Instância)
+                            <Gavel size={28} /> 2. Recurso à JARI (1ª Instância)
                         </h3>
-                        <p className="text-sm text-blue-800 leading-relaxed">
+                        <p className="text-md text-blue-800 leading-relaxed">
                             Deve ser apresentado quando você já recebeu a{" "}
                             <strong>Notificação de Penalidade</strong> (o boleto com valor a pagar) ou teve a
                             Defesa Prévia indeferida.
@@ -52,9 +52,9 @@ export const HelpModal = ({ onClose }) => (
                     </div>
                     <div className="p-6 bg-purple-50 rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-shadow">
                         <h3 className="font-bold text-lg text-purple-900 mb-3 flex items-center gap-2">
-                            <Scale size={22} /> 3. Recurso ao CETRAN (2ª Instância)
+                            <Scale size={34} /> 3. Recurso ao CETRAN (2ª Instância)
                         </h3>
-                        <p className="text-sm text-purple-800 leading-relaxed">
+                        <p className="text-md text-purple-800 leading-relaxed">
                             É a última tentativa na esfera administrativa, cabível apenas se o seu{" "}
                             <strong>Recurso à JARI foi negado</strong>.<br />
                             <br />

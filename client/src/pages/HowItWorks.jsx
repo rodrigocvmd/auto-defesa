@@ -45,7 +45,7 @@ const HowItWorks = () => {
 
 	return (
 		<MainLayout>
-			<div className="max-w-4xl mx-auto py-12 px-4">
+			<div className="max-w-4xl mx-auto pt-10 pb-2 px-4">
 				<header className="text-center mb-16">
 					<h1 className="text-4xl font-black text-gray-900 mb-4">Como Funciona</h1>
 					<p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -74,7 +74,7 @@ const HowItWorks = () => {
 					))}
 				</div>
 
-				<div className="mt-20 text-center bg-gray-900 rounded-3xl p-10 text-white">
+				<div className="mt-10 text-center bg-gray-900 rounded-3xl p-10 text-white">
 					<h2 className="text-2xl font-bold mb-4">Pronto para começar?</h2>
 					<p className="text-gray-400 mb-8 max-w-xl mx-auto">
 						Não deixe o prazo vencer. A análise inicial de viabilidade leva menos de 1 minuto.

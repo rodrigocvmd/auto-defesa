@@ -29,7 +29,7 @@ const BlogIndex = () => {
       </div>
 
       {/* Grid de Artigos */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {articles.map((article) => (
             <div key={article.slug} className="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-full">
@@ -64,7 +64,7 @@ const BlogIndex = () => {
       </div>
 
       {/* CTA Banner */}
-      <div className="max-w-5xl mx-auto px-4 pb-16">
+      <div className="max-w-5xl mx-auto px-4 pb-6">
         <div className="bg-blue-600 rounded-3xl p-8 md:p-12 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl shadow-blue-200">
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">

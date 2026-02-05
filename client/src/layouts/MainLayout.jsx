@@ -320,9 +320,9 @@ const MainLayout = ({ children }) => {
 			<VerificationBanner />
 
 			{/* Main Content Area */}
-			<main className="flex-1 w-full max-w-8xl mx-auto px-4 sm:px-6 lg:px-1 py-1">
+			<main className="flex-1 w-full max-w-8xl mx-auto px-0 sm:px-6 lg:px-1 py-0">
 				{children}
-				<footer className="border-t border-gray-100 py-6 mt-8 flex flex-col items-center">
+				<footer className="border-t border-gray-100 py-6 mt-6 flex flex-col items-center">
 					{/* Recursos Úteis */}
 					{!location.pathname.startsWith("/upload") && (
 						<div className="w-full max-w-4xl mb-8 px-4">

@@ -86,8 +86,8 @@ const Home = () => {
 								<div className="absolute inset-0 bg-blue-600 rounded-[2.5rem] rotate-3 opacity-10 blur-3xl -z-10"></div>
 								<div className="relative rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl">
 									<img
-										src="../../public/imagemLanding.png"
-										alt="Motorista feliz segurando celular"
+										src="/imagemLanding.png"
+										alt="Motorista segurando celular com recurso procedente"
 										className="w-full h-full object-cover"
 									/>
 									{/* Float Card 1 */}

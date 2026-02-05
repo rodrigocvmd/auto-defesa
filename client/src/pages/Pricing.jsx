@@ -108,7 +108,7 @@ const Pricing = () => {
 				description="Escolha o melhor plano para sua defesa. A partir de R$ 17,90. Recurso profissional gerado por IA. Sem mensalidades."
 				keywords="preço recurso multa, valor advogado transito, comprar recurso multa, planos autodefesa"
 			/>
-			<div className="max-w-6xl mx-auto py-12 px-4">
+			<div className="max-w-6xl mx-auto pt-12 pb-2 px-4">
 				<div className="text-center mb-16">
 					<h1 className="text-4xl font-black text-gray-900 mb-4">
 						Escolha o melhor pacote de defesa para você
@@ -182,8 +182,8 @@ const Pricing = () => {
 					))}
 				</div>
 
-				<div className="mt-16 bg-gray-50 p-8 rounded-3xl border border-gray-200">
-					<div className="text-center mb-8">
+				<div className="mt-10 md:mt-14 bg-gray-50 p-8 md:py-8 rounded-3xl border border-gray-200">
+					<div className="text-center mb-2">
 						<h2 className="text-lg font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
 							<Scale size={20} className="text-blue-600" />
 							Tecnologia Jurídica Transparente
