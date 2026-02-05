@@ -7,14 +7,14 @@ const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Produção:
-// const MODEL_FLASH = "gemini-3-flash-preview";
-// const MODEL_PRO = "gemini-3-pro-preview";
-// const MODEL_FALLBACK = "gemini-2.5-flash";
+const MODEL_FLASH = "gemini-3-flash-preview";
+const MODEL_PRO = "gemini-3-pro-preview";
+const MODEL_FALLBACK = "gemini-2.5-flash";
 
 // Testes / Lite:
-const MODEL_FLASH = "gemini-2.5-flash-lite";
-const MODEL_PRO = "gemini-2.5-flash-lite";
-const MODEL_FALLBACK = "gemini-2.5-flash-lite";
+// const MODEL_FLASH = "gemini-2.5-flash-lite";
+// const MODEL_PRO = "gemini-2.5-flash-lite";
+// const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
  * Tenta gerar conteúdo com o modelo principal. Se der erro 503 (Overloaded),
