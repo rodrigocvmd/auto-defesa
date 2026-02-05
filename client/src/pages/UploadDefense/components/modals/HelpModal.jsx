@@ -63,6 +63,13 @@ export const HelpModal = ({ onClose }) => (
                         </p>
                     </div>
                 </div>
+                <div className="mt-8 flex justify-center">
+                    <button
+                        onClick={onClose}
+                        className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl active:scale-95">
+                        Entendi, obrigado!
+                    </button>
+                </div>
             </div>
         </div>
     </div>

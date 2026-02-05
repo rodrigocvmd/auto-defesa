@@ -13,6 +13,7 @@ import {
 	Car,
 	Save,
 	Lock,
+    LogOut,
 	AlertCircle,
 	CheckCircle,
 	Plus,
@@ -40,7 +41,7 @@ import { pdf } from "@react-pdf/renderer";
 import DefenseDocument from "../components/DefensePDF";
 
 export default function Profile() {
-	const { currentUser, userData, updateUserEmail, deleteUserAccount, checkEmailExists } = useAuth();
+	const { currentUser, userData, updateUserEmail, deleteUserAccount, checkEmailExists, logout } = useAuth();
 	const navigate = useNavigate();
     const location = useLocation();
 	const [activeTab, setActiveTab] = useState("defenses");
@@ -68,6 +69,15 @@ export default function Profile() {
 	// Estado do Histórico
 	const [defenses, setDefenses] = useState([]);
     
+    async function handleLogout() {
+        try {
+            await logout();
+            navigate("/login");
+        } catch (error) {
+            console.error("Erro ao sair", error);
+        }
+    }
+
     useEffect(() => {
         if (newPassword) {
             setHasMinLength(newPassword.length >= 6);
@@ -312,16 +322,22 @@ export default function Profile() {
 		<MainLayout>
 			<div className="max-w-4xl mx-auto">
 				{/* Header do Perfil */}
-				<div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mx-2 mt-6 mb-6 flex flex-col md:flex-row items-center gap-6">
+				<div id="profileHero" className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mx-2 mt-6 mb-6 flex flex-col md:flex-row items-center gap-6">
 					<div className="bg-blue-100 p-6 rounded-full text-blue-600">
 						<User size={48} />
 					</div>
-					<div className="text-center md:text-left flex-1">
+					<div id="userInfo" className="text-center md:text-left flex-1 flex flex-col items-center md:block">
 						<h1 className="text-2xl font-bold text-gray-900">
 							{currentUser?.displayName || "Usuário"}
 						</h1>
 						<p className="text-gray-500">{currentUser?.email}</p>
-						<p className="text-xs text-gray-400 mt-1">
+						<button
+							onClick={handleLogout}
+							className="mt-2 text-red-500 hover:text-red-700 font-bold text-sm flex items-center gap-1 transition-colors"
+							title="Sair da conta">
+							<LogOut size={16} /> Sair da conta
+						</button>
+						<p className="text-xs text-gray-400 mt-2">
 							Membro desde{" "}
 							{currentUser?.metadata.creationTime
 								? new Date(currentUser.metadata.creationTime).toLocaleDateString("pt-BR")
@@ -579,7 +595,7 @@ export default function Profile() {
 								                                </div>
 							</form>
 
-							<div className="pt-12 border-t border-gray-100">
+							<div className="pt-8 border-t border-gray-100 !mt-8">
 								<div className="bg-red-50 border border-red-100 rounded-xl p-6 flex flex-col items-center">
 									<h3 className="text-lg font-bold text-red-600 mb-4 flex items-center gap-2">
 										<AlertTriangle size={20} /> Excluir Conta

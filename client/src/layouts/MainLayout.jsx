@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Shield, User, LogOut, Menu, X, BookOpen } from "lucide-react";
+import { Shield, User, Menu, X, BookOpen } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import VerificationBanner from "../components/VerificationBanner";
 
 const MainLayout = ({ children }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { currentUser, logout } = useAuth();
+	const { currentUser } = useAuth();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
 	const isHome = location.pathname === "/";
@@ -20,15 +20,6 @@ const MainLayout = ({ children }) => {
 	});
 
 	const formattedDate = updatedDate.charAt(0).toUpperCase() + updatedDate.slice(1);
-
-	async function handleLogout() {
-		try {
-			await logout();
-			navigate("/login");
-		} catch (error) {
-			console.error("Erro ao sair", error);
-		}
-	}
 
 	const ano = data.getFullYear();
 
@@ -164,13 +155,6 @@ const MainLayout = ({ children }) => {
 											{currentUser.displayName || currentUser.email}
 										</span>
 									</Link>
-									<div className="h-4 w-px bg-gray-300"></div>
-									<button
-										onClick={handleLogout}
-										className="text-gray-500 hover:text-red-600 font-medium transition-colors flex items-center gap-2 text-sm"
-										title="Sair">
-										<LogOut size={18} />
-									</button>
 								</div>
 							) : (
 								<div className="flex items-center gap-4">
@@ -286,14 +270,6 @@ const MainLayout = ({ children }) => {
 										<User size={18} /> Minha Conta (
 										{currentUser.displayName?.split(" ")[0] || "Perfil"})
 									</Link>
-									<button
-										onClick={() => {
-											handleLogout();
-											setIsMenuOpen(false);
-										}}
-										className="w-full text-red-600 font-medium py-2 flex items-center justify-center gap-2">
-										<LogOut size={18} /> Sair
-									</button>
 								</>
 							) : (
 								<div className="flex flex-col gap-3 pt-2">
