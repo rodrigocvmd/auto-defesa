@@ -146,8 +146,8 @@ exports.generateDefense = (req, res) => {
           3. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
              *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
              
-             - **Endereçamento:** Caixa Alta, Negrito, Centralizado/Justificado.
-               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
+             - **Endereçamento:** Caixa Alta, Negrito, CENTRALIZADO.
+               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
              
              - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
                Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº ${data.aitNumber || "[NÚMERO]"}</p>
@@ -165,8 +165,10 @@ exports.generateDefense = (req, res) => {
              - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Centralizado, Tamanho +2pt.
                Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
              
-             - **Corpo do Texto:** Tamanho padrão, Justificado, com recuo de parágrafo (text-indent: 50px). Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
-               *ATENÇÃO:* O recuo (text-indent) deve ser aplicado APENAS aos parágrafos de texto padrão e à qualificação. Títulos, endereçamento e assinaturas NÃO devem ter recuo.
+             - **Corpo do Texto:** Tamanho padrão, Justificado, com recuo de parágrafo OBRIGATÓRIO (text-indent: 50px).
+               Use: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">[CONTEÚDO]</p>
+               Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
+               *ATENÇÃO:* O recuo (text-indent) deve ser aplicado ESTRITAMENTE aos parágrafos de texto padrão e à qualificação. Títulos, endereçamento e assinaturas NÃO devem ter recuo.
 
           4. CONTEÚDO E ESTRATÉGIA:
              - Omissão de Vazios: Não invente dados.
@@ -176,7 +178,7 @@ exports.generateDefense = (req, res) => {
                 - RECURSO CETRAN/CONTRADIFE: Rebata a decisão da JARI, alegue falta de fundamentação se genérica.
              - Analise o relato do usuário em <relato_fatos>.
              - EQUIPAMENTO/AFERIÇÃO: Analise 'Equipamento' e 'Aferição'. Se vencida ou ausente em infração que exige medição, use como tese principal.
-             - PROLIXIDADE E EXAUSTIVIDADE: Seja extremamente prolixo e produza um recurso grande e robusto. Desenvolva pelo menos 5 argumentos de mérito detalhados. Não se limite ao relato do usuário; utilize seu conhecimento jurídico para abordar TODOS os argumentos viáveis, teses de repercussão geral e jurisprudência aplicável a este tipo de infração.
+             - PROLIXIDADE E EXAUSTIVIDADE (MUITO IMPORTANTE): Seja extremamente prolixo e produza um recurso grande, robusto e detalhado. Você deve elaborar o recurso com no mínimo 4 argumentos sobre o tema, mas preferencialmente deve se utilizar de ainda mais argumentos do que só 4. Não se limite apenas ao relato do usuário; você deve abordar a maior quantidade de argumentos viáveis possível, inclusive argumentos de conhecimento ou repercussão geral aplicáveis a este tipo de infração. Desenvolva pelo menos 5 tópicos de mérito detalhados.
 
           5. FINALIZAÇÃO:
              - NUNCA use "por seu procurador".
@@ -526,8 +528,8 @@ exports.analyzeDocument = (req, res) => {
         5. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
              *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
              
-             - **Endereçamento:** Caixa Alta, Negrito, Centralizado/Justificado.
-               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: justify; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
+             - **Endereçamento:** Caixa Alta, Negrito, CENTRALIZADO.
+               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
              
              - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
                Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº [NÚMERO]</p>
@@ -545,8 +547,10 @@ exports.analyzeDocument = (req, res) => {
              - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Centralizado, Tamanho +2pt.
                Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
              
-             - **Corpo do Texto:** Tamanho padrão, Justificado, com recuo de parágrafo (text-indent: 50px). Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
-               *ATENÇÃO:* O recuo (text-indent) deve ser aplicado APENAS aos parágrafos de texto padrão e à qualificação. Títulos, endereçamento e assinaturas NÃO devem ter recuo.
+             - **Corpo do Texto:** Tamanho padrão, Justificado, com recuo de parágrafo OBRIGATÓRIO (text-indent: 50px).
+               Use: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">[CONTEÚDO]</p>
+               Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
+               *ATENÇÃO:* O recuo (text-indent) deve ser aplicado ESTRITAMENTE aos parágrafos de texto padrão e à qualificação. Títulos, endereçamento e assinaturas NÃO devem ter recuo.
 
         6. ESTRATÉGIA POR FASE:
            - DEFESA PRÉVIA: Foque obsessivamente em ERROS FORMAIS do AIT.
@@ -554,7 +558,7 @@ exports.analyzeDocument = (req, res) => {
            - RECURSO CETRAN/CONTRADIFE: Rebata a decisão da JARI, alegue falta de fundamentação.
         
         7. ANÁLISE ESTRATÉGICA DO RELATO: Use o relato do usuário apenas se fortalecer a defesa técnica. Se for confissão ou prejudicial, descarte.
-        8. SEJA PROLIXO E EXAUSTIVO: Produza um recurso grande e robusto. Desenvolva no mínimo 5 tópicos completos e detalhados. Não se limite ao relato do usuário; utilize seu conhecimento jurídico para abordar TODOS os argumentos viáveis, teses de repercussão geral e jurisprudência aplicável a este tipo de infração. Desenvolva no mínimo 4 tópicos completos, mas, de preferência, mais que isso.
+        8. SEJA EXTREMAMENTE PROLIXO E EXAUSTIVO (MUITO IMPORTANTE): Produza um recurso grande, robusto e detalhado. Você deve elaborar o recurso com no mínimo 4 argumentos sobre o tema, mas preferencialmente deve se utilizar de ainda mais argumentos do que só 4. Não se limite apenas ao relato do usuário; você deve abordar a maior quantidade de argumentos viáveis possível, inclusive argumentos de conhecimento ou repercussão geral aplicáveis a este tipo de infração. Desenvolva no mínimo 5 tópicos completos e detalhados.
         9. DADOS AUSENTES: Explore a falta de dados no AIT como cerceamento de defesa.
         10. NUNCA utilize a expressão "por seu procurador infra-assinado".
         11. NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento HTML.

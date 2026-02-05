@@ -21,7 +21,7 @@ exports.checkEmail = onRequest(userController.checkEmail);
 exports.sendSupportEmail = onRequest(supportController.sendSupportEmail);
 
 // --- FUNÇÃO 2: MANUAL / REFINAMENTO ---
-exports.generateDefense = onRequest(defenseController.generateDefense);
+exports.generateDefense = onRequest({ timeoutSeconds: 120 }, defenseController.generateDefense);
 
 // --- FUNÇÃO 3: CHECKOUT STRIPE ---
 exports.createCheckoutSession = onRequest(paymentController.createCheckoutSession);
@@ -33,7 +33,7 @@ exports.extractDataFromImage = onRequest(defenseController.extractDataFromImage)
 exports.preAnalyze = onRequest(defenseController.preAnalyze);
 
 // --- FUNÇÃO 6: ANÁLISE COMPLETA (UPLOAD) ---
-exports.analyzeDocument = onRequest(defenseController.analyzeDocument);
+exports.analyzeDocument = onRequest({ timeoutSeconds: 120 }, defenseController.analyzeDocument);
 
 // --- WEBHOOK STRIPE ---
 exports.stripeWebhook = onRequest(paymentController.stripeWebhook);

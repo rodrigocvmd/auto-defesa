@@ -69,6 +69,31 @@ const styles = StyleSheet.create({
   }
 });
 
+// Utility to parse inline CSS styles into React-PDF compatible object
+const parseInlineStyle = (styleString) => {
+  if (!styleString) return {};
+  const styles = {};
+  const pairs = styleString.split(';');
+  pairs.forEach(pair => {
+    const [key, value] = pair.split(':').map(s => s.trim());
+    if (key && value) {
+      // Map CSS properties to React-PDF properties
+      if (key === 'text-align') styles.textAlign = value;
+      if (key === 'text-indent') styles.textIndent = parseInt(value, 10);
+      if (key === 'font-size') styles.fontSize = parseInt(value, 10);
+      if (key === 'font-weight') {
+        if (value === 'bold') styles.fontFamily = 'Times-Bold';
+      }
+      if (key === 'margin-bottom') styles.marginBottom = parseInt(value, 10);
+      if (key === 'margin-top') styles.marginTop = parseInt(value, 10);
+      if (key === 'text-transform') {
+        if (value === 'uppercase') styles.textTransform = 'uppercase';
+      }
+    }
+  });
+  return styles;
+};
+
 // Utility to recursively map HTML DOM nodes to React-PDF primitives
 const HtmlToPdf = ({ html }) => {
   if (!html) return null;
@@ -82,18 +107,54 @@ const HtmlToPdf = ({ html }) => {
 
       // Handle Paragraphs
       if (domNode.name === 'p') {
-        const hasIndent = domNode.attribs && domNode.attribs.style && domNode.attribs.style.includes('text-indent');
+        const inlineStyle = parseInlineStyle(domNode.attribs?.style);
+        
+        // Merge base p styles with inline styles
+        // Properties that must be on Text component: textIndent, textAlign, textTransform, fontSize, fontFamily
+        const { textIndent, textAlign, textTransform, fontSize, fontFamily, ...viewStyle } = inlineStyle;
+        
+        const textStyle = {
+          textIndent: textIndent || 0,
+          textAlign: textAlign || styles.p.textAlign,
+        };
+        if (textTransform) textStyle.textTransform = textTransform;
+        if (fontSize) textStyle.fontSize = fontSize;
+        if (fontFamily) textStyle.fontFamily = fontFamily;
+        
         return (
-          <View style={styles.p}>
-            <Text style={hasIndent ? { textIndent: 50 } : {}}>{domToReact(domNode.children, options)}</Text>
+          <View style={[styles.p, viewStyle]}>
+            <Text style={textStyle}>
+              {domToReact(domNode.children, options)}
+            </Text>
           </View>
         );
       }
 
       // Handle Headings
-      if (domNode.name === 'h1') return <Text style={styles.h1}>{domToReact(domNode.children, options)}</Text>;
-      if (domNode.name === 'h2') return <Text style={styles.h2}>{domToReact(domNode.children, options)}</Text>;
-      if (domNode.name === 'h3') return <Text style={styles.h3}>{domToReact(domNode.children, options)}</Text>;
+      if (domNode.name === 'h1') {
+        const inlineStyle = parseInlineStyle(domNode.attribs?.style);
+        return (
+          <View style={{ marginBottom: inlineStyle.marginBottom || 10, marginTop: inlineStyle.marginTop || 10 }}>
+            <Text style={[styles.h1, inlineStyle]}>{domToReact(domNode.children, options)}</Text>
+          </View>
+        );
+      }
+      if (domNode.name === 'h2') {
+        const inlineStyle = parseInlineStyle(domNode.attribs?.style);
+        return (
+          <View style={{ marginBottom: inlineStyle.marginBottom || 10, marginTop: inlineStyle.marginTop || 10 }}>
+            <Text style={[styles.h2, inlineStyle]}>{domToReact(domNode.children, options)}</Text>
+          </View>
+        );
+      }
+      if (domNode.name === 'h3') {
+        const inlineStyle = parseInlineStyle(domNode.attribs?.style);
+        return (
+          <View style={{ marginBottom: inlineStyle.marginBottom || 8, marginTop: inlineStyle.marginTop || 8 }}>
+            <Text style={[styles.h3, inlineStyle]}>{domToReact(domNode.children, options)}</Text>
+          </View>
+        );
+      }
 
       // Handle Lists
       if (domNode.name === 'ul' || domNode.name === 'ol') {

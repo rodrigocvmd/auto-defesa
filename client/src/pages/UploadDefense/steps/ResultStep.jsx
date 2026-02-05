@@ -88,6 +88,7 @@ export const ResultStep = ({
 					"color",
 					"background-color",
 					"text-align",
+					"text-indent",
 					"line-height",
 					"text-decoration",
 					"margin",
@@ -120,7 +121,6 @@ export const ResultStep = ({
                             height: auto !important;
                             overflow: visible !important;
                             white-space: pre-wrap !important;
-                            text-align: justify !important;
                         }
                         h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
                         p { orphans: 2; widows: 2; }
@@ -270,7 +270,6 @@ export const ResultStep = ({
                                 /* Forçar estilos nos elementos internos para vencer o CSS do Tailwind/Quill */
                                 .ql-editor p {
                                     margin-bottom: 10px !important;
-                                    text-align: justify !important;
                                     font-family: 'Times New Roman', Times, serif !important;
                                 }
                                 .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4 {
