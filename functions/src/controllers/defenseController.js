@@ -153,19 +153,19 @@ exports.generateDefense = (req, res) => {
                Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº ${data.aitNumber || "[NÚMERO]"}</p>
              
              - **Qualificação do Recorrente e Veículo:** Texto corrido normal, iniciando com o nome do recorrente e dados do veículo, finalizando com a conexão "vem por meio deste apresentar".
-               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas ${data.plate || "[PLACA]"}, vem por meio deste apresentar</p>
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 5px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas ${data.plate || "[PLACA]"}, vem por meio deste apresentar</p>
              
              - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt. Em linha própria, logo após a qualificação acima.
-               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
+               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 5px; margin-bottom: 5px;">${defenseTypeLabel}</h1>
              
              - **Qualificação da Infração:** Parágrafo iniciando obrigatoriamente com o conector "em face de", seguido dos dados da infração (Auto de Infração nº ${data.aitNumber || "[NÚMERO]"}, Art. ${data.article || "[ARTIGO]"}, Órgão ${data.issuingBody || "[ÓRGÃO]"}).
-               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">em face de [DADOS DA INFRAÇÃO], pelos fatos e fundamentos jurídicos a seguir expostos:</p>
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">em face de [DADOS DA INFRAÇÃO], pelos fatos e fundamentos jurídicos a seguir expostos:</p>
              
              - **Capítulos (I., II.):** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
-               Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 10px;">I. DOS FATOS</h2>
+               Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 10px; margin-bottom: 10px;">I. DOS FATOS</h2>
              
              - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Centralizado, Tamanho +2pt.
-               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
+               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 10px; margin-bottom: 5px;">A. DA NULIDADE</h3>
              
              - **Corpo do Texto:** Tamanho padrão, Justificado, com recuo de parágrafo OBRIGATÓRIO (text-indent: 50px).
                **REGRA ABSOLUTA:** TODO parágrafo de texto corrido (incluindo a qualificação) DEVE ter o estilo 'text-align: justify; text-indent: 50px;'.
@@ -189,10 +189,10 @@ exports.generateDefense = (req, res) => {
           9. FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com o bloco CENTRALIZADO exatamente como abaixo:
              
              <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-             <p style="text-align: center; margin-bottom: 90px;">${data.signCity || "Local"}, ${formattedSignDate}.</p>
+             <p style="text-align: center; margin-bottom: 30px;">${data.signCity || "Local"}, ${formattedSignDate}.</p>
              
-             <p style="text-align: center; margin-top: 90px;">___________________________________________________</p>
-             <p style="text-align: center;">${(data.name || "NOME DO RECORRENTE").toUpperCase()}</p>
+             <p style="text-align: center; margin-top: 40px; margin-bottom: 0;">___________________________________________________</p>
+             <p style="text-align: center; margin-top: 5px;">${(data.name || "NOME DO RECORRENTE").toUpperCase()}</p>
         `;
 
 				userPrompt = `
@@ -538,19 +538,19 @@ exports.analyzeDocument = (req, res) => {
                Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº [NÚMERO]</p>
              
              - **Qualificação do Recorrente e Veículo:** Texto corrido normal, iniciando com o nome do recorrente e dados do veículo, finalizando com a conexão "vem por meio deste apresentar".
-               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas [PLACA], vem por meio deste apresentar</p>
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 5px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas [PLACA], vem por meio deste apresentar</p>
              
              - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt. Em linha própria, logo após a qualificação acima.
-               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
+               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 5px; margin-bottom: 5px;">${defenseTypeLabel}</h1>
              
              - **Qualificação da Infração:** Parágrafo iniciando obrigatoriamente com o conector "em face de", seguido dos dados da infração (Auto de Infração nº [NÚMERO], Art. [ARTIGO], Órgão [ÓRGÃO]).
-               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">em face de [DADOS DA INFRAÇÃO], pelos fatos e fundamentos jurídicos a seguir expostos:</p>
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">em face de [DADOS DA INFRAÇÃO], pelos fatos e fundamentos jurídicos a seguir expostos:</p>
              
              - **Capítulos (I., II.):** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
-               Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 10px;">I. DOS FATOS</h2>
+               Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 10px; margin-bottom: 10px;">I. DOS FATOS</h2>
              
              - **Subcapítulos (a., b.):** Caixa Alta, Fonte Normal (Fina), Centralizado, Tamanho +2pt.
-               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
+               Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 10px; margin-bottom: 5px;">A. DA NULIDADE</h3>
              
              - **Corpo do Texto:** Tamanho padrão, Justificado, com recuo de parágrafo OBRIGATÓRIO (text-indent: 50px).
                **REGRA ABSOLUTA:** TODO parágrafo de texto corrido (incluindo a qualificação) DEVE ter o estilo 'text-align: justify; text-indent: 50px;'.
@@ -572,10 +572,10 @@ exports.analyzeDocument = (req, res) => {
         15. Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO, exatamente como abaixo:
             
             <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-            <p style="text-align: center; margin-bottom: 90px;">${userData.signCity || "Local"}, ${formattedSignDate}.</p>
+            <p style="text-align: center; margin-bottom: 30px;">${userData.signCity || "Local"}, ${formattedSignDate}.</p>
             
-            <p style="text-align: center; margin-top: 90px;">___________________________________________________</p>
-            <p style="text-align: center;">${(userData.name || "NOME DO RECORRENTE").toUpperCase()}</p>
+            <p style="text-align: center; margin-top: 40px; margin-bottom: 0;">___________________________________________________</p>
+            <p style="text-align: center; margin-top: 5px;">${(userData.name || "NOME DO RECORRENTE").toUpperCase()}</p>
       `;
 
 			const imagePart = { inlineData: { data: image, mimeType: mimeType } };
