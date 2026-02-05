@@ -70,27 +70,37 @@ const styles = StyleSheet.create({
 });
 
 // Utility to parse inline CSS styles into React-PDF compatible object
-const parseInlineStyle = (styleString) => {
-  if (!styleString) return {};
+const parseInlineStyle = (domNode) => {
+  const styleString = domNode.attribs?.style;
+  const className = domNode.attribs?.class || domNode.attribs?.className || "";
+  
   const styles = {};
-  const pairs = styleString.split(';');
-  pairs.forEach(pair => {
-    const [key, value] = pair.split(':').map(s => s.trim());
-    if (key && value) {
-      // Map CSS properties to React-PDF properties
-      if (key === 'text-align') styles.textAlign = value;
-      if (key === 'text-indent') styles.textIndent = parseInt(value, 10);
-      if (key === 'font-size') styles.fontSize = parseInt(value, 10);
-      if (key === 'font-weight') {
-        if (value === 'bold') styles.fontFamily = 'Times-Bold';
+  
+  // Handle Quill alignment classes
+  if (className.includes('ql-align-center')) styles.textAlign = 'center';
+  if (className.includes('ql-align-right')) styles.textAlign = 'right';
+  if (className.includes('ql-align-justify')) styles.textAlign = 'justify';
+
+  if (styleString) {
+    const pairs = styleString.split(';');
+    pairs.forEach(pair => {
+      const [key, value] = pair.split(':').map(s => s.trim());
+      if (key && value) {
+        // Map CSS properties to React-PDF properties
+        if (key === 'text-align') styles.textAlign = value;
+        if (key === 'text-indent') styles.textIndent = parseInt(value, 10);
+        if (key === 'font-size') styles.fontSize = parseInt(value, 10);
+        if (key === 'font-weight') {
+          if (value === 'bold') styles.fontFamily = 'Times-Bold';
+        }
+        if (key === 'margin-bottom') styles.marginBottom = parseInt(value, 10);
+        if (key === 'margin-top') styles.marginTop = parseInt(value, 10);
+        if (key === 'text-transform') {
+          if (value === 'uppercase') styles.textTransform = 'uppercase';
+        }
       }
-      if (key === 'margin-bottom') styles.marginBottom = parseInt(value, 10);
-      if (key === 'margin-top') styles.marginTop = parseInt(value, 10);
-      if (key === 'text-transform') {
-        if (value === 'uppercase') styles.textTransform = 'uppercase';
-      }
-    }
-  });
+    });
+  }
   return styles;
 };
 
@@ -107,7 +117,7 @@ const HtmlToPdf = ({ html }) => {
 
       // Handle Paragraphs
       if (domNode.name === 'p') {
-        const inlineStyle = parseInlineStyle(domNode.attribs?.style);
+        const inlineStyle = parseInlineStyle(domNode);
         
         // Merge base p styles with inline styles
         // Properties that must be on Text component: textIndent, textAlign, textTransform, fontSize, fontFamily
@@ -132,7 +142,7 @@ const HtmlToPdf = ({ html }) => {
 
       // Handle Headings
       if (domNode.name === 'h1') {
-        const inlineStyle = parseInlineStyle(domNode.attribs?.style);
+        const inlineStyle = parseInlineStyle(domNode);
         return (
           <View style={{ marginBottom: inlineStyle.marginBottom || 10, marginTop: inlineStyle.marginTop || 10 }}>
             <Text style={[styles.h1, inlineStyle]}>{domToReact(domNode.children, options)}</Text>
@@ -140,7 +150,7 @@ const HtmlToPdf = ({ html }) => {
         );
       }
       if (domNode.name === 'h2') {
-        const inlineStyle = parseInlineStyle(domNode.attribs?.style);
+        const inlineStyle = parseInlineStyle(domNode);
         return (
           <View style={{ marginBottom: inlineStyle.marginBottom || 10, marginTop: inlineStyle.marginTop || 10 }}>
             <Text style={[styles.h2, inlineStyle]}>{domToReact(domNode.children, options)}</Text>
@@ -148,7 +158,7 @@ const HtmlToPdf = ({ html }) => {
         );
       }
       if (domNode.name === 'h3') {
-        const inlineStyle = parseInlineStyle(domNode.attribs?.style);
+        const inlineStyle = parseInlineStyle(domNode);
         return (
           <View style={{ marginBottom: inlineStyle.marginBottom || 8, marginTop: inlineStyle.marginTop || 8 }}>
             <Text style={[styles.h3, inlineStyle]}>{domToReact(domNode.children, options)}</Text>

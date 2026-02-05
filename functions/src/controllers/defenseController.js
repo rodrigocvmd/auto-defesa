@@ -154,7 +154,7 @@ exports.generateDefense = (req, res) => {
              
              - **Qualificação (COM VEÍCULO/INFRAÇÃO):** Texto corrido normal, iniciando com o nome do recorrente. 
                *INSTRUÇÃO:* Inclua os dados do veículo (Placa ${data.plate}) e da infração (Art. ${data.article}) dentro deste parágrafo de qualificação, de forma fluida no texto.
-               Use: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas ${data.plate || "[PLACA]"}, vem apresentar defesa referente à infração do Art. ${data.article}...</p>
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas ${data.plate || "[PLACA]"}, vem apresentar defesa referente à infração do Art. ${data.article}...</p>
              
              - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
                Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 30px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
@@ -166,7 +166,8 @@ exports.generateDefense = (req, res) => {
                Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
              
              - **Corpo do Texto:** Tamanho padrão, Justificado, com recuo de parágrafo OBRIGATÓRIO (text-indent: 50px).
-               Use: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">[CONTEÚDO]</p>
+               **REGRA ABSOLUTA:** TODO parágrafo de texto corrido (incluindo a qualificação) DEVE ter o estilo 'text-align: justify; text-indent: 50px;'.
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">[CONTEÚDO]</p>
                Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
                *ATENÇÃO:* O recuo (text-indent) deve ser aplicado ESTRITAMENTE aos parágrafos de texto padrão e à qualificação. Títulos, endereçamento e assinaturas NÃO devem ter recuo.
 
@@ -536,7 +537,7 @@ exports.analyzeDocument = (req, res) => {
              
              - **Qualificação (COM VEÍCULO/INFRAÇÃO):** Texto corrido normal, iniciando com o nome do recorrente. 
                *INSTRUÇÃO:* Inclua os dados do veículo (Placa [PLACA]) e da infração (Art. [ARTIGO CTB]) dentro deste parágrafo de qualificação, de forma fluida no texto.
-               Use: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas [PLACA], vem apresentar defesa referente à infração do Art. [ARTIGO CTB]...</p>
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas [PLACA], vem apresentar defesa referente à infração do Art. [ARTIGO CTB]...</p>
              
              - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
                Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 30px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
@@ -548,7 +549,8 @@ exports.analyzeDocument = (req, res) => {
                Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 15px; margin-bottom: 10px;">A. DA NULIDADE</h3>
              
              - **Corpo do Texto:** Tamanho padrão, Justificado, com recuo de parágrafo OBRIGATÓRIO (text-indent: 50px).
-               Use: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">[CONTEÚDO]</p>
+               **REGRA ABSOLUTA:** TODO parágrafo de texto corrido (incluindo a qualificação) DEVE ter o estilo 'text-align: justify; text-indent: 50px;'.
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">[CONTEÚDO]</p>
                Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
                *ATENÇÃO:* O recuo (text-indent) deve ser aplicado ESTRITAMENTE aos parágrafos de texto padrão e à qualificação. Títulos, endereçamento e assinaturas NÃO devem ter recuo.
 

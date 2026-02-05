@@ -264,15 +264,33 @@ export const ResultStep = ({
                                     font-size: 12pt !important;
                                     line-height: 1.5 !important;
                                     color: #000 !important;
-                                    text-align: justify !important;
                                 }
 
-                                /* Forçar estilos nos elementos internos para vencer o CSS do Tailwind/Quill */
-                                .ql-editor p {
-                                    margin-bottom: 10px !important;
-                                    font-family: 'Times New Roman', Times, serif !important;
-                                }
-                                .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4 {
+                                                                /* Forçar estilos nos elementos internos para vencer o CSS do Tailwind/Quill */
+
+                                                                .ql-editor p {
+
+                                                                    margin-bottom: 10px !important;
+
+                                                                    font-family: 'Times New Roman', Times, serif !important;
+
+                                                                }
+
+                                                                
+
+                                                                /* Suporte para indentação via style inline */
+
+                                                                .ql-editor p[style*="text-indent"] {
+
+                                                                    text-indent: 50px !important;
+
+                                                                }
+
+                                
+
+                                                                .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4 {
+
+                                
                                     font-family: 'Times New Roman', Times, serif !important;
                                     font-weight: bold !important;
                                     text-align: center !important;
