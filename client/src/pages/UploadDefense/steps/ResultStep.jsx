@@ -48,7 +48,7 @@ export const ResultStep = ({
 	const { handleGeneratePDF, loading: pdfLoading } = usePdfGenerator(
 		result,
 		formData,
-		null // Não mostramos o modal aqui, redirecionamos para o perfil
+		null, // Não mostramos o modal aqui, redirecionamos para o perfil
 	);
 
 	const handleDownloadRequest = () => {
@@ -235,6 +235,10 @@ export const ResultStep = ({
 							<p className="text-yellow-700 text-sm mt-1">
 								Leia todo o conteúdo. Se, porventura, encontrar nomes errados, datas incorretas ou
 								argumentos indesejados, use o botão <strong>"Solicitar Correção via IA"</strong>.
+							</p>
+							<p className="text-yellow-700 text-sm mt-1">
+								Está seção é apenas uma pré-viusalização do documento final para verificação do
+								conteúdo. <strong>A formatação final será aplicada ao baixar o PDF.</strong>
 							</p>
 						</div>
 					</div>
