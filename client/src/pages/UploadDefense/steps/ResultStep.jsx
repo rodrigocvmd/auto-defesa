@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
 	ArrowLeft,
 	CheckCircle,
@@ -36,7 +36,6 @@ export const ResultStep = ({
 	loading,
 }) => {
 	const navigate = useNavigate();
-	const componentRef = useRef();
 	const [showEditWarning, setShowEditWarning] = useState(false);
 	const [isEditing, setIsEditing] = useState(true); // Default to true or controlled? Original was default true but had logic.
 	// Actually in original: const [isEditing, setIsEditing] = useState(true);
@@ -47,7 +46,7 @@ export const ResultStep = ({
 	const [showProfileButton, setShowProfileButton] = useState(false);
 
 	const { handleGeneratePDF, loading: pdfLoading } = usePdfGenerator(
-		componentRef,
+		result,
 		formData,
 		null // Não mostramos o modal aqui, redirecionamos para o perfil
 	);
@@ -241,7 +240,7 @@ export const ResultStep = ({
 					</div>
 
 					<div className="flex justify-center bg-gray-200/80 py-8 rounded-xl border border-gray-200 overflow-hidden relative min-h-screen">
-						<div ref={componentRef} id="defense-preview-content" className="print-content">
+						<div id="defense-preview-content" className="print-content">
 							<style>{`
                                 /* Estilos do Documento A4 na Tela */
                                 .ql-container.ql-snow { border: none !important; }

@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { pdf } from '@react-pdf/renderer';
 import DefenseDocument from '../../../components/DefensePDF';
+import { formatDefenseToHtml } from '../../../utils/textToHtml';
 
-export const usePdfGenerator = (componentRef, formData, setShowDownloadSuccess) => {
+export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) => {
     const [loading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState("");
 
     const handleGeneratePDF = async () => {
-        // Obter o conteúdo HTML do editor Quill
-        const sourceElement = componentRef.current.querySelector('.ql-editor');
-        
-        if (!sourceElement) {
+        if (!htmlContent) {
             alert("Erro: Conteúdo não encontrado para gerar PDF.");
             return false;
         }
 
-        const htmlContent = sourceElement.innerHTML;
+        // Sempre formatamos para garantir que o wrapper HTML/CSS completo seja aplicado,
+        // igual ao que é feito na página de perfil (histórico).
+        const finalHtml = formatDefenseToHtml(htmlContent);
         
         const defenseType = (formData.defenseType || "").toLowerCase();
         let typeStr = "Defesa_Previa";
@@ -32,8 +32,7 @@ export const usePdfGenerator = (componentRef, formData, setShowDownloadSuccess) 
             setLoadingText("Gerando seu PDF profissional instantaneamente...");
             
             // Gera o PDF no cliente usando @react-pdf/renderer
-            // Usamos React.createElement para garantir que o compilador não se perca com a extensão
-            const blob = await pdf(React.createElement(DefenseDocument, { content: htmlContent })).toBlob();
+            const blob = await pdf(React.createElement(DefenseDocument, { content: finalHtml })).toBlob();
             
             // Cria um link temporário para download do Blob
             const url = window.URL.createObjectURL(blob);
