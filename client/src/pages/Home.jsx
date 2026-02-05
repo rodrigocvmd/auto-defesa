@@ -11,6 +11,7 @@ import {
 	FileCheck,
 	Star,
 	ChevronDown,
+	ChevronRight,
 } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
@@ -305,9 +306,9 @@ const Home = () => {
 					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent"></div>
 
 					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-								<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
+						<div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 pb-8 md:pb-0 snap-x snap-mandatory no-scrollbar">
+							<div className="flex-none w-[280px] md:w-auto bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-transform duration-300 group snap-start transform-gpu will-change-transform">
+								<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 									<FileText size={24} />
 								</div>
 								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+493</div>
@@ -315,8 +316,8 @@ const Home = () => {
 								<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
 							</div>
 
-							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-								<div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform">
+							<div className="flex-none w-[280px] md:w-auto bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-transform duration-300 group snap-start transform-gpu will-change-transform">
+								<div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 									<DollarSign size={24} />
 								</div>
 								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">R$ 517</div>
@@ -324,8 +325,8 @@ const Home = () => {
 								<div className="mt-4 h-1 w-12 bg-green-600 rounded-full"></div>
 							</div>
 
-							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-								<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform">
+							<div className="flex-none w-[280px] md:w-auto bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-transform duration-300 group snap-start transform-gpu will-change-transform">
+								<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 									<Star size={24} fill="currentColor" />
 								</div>
 								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">93%</div>
@@ -333,8 +334,8 @@ const Home = () => {
 								<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
 							</div>
 
-							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
-								<div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform">
+							<div className="flex-none w-[280px] md:w-auto bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-transform duration-300 group snap-start transform-gpu will-change-transform">
+								<div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 									<Clock size={24} />
 								</div>
 								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
@@ -343,6 +344,11 @@ const Home = () => {
 								<div className="text-gray-500 font-medium">Tempo Médio de Geração</div>
 								<div className="mt-4 h-1 w-12 bg-indigo-600 rounded-full"></div>
 							</div>
+						</div>
+
+						{/* Hint for mobile */}
+						<div className="text-center mt-2 text-gray-400 text-sm animate-pulse md:hidden">
+							Arraste para o lado e veja mais <ChevronRight size={14} className="inline" />
 						</div>
 					</div>
 				</section>
