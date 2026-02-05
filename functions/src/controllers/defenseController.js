@@ -152,12 +152,14 @@ exports.generateDefense = (req, res) => {
              - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
                Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº ${data.aitNumber || "[NÚMERO]"}</p>
              
-             - **Qualificação (COM VEÍCULO/INFRAÇÃO):** Texto corrido normal, iniciando com o nome do recorrente. 
-               *INSTRUÇÃO:* Inclua os dados do veículo (Placa ${data.plate}) e da infração (Art. ${data.article}) dentro deste parágrafo de qualificação, de forma fluida no texto.
-               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas ${data.plate || "[PLACA]"}, vem apresentar defesa referente à infração do Art. ${data.article}...</p>
+             - **Qualificação do Recorrente e Veículo:** Texto corrido normal, iniciando com o nome do recorrente e dados do veículo, finalizando com a conexão "vem por meio deste apresentar".
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas ${data.plate || "[PLACA]"}, vem por meio deste apresentar</p>
              
-             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
-               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 30px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
+             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt. Em linha própria, logo após a qualificação acima.
+               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
+             
+             - **Qualificação da Infração:** Parágrafo iniciando obrigatoriamente com o conector "em face de", seguido dos dados da infração (Auto de Infração nº ${data.aitNumber || "[NÚMERO]"}, Art. ${data.article || "[ARTIGO]"}, Órgão ${data.issuingBody || "[ÓRGÃO]"}).
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">em face de [DADOS DA INFRAÇÃO], pelos fatos e fundamentos jurídicos a seguir expostos:</p>
              
              - **Capítulos (I., II.):** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
                Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 10px;">I. DOS FATOS</h2>
@@ -535,12 +537,14 @@ exports.analyzeDocument = (req, res) => {
              - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
                Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº [NÚMERO]</p>
              
-             - **Qualificação (COM VEÍCULO/INFRAÇÃO):** Texto corrido normal, iniciando com o nome do recorrente. 
-               *INSTRUÇÃO:* Inclua os dados do veículo (Placa [PLACA]) e da infração (Art. [ARTIGO CTB]) dentro deste parágrafo de qualificação, de forma fluida no texto.
-               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas [PLACA], vem apresentar defesa referente à infração do Art. [ARTIGO CTB]...</p>
+             - **Qualificação do Recorrente e Veículo:** Texto corrido normal, iniciando com o nome do recorrente e dados do veículo, finalizando com a conexão "vem por meio deste apresentar".
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas [PLACA], vem por meio deste apresentar</p>
              
-             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
-               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 30px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
+             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt. Em linha própria, logo após a qualificação acima.
+               Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 20px;">${defenseTypeLabel}</h1>
+             
+             - **Qualificação da Infração:** Parágrafo iniciando obrigatoriamente com o conector "em face de", seguido dos dados da infração (Auto de Infração nº [NÚMERO], Art. [ARTIGO], Órgão [ÓRGÃO]).
+               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 20px;">em face de [DADOS DA INFRAÇÃO], pelos fatos e fundamentos jurídicos a seguir expostos:</p>
              
              - **Capítulos (I., II.):** Caixa Alta, Negrito, Centralizado, Tamanho +2pt.
                Use: <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 20px; margin-bottom: 10px;">I. DOS FATOS</h2>
