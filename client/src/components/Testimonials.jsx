@@ -23,7 +23,7 @@ const REVIEWS = [
 		rating: 3,
 		date: "Há 2 semanas",
 		comment:
-			"O sistema é bom, mas tive uma dúvida na hora de pagar e demorei a entender. No final das contas consegui. O recurso em ficou excelente bem feito.",
+			"O sistema é bom, mas tive uma dúvida na hora de pagar e demorei a entender. No final das contas consegui,ficou excelente",
 	},
 	{
 		id: 4,
@@ -31,7 +31,7 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 3 semanas",
 		comment:
-			"Consegui anular uma multa de velocidade que eu nem lembrava de ter levado... A argumentação sobre a aferição do radar foi o ponto chave. Obrigada!",
+			"anulei multa de velocidade que eu nem lembrava graças ao argumento da aferição do radar foi o ponto chave. obrigada!",
 	},
 	{
 		id: 5,
@@ -71,7 +71,7 @@ const REVIEWS = [
 		rating: 3,
 		date: "Há 2 meses",
 		comment:
-			"O recurso é bom, mas demorei um pouco pra entender onde baixar o PDF final. Depois que achei, foi tranquilo. O suporte podia responder mais rapido no chat.",
+			"O recurso é bom, mas demorei um pouco pra entender onde baixar o PDF final. Depois que achei, foi tranquilo.",
 	},
 	{
 		id: 10,
@@ -370,11 +370,6 @@ const Testimonials = () => {
 								className="flex-none w-[300px] md:w-[350px] bg-gray-50 rounded-3xl p-6 border border-gray-100 hover:shadow-md transition-shadow snap-start">
 								<div className="flex items-center justify-between mb-4">
 									<div className="flex items-center gap-3">
-										<img
-											src={`https://i.pravatar.cc/150?u=${review.id}`}
-											alt={review.name}
-											className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
-										/>
 										<div>
 											<p className="font-bold text-gray-900 text-sm capitalize">{review.name}</p>
 											<p className="text-xs text-gray-500">{review.date}</p>
