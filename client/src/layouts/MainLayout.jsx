@@ -326,8 +326,10 @@ const MainLayout = ({ children }) => {
 					{/* Recursos Úteis */}
 					{!location.pathname.startsWith("/upload") && (
 						<div className="w-full max-w-4xl mb-8 px-4">
-							<h4 className="text-gray-900 font-bold text-md mb-5 text-center">Recursos Úteis</h4>
-							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center ">
+							<h4 className="text-gray-900 font-bold text-md mb-5 text-center">
+								Recursos Úteis 👇
+							</h4>
+							<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center ">
 								<Link
 									to="/recorrer/recusa-bafometro"
 									className="text-gray-500 hover:text-blue-600 text-md transition-colors">

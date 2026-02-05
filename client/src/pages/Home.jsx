@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
 	Upload,
@@ -10,6 +10,7 @@ import {
 	DollarSign,
 	FileCheck,
 	Star,
+	ChevronDown,
 } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
@@ -23,16 +24,16 @@ const Home = () => {
 				description="Anule sua multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online, anular multa"
 			/>
-			<div className="flex flex-col gap-20 pb-8">
+			<div className="flex flex-col gap-12 pb-8">
 				{/* HERO SECTION */}
-				<section className="relative pt-8 !pb-0 lg:pt-10 lg:pb-10 overflow-hidden">
+				<section className="relative pt-5 !pb-0 lg:pt-10 lg:pb-10 overflow-hidden">
 					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/50 via-gray-50 to-white"></div>
 
 					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-						<div className="grid lg:grid-cols-2 gap-12 items-center">
+						<div className="grid lg:grid-cols-2 gap-2 items-center">
 							{/* Texto Hero */}
 							<div className="text-center lg:text-left">
-								<div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+								<div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
 									<Star size={14} fill="currentColor" /> Tecnologia Avançada de Recursos
 								</div>
 
@@ -80,7 +81,7 @@ const Home = () => {
 							</div>
 
 							{/* Imagem Hero */}
-							<div className="block relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-200">
+							<div className="block relative animate-in fade-in slide-in-from-right-8 duration-1500 delay-500">
 								<div className="absolute inset-0 bg-blue-600 rounded-[2.5rem] rotate-3 opacity-10 blur-3xl -z-10"></div>
 								<div className="relative rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl">
 									<img
@@ -112,7 +113,7 @@ const Home = () => {
 							</div>
 						</div>
 
-						<div className="mt-16 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-500 animate-in fade-in duration-1000 delay-500 lg:hidden">
+						<div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-500 animate-in fade-in duration-1000 delay-500 lg:hidden">
 							<div className="flex items-center gap-2">
 								<CheckCircle size={16} className="text-green-500" /> Baseado no CTB e Normativas
 								CONTRAN
@@ -130,7 +131,7 @@ const Home = () => {
 
 				{/* COMO FUNCIONA */}
 				<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="text-center mb-16">
+					<div className="text-center mb-7">
 						<h2 className="text-3xl font-black text-gray-900 mb-4">Como funciona?</h2>
 						<p className="text-gray-600 max-w-3xl mx-auto">
 							Simplificamos a burocracia. Em poucos minutos você terá em mãos a defesa perfeita para
