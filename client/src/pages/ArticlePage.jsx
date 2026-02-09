@@ -9,6 +9,20 @@ const ArticlePage = () => {
   const { slug } = useParams();
   const article = articles.find(a => a.slug === slug);
 
+  // FAQ Schema for SEO
+  const faqSchema = article?.faq ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": article.faq.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a
+      }
+    }))
+  } : null;
+
   // Fallback se artigo não encontrado (poderia redirecionar para 404)
   if (!article) {
     return (
@@ -26,6 +40,7 @@ const ArticlePage = () => {
       <SEO 
         title={`${article.title} | Guia Auto Defesa`} 
         description={article.description}
+        structuredData={faqSchema}
       />
 
       {/* Progress Bar (Visual) */}

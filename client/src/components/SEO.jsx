@@ -1,7 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 
-const SEO = ({ title, description, keywords, canonical, type = "website", faq, isHome = false }) => {
+const SEO = ({ title, description, keywords, canonical, type = "website", faq, isHome = false, structuredData: extraStructuredData }) => {
 	const siteName = "AutoDefesa";
 	// Descrição padrão focada na autoridade e especialidade
 	const defaultDescription =
@@ -38,6 +38,14 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq, i
 	};
 
 	const schemas = [softwareAppData];
+
+	if (extraStructuredData) {
+		if (Array.isArray(extraStructuredData)) {
+			schemas.push(...extraStructuredData);
+		} else {
+			schemas.push(extraStructuredData);
+		}
+	}
 
 	if (isHome) {
 		const webSiteSchema = {
