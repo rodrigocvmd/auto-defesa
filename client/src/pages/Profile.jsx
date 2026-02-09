@@ -330,7 +330,7 @@ export default function Profile() {
 						<h1 className="text-2xl font-bold text-gray-900">
 							{currentUser?.displayName || "Usuário"}
 						</h1>
-						<p className="text-gray-600">{currentUser?.email}</p>
+						<p className="text-gray-600 break-all">{currentUser?.email}</p>
 						<button
 							onClick={handleLogout}
 							className="mt-2 text-red-500 hover:text-red-700 font-bold text-sm flex items-center gap-1 transition-colors"
@@ -417,8 +417,8 @@ export default function Profile() {
 												<div className="bg-blue-50 p-3 rounded-lg text-blue-600">
 													<Shield size={24} />
 												</div>
-												<div>
-													<h3 className="font-semibold text-gray-900">
+												<div className="min-w-0 flex-1">
+													<h3 className="font-semibold text-gray-900 break-all">
 														{defense.fileName ? defense.fileName.replace(/\.pdf$/i, "") : (defense.infractionType || "Infração não especificada")}
 													</h3>
 													<div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
