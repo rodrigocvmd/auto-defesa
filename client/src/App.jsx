@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { DefenseProvider } from './contexts/DefenseContext';
 import ScrollToTop from './components/ScrollToTop';
-import CookieBanner from './components/CookieBanner';
+import { initializeAnalytics } from './services/analytics';
+
+// Initialize analytics service
+initializeAnalytics();
 
 // Lazy loading components
 const Home = lazy(() => import('./pages/Home'));
@@ -40,7 +43,6 @@ function App() {
       <ScrollToTop />
       <AuthProvider>
         <DefenseProvider>
-          <CookieBanner />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Home />} />
