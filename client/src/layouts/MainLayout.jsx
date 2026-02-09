@@ -82,25 +82,29 @@ const MainLayout = ({ children }) => {
 								</button>
 								<div className="absolute top-full left-0 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 hidden group-hover:block p-3 animate-in fade-in slide-in-from-top-2">
 									<div className="px-4 py-2 mb-2">
-										<h4 className="text-xs font-bold text-gray-600 uppercase tracking-widest">
+										<Link to="/tools" className="text-xs font-bold text-gray-600 uppercase tracking-widest hover:text-blue-600 transition-colors">
 											1. Ferramentas
-										</h4>
-										<Link
-											to="/calculadora-pontos"
-											className="flex items-center gap-3 mt-2 p-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all">
-											<div className="bg-blue-100 p-1.5 rounded-lg">
-												<Shield size={18} className="text-blue-600" />
-											</div>
-											<span className="font-bold">Calculadora de Pontos</span>
 										</Link>
+										<div className="grid grid-cols-1 gap-1 mt-2">
+											<Link
+												to="/calculadora-pontos"
+												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+												Calculadora de Pontos
+											</Link>
+											<Link
+												to="/tools"
+												className="block px-3 py-2 text-sm font-bold text-blue-600 hover:bg-blue-50 rounded-lg">
+												Todas as Ferramentas
+											</Link>
+										</div>
 									</div>
 
 									<div className="h-px bg-gray-100 my-2"></div>
 
 									<div className="px-4 py-2 mb-2">
-										<h4 className="text-xs font-bold text-gray-600 uppercase tracking-widest">
+										<Link to="/guia" className="text-xs font-bold text-gray-600 uppercase tracking-widest hover:text-blue-600 transition-colors">
 											2. Artigos e Guias
-										</h4>
+										</Link>
 										<div className="grid grid-cols-1 gap-1 mt-2">
 											<Link
 												to="/artigo/lei-seca"
@@ -128,10 +132,10 @@ const MainLayout = ({ children }) => {
 									<div className="h-px bg-gray-100 my-2"></div>
 
 									<div className="px-4 py-2">
-										<h4 className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-2">
+										<Link to="/recursos" className="text-xs font-bold text-gray-600 uppercase tracking-widest hover:text-blue-600 transition-colors">
 											3. Recursos Úteis
-										</h4>
-										<div className="grid grid-cols-1 gap-1">
+										</Link>
+										<div className="grid grid-cols-1 gap-1 mt-2">
 											<Link
 												to="/recorrer/lei-seca"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
