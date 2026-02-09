@@ -10,7 +10,11 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq })
 
 	const fullTitle = title ? `${title} | ${siteName}` : `${siteName} - Recorra de Multas com IA`;
 	const fullDescription = description || defaultDescription;
-	const fullUrl = canonical ? `${baseUrl}${canonical}` : baseUrl;
+	
+	const formattedCanonical = canonical 
+		? (canonical.startsWith("/") ? canonical : `/${canonical}`) 
+		: "";
+	const fullUrl = `${baseUrl}${formattedCanonical}`;
 
 	// Schema.org JSON-LD para SoftwareApplication
 	let structuredData = {
