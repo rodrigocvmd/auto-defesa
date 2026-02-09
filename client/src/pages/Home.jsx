@@ -12,6 +12,9 @@ import {
 	Star,
 	ChevronDown,
 	ChevronRight,
+	Scale,
+	AlertTriangle,
+	Zap,
 } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
@@ -195,7 +198,7 @@ const Home = () => {
 					<div className="max-w-6xl mx-auto px-6 lg:px-16 relative z-10">
 						<div className="text-center mb-16">
 							<h2 className="text-3xl md:text-4xl font-black mb-6">
-								Por que escolher a AutoDefesa?
+								Por que escolher o AutoDefesa?
 							</h2>
 							<p className="text-gray-300 max-w-3xl mx-auto text-lg">
 								Democratizamos o acesso à defesa de trânsito de qualidade. Compare e veja a
@@ -301,6 +304,89 @@ const Home = () => {
 								Fique tranquilo. Ao fazer o upload da notificação, nossa IA identifica
 								automaticamente o artigo e materialidade da infração e os detalhes para montar a
 								melhor defesa possível.
+							</p>
+						</div>
+					</div>
+				</section>
+
+				{/* PROPOSTA DE VALOR / DIFERENCIAIS */}
+				<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+					<div className="text-center mb-16">
+						<span className="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-4 inline-block">
+							Por que confiar no Auto Defesa?
+						</span>
+						<h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6">
+							Defesa Técnica com Inteligência Jurídica
+						</h2>
+						<p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+							Utilizamos tecnologia de ponta para analisar sua multa, identificando falhas administrativas e garantindo o seu pleno direito de defesa.
+						</p>
+					</div>
+
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{/* Card 1 */}
+						<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
+							<div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
+								<Shield size={24} />
+							</div>
+							<h3 className="text-xl font-bold text-gray-900 mb-3">Rigor Legislativo</h3>
+							<p className="text-gray-600">
+								Nossa base de conhecimento é atualizada em tempo real com o CTB, resoluções do CONTRAN e o Manual Brasileiro de Fiscalização de Trânsito.
+							</p>
+						</div>
+
+						{/* Card 2 */}
+						<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
+							<div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-6">
+								<Scale size={24} />
+							</div>
+							<h3 className="text-xl font-bold text-gray-900 mb-3">Foco em Nulidades</h3>
+							<p className="text-gray-600">
+								Buscamos erros de procedimento e vícios formais que, por lei, tornam o auto de infração insubsistente e passível de anulação.
+							</p>
+						</div>
+
+						{/* Card 3 */}
+						<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
+							<div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 mb-6">
+								<FileCheck size={24} />
+							</div>
+							<h3 className="text-xl font-bold text-gray-900 mb-3">Recurso Pronto para Uso</h3>
+							<p className="text-gray-600">
+								Ao detectar uma falha, geramos automaticamente o recurso administrativo em PDF, fundamentado e pronto para ser protocolado.
+							</p>
+						</div>
+
+						{/* Card 4 */}
+						<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
+							<div className="w-12 h-12 bg-yellow-50 rounded-2xl flex items-center justify-center text-yellow-600 mb-6">
+								<AlertTriangle size={24} />
+							</div>
+							<h3 className="text-xl font-bold text-gray-900 mb-3">Honestidade Jurídica</h3>
+							<p className="text-gray-600">
+								Não prometemos milagres. Oferecemos uma análise técnica real para que você saiba exatamente quais são as suas chances de sucesso.
+							</p>
+						</div>
+
+						{/* Card 5 */}
+						<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
+							<div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
+								<Clock size={24} />
+							</div>
+							<h3 className="text-xl font-bold text-gray-900 mb-3">Resposta Instantânea</h3>
+							<p className="text-gray-600">
+								Em poucos segundos, nossa IA processa os dados e indica se vale a pena investir tempo e esforço no seu recurso de multa.
+							</p>
+						</div>
+
+						{/* Card 6 */}
+						<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
+							<div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-6">
+								<Zap size={24} />
+							</div>
+							<h3 className="text-xl font-bold text-gray-900 mb-3">Tecnologia de Ponta</h3>
+							<p className="text-gray-600">
+								Utilizamos OCR e visão computacional para ler sua multa automaticamente, eliminando erros de digitação e agilizando o processo.
 							</p>
 						</div>
 					</div>
