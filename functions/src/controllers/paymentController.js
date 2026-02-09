@@ -1,6 +1,7 @@
 const cors = require("../middleware/cors");
 const { verifyAuth } = require("../middleware/auth");
 const { db } = require("../services/firebase");
+const { sendPurchaseConfirmation } = require("../services/emailService");
 
 // NOTE: Ensure STRIPE_SECRET_KEY is set in your environment variables
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -18,17 +19,17 @@ exports.createCheckoutSession = (req, res) => {
 		const { priceId, successUrl, cancelUrl, mode } = req.body;
 
 		const PRICE_CREDITS_MAP = {
-			price_1SxBbqRTHGPeccd9D66pZoXs: 1,
-			price_1SuFi7RTHGPeccd987NViaZP: 3,
-			price_1SuFiORTHGPeccd9HKTxjPO7: 10,
-			// Fallback default for testing if needed, or remove
-			price_H5ggYwtDq4fbrJ: 1,
+			price_1SxBbqRTHGPeccd9D66pZoXs: { credits: 1, name: "Recurso Expresso" },
+			price_1SuFi7RTHGPeccd987NViaZP: { credits: 3, name: "Proteção Completa" },
+			price_1SuFiORTHGPeccd9HKTxjPO7: { credits: 10, name: "Pacote Profissional" },
+			// Fallback default for testing if needed
+			price_H5ggYwtDq4fbrJ: { credits: 1, name: "Plano Teste" },
 		};
 
 		const selectedPriceId = priceId || "price_H5ggYwtDq4fbrJ";
-		const creditsAmount = PRICE_CREDITS_MAP[selectedPriceId];
+		const planInfo = PRICE_CREDITS_MAP[selectedPriceId];
 
-		if (!creditsAmount) {
+		if (!planInfo) {
 			console.error(`❌ Tentativa de compra com preço inválido: ${selectedPriceId}`);
 			res.status(400).json({ error: "Produto inválido." });
 			return;
@@ -50,7 +51,8 @@ exports.createCheckoutSession = (req, res) => {
 				client_reference_id: userId,
 				metadata: {
 					userId: userId,
-					credits: creditsAmount,
+					credits: planInfo.credits,
+					planName: planInfo.name,
 				},
 			});
 
@@ -92,18 +94,35 @@ exports.stripeWebhook = async (req, res) => {
 		const session = event.data.object;
 		const userId = session.metadata.userId;
 		const creditsToAdd = parseInt(session.metadata.credits || "1", 10);
+		const planName = session.metadata.planName || "Plano Adquirido";
 
 		if (userId) {
 			try {
 				const userRef = db.collection("users").doc(userId);
+				let userEmail = null;
+
 				await db.runTransaction(async (t) => {
 					const doc = await t.get(userRef);
-					const currentCredits = doc.exists ? doc.data().credits || 0 : 0;
-					const newCredits = currentCredits + creditsToAdd;
-
-					t.set(userRef, { credits: newCredits }, { merge: true });
+					if (doc.exists) {
+						const userData = doc.data();
+						userEmail = userData.email;
+						const currentCredits = userData.credits || 0;
+						const newCredits = currentCredits + creditsToAdd;
+						t.set(userRef, { credits: newCredits }, { merge: true });
+					} else {
+						// Caso o documento não exista (improvável se ele logou)
+						t.set(userRef, { credits: creditsToAdd }, { merge: true });
+					}
 				});
+
 				console.log(`🎉 Créditos adicionados para ${userId}: +${creditsToAdd}`);
+
+				// Enviar email de confirmação se tivermos o email do usuário
+				if (userEmail) {
+					await sendPurchaseConfirmation(userEmail, creditsToAdd, planName);
+				} else {
+					console.warn(`⚠️ Email não encontrado para o usuário ${userId}. Não foi possível enviar confirmação.`);
+				}
 			} catch (error) {
 				console.error("❌ ERRO ao atualizar créditos no Firestore:", error);
 				return res.status(500).send("Erro interno ao atualizar créditos");
@@ -115,3 +134,4 @@ exports.stripeWebhook = async (req, res) => {
 
 	res.send();
 };
+
