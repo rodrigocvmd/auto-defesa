@@ -170,37 +170,37 @@ const About = () => {
 						<div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-800 rounded-full blur-3xl -mb-20 -mr-20 opacity-50"></div>
 
 						<div className="flex flex-col lg:flex-row items-stretch">
-							<div className="lg:w-2/5 relative min-h-[400px]">
-								{/* Founder Photo */}
-								<div className="absolute inset-0 bg-blue-800/50 flex flex-col items-center justify-center border-r border-blue-800/30 p-12 text-center">
-									<div className="w-48 h-48 rounded-full bg-blue-700/50 border-4 border-blue-600/30 flex items-center justify-center mb-6 overflow-hidden shadow-2xl">
+							<div className="lg:w-2/5 relative bg-blue-800/50 border-b lg:border-b-0 lg:border-r border-blue-800/30">
+								{/* Founder Photo & Quick Info */}
+								<div className="flex flex-col items-center justify-center p-8 md:p-12 text-center h-full">
+									<div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-blue-700/50 border-4 border-blue-600/30 flex items-center justify-center mb-6 overflow-hidden shadow-2xl">
 										<img
-											src="/perfil.png"
+											src="/perfil.webp"
 											alt="Rodrigo Carvalho - Fundador Auto Defesa"
 											className="w-full h-full object-cover"
 										/>
 									</div>
 									<div className="space-y-2">
-										<h4 className="text-2xl font-black text-white">Rodrigo Carvalho</h4>
-										<p className="text-blue-300 font-medium">Desenvolvedor Responsável</p>
-										<p className="text-blue-400 text-sm italic">
+										<h4 className="text-3xl font-black text-white">Rodrigo Carvalho</h4>
+										<p className="text-blue-300 font-medium text-xl">Desenvolvedor Responsável</p>
+										<p className="text-blue-400 text-md italic">
 											Bacharel em Direito e Ciência da Computação
 										</p>
 									</div>
-									<div className="mt-12 flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 max-w-sm">
-										<CheckCircle className="text-blue-400 shrink-0" size={24} />
-										<span className="text-white font-medium text-sm leading-tight">
+									<div className="mt-8 md:mt-12 flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 max-w-sm mx-auto text-left">
+										<CheckCircle className="text-blue-400 shrink-0" size={20} />
+										<span className="text-white font-medium text-left text-sm leading-tight">
 											Dedicado a facilitar análise da legislação de trânsito e possibilitar a defesa
 											administrativa absoluta do usuário.
 										</span>
 									</div>
 								</div>
 							</div>
-							<div className="lg:w-3/5 p-12 md:p-20 flex flex-col justify-center relative z-10">
+							<div className="lg:w-3/5 p-8 md:p-20 flex flex-col justify-center relative z-10">
 								<div className="inline-flex items-center gap-2 text-blue-400 font-bold mb-4 uppercase tracking-wider text-sm">
 									Liderança com DNA Jurídico
 								</div>
-								<h2 className="text-3xl md:text-4xl font-black text-white mb-8">
+								<h2 className="text-2xl md:text-3xl font-black text-white mb-8">
 									Por trás dos algoritmos, existe supervisão humana especializada.
 								</h2>
 								<div className="space-y-6 text-xl text-blue-100 leading-relaxed italic">
@@ -209,7 +209,7 @@ const About = () => {
 										para a justiça. Ninguém deve ser penalizado por uma infração indevida, que
 										contém vícios técnicos ou erros de procedimento."
 									</p>
-									<p className="not-italic text-blue-400 font-black text-2xl">— Rodrigo Carvalho</p>
+									<p className="not-italic text-blue-400 font-black text-xl">— Rodrigo Carvalho</p>
 								</div>
 							</div>
 						</div>
