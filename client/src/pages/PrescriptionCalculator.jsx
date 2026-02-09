@@ -16,17 +16,31 @@ const PrescriptionCalculator = () => {
     prescription: null // 5 anos
   });
 
+  const handleDateChange = (e) => {
+    let { name, value } = e.target;
+    value = value.replace(/\D/g, "").slice(0, 8);
+    if (value.length > 4) value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`;
+    else if (value.length > 2) value = `${value.slice(0, 2)}/${value.slice(2)}`;
+    setDates(prev => ({ ...prev, [name]: value }));
+  };
+
+  const parseDate = (dateStr) => {
+    if (!dateStr || dateStr.length < 10) return null;
+    const [day, month, year] = dateStr.split('/').map(Number);
+    return new Date(year, month - 1, day);
+  };
+
   const calculatePrescription = () => {
-    const infraction = new Date(dates.infractionDate);
-    const notification = new Date(dates.notificationDate);
-    const auto = new Date(dates.autoDate);
+    const infraction = parseDate(dates.infractionDate);
+    const notification = parseDate(dates.notificationDate);
+    const auto = parseDate(dates.autoDate);
     const today = new Date();
 
     let decadenceResult = null;
     let prescriptionResult = null;
 
     // Lógica 1: Decadência (Art. 281, II - 30 dias para expedir a notificação)
-    if (dates.infractionDate && dates.notificationDate) {
+    if (infraction && notification) {
       const diffTime = Math.abs(notification - infraction);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       
@@ -48,7 +62,7 @@ const PrescriptionCalculator = () => {
     }
 
     // Lógica 2: Prescrição da Pretensão Punitiva (5 anos)
-    if (dates.autoDate) {
+    if (auto) {
       const fiveYearsInMs = 5 * 365.25 * 24 * 60 * 60 * 1000;
       const diffTime = today - auto;
 
@@ -68,6 +82,11 @@ const PrescriptionCalculator = () => {
           law: 'Lei 9.873/99'
         };
       }
+    }
+
+    if (!decadenceResult && !prescriptionResult) {
+        alert("Por favor, preencha as datas corretamente (DD/MM/AAAA).");
+        return;
     }
 
     setResults({ decadence: decadenceResult, prescription: prescriptionResult });
@@ -105,19 +124,25 @@ const PrescriptionCalculator = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Data da Infração</label>
                   <input 
-                    type="date" 
+                    type="text"
+                    name="infractionDate"
+                    placeholder="DD/MM/AAAA"
+                    maxLength={10}
                     className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                     value={dates.infractionDate}
-                    onChange={(e) => setDates({...dates, infractionDate: e.target.value})}
+                    onChange={handleDateChange}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Data da Expedição da Notificação</label>
                   <input 
-                    type="date" 
+                    type="text"
+                    name="notificationDate"
+                    placeholder="DD/MM/AAAA"
+                    maxLength={10}
                     className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                     value={dates.notificationDate}
-                    onChange={(e) => setDates({...dates, notificationDate: e.target.value})}
+                    onChange={handleDateChange}
                   />
                 </div>
               </div>
@@ -131,10 +156,13 @@ const PrescriptionCalculator = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Data do Auto de Infração</label>
                   <input 
-                    type="date" 
+                    type="text"
+                    name="autoDate"
+                    placeholder="DD/MM/AAAA"
+                    maxLength={10}
                     className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                     value={dates.autoDate}
-                    onChange={(e) => setDates({...dates, autoDate: e.target.value})}
+                    onChange={handleDateChange}
                   />
                 </div>
                 <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">

@@ -21,6 +21,27 @@ import SEO from "../components/SEO";
 import Testimonials from "../components/Testimonials";
 
 const Home = () => {
+    const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 100) {
+                setShowScrollIndicator(false);
+            } else {
+                setShowScrollIndicator(true);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    const ScrollArrow = ({ className }) => (
+        <div className={`flex flex-col items-center gap-1 animate-bounce transition-opacity duration-500 ${showScrollIndicator ? 'opacity-100' : 'opacity-0'} ${className}`}>
+            <ChevronDown size={24} className="text-blue-600" />
+        </div>
+    );
+
 	return (
 		<MainLayout>
 			<SEO
@@ -55,18 +76,20 @@ const Home = () => {
 									completo e <strong>pronto para assinatura e protocolo</strong>.
 								</p>
 
-								<div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 mb-12">
+								<div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 mb-12 relative">
 									<Link
 										to="/upload"
 										className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-4 px-8 rounded-xl shadow-xl shadow-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2">
 										<Upload size={24} />
 										Analisar Multa Grátis
 									</Link>
-									<div className="text-sm text-gray-600 font-medium">
+									<div className="text-sm text-gray-600 font-medium relative">
 										<div className="flex items-center gap-1 justify-center lg:justify-start">
 											<CheckCircle size={16} className="text-green-500" /> Quase 500 multas
 											analisadas
 										</div>
+                                        {/* Scroll Indicator for Mobile */}
+                                        <ScrollArrow className="lg:hidden mt-8" />
 									</div>
 								</div>
 
@@ -120,6 +143,8 @@ const Home = () => {
 										</div>
 									</div>
 								</div>
+                                {/* Scroll Indicator for Desktop */}
+                                <ScrollArrow className="hidden lg:flex mt-12" />
 							</div>
 						</div>
 
