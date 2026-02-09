@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Shield, User, Menu, X, BookOpen } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import VerificationBanner from "../components/VerificationBanner";
+import CookieBanner from "../components/CookieBanner";
 
 const MainLayout = ({ children }) => {
 	const location = useLocation();
@@ -396,6 +397,7 @@ const MainLayout = ({ children }) => {
 					</p>
 				</footer>
 			</main>
+			<CookieBanner />
 		</div>
 	);
 };
