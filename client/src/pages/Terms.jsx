@@ -65,12 +65,12 @@ const Terms = () => {
 							</p>
 						</section>
 
-						<section className="bg-blue-50/50 p-6 md:p-8 rounded-2xl border border-blue-100">
+						<section>
 							<h3 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-4">
 								<span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">3</span>
 								Limitações Jurídicas e Isenção de Garantia
 							</h3>
-							<p className="font-bold text-blue-900 mb-4 tracking-tight uppercase text-xs">IMPORTANTE - LEIA COM ATENÇÃO:</p>
+							<p className="font-bold text-blue-900 mb-4 tracking-tight uppercase text-xs underline decoration-blue-200">IMPORTANTE - LEIA COM ATENÇÃO:</p>
 							<ul className="space-y-4">
 								<li className="flex gap-3">
 									<div className="text-blue-600 mt-1 font-bold">•</div>
@@ -99,7 +99,7 @@ const Terms = () => {
 								<li>Não utilizar o serviço para fins fraudulentos ou envio de documentos falsificados.</li>
 								<li>Assumir inteira responsabilidade por eventuais perdas de prazos para o protocolo de recursos.</li>
 							</ul>
-							<p className="mt-4 leading-relaxed">
+							<p className="mt-4 leading-relaxed font-medium text-gray-700">
 								O Auto Defesa reserva-se o direito de banir usuários que utilizem a plataforma para fins ilícitos ou violem a propriedade intelectual do sistema.
 							</p>
 						</section>
@@ -109,7 +109,7 @@ const Terms = () => {
 								<span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">5</span>
 								Pagamentos, Créditos e Reembolso
 							</h3>
-							<p className="mb-4 leading-relaxed">O serviço opera no modelo de <strong>créditos pré-pagos</strong> ou pagamento avulso por análise. Sobre os créditos adquiridos:</p>
+							<p className="mb-4 leading-relaxed text-gray-700">O serviço opera no modelo de <strong>créditos pré-pagos</strong> ou pagamento avulso por análise. Sobre os créditos adquiridos:</p>
 							<ul className="list-disc pl-5 space-y-2">
 								<li>Não possuem data de validade (não expiram).</li>
 								<li>São consumidos apenas no momento da geração final do documento completo (PDF).</li>
@@ -123,7 +123,7 @@ const Terms = () => {
 								<span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">6</span>
 								Demonstrações e Testes
 							</h3>
-							<p className="leading-relaxed">
+							<p className="leading-relaxed text-gray-700">
 								As análises prévias ou funcionalidades de demonstração gratuita ("Standard") utilizam modelos otimizados para velocidade e podem ter precisão analítica diferente dos modelos utilizados na geração do recurso final pago ("Pro/Advogado Virtual"). A análise de viabilidade gratuita é apenas uma estimativa algorítmica.
 							</p>
 						</section>
@@ -133,7 +133,7 @@ const Terms = () => {
 								<span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">7</span>
 								Propriedade Intelectual
 							</h3>
-							<p className="leading-relaxed">
+							<p className="leading-relaxed text-gray-700">
 								Todos os direitos relativos à Plataforma — incluindo software, algoritmos de IA, design, marcas e textos gerados — pertencem exclusivamente ao Auto Defesa. É estritamente proibida a reprodução, engenharia reversa, uso de robôs/crawlers ou comercialização (revenda) dos recursos gerados sem autorização prévia.
 							</p>
 						</section>
@@ -143,7 +143,7 @@ const Terms = () => {
 								<span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">8</span>
 								Limitação de Responsabilidade
 							</h3>
-							<p className="mb-4">O Auto Defesa <strong>NÃO</strong> se responsabiliza por:</p>
+							<p className="mb-4 leading-relaxed text-gray-700">O Auto Defesa <strong>NÃO</strong> se responsabiliza por:</p>
 							<ul className="list-disc pl-5 space-y-2">
 								<li>Indeferimento, recusa ou não conhecimento de recursos por parte dos órgãos de trânsito.</li>
 								<li>Suspensão ou cassação da CNH decorrente do julgamento desfavorável do órgão julgador.</li>
@@ -157,7 +157,7 @@ const Terms = () => {
 								<span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">9</span>
 								Modificações dos Termos
 							</h3>
-							<p className="leading-relaxed">
+							<p className="leading-relaxed text-gray-700">
 								Reservamo-nos o direito de modificar estes Termos a qualquer momento para refletir melhorias no sistema ou mudanças na lei. O uso continuado da Plataforma após as alterações constitui aceitação dos novos termos.
 							</p>
 						</section>
@@ -167,14 +167,17 @@ const Terms = () => {
 								<span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">10</span>
 								Lei Aplicável e Foro
 							</h3>
-							<p className="leading-relaxed">
+							<p className="leading-relaxed text-gray-700">
 								Estes Termos são regidos pelas leis da República Federativa do Brasil. Fica eleito o foro de Brasília/DF para dirimir quaisquer controvérsias decorrentes destes Termos, com renúncia expressa a qualquer outro, por mais privilegiado que seja.
 							</p>
 						</section>
 
-						<section className="pt-8 border-t border-gray-100">
-							<h3 className="text-xl font-bold text-gray-900 mb-4">11. Contato e Suporte</h3>
-							<p className="mb-2 leading-relaxed">
+						<section>
+							<h3 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-4">
+								<span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">11</span>
+								Contato e Suporte
+							</h3>
+							<p className="mb-4 leading-relaxed text-gray-700">
 								Nosso compromisso é com a transparência técnica. Para dúvidas ou suporte, entre em contato com nossa equipe:
 							</p>
 							<p className="mb-2">
