@@ -118,7 +118,7 @@ export const UploadStep = ({
 									<button
 										type="button"
 										onClick={handleRemove}
-										className="text-gray-400 hover:text-red-500 transition-colors p-2">
+										className="text-gray-600 hover:text-red-500 transition-colors p-2">
 										<X size={20} />
 									</button>
 								</div>
@@ -150,7 +150,7 @@ export const UploadStep = ({
 								{currentUser && !currentUser.emailVerified ? (
 									<button
 										disabled
-										className="text-gray-400 font-bold flex text-sm items-center justify-center gap-1 mx-auto cursor-not-allowed"
+										className="text-gray-600 font-bold flex text-sm items-center justify-center gap-1 mx-auto cursor-not-allowed"
 										title="Confirme seu email para utilizar">
 										<FileText size={14} /> Inserir dados manualmente
 									</button>

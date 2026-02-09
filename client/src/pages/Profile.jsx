@@ -337,7 +337,7 @@ export default function Profile() {
 							title="Sair da conta">
 							<LogOut size={16} /> Sair da conta
 						</button>
-						<p className="text-xs text-gray-400 mt-2">
+						<p className="text-xs text-gray-600 mt-2">
 							Membro desde{" "}
 							{currentUser?.metadata.creationTime
 								? new Date(currentUser.metadata.creationTime).toLocaleDateString("pt-BR")
@@ -454,7 +454,7 @@ export default function Profile() {
 												</span>
 												<button
 													onClick={() => downloadPDF(defense)}
-													className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+													className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
 													title="Baixar PDF">
 													<Download size={20} />
 												</button>
@@ -529,15 +529,15 @@ export default function Profile() {
                                             {newPassword && (
                                                 <div className="mt-3 space-y-1">
                                                     <p className="text-xs font-medium text-gray-500 mb-1">Sua senha deve ter:</p>
-                                                    <div className={`flex items-center gap-2 text-xs ${hasMinLength ? 'text-green-600' : 'text-gray-400'}`}>
+                                                    <div className={`flex items-center gap-2 text-xs ${hasMinLength ? 'text-green-600' : 'text-gray-600'}`}>
                                                         {hasMinLength ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
                                                         Mínimo de 6 caracteres
                                                     </div>
-                                                    <div className={`flex items-center gap-2 text-xs ${hasUpperCase ? 'text-green-600' : 'text-gray-400'}`}>
+                                                    <div className={`flex items-center gap-2 text-xs ${hasUpperCase ? 'text-green-600' : 'text-gray-600'}`}>
                                                         {hasUpperCase ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
                                                         Pelo menos 1 letra maiúscula
                                                     </div>
-                                                    <div className={`flex items-center gap-2 text-xs ${hasNumber ? 'text-green-600' : 'text-gray-400'}`}>
+                                                    <div className={`flex items-center gap-2 text-xs ${hasNumber ? 'text-green-600' : 'text-gray-600'}`}>
                                                         {hasNumber ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
                                                         Pelo menos 1 número
                                                     </div>

@@ -199,7 +199,7 @@ export const ResultStep = ({
 					<h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
 						<CheckCircle className="text-green-500" /> Revisão Final
 					</h2>
-					<p className="text-md text-gray-500">
+					<p className="text-md text-gray-600">
 						Leia atentamente; use a IA para correções; baixe quando pronto.
 					</p>
 				</div>
@@ -405,7 +405,7 @@ export const ResultStep = ({
 									className="w-full p-4 rounded-xl border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
 									placeholder="Ex: Corrigir a data da infração para 12/05/2024. Remover parte que menciona a velocidade da via. Adicionar parágrafo alegando falta de visibilidade da placa."
 								/>
-								<div className="flex justify-between items-center text-xs text-gray-400 px-1">
+								<div className="flex justify-between items-center text-xs text-gray-600 px-1">
 									<span>Seja específico nas instruções.</span>
 									<span>{refinementText.length} caracteres</span>
 								</div>
@@ -415,7 +415,7 @@ export const ResultStep = ({
 									disabled={!refinementText.trim() || refining || refinementCount <= 0}
 									className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${
 										refinementCount <= 0
-											? "bg-gray-100 text-gray-400 cursor-not-allowed"
+											? "bg-gray-100 text-gray-600 cursor-not-allowed"
 											: "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 transform hover:-translate-y-0.5"
 									}`}>
 									{refining ? <Loader2 className="animate-spin" size={20} /> : <Send size={20} />}

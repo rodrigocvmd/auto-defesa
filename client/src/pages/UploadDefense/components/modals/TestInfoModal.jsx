@@ -6,7 +6,7 @@ export const TestInfoModal = ({ onClose, onConfirm }) => (
         <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative p-8">
             <button
                 onClick={onClose}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                className="absolute top-4 right-4 text-gray-600 hover:text-gray-800">
                 <X size={24} />
             </button>
             <div className="text-center mb-6">

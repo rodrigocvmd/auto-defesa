@@ -395,7 +395,7 @@ const Testimonials = () => {
 					</div>
 				</div>
 
-				<div className="text-center mt-4 text-gray-400 text-sm animate-pulse">
+				<div className="text-center mt-4 text-gray-600 text-sm animate-pulse">
 					Arraste para o lado para ver mais <ChevronRight size={14} className="inline" />
 				</div>
 			</div>

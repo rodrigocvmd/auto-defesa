@@ -46,7 +46,7 @@ export const LoginPromptModal = ({ onClose, formData, source }) => {
                     </button>
                     <button
                         onClick={onClose}
-                        className="w-full text-gray-400 text-sm hover:text-gray-600 py-2">
+                        className="w-full text-gray-600 text-sm hover:text-gray-800 py-2">
                         Cancelar
                     </button>
                 </div>

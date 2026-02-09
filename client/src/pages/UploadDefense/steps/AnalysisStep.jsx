@@ -96,7 +96,7 @@ export const AnalysisStep = ({
 					</div>
 				</div>
 				<div className="p-8">
-					<h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+					<h3 className="text-sm font-bold text-gray-600 uppercase tracking-wider mb-4 flex items-center gap-2">
 						<Search size={16} /> Teses Identificadas pela IA
 					</h3>
 					<div className="space-y-4 mb-6">
@@ -248,7 +248,7 @@ export const AnalysisStep = ({
 					</div>
 					<button
 						onClick={() => navigate("/upload/form")}
-						className="w-full text-center text-gray-400 text-sm mt-6 hover:text-gray-600">
+						className="w-full text-center text-gray-600 text-sm mt-6 hover:text-gray-800">
 						Voltar e editar dados
 					</button>
 				</div>

@@ -68,7 +68,7 @@ const Home = () => {
 
 								{/* Trust Strip / Logos */}
 								{/* <div className="border-t border-gray-100 pt-8 animate-in fade-in delay-500">
-									<p className="text-sm text-gray-400 font-medium mb-4 uppercase tracking-wider">
+									<p className="text-sm text-gray-600 font-medium mb-4 uppercase tracking-wider">
 										Visto em / Tecnologia usada por:
 									</p>
 									<div className="flex flex-wrap justify-center lg:justify-start gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
@@ -347,7 +347,7 @@ const Home = () => {
 						</div>
 
 						{/* Hint for mobile */}
-						<div className="text-center mt-2 text-gray-400 text-sm animate-pulse md:hidden">
+						<div className="text-center mt-2 text-gray-600 text-sm animate-pulse md:hidden">
 							Arraste para o lado e veja mais <ChevronRight size={14} className="inline" />
 						</div>
 					</div>

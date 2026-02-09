@@ -110,7 +110,7 @@ const InfractionPage = () => {
 							<h3 className="text-2xl font-bold text-gray-900 mb-2">
 								Não Pague Indevidamente
 							</h3>
-							<p className="text-gray-500 mb-8">
+							<p className="text-gray-600 mb-8">
 								Gere sua defesa técnica agora mesmo em poucos minutos.
 							</p>
 							
@@ -121,7 +121,7 @@ const InfractionPage = () => {
 								Gerar Minha Defesa Técnica
 							</Link>
 							
-							<p className="text-xs text-gray-400">
+							<p className="text-xs text-gray-600">
 								Satisfação garantida ou revisão gratuita do recurso.
 							</p>
 						</div>

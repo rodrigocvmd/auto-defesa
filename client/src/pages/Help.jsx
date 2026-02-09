@@ -89,7 +89,7 @@ const Help = () => {
 							</div>
 							<div>
 								<h2 className="text-2xl font-bold text-gray-900">Envie uma mensagem</h2>
-								<p className="text-gray-500 text-sm">
+								<p className="text-gray-600 text-sm">
 									Responderemos para o seu e-mail o mais breve possível.
 								</p>
 							</div>
@@ -164,7 +164,7 @@ const Help = () => {
 								<Mail size={32} />
 							</div>
 							<h3 className="font-bold text-xl text-gray-900 mb-2">E-mail</h3>
-							<p className="text-gray-500 mb-6 text-sm">
+							<p className="text-gray-600 mb-6 text-sm">
 								Suporte técnico e comercial por e-mail com resposta em até 24h.
 							</p>
 							<a
@@ -181,7 +181,7 @@ const Help = () => {
 								<MessageCircle size={32} />
 							</div>
 							<h3 className="font-bold text-xl text-gray-900 mb-2">WhatsApp</h3>
-							<p className="text-gray-500 mb-6 text-sm">
+							<p className="text-gray-600 mb-6 text-sm">
 								Atendimento rápido para dúvidas, pagamentos ou suporte em geral.
 							</p>
 							<a
@@ -208,9 +208,9 @@ const Help = () => {
 									className="w-full flex items-center justify-between p-5 pb-3 text-left font-bold text-gray-800 hover:bg-gray-50 transition-colors">
 									{faq.q}
 									{openIndex === idx ? (
-										<ChevronUp size={20} className="text-gray-400" />
+										<ChevronUp size={20} className="text-gray-600" />
 									) : (
-										<ChevronDown size={20} className="text-gray-400" />
+										<ChevronDown size={20} className="text-gray-600" />
 									)}
 								</button>
 								{openIndex === idx && (

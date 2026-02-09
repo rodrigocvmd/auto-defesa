@@ -40,7 +40,7 @@ const ArticlePage = () => {
           <main className="lg:col-span-8">
             {/* Header do Artigo */}
             <header className="mb-10">
-              <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
+              <div className="flex items-center gap-4 text-sm text-gray-600 mb-6">
                 <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-bold text-xs uppercase tracking-wide">
                   {article.category}
                 </span>
@@ -67,10 +67,10 @@ const ArticlePage = () => {
                   </div>
                   <div>
                     <p className="text-sm font-bold text-gray-900">Rodrigo</p>
-                    <p className="text-xs text-gray-500">Especialista Jurídico</p>
+                    <p className="text-xs text-gray-600">Especialista Jurídico</p>
                   </div>
                 </div>
-                <button className="text-gray-400 hover:text-blue-600 transition-colors">
+                <button className="text-gray-600 hover:text-blue-600 transition-colors">
                   <Share2 size={20} />
                 </button>
               </div>
@@ -132,13 +132,13 @@ const ArticlePage = () => {
                 </p>
 
                 <ul className="space-y-3 mb-6">
-                  <li className="flex items-center gap-2 text-sm text-gray-500">
+                  <li className="flex items-center gap-2 text-sm text-gray-600">
                     <CheckCircle size={16} className="text-green-500" /> Sem custo inicial
                   </li>
-                  <li className="flex items-center gap-2 text-sm text-gray-500">
+                  <li className="flex items-center gap-2 text-sm text-gray-600">
                     <CheckCircle size={16} className="text-green-500" /> Resultado imediato
                   </li>
-                  <li className="flex items-center gap-2 text-sm text-gray-500">
+                  <li className="flex items-center gap-2 text-sm text-gray-600">
                     <CheckCircle size={16} className="text-green-500" /> 100% Online
                   </li>
                 </ul>

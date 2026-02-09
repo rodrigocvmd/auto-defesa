@@ -82,7 +82,7 @@ const MainLayout = ({ children }) => {
 								</button>
 								<div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 hidden group-hover:block p-3 animate-in fade-in slide-in-from-top-2">
 									<div className="px-4 py-2 mb-2">
-										<h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+										<h4 className="text-xs font-bold text-gray-600 uppercase tracking-widest">
 											1. Artigos
 										</h4>
 										<Link
@@ -96,7 +96,7 @@ const MainLayout = ({ children }) => {
 									<div className="h-px bg-gray-100 my-2"></div>
 
 									<div className="px-4 py-2">
-										<h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+										<h4 className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-2">
 											2. Recursos Úteis
 										</h4>
 										<div className="grid grid-cols-1 gap-1">
@@ -346,12 +346,12 @@ const MainLayout = ({ children }) => {
 						</Link>
 					</div>
 
-					<p className="text-xs text-gray-400 max-w-3xl text-center mb-1">
+					<p className="text-xs text-gray-600 max-w-3xl text-center mb-1">
 						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não
 						substituímos a consultoria de um advogado.
 					</p>
 
-					<p className="text-xs text-gray-400 mt-4">
+					<p className="text-xs text-gray-600 mt-4">
 						&copy; {ano} AutoDefesa Software. Todos os direitos reservados.
 					</p>
 				</footer>

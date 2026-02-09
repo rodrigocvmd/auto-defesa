@@ -38,7 +38,7 @@ const BlogIndex = () => {
                   <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wide">
                     {article.category}
                   </span>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-gray-600">
                     {article.publishDate}
                   </span>
                 </div>

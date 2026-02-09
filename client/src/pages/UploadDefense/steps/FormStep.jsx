@@ -307,7 +307,7 @@ export const FormStep = ({
 
 					{/* Endereço Mantido como estava, mas ajustando classes se necessário para compatibilidade */}
 					<div className="pt-4 border-t border-gray-100 mt-2">
-						<h4 className="text-sm font-bold text-gray-500 mb-4 uppercase">Endereço Completo</h4>
+						<h4 className="text-sm font-bold text-gray-600 mb-4 uppercase">Endereço Completo</h4>
 						<div className="grid grid-cols-1 md:grid-cols-4 gap-5">
 							<div>
 								<label className="label-form">
@@ -840,7 +840,7 @@ export const FormStep = ({
 						className="w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all">
 						Analisar Caso (Grátis)
 					</button>
-					<p className="text-center text-gray-400 text-sm mt-3">
+					<p className="text-center text-gray-600 text-sm mt-3">
 						Nenhum crédito será cobrado nesta etapa.
 					</p>
 				</div>
