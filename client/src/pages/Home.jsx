@@ -90,6 +90,8 @@ const Home = () => {
 										src="/imagemLanding.webp"
 										srcSet="/imagemLanding-SM.webp 600w, /imagemLanding.webp 1200w"
 										sizes="(max-width: 768px) 100vw, 50vw"
+										width="1200"
+										height="1600"
 										alt="Motorista segurando celular com recurso procedente"
 										className="w-full h-full object-cover"
 										fetchpriority="high"
