@@ -306,6 +306,22 @@ const Home = () => {
 								melhor defesa possível.
 							</p>
 						</div>
+						<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+							<h3 className="font-bold text-lg text-gray-900 mb-2">
+								O recurso é personalizado para o meu caso?
+							</h3>
+							<p className="text-gray-600">
+								Sim. Diferente de modelos prontos da internet, nossa IA analisa os dados específicos do seu auto de infração (horário, local, aferição do equipamento) para encontrar nulidades reais que anulam a sua multa.
+							</p>
+						</div>
+						<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+							<h3 className="font-bold text-lg text-gray-900 mb-2">
+								Quanto tempo demora para receber o recurso?
+							</h3>
+							<p className="text-gray-600">
+								O processo é instantâneo. Após a análise da IA, seu recurso em PDF é gerado em menos de 2 minutos, pronto para você imprimir, assinar e protocolar.
+							</p>
+						</div>
 					</div>
 				</section>
 

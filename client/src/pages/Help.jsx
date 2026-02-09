@@ -29,6 +29,30 @@ const Help = () => {
 			q: "Serve para qual estado?",
 			a: "Para todo o Brasil. A legislação de trânsito (CTB) é federal, portanto nossas defesas são válidas para órgãos de qualquer estado ou município.",
 		},
+		{
+			q: "O que acontece se eu não recorrer?",
+			a: "Se você não recorrer e apenas pagar a multa, você assume a culpa e os pontos entram automaticamente na sua CNH. No caso de multas suspensivas (como Lei Seca), você perderá o direito de dirigir por 12 meses. Recorrer é um direito constitucional e suspende esses efeitos até o fim do processo.",
+		},
+		{
+			q: "Qual a diferença entre a análise gratuita e a paga?",
+			a: "A análise gratuita identifica se existem erros formais na sua multa e qual a probabilidade de vitória. O serviço pago gera o documento jurídico completo (recurso), fundamentado com leis e jurisprudência, pronto para você protocolar.",
+		},
+		{
+			q: "A IA é melhor que um modelo pronto da internet?",
+			a: "Sim, muito. Modelos prontos são genéricos e frequentemente ignorados pelos órgãos de trânsito. Nossa IA analisa os detalhes específicos da sua multa (como a validade do bafômetro ou a sinalização do local) para criar uma defesa técnica e exclusiva.",
+		},
+		{
+			q: "Como faço para protocolar o recurso?",
+			a: "Após baixar o PDF, você deve assiná-lo e enviá-lo ao órgão autuador. Isso pode ser feito pessoalmente, via Correios (AR) ou, em muitos casos, de forma 100% online através do portal do DETRAN ou aplicativo Carteira Digital de Trânsito.",
+		},
+		{
+			q: "O Auto Defesa garante que vou ganhar?",
+			a: "Nenhum profissional sério garante vitória em processos judiciais ou administrativos. O que garantimos é uma defesa técnica de altíssimo nível, baseada nos mesmos argumentos que os melhores advogados de trânsito utilizam, por uma fração do custo.",
+		},
+		{
+			q: "Posso recorrer de multas antigas?",
+			a: "Você pode recorrer enquanto o prazo de defesa (indicado na notificação) não tiver expirado. Caso o prazo tenha vencido e você já tenha sido penalizado, ainda pode ser possível buscar a anulação judicial se houver erro grave, mas nosso foco é a esfera administrativa.",
+		},
 	];
 
 	const [openIndex, setOpenIndex] = useState(null);
