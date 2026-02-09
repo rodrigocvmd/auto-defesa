@@ -176,7 +176,8 @@ const MainLayout = ({ children }) => {
 						<div className="md:hidden flex items-center">
 							<button
 								onClick={() => setIsMenuOpen(!isMenuOpen)}
-								className="text-gray-600 hover:text-blue-600 p-2">
+								className="text-gray-600 hover:text-blue-600 p-2"
+								aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}>
 								{isMenuOpen ? <X size={24} /> : <Menu size={24} />}
 							</button>
 						</div>
