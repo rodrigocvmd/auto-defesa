@@ -10,19 +10,24 @@ const ArticlePage = ({ customSlug }) => {
   const slug = customSlug || urlSlug;
   const article = articles.find(a => a.slug === slug);
 
-  // FAQ Schema for SEO
-  const faqSchema = article?.faq ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": article.faq.map(item => ({
-      "@type": "Question",
-      "name": item.q,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": item.a
-      }
-    }))
-  } : null;
+  // Function to transform FAQ array into JSON-LD FAQPage schema
+  const generateFaqSchema = (faq) => {
+    if (!faq || faq.length === 0) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faq.map(item => ({
+        "@type": "Question",
+        "name": item.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.a
+        }
+      }))
+    };
+  };
+
+  const faqSchema = generateFaqSchema(article?.faq);
 
   // Fallback se artigo não encontrado (poderia redirecionar para 404)
   if (!article) {
