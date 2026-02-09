@@ -59,6 +59,15 @@ const ArticlePage = ({ customSlug }) => {
           
           {/* Coluna Principal - Conteúdo */}
           <main className="lg:col-span-8">
+            {/* Breadcrumbs */}
+            <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
+              <Link to="/" className="hover:text-blue-600 transition-colors">Início</Link>
+              <span>/</span>
+              <Link to="/guia" className="hover:text-blue-600 transition-colors">Guia</Link>
+              <span>/</span>
+              <span className="text-gray-900 font-medium">{article.category}</span>
+            </nav>
+
             {/* Header do Artigo */}
             <header className="mb-10">
               <div className="flex items-center gap-4 text-sm text-gray-600 mb-6">
