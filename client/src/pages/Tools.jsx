@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import MainLayout from '../layouts/MainLayout';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
-import { AlertCircle, ArrowRight, Minus, Plus, ShieldCheck, Info } from 'lucide-react';
+import { AlertCircle, ArrowRight, Minus, Plus, ShieldCheck, Info, Clock } from 'lucide-react';
 
 const Tools = () => {
   return (
@@ -36,6 +36,22 @@ const Tools = () => {
             </p>
             <span className="flex items-center gap-2 text-blue-600 font-bold">
               Acessar Calculadora <ArrowRight size={18} />
+            </span>
+          </Link>
+
+          <Link 
+            to="/calculadora-prescricao" 
+            className="group bg-white rounded-3xl p-8 border border-gray-100 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2"
+          >
+            <div className="bg-orange-100 w-16 h-16 rounded-2xl flex items-center justify-center text-orange-600 mb-6 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+              <Clock size={32} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Verificador de Prescrição</h2>
+            <p className="text-gray-600 mb-6">
+              Descubra se sua multa perdeu a validade por atraso na notificação ou tempo excessivo de processo.
+            </p>
+            <span className="flex items-center gap-2 text-orange-600 font-bold">
+              Verificar Prazo <ArrowRight size={18} />
             </span>
           </Link>
           

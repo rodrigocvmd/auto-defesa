@@ -92,6 +92,11 @@ const MainLayout = ({ children }) => {
 												Calculadora de Pontos
 											</Link>
 											<Link
+												to="/calculadora-prescricao"
+												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+												Calculadora de Prescrição
+											</Link>
+											<Link
 												to="/tools"
 												className="block px-3 py-2 text-sm font-bold text-blue-600 hover:bg-blue-50 rounded-lg">
 												Todas as Ferramentas

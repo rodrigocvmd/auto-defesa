@@ -24,6 +24,7 @@ const BlogIndex = lazy(() => import('./pages/BlogIndex'));
 const ArticlePage = lazy(() => import('./pages/ArticlePage'));
 const Tools = lazy(() => import('./pages/Tools'));
 const ScoreCalculator = lazy(() => import('./pages/ScoreCalculator'));
+const PrescriptionCalculator = lazy(() => import('./pages/PrescriptionCalculator'));
 
 // Fallback component
 const PageLoader = () => (
@@ -61,6 +62,7 @@ function App() {
               <Route path="/guia" element={<BlogIndex />} />
               <Route path="/tools" element={<Tools />} />
               <Route path="/calculadora-pontos" element={<ScoreCalculator />} />
+              <Route path="/calculadora-prescricao" element={<PrescriptionCalculator />} />
               
               {/* Páginas de Infração (Legado/Landing Pages Específicas) */}
               <Route path="/recursos" element={<AllInfractionsPage />} />
