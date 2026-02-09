@@ -113,7 +113,7 @@ const ArticlePage = ({ customSlug }) => {
 
             {/* Outros Guias Úteis */}
             <div className="mt-12 pt-12 border-t border-gray-100">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Outros Guias Úteis</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Você também pode se interessar por:</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {articles
                   .filter(a => a.category === article.category && a.slug !== article.slug)
