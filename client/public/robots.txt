@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
-Disallow: /profile
-Disallow: /checkout
 Disallow: /login
 Disallow: /register
+Disallow: /profile
+Disallow: /reset-password
+Disallow: /email-confirmation
 
 Sitemap: https://meuautodefesa.com.br/sitemap.xml
