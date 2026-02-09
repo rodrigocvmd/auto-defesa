@@ -21,21 +21,24 @@ import SEO from "../components/SEO";
 import Testimonials from "../components/Testimonials";
 
 const Home = () => {
-	const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+    const [showScrollIndicator, setShowScrollIndicator] = useState(() => {
+        // Inicializa baseado no sessionStorage para persistir o "já scrollou" nesta sessão
+        return !sessionStorage.getItem("home_has_scrolled");
+    });
 
-	useEffect(() => {
-		const handleScroll = () => {
-			if (window.scrollY > 100) {
-				setShowScrollIndicator(false);
-			} else {
-				setShowScrollIndicator(true);
-			}
-		};
+    useEffect(() => {
+        if (!showScrollIndicator) return;
 
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
+        const handleScroll = () => {
+            if (window.scrollY > 100) {
+                setShowScrollIndicator(false);
+                sessionStorage.setItem("home_has_scrolled", "true");
+            }
+        };
 
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [showScrollIndicator]);
 	const ScrollArrow = ({ className }) => (
 		<div
 			className={`flex flex-col items-center gap-1 animate-bounce transition-opacity duration-500 ${showScrollIndicator ? "opacity-100" : "opacity-0"} ${className}`}>
