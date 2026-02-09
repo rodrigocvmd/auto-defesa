@@ -21,26 +21,27 @@ import SEO from "../components/SEO";
 import Testimonials from "../components/Testimonials";
 
 const Home = () => {
-    const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+	const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 100) {
-                setShowScrollIndicator(false);
-            } else {
-                setShowScrollIndicator(true);
-            }
-        };
+	useEffect(() => {
+		const handleScroll = () => {
+			if (window.scrollY > 100) {
+				setShowScrollIndicator(false);
+			} else {
+				setShowScrollIndicator(true);
+			}
+		};
 
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
 
-    const ScrollArrow = ({ className }) => (
-        <div className={`flex flex-col items-center gap-1 animate-bounce transition-opacity duration-500 ${showScrollIndicator ? 'opacity-100' : 'opacity-0'} ${className}`}>
-            <ChevronDown size={24} className="text-blue-600" />
-        </div>
-    );
+	const ScrollArrow = ({ className }) => (
+		<div
+			className={`flex flex-col items-center gap-1 animate-bounce transition-opacity duration-500 ${showScrollIndicator ? "opacity-100" : "opacity-0"} ${className}`}>
+			<ChevronDown size={24} className="text-blue-400" />
+		</div>
+	);
 
 	return (
 		<MainLayout>
@@ -52,10 +53,10 @@ const Home = () => {
 			/>
 			<div className="flex flex-col gap-12 pb-8">
 				{/* HERO SECTION */}
-				<section className="relative pt-5 !pb-0 lg:pt-10 lg:pb-10 overflow-hidden">
+				<section className="relative pt-5 !pb-0 lg:pt-10 lg:pb-10 overflow-hidden flex flex-col justify-center">
 					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/50 via-gray-50 to-white"></div>
 
-					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 						<div className="grid lg:grid-cols-2 gap-2 items-center">
 							{/* Texto Hero */}
 							<div className="text-center lg:text-left">
@@ -88,8 +89,6 @@ const Home = () => {
 											<CheckCircle size={16} className="text-green-500" /> Quase 500 multas
 											analisadas
 										</div>
-                                        {/* Scroll Indicator for Mobile */}
-                                        <ScrollArrow className="lg:hidden mt-8" />
 									</div>
 								</div>
 
@@ -143,8 +142,6 @@ const Home = () => {
 										</div>
 									</div>
 								</div>
-                                {/* Scroll Indicator for Desktop */}
-                                <ScrollArrow className="hidden lg:flex mt-12" />
 							</div>
 						</div>
 
@@ -161,6 +158,11 @@ const Home = () => {
 								Protocolo
 							</div>
 						</div>
+					</div>
+
+					{/* Global Scroll Indicator - Absolute at bottom of hero fold */}
+					<div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+						<ScrollArrow className="" />
 					</div>
 				</section>
 
@@ -336,7 +338,9 @@ const Home = () => {
 								O recurso é personalizado para o meu caso?
 							</h3>
 							<p className="text-gray-600">
-								Sim. Diferente de modelos prontos da internet, nossa IA analisa os dados específicos do seu auto de infração (horário, local, aferição do equipamento) para encontrar nulidades reais que anulam a sua multa.
+								Sim. Diferente de modelos prontos da internet, nossa IA analisa os dados específicos
+								do seu auto de infração (horário, local, aferição do equipamento) para encontrar
+								nulidades reais que anulam a sua multa.
 							</p>
 						</div>
 						<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
@@ -344,7 +348,8 @@ const Home = () => {
 								Quanto tempo demora para receber o recurso?
 							</h3>
 							<p className="text-gray-600">
-								O processo é instantâneo. Após a análise da IA, seu recurso em PDF é gerado em menos de 2 minutos, pronto para você imprimir, assinar e protocolar.
+								O processo é instantâneo. Após a análise da IA, seu recurso em PDF é gerado em menos
+								de 2 minutos, pronto para você imprimir, assinar e protocolar.
 							</p>
 						</div>
 					</div>
@@ -360,7 +365,8 @@ const Home = () => {
 							Defesa Técnica com Inteligência Jurídica
 						</h2>
 						<p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-							Utilizamos tecnologia de ponta para analisar sua multa, identificando falhas administrativas e garantindo o seu pleno direito de defesa.
+							Utilizamos tecnologia de ponta para analisar sua multa, identificando falhas
+							administrativas e garantindo o seu pleno direito de defesa.
 						</p>
 					</div>
 
@@ -372,7 +378,8 @@ const Home = () => {
 							</div>
 							<h3 className="text-xl font-bold text-gray-900 mb-3">Rigor Legislativo</h3>
 							<p className="text-gray-600">
-								Nossa base de conhecimento é atualizada em tempo real com o CTB, resoluções do CONTRAN e o Manual Brasileiro de Fiscalização de Trânsito.
+								Nossa base de conhecimento é atualizada em tempo real com o CTB, resoluções do
+								CONTRAN e o Manual Brasileiro de Fiscalização de Trânsito.
 							</p>
 						</div>
 
@@ -383,7 +390,8 @@ const Home = () => {
 							</div>
 							<h3 className="text-xl font-bold text-gray-900 mb-3">Foco em Nulidades</h3>
 							<p className="text-gray-600">
-								Buscamos erros de procedimento e vícios formais que, por lei, tornam o auto de infração insubsistente e passível de anulação.
+								Buscamos erros de procedimento e vícios formais que, por lei, tornam o auto de
+								infração insubsistente e passível de anulação.
 							</p>
 						</div>
 
@@ -394,7 +402,8 @@ const Home = () => {
 							</div>
 							<h3 className="text-xl font-bold text-gray-900 mb-3">Recurso Pronto para Uso</h3>
 							<p className="text-gray-600">
-								Ao detectar uma falha, geramos automaticamente o recurso administrativo em PDF, fundamentado e pronto para ser protocolado.
+								Ao detectar uma falha, geramos automaticamente o recurso administrativo em PDF,
+								fundamentado e pronto para ser protocolado.
 							</p>
 						</div>
 
@@ -405,7 +414,8 @@ const Home = () => {
 							</div>
 							<h3 className="text-xl font-bold text-gray-900 mb-3">Honestidade Jurídica</h3>
 							<p className="text-gray-600">
-								Não prometemos milagres. Oferecemos uma análise técnica real para que você saiba exatamente quais são as suas chances de sucesso.
+								Não prometemos milagres. Oferecemos uma análise técnica real para que você saiba
+								exatamente quais são as suas chances de sucesso.
 							</p>
 						</div>
 
@@ -416,7 +426,8 @@ const Home = () => {
 							</div>
 							<h3 className="text-xl font-bold text-gray-900 mb-3">Resposta Instantânea</h3>
 							<p className="text-gray-600">
-								Em poucos segundos, nossa IA processa os dados e indica se vale a pena investir tempo e esforço no seu recurso de multa.
+								Em poucos segundos, nossa IA processa os dados e indica se vale a pena investir
+								tempo e esforço no seu recurso de multa.
 							</p>
 						</div>
 
@@ -427,7 +438,8 @@ const Home = () => {
 							</div>
 							<h3 className="text-xl font-bold text-gray-900 mb-3">Tecnologia de Ponta</h3>
 							<p className="text-gray-600">
-								Utilizamos OCR e visão computacional para ler sua multa automaticamente, eliminando erros de digitação e agilizando o processo.
+								Utilizamos OCR e visão computacional para ler sua multa automaticamente, eliminando
+								erros de digitação e agilizando o processo.
 							</p>
 						</div>
 					</div>
