@@ -305,25 +305,25 @@ const MainLayout = ({ children }) => {
 							<h4 className="text-gray-900 font-bold text-md mb-5 text-center">
 								Recursos Úteis 👇
 							</h4>
-							<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center ">
+							<div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6 text-center ">
 								<Link
 									to="/recorrer/recusa-bafometro"
-									className="text-gray-600 hover:text-blue-600 text-md transition-colors">
+									className="text-gray-600 hover:text-blue-600 text-md transition-colors py-2 px-1">
 									Recusa ao Bafômetro
 								</Link>
 								<Link
 									to="/recorrer/excesso-velocidade"
-									className="text-gray-600 hover:text-blue-600 text-md transition-colors">
+									className="text-gray-600 hover:text-blue-600 text-md transition-colors py-2 px-1">
 									Acima da Velocidade
 								</Link>
 								<Link
 									to="/recorrer/celular-direcao"
-									className="text-gray-600 hover:text-blue-600 text-md transition-colors">
+									className="text-gray-600 hover:text-blue-600 text-md transition-colors py-2 px-1">
 									Utilização de Celular
 								</Link>
 								<Link
 									to="/recursos"
-									className="text-gray-600 hover:text-blue-600 text-md transition-colors">
+									className="text-gray-600 hover:text-blue-600 text-md transition-colors py-2 px-1">
 									Ver Outras Infrações
 								</Link>
 							</div>
@@ -332,16 +332,18 @@ const MainLayout = ({ children }) => {
 
 					<p className="text-md text-gray-600 mb-4">
 						Brasília/DF |{" "}
-						<a href="mailto:suporte@meuatodefesa.com.br">suporte@meuatodefesa.com.br</a>{" "}
+						<a href="mailto:suporte@meuatodefesa.com.br" className="py-2 px-1">
+							suporte@meuatodefesa.com.br
+						</a>{" "}
 					</p>
-					<div className="flex justify-center gap-4 text-md text-gray-600 mb-4">
-						<Link to="/about" className="hover:underline">
+					<div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-md text-gray-600 mb-6">
+						<Link to="/about" className="hover:underline py-2 px-1">
 							Sobre Nós
 						</Link>
-						<Link to="/terms" className="hover:underline">
+						<Link to="/terms" className="hover:underline py-2 px-1">
 							Termos de Uso
 						</Link>
-						<Link to="/privacy" className="hover:underline">
+						<Link to="/privacy" className="hover:underline py-2 px-1">
 							Privacidade
 						</Link>
 					</div>
