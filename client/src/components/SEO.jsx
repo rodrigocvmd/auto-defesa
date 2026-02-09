@@ -1,7 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 
-const SEO = ({ title, description, keywords, canonical, type = "website", faq }) => {
+const SEO = ({ title, description, keywords, canonical, type = "website", faq, isHome = false }) => {
 	const siteName = "AutoDefesa";
 	// Descrição padrão focada na autoridade e especialidade
 	const defaultDescription =
@@ -17,7 +17,7 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq })
 	const fullUrl = `${baseUrl}${formattedCanonical}`;
 
 	// Schema.org JSON-LD para SoftwareApplication
-	let structuredData = {
+	const softwareAppData = {
 		"@context": "https://schema.org",
 		"@type": "SoftwareApplication",
 		name: "Auto Defesa",
@@ -37,6 +37,22 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq })
 		},
 	};
 
+	const schemas = [softwareAppData];
+
+	if (isHome) {
+		const webSiteSchema = {
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			url: baseUrl,
+			potentialAction: {
+				"@type": "SearchAction",
+				target: `${baseUrl}/busca?q={search_term_string}`,
+				"query-input": "required name=search_term_string",
+			},
+		};
+		schemas.push(webSiteSchema);
+	}
+
 	if (faq && faq.length > 0) {
 		const faqSchema = {
 			"@context": "https://schema.org",
@@ -50,8 +66,10 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq })
 				},
 			})),
 		};
-		structuredData = [structuredData, faqSchema];
+		schemas.push(faqSchema);
 	}
+
+	const structuredData = schemas.length === 1 ? schemas[0] : schemas;
 
 	return (
 		<Helmet>

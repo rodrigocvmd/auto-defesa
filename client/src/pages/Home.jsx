@@ -24,6 +24,7 @@ const Home = () => {
 				title="Recorra de Multas com IA | Advogado Virtual"
 				description="Anule sua multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online, anular multa"
+				isHome={true}
 			/>
 			<div className="flex flex-col gap-12 pb-8">
 				{/* HERO SECTION */}
