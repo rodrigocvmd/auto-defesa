@@ -51,6 +51,10 @@ function App() {
               <Route path="/upload/:step" element={<UploadDefense />} />
               
               {/* Páginas de Conteúdo */}
+              <Route path="/motorista-app" element={<ArticlePage customSlug="motorista-app" />} />
+              <Route path="/caminhoneiro" element={<ArticlePage customSlug="caminhoneiro" />} />
+              <Route path="/motoqueiro" element={<ArticlePage customSlug="motoqueiro" />} />
+              <Route path="/ppd" element={<ArticlePage customSlug="perda-ppd" />} />
               <Route path="/artigo/:slug" element={<ArticlePage />} />
               <Route path="/guia" element={<BlogIndex />} />
               

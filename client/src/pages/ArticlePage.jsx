@@ -5,8 +5,9 @@ import SEO from '../components/SEO';
 import { articles } from '../data/articles';
 import { Shield, CheckCircle, ArrowRight, User, Calendar, Clock, Share2 } from 'lucide-react';
 
-const ArticlePage = () => {
-  const { slug } = useParams();
+const ArticlePage = ({ customSlug }) => {
+  const { slug: urlSlug } = useParams();
+  const slug = customSlug || urlSlug;
   const article = articles.find(a => a.slug === slug);
 
   // FAQ Schema for SEO
