@@ -1,25 +1,34 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { DefenseProvider } from './contexts/DefenseContext';
-import Home from './pages/Home';
-import UploadDefense from './pages/UploadDefense';
-import Terms from './pages/Terms';
-import Privacy from './pages/Privacy';
-import About from './pages/About';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Profile from './pages/Profile';
-import Pricing from './pages/Pricing';
-import HowItWorks from './pages/HowItWorks';
-import Help from './pages/Help';
-import EmailConfirmation from './pages/EmailConfirmation';
-import ResetPassword from './pages/ResetPassword';
 import ScrollToTop from './components/ScrollToTop';
-import InfractionPage from './pages/InfractionPage';
-import AllInfractionsPage from './pages/AllInfractionsPage';
-import BlogIndex from './pages/BlogIndex';
-import ArticlePage from './pages/ArticlePage';
+
+// Lazy loading components
+const Home = lazy(() => import('./pages/Home'));
+const UploadDefense = lazy(() => import('./pages/UploadDefense'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const About = lazy(() => import('./pages/About'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const HowItWorks = lazy(() => import('./pages/HowItWorks'));
+const Help = lazy(() => import('./pages/Help'));
+const EmailConfirmation = lazy(() => import('./pages/EmailConfirmation'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const InfractionPage = lazy(() => import('./pages/InfractionPage'));
+const AllInfractionsPage = lazy(() => import('./pages/AllInfractionsPage'));
+const BlogIndex = lazy(() => import('./pages/BlogIndex'));
+const ArticlePage = lazy(() => import('./pages/ArticlePage'));
+
+// Fallback component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+  </div>
+);
 
 function App() {
   return (
@@ -27,33 +36,35 @@ function App() {
       <ScrollToTop />
       <AuthProvider>
         <DefenseProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/email-confirmation" element={<EmailConfirmation />} />
-            
-            {/* Rotas com parâmetro opcional para o fluxo de passos */}
-            <Route path="/upload" element={<UploadDefense />} />
-            <Route path="/upload/:step" element={<UploadDefense />} />
-            
-            {/* Páginas de Conteúdo */}
-            <Route path="/artigo/:slug" element={<ArticlePage />} />
-            <Route path="/guia" element={<BlogIndex />} />
-            
-            {/* Páginas de Infração (Legado/Landing Pages Específicas) */}
-            <Route path="/recursos" element={<AllInfractionsPage />} />
-            <Route path="/recorrer/:slug" element={<InfractionPage />} />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/email-confirmation" element={<EmailConfirmation />} />
+              
+              {/* Rotas com parâmetro opcional para o fluxo de passos */}
+              <Route path="/upload" element={<UploadDefense />} />
+              <Route path="/upload/:step" element={<UploadDefense />} />
+              
+              {/* Páginas de Conteúdo */}
+              <Route path="/artigo/:slug" element={<ArticlePage />} />
+              <Route path="/guia" element={<BlogIndex />} />
+              
+              {/* Páginas de Infração (Legado/Landing Pages Específicas) */}
+              <Route path="/recursos" element={<AllInfractionsPage />} />
+              <Route path="/recorrer/:slug" element={<InfractionPage />} />
 
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/how-it-works" element={<HowItWorks />} />
-            <Route path="/help" element={<Help />} />
-          </Routes>
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/how-it-works" element={<HowItWorks />} />
+              <Route path="/help" element={<Help />} />
+            </Routes>
+          </Suspense>
         </DefenseProvider>
       </AuthProvider>
     </Router>
