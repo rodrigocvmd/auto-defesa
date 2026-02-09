@@ -88,6 +88,8 @@ const Home = () => {
 								<div className="relative rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl">
 									<img
 										src="/imagemLanding.webp"
+										srcSet="/imagemLanding-SM.webp 600w, /imagemLanding.webp 1200w"
+										sizes="(max-width: 768px) 100vw, 50vw"
 										alt="Motorista segurando celular com recurso procedente"
 										className="w-full h-full object-cover"
 										fetchpriority="high"
