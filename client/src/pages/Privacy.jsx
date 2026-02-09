@@ -117,7 +117,7 @@ const Privacy = () => {
 							</ul>
 						</section>
 
-						<section className="bg-green-50/30 p-6 md:p-8 rounded-2xl border border-green-100 shadow-inner">
+						<section>
 							<h3 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-4">
 								<span className="bg-green-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">6</span>
 								Segurança e Armazenamento
@@ -162,8 +162,11 @@ const Privacy = () => {
 							</p>
 						</section>
 
-						<section className="pt-8 border-t border-gray-100">
-							<h3 className="text-xl font-bold text-gray-900 mb-4">10. Contato (DPO)</h3>
+						<section>
+							<h3 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-4">
+								<span className="bg-green-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 font-bold">10</span>
+								Contato (DPO)
+							</h3>
 							<p className="leading-relaxed">
 								Para exercer seus direitos de titular ou esclarecer dúvidas, entre em contato com nosso Encarregado de Proteção de Dados através do e-mail: <a className="text-blue-600 font-bold hover:underline" href="mailto:contato@meuautodefesa.com.br">contato@meuautodefesa.com.br</a>
 							</p>
