@@ -13,4 +13,37 @@
 		-ms-overflow-style: none; /* IE and Edge */
 		scrollbar-width: none; /* Firefox */
 	}
+
+	.reveal {
+		opacity: 0;
+		transform: translateY(30px);
+		transition: all 0.8s ease-out;
+	}
+
+	.reveal.reveal-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.reveal-left {
+		opacity: 0;
+		transform: translateX(-30px);
+		transition: all 0.8s ease-out;
+	}
+
+	.reveal-left.reveal-visible {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.reveal-right {
+		opacity: 0;
+		transform: translateX(30px);
+		transition: all 0.8s ease-out;
+	}
+
+	.reveal-right.reveal-visible {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
