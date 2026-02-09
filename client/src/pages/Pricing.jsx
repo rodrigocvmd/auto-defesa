@@ -145,7 +145,7 @@ const Pricing = () => {
 								</h3>
 							</div>
 
-							<p className="text-gray-500 text-sm mb-6 min-h-[40px]">{plan.description}</p>
+							<p className="text-gray-600 text-sm mb-6 min-h-[40px]">{plan.description}</p>
 
 							<div className="mb-6 text-center">
 								<div className="text-4xl font-black text-gray-900">{plan.price}</div>
@@ -160,7 +160,7 @@ const Pricing = () => {
 								{plan.features.map((feature, idx) => (
 									<li key={idx} className="flex items-start gap-3 text-gray-600 text-sm">
 										<div
-											className={`mt-0.5 rounded-full p-0.5 shrink-0 ${plan.recommended ? "bg-blue-100 text-blue-600" : "bg-gray-200 text-gray-500"}`}>
+											className={`mt-0.5 rounded-full p-0.5 shrink-0 ${plan.recommended ? "bg-blue-100 text-blue-600" : "bg-gray-200 text-gray-600"}`}>
 											<Check size={12} strokeWidth={3} />
 										</div>
 										{feature}

@@ -10,7 +10,7 @@ export const PhaseSelectionStep = ({ setFormData, setShowHelpModal }) => {
 			<header className="mb-12 text-center">
 				<button
 					onClick={() => navigate("/upload")}
-					className="inline-flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors">
+					className="inline-flex items-center text-gray-600 hover:text-blue-600 mb-6 transition-colors">
 					<ArrowLeft size={20} className="mr-1" /> Voltar
 				</button>
 				<h1 className="text-3xl font-bold text-gray-900 mb-4">Qual fase da defesa?</h1>
@@ -29,7 +29,7 @@ export const PhaseSelectionStep = ({ setFormData, setShowHelpModal }) => {
 						<FileWarning size={24} />
 					</div>
 					<h3 className="font-bold text-lg text-gray-800 mb-2">Defesa Prévia</h3>
-					<p className="text-sm text-gray-500 leading-relaxed">
+					<p className="text-sm text-gray-600 leading-relaxed">
 						Recebi a <strong>Notificação de Autuação</strong> (sem código de barras). Quero apontar
 						erros formais antes da penalidade.
 					</p>
@@ -44,7 +44,7 @@ export const PhaseSelectionStep = ({ setFormData, setShowHelpModal }) => {
 						<Gavel size={24} />
 					</div>
 					<h3 className="font-bold text-lg text-gray-800 mb-2">Recurso JARI</h3>
-					<p className="text-sm text-gray-500 leading-relaxed">
+					<p className="text-sm text-gray-600 leading-relaxed">
 						Recebi a <strong>Notificação de Penalidade</strong> (com boleto/valor). Quero contestar
 						o mérito e cancelar a multa.
 					</p>
@@ -59,7 +59,7 @@ export const PhaseSelectionStep = ({ setFormData, setShowHelpModal }) => {
 						<Scale size={24} />
 					</div>
 					<h3 className="font-bold text-lg text-gray-800 mb-2">CETRAN</h3>
-					<p className="text-sm text-gray-500 leading-relaxed">
+					<p className="text-sm text-gray-600 leading-relaxed">
 						Meu recurso à JARI foi <strong>negado/indeferido</strong>. Quero recorrer à última
 						instância administrativa.
 					</p>

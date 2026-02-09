@@ -18,7 +18,7 @@ const Terms = () => {
 			<div className="max-w-4xl mx-auto py-12 px-4">
 				<Link
 					to="/"
-					className="inline-flex items-center text-gray-500 hover:text-blue-600 mb-8 transition-colors">
+					className="inline-flex items-center text-gray-600 hover:text-blue-600 mb-8 transition-colors">
 					<ArrowLeft size={20} className="mr-1" /> Voltar para Início
 				</Link>
 
@@ -109,7 +109,7 @@ const Terms = () => {
 							ou pelo{" "}
 							<Link
 								to="/help"
-								className="text-gray-500 hover:text-blue-600 font-medium transition-colors underline">
+								className="text-gray-600 hover:text-blue-600 font-medium transition-colors underline">
 								formulário
 							</Link>
 							&nbsp;de contato.

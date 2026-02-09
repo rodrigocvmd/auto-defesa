@@ -124,7 +124,7 @@ export default function ResetPassword() {
                             <KeyRound size={24} />
                         </div>
                         <h2 className="text-2xl font-bold text-gray-900">Nova Senha</h2>
-                        <p className="text-gray-500 mt-2">
+                        <p className="text-gray-600 mt-2">
                             Defina uma nova senha para a conta <strong>{email}</strong>
                         </p>
                     </div>
@@ -150,7 +150,7 @@ export default function ResetPassword() {
                             {/* Password Feedback */}
                             {password && (
                                 <div className="mt-3 space-y-1">
-                                    <p className="text-xs font-medium text-gray-500 mb-1">Sua senha deve ter:</p>
+                                    <p className="text-xs font-medium text-gray-600 mb-1">Sua senha deve ter:</p>
                                     <div className={`flex items-center gap-2 text-xs ${hasMinLength ? 'text-green-600' : 'text-gray-600'}`}>
                                         {hasMinLength ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
                                         Mínimo de 6 caracteres

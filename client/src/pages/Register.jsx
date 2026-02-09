@@ -89,7 +89,7 @@ export default function Register() {
                             <UserPlus size={24} />
                         </div>
                         <h2 className="text-2xl font-bold text-gray-900">Crie sua conta</h2>
-                        <p className="text-gray-500 mt-2">Comece a defender seus direitos hoje</p>
+                        <p className="text-gray-600 mt-2">Comece a defender seus direitos hoje</p>
                     </div>
 
                     {error && (
@@ -135,7 +135,7 @@ export default function Register() {
                             {/* Password Feedback */}
                             {password && (
                                 <div className="mt-3 space-y-1">
-                                    <p className="text-xs font-medium text-gray-500 mb-1">Sua senha deve ter:</p>
+                                    <p className="text-xs font-medium text-gray-600 mb-1">Sua senha deve ter:</p>
                                     <div className={`flex items-center gap-2 text-xs ${hasMinLength ? 'text-green-600' : 'text-gray-600'}`}>
                                         {hasMinLength ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
                                         Mínimo de 6 caracteres
@@ -195,7 +195,7 @@ export default function Register() {
                                 <div className="w-full border-t border-gray-200"></div>
                             </div>
                             <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">Ou cadastre-se com</span>
+                                <span className="px-2 bg-white text-gray-600">Ou cadastre-se com</span>
                             </div>
                         </div>
 

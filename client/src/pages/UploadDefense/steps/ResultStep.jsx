@@ -374,7 +374,7 @@ export const ResultStep = ({
 								</div>
 								<div>
 									<h3 className="font-bold text-gray-900 leading-tight">Painel de Correção IA</h3>
-									<p className="text-xs text-gray-500">O seu assistente pessoal de Recursos.</p>
+									<p className="text-xs text-gray-600">O seu assistente pessoal de Recursos.</p>
 								</div>
 							</div>
 
@@ -423,7 +423,7 @@ export const ResultStep = ({
 								</button>
 
 								<div className="text-center">
-									<span className="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-full font-medium">
+									<span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-medium">
 										{refinementCount} revisões restantes
 									</span>
 								</div>

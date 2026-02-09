@@ -63,11 +63,11 @@ export const UploadStep = ({
 			<div className="mb-8 text-center">
 				<Link
 					to="/"
-					className="inline-flex items-center text-gray-500 hover:text-blue-600 mb-5 transition-colors">
+					className="inline-flex items-center text-gray-600 hover:text-blue-600 mb-5 transition-colors">
 					<ArrowLeft size={20} className="mr-1" /> Início
 				</Link>
 				<h1 className="text-3xl font-bold text-gray-900">Análise de Documento</h1>
-				<p className="text-gray-500 mt-2 mb-8">
+				<p className="text-gray-600 mt-2 mb-8">
 					Envie a foto da <strong>Notificação de Autuação</strong>, <strong>Multa/Boleto</strong> ou
 					da <strong>Decisão que negou</strong> seu recurso anterior.
 					<br />A IA identificará a fase e preencherá os dados automaticamente.
@@ -144,7 +144,7 @@ export const UploadStep = ({
 							</button>
 
 							<div className="text-center">
-								<p className="text-gray-500 text-sm mb-1">
+								<p className="text-gray-600 text-sm mb-1">
 									Não tem o arquivo ou imagem da infração?
 								</p>
 								{currentUser && !currentUser.emailVerified ? (

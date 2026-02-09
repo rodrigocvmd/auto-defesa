@@ -59,7 +59,7 @@ const Home = () => {
 										<Upload size={24} />
 										Analisar Multa Grátis
 									</Link>
-									<div className="text-sm text-gray-500 font-medium">
+									<div className="text-sm text-gray-600 font-medium">
 										<div className="flex items-center gap-1 justify-center lg:justify-start">
 											<CheckCircle size={16} className="text-green-500" /> Quase 500 multas
 											analisadas
@@ -90,6 +90,7 @@ const Home = () => {
 										src="/imagemLanding.webp"
 										alt="Motorista segurando celular com recurso procedente"
 										className="w-full h-full object-cover"
+										fetchpriority="high"
 									/>
 									{/* Float Card 1 */}
 									<div className="hidden sm:flex absolute top-10 left-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 items-center gap-3 animate-bounce duration-[9000ms]">
@@ -98,7 +99,7 @@ const Home = () => {
 										</div>
 										<div>
 											<p className="font-bold text-gray-900 text-sm">Recurso Deferido</p>
-											<p className="text-xs text-gray-500">Economia média de R$ 293,47</p>
+											<p className="text-xs text-gray-600">Economia média de R$ 293,47</p>
 										</div>
 									</div>
 									{/* Float Card 2 */}
@@ -108,14 +109,14 @@ const Home = () => {
 										</div>
 										<div>
 											<p className="font-bold text-gray-900 text-sm">PDF Gerado</p>
-											<p className="text-xs text-gray-500">Pronto em 2 minutos</p>
+											<p className="text-xs text-gray-600">Pronto em 2 minutos</p>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-500 animate-in fade-in duration-1000 delay-500 lg:hidden">
+						<div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-600 animate-in fade-in duration-1000 delay-500 lg:hidden">
 							<div className="flex items-center gap-2">
 								<CheckCircle size={16} className="text-green-500" /> Baseado no CTB e Normativas
 								CONTRAN
@@ -148,7 +149,7 @@ const Home = () => {
 								1
 							</div>
 							<h3 className="text-xl font-bold text-gray-900 mb-3">Envie a Notificação</h3>
-							<p className="text-gray-500 leading-relaxed">
+							<p className="text-gray-600 leading-relaxed">
 								Envie o arquivo ou foto da multa ou ainda digite os dados manualmente. Nossa{" "}
 								<strong>tecnologia OCR</strong> lê as informações instantaneamente.
 							</p>
@@ -160,7 +161,7 @@ const Home = () => {
 								2
 							</div>
 							<h3 className="text-xl font-bold text-gray-900 mb-3">IA Analisa o Caso</h3>
-							<p className="text-gray-500 leading-relaxed">
+							<p className="text-gray-600 leading-relaxed">
 								O algoritmo verifica <strong>erros formais e materiais</strong> e busca as melhores
 								teses jurídicas na legislação para anular sua infração.
 							</p>
@@ -172,7 +173,7 @@ const Home = () => {
 								3
 							</div>
 							<h3 className="text-xl font-bold text-gray-900 mb-3">Baixe e Protocole</h3>
-							<p className="text-gray-500 leading-relaxed">
+							<p className="text-gray-600 leading-relaxed">
 								Receba o <strong>documento completo em PDF</strong>. Basta imprimir ou assinar
 								digitalmente e enviar ou protocolar junto ao órgão autuador.
 							</p>
@@ -192,7 +193,7 @@ const Home = () => {
 							<h2 className="text-3xl md:text-4xl font-black mb-6">
 								Por que escolher a AutoDefesa?
 							</h2>
-							<p className="text-gray-400 max-w-3xl mx-auto text-lg">
+							<p className="text-gray-300 max-w-3xl mx-auto text-lg">
 								Democratizamos o acesso à defesa de trânsito de qualidade. Compare e veja a
 								diferença:
 							</p>
@@ -204,7 +205,7 @@ const Home = () => {
 								<h3 className="text-xl font-bold text-gray-300 mb-6 flex items-center gap-2">
 									<Shield size={20} /> Defesa Tradicional (Advogado)
 								</h3>
-								<ul className="space-y-4 text-gray-400">
+								<ul className="space-y-4 text-gray-300">
 									<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-1 sm:gap-0">
 										<span>Custo Médio</span>
 										<span className="font-bold text-white">R$ 350,00 - R$ 800,00</span>
@@ -313,7 +314,7 @@ const Home = () => {
 									<FileText size={24} />
 								</div>
 								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+493</div>
-								<div className="text-gray-500 font-medium">Recursos Elaborados</div>
+								<div className="text-gray-600 font-medium">Recursos Elaborados</div>
 								<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
 							</div>
 
@@ -322,7 +323,7 @@ const Home = () => {
 									<DollarSign size={24} />
 								</div>
 								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">R$ 517</div>
-								<div className="text-gray-500 font-medium">Economia Média p/ Usuário</div>
+								<div className="text-gray-600 font-medium">Economia Média p/ Usuário</div>
 								<div className="mt-4 h-1 w-12 bg-green-600 rounded-full"></div>
 							</div>
 
@@ -331,7 +332,7 @@ const Home = () => {
 									<Star size={24} fill="currentColor" />
 								</div>
 								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">93%</div>
-								<div className="text-gray-500 font-medium">Satisfação dos Usuários</div>
+								<div className="text-gray-600 font-medium">Satisfação dos Usuários</div>
 								<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
 							</div>
 
@@ -342,7 +343,7 @@ const Home = () => {
 								<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
 									&lt; 3min
 								</div>
-								<div className="text-gray-500 font-medium">Tempo Médio de Geração</div>
+								<div className="text-gray-600 font-medium">Tempo Médio de Geração</div>
 								<div className="mt-4 h-1 w-12 bg-indigo-600 rounded-full"></div>
 							</div>
 						</div>

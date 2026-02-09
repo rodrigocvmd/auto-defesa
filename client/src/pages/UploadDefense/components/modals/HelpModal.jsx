@@ -7,7 +7,7 @@ export const HelpModal = ({ onClose }) => (
             <button
                 onClick={onClose}
                 className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors">
-                <X size={24} className="text-gray-500" />
+                <X size={24} className="text-gray-600" />
             </button>
             <div className="p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2 border-b pb-4">
@@ -29,7 +29,7 @@ export const HelpModal = ({ onClose }) => (
                             se torne uma penalidade (multa).
                         </p>
                     </div>
-                    <div className="flex justify-center text-gray-300">
+                    <div className="flex justify-center text-gray-600">
                         <ArrowDown size={32} />
                     </div>
                     <div className="p-6 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
@@ -47,7 +47,7 @@ export const HelpModal = ({ onClose }) => (
                             contestando a aplicação da penalidade.
                         </p>
                     </div>
-                    <div className="flex justify-center text-gray-300">
+                    <div className="flex justify-center text-gray-600">
                         <ArrowDown size={32} />
                     </div>
                     <div className="p-6 bg-purple-50 rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-shadow">

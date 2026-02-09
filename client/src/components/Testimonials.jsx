@@ -340,7 +340,7 @@ const Testimonials = () => {
 								))}
 							</div>
 						</div>
-						<span className="text-sm text-gray-500 font-normal">
+						<span className="text-sm text-gray-600 font-normal">
 							(Baseado em <strong>38 avaliações</strong>)
 						</span>
 					</div>
@@ -372,10 +372,10 @@ const Testimonials = () => {
 									<div className="flex items-center gap-3">
 										<div>
 											<p className="font-bold text-gray-900 text-sm capitalize">{review.name}</p>
-											<p className="text-xs text-gray-500">{review.date}</p>
+											<p className="text-xs text-gray-600">{review.date}</p>
 										</div>
 									</div>
-									<Quote size={24} className="text-gray-200" />
+									<Quote size={24} className="text-gray-600" />
 								</div>
 
 								<div className="flex text-yellow-400 mb-3">
@@ -384,7 +384,7 @@ const Testimonials = () => {
 											key={i}
 											size={16}
 											fill={i < review.rating ? "currentColor" : "none"}
-											className={i < review.rating ? "text-yellow-400" : "text-gray-300"}
+											className={i < review.rating ? "text-yellow-400" : "text-gray-600"}
 										/>
 									))}
 								</div>

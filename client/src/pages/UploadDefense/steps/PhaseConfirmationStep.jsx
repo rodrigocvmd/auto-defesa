@@ -33,7 +33,7 @@ export const PhaseConfirmationStep = ({ formData }) => {
                     </button>
                     <button
                         onClick={() => navigate("/upload/phaseSelection")}
-                        className="text-gray-500 font-medium hover:text-gray-700 py-2">
+                        className="text-gray-600 font-medium hover:text-gray-700 py-2">
                         Não, escolher outra fase manualmente
                     </button>
                 </div>

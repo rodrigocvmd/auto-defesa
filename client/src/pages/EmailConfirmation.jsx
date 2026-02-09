@@ -61,7 +61,7 @@ export default function EmailConfirmation() {
 						<>
 							<Loader2 size={64} className="text-blue-600 animate-spin mx-auto mb-6" />
 							<h1 className="text-2xl font-bold text-gray-900 mb-2">Verificando...</h1>
-							<p className="text-gray-500">{message}</p>
+							<p className="text-gray-600">{message}</p>
 						</>
 					)}
 

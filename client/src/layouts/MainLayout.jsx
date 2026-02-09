@@ -44,32 +44,32 @@ const MainLayout = ({ children }) => {
 							{!isHome && (
 								<Link
 									to="/"
-									className="text-gray-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-2">
+									className="text-gray-600 hover:text-blue-600 font-medium transition-colors flex items-center gap-2">
 									Início
 								</Link>
 							)}
 
 							<Link
 								to="/how-it-works"
-								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+								className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
 								Como Funciona
 							</Link>
 
 							<Link
 								to="/about"
-								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+								className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
 								Sobre
 							</Link>
 
 							<Link
 								to="/pricing"
-								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+								className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
 								Preços
 							</Link>
 
 							{/* Utilidades Dropdown */}
 							<div className="relative group h-16 flex items-center">
-								<button className="text-gray-500 group-hover:text-blue-600 font-medium transition-colors flex items-center gap-1">
+								<button className="text-gray-600 group-hover:text-blue-600 font-medium transition-colors flex items-center gap-1">
 									Utilidades
 									<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path
@@ -137,7 +137,7 @@ const MainLayout = ({ children }) => {
 
 							<Link
 								to="/help"
-								className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+								className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
 								Ajuda
 							</Link>
 
@@ -176,7 +176,7 @@ const MainLayout = ({ children }) => {
 						<div className="md:hidden flex items-center">
 							<button
 								onClick={() => setIsMenuOpen(!isMenuOpen)}
-								className="text-gray-500 hover:text-blue-600 p-2">
+								className="text-gray-600 hover:text-blue-600 p-2">
 								{isMenuOpen ? <X size={24} /> : <Menu size={24} />}
 							</button>
 						</div>
@@ -234,13 +234,13 @@ const MainLayout = ({ children }) => {
 										<Link
 											to="/guia"
 											onClick={() => setIsMenuOpen(false)}
-											className="block text-gray-500 hover:text-blue-600 py-2 text-sm">
+											className="block text-gray-600 hover:text-blue-600 py-2 text-sm">
 											Artigos
 										</Link>
 										<Link
 											to="/recursos"
 											onClick={() => setIsMenuOpen(false)}
-											className="block text-gray-500 hover:text-blue-600 py-2 text-sm">
+											className="block text-gray-600 hover:text-blue-600 py-2 text-sm">
 											Recursos Úteis
 										</Link>
 									</div>
@@ -308,33 +308,33 @@ const MainLayout = ({ children }) => {
 							<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center ">
 								<Link
 									to="/recorrer/recusa-bafometro"
-									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+									className="text-gray-600 hover:text-blue-600 text-md transition-colors">
 									Recusa ao Bafômetro
 								</Link>
 								<Link
 									to="/recorrer/excesso-velocidade"
-									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+									className="text-gray-600 hover:text-blue-600 text-md transition-colors">
 									Acima da Velocidade
 								</Link>
 								<Link
 									to="/recorrer/celular-direcao"
-									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+									className="text-gray-600 hover:text-blue-600 text-md transition-colors">
 									Utilização de Celular
 								</Link>
 								<Link
 									to="/recursos"
-									className="text-gray-500 hover:text-blue-600 text-md transition-colors">
+									className="text-gray-600 hover:text-blue-600 text-md transition-colors">
 									Ver Outras Infrações
 								</Link>
 							</div>
 						</div>
 					)}
 
-					<p className="text-md text-gray-500 mb-4">
+					<p className="text-md text-gray-600 mb-4">
 						Brasília/DF |{" "}
 						<a href="mailto:suporte@meuatodefesa.com.br">suporte@meuatodefesa.com.br</a>{" "}
 					</p>
-					<div className="flex justify-center gap-4 text-md text-gray-500 mb-4">
+					<div className="flex justify-center gap-4 text-md text-gray-600 mb-4">
 						<Link to="/about" className="hover:underline">
 							Sobre Nós
 						</Link>

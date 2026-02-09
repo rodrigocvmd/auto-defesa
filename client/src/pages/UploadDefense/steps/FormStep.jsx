@@ -96,7 +96,7 @@ export const FormStep = ({
 			<header className="mb-8">
 				<button
 					onClick={() => navigate("/upload")}
-					className="text-gray-500 hover:text-blue-600 flex items-center mb-4 transition-colors font-medium">
+					className="text-gray-600 hover:text-blue-600 flex items-center mb-4 transition-colors font-medium">
 					<ArrowLeft size={20} className="mr-1" /> Voltar
 				</button>
 				<h1 className="text-3xl font-bold text-gray-900">Revise os Dados</h1>
@@ -716,7 +716,7 @@ export const FormStep = ({
 									value={formData.equipmentNumber}
 									onChange={handleChange}
 									onBlur={handleBlur}
-									className={`input-form ${errors.equipmentNumber ? "border-red-500" : ""} ${formData.equipmentNumber === "Não disponível" ? "bg-gray-100 text-gray-500" : ""}`}
+									className={`input-form ${errors.equipmentNumber ? "border-red-500" : ""} ${formData.equipmentNumber === "Não disponível" ? "bg-gray-100 text-gray-600" : ""}`}
 									placeholder="Ex: 12345678"
 									disabled={formData.equipmentNumber === "Não disponível"}
 								/>
@@ -752,7 +752,7 @@ export const FormStep = ({
 									value={formData.lastCalibration}
 									onChange={handleChange}
 									onBlur={handleBlur}
-									className={`input-form ${errors.lastCalibration ? "border-red-500" : ""} ${formData.lastCalibration === "Não disponível" ? "bg-gray-100 text-gray-500" : ""}`}
+									className={`input-form ${errors.lastCalibration ? "border-red-500" : ""} ${formData.lastCalibration === "Não disponível" ? "bg-gray-100 text-gray-600" : ""}`}
 									placeholder="Ex: 10/10/2023"
 									disabled={formData.lastCalibration === "Não disponível"}
 								/>

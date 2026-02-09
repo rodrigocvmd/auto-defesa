@@ -50,7 +50,7 @@ export default function VerificationBanner() {
                         </span>
                     ) : (
                         <>
-                            <span className="hidden sm:inline text-amber-600/80 text-xs">
+                            <span className="hidden sm:inline text-amber-800 text-xs">
                                 Não recebeu? Verifique o Spam ou
                             </span>
                             <button

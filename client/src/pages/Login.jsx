@@ -104,7 +104,7 @@ export default function Login() {
                         <h2 className="text-2xl font-bold text-gray-900">
                             {isResetMode ? 'Definir Senha' : 'Bem-vindo de volta'}
                         </h2>
-                        <p className="text-gray-500 mt-2">
+                        <p className="text-gray-600 mt-2">
                             {isResetMode 
                                 ? 'Informe seu email para definir uma nova senha' 
                                 : 'Acesse sua conta para continuar'}
@@ -191,7 +191,7 @@ export default function Login() {
                                     <div className="w-full border-t border-gray-200"></div>
                                 </div>
                                 <div className="relative flex justify-center text-sm">
-                                    <span className="px-2 bg-white text-gray-500">Ou continue com</span>
+                                    <span className="px-2 bg-white text-gray-600">Ou continue com</span>
                                 </div>
                             </div>
 

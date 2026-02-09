@@ -48,7 +48,7 @@ export const DivergenceWarningModal = ({ onClose, analysisData }) => {
                             onClose();
                             navigate("/upload/analysis");
                         }}
-                        className="w-full bg-white border border-gray-300 text-gray-500 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">
+                        className="w-full bg-white border border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">
                         Manter como está
                     </button>
                 </div>

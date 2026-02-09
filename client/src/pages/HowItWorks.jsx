@@ -59,7 +59,7 @@ const HowItWorks = () => {
 						<div
 							key={idx}
 							className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-							<div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-blue-600 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+							<div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-blue-600 text-slate-600 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
 								<span className="font-bold text-white">{idx + 1}</span>
 							</div>
 
@@ -76,7 +76,7 @@ const HowItWorks = () => {
 
 				<div className="mt-10 text-center bg-gray-900 rounded-3xl p-10 text-white">
 					<h2 className="text-2xl font-bold mb-4">Pronto para começar?</h2>
-					<p className="text-gray-400 mb-8 max-w-xl mx-auto">
+					<p className="text-gray-300 mb-8 max-w-xl mx-auto">
 						Não deixe o prazo vencer. A análise inicial de viabilidade leva menos de 1 minuto.
 					</p>
 					<div className="flex flex-col sm:flex-row items-center justify-center gap-4">

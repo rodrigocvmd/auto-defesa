@@ -330,7 +330,7 @@ export default function Profile() {
 						<h1 className="text-2xl font-bold text-gray-900">
 							{currentUser?.displayName || "Usuário"}
 						</h1>
-						<p className="text-gray-500">{currentUser?.email}</p>
+						<p className="text-gray-600">{currentUser?.email}</p>
 						<button
 							onClick={handleLogout}
 							className="mt-2 text-red-500 hover:text-red-700 font-bold text-sm flex items-center gap-1 transition-colors"
@@ -421,7 +421,7 @@ export default function Profile() {
 													<h3 className="font-semibold text-gray-900">
 														{defense.fileName ? defense.fileName.replace(/\.pdf$/i, "") : (defense.infractionType || "Infração não especificada")}
 													</h3>
-													<div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
+													<div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
 														<span className="flex items-center gap-1">
 															<Car size={14} /> {defense.licensePlate || "N/A"}
 														</span>
@@ -463,7 +463,7 @@ export default function Profile() {
 									))}
 								</div>
 							) : (
-								<div className="text-center py-12 text-gray-500">
+								<div className="text-center py-12 text-gray-600">
 									<FileText size={48} className="mx-auto mb-4 opacity-20" />
 									<p className="mb-4">Nenhuma defesa gerada ainda.</p>
 									<Link
@@ -528,7 +528,7 @@ export default function Profile() {
                                             {/* Password Feedback */}
                                             {newPassword && (
                                                 <div className="mt-3 space-y-1">
-                                                    <p className="text-xs font-medium text-gray-500 mb-1">Sua senha deve ter:</p>
+                                                    <p className="text-xs font-medium text-gray-600 mb-1">Sua senha deve ter:</p>
                                                     <div className={`flex items-center gap-2 text-xs ${hasMinLength ? 'text-green-600' : 'text-gray-600'}`}>
                                                         {hasMinLength ? <Check size={12} strokeWidth={3} /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
                                                         Mínimo de 6 caracteres

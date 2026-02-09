@@ -58,7 +58,7 @@ export const PrintInstructionModal = ({ onClose, onPrint }) => (
                 </button>
                 <button
                     onClick={onClose}
-                    className="w-full text-gray-500 font-medium hover:bg-gray-100 py-3 rounded-xl transition-colors">
+                    className="w-full text-gray-600 font-medium hover:bg-gray-100 py-3 rounded-xl transition-colors">
                     Cancelar
                 </button>
             </div>
