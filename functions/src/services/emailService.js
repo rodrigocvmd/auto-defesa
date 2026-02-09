@@ -1,33 +1,28 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 require("dotenv").config();
 
-const transporter = nodemailer.createTransport({
-	service: "gmail",
-	auth: {
-		user: process.env.EMAIL_USER,
-		pass: process.env.EMAIL_PASS,
-	},
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
- * Envia um email de confirmação de compra de créditos.
+ * Envia um email de confirmação de compra de créditos usando Resend.
  * @param {string} toEmail - Email do destinatário.
  * @param {number} creditsAmount - Quantidade de créditos comprados.
  * @param {string} planName - Nome do plano adquirido.
  */
 async function sendPurchaseConfirmation(toEmail, creditsAmount, planName) {
-	if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-		console.warn("⚠️ Credenciais de email não configuradas. Pulando envio de confirmação.");
+	if (!process.env.RESEND_API_KEY) {
+		console.warn("⚠️ RESEND_API_KEY não configurada. Pulando envio de confirmação.");
 		return;
 	}
 
-	const mailOptions = {
-		from: `"AutoDefesa" <${process.env.EMAIL_USER}>`,
-		to: toEmail,
-		subject: "Confirmação de Compra - AutoDefesa",
-		text: `Olá! Recebemos a confirmação do seu pagamento. Foram adicionados ${creditsAmount} crédito(s) (${planName}) à sua conta. Agora você já pode gerar seus recursos de multa!`,
-		html: `
-            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; rounded: 12px;">
+	try {
+		const { data, error } = await resend.emails.send({
+			from: "AutoDefesa <suporte@meuautodefesa.com.br>",
+			to: [toEmail],
+			subject: "Confirmação de Compra - AutoDefesa",
+			reply_to: "suporte@meuautodefesa.com.br",
+			html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
                 <h2 style="color: #2563eb; text-align: center;">Pagamento Confirmado!</h2>
                 <p>Olá,</p>
                 <p>Recebemos a confirmação do seu pagamento referente ao plano <strong>${planName}</strong>.</p>
@@ -49,11 +44,14 @@ async function sendPurchaseConfirmation(toEmail, creditsAmount, planName) {
                 </p>
             </div>
         `,
-	};
+		});
 
-	try {
-		await transporter.sendMail(mailOptions);
-		console.log(`📧 Email de confirmação enviado para: ${toEmail}`);
+		if (error) {
+			console.error("❌ Erro no Resend ao enviar email de confirmação:", error);
+			return;
+		}
+
+		console.log(`📧 Email de confirmação enviado via Resend para: ${toEmail}`, data.id);
 	} catch (error) {
 		console.error("❌ Erro ao enviar email de confirmação:", error);
 	}
