@@ -83,8 +83,16 @@ const MainLayout = ({ children }) => {
 								<div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 hidden group-hover:block p-3 animate-in fade-in slide-in-from-top-2">
 									<div className="px-4 py-2 mb-2">
 										<h4 className="text-xs font-bold text-gray-600 uppercase tracking-widest">
-											1. Artigos
+											1. Ferramentas e Guias
 										</h4>
+										<Link
+											to="/tools"
+											className="flex items-center gap-3 mt-2 p-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all">
+											<div className="bg-blue-100 p-1.5 rounded-lg">
+												<Shield size={18} className="text-blue-600" />
+											</div>
+											<span className="font-bold">Ferramentas</span>
+										</Link>
 										<Link
 											to="/guia"
 											className="flex items-center gap-3 mt-2 p-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all">
@@ -232,6 +240,12 @@ const MainLayout = ({ children }) => {
 								</button>
 								{isUtilitiesOpen && (
 									<div className="bg-gray-50 py-2 space-y-1 animate-in fade-in slide-in-from-top-1">
+										<Link
+											to="/tools"
+											onClick={() => setIsMenuOpen(false)}
+											className="block text-gray-600 hover:text-blue-600 py-2 text-sm">
+											Ferramentas
+										</Link>
 										<Link
 											to="/guia"
 											onClick={() => setIsMenuOpen(false)}

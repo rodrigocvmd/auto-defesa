@@ -22,6 +22,8 @@ const InfractionPage = lazy(() => import('./pages/InfractionPage'));
 const AllInfractionsPage = lazy(() => import('./pages/AllInfractionsPage'));
 const BlogIndex = lazy(() => import('./pages/BlogIndex'));
 const ArticlePage = lazy(() => import('./pages/ArticlePage'));
+const Tools = lazy(() => import('./pages/Tools'));
+const ScoreCalculator = lazy(() => import('./pages/ScoreCalculator'));
 
 // Fallback component
 const PageLoader = () => (
@@ -57,6 +59,8 @@ function App() {
               <Route path="/ppd" element={<ArticlePage customSlug="perda-ppd" />} />
               <Route path="/artigo/:slug" element={<ArticlePage />} />
               <Route path="/guia" element={<BlogIndex />} />
+              <Route path="/tools" element={<Tools />} />
+              <Route path="/calculadora-pontos" element={<ScoreCalculator />} />
               
               {/* Páginas de Infração (Legado/Landing Pages Específicas) */}
               <Route path="/recursos" element={<AllInfractionsPage />} />
