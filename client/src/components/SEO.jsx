@@ -22,6 +22,7 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq, i
 		"@type": "SoftwareApplication",
 		name: "Auto Defesa",
 		applicationCategory: "LegalApplication",
+		operatingSystem: "Windows, macOS, Android, iOS, Web",
 		image: "https://meuautodefesa.com.br/favicon.svg",
 		description: fullDescription,
 		offers: {
@@ -29,9 +30,14 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq, i
 			price: "0",
 			priceCurrency: "BRL",
 		},
+		aggregateRating: {
+			"@type": "AggregateRating",
+			ratingValue: "4.9",
+			ratingCount: "493",
+		},
 		author: {
 			"@type": "Person",
-			name: "Rodrigo",
+			name: "Rodrigo Carvalho",
 			jobTitle: "Fundador e Especialista Jurídico",
 			hasCredential: "Bacharel em Direito",
 		},

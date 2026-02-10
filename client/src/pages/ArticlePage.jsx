@@ -29,6 +29,33 @@ const ArticlePage = ({ customSlug }) => {
 
 	const faqSchema = generateFaqSchema(article?.faq);
 
+	const articleSchema = article ? {
+		"@context": "https://schema.org",
+		"@type": "Article",
+		headline: article.title,
+		description: article.description,
+		author: {
+			"@type": "Person",
+			name: "Rodrigo Carvalho",
+			jobTitle: "Especialista em Direito de Trânsito"
+		},
+		datePublished: article.publishDate, // Idealmente em formato ISO 8601, mas usaremos o que temos
+		publisher: {
+			"@type": "Organization",
+			name: "Auto Defesa",
+			logo: {
+				"@type": "ImageObject",
+				url: "https://meuautodefesa.com.br/favicon.svg"
+			}
+		},
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": `https://meuautodefesa.com.br/artigo/${article.slug}`
+		}
+	} : null;
+
+	const structuredData = [faqSchema, articleSchema].filter(Boolean);
+
 	// Fallback se artigo não encontrado (poderia redirecionar para 404)
 	if (!article) {
 		return (
@@ -48,7 +75,7 @@ const ArticlePage = ({ customSlug }) => {
 			<SEO
 				title={`${article.title} | Guia Auto Defesa`}
 				description={article.description}
-				structuredData={faqSchema}
+				structuredData={structuredData}
 			/>
 
 			{/* Progress Bar (Visual) */}
