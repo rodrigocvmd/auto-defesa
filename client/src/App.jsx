@@ -30,6 +30,7 @@ const ArticlePage = lazy(() => import('./pages/ArticlePage'));
 const Tools = lazy(() => import('./pages/Tools'));
 const ScoreCalculator = lazy(() => import('./pages/ScoreCalculator'));
 const PrescriptionCalculator = lazy(() => import('./pages/PrescriptionCalculator'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Fallback component
 const PageLoader = () => (
@@ -79,6 +80,9 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/help" element={<Help />} />
+              
+              {/* Rota 404 - Deve ser sempre a última */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </DefenseProvider>
