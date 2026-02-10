@@ -29,7 +29,7 @@ const About = () => {
 			founder: {
 				"@type": "Person",
 				name: "Rodrigo Carvalho",
-				jobTitle: "Fundador e Especialista Jurídico",
+				jobTitle: "Especialista em Direito de Trânsito",
 				knowsAbout: ["Direito de Trânsito", "CTB", "Inteligência Artificial"],
 			},
 		},

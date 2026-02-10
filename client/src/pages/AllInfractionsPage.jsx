@@ -8,11 +8,24 @@ import { ArrowRight, Shield } from "lucide-react";
 const AllInfractionsPage = () => {
 	const infractions = Object.entries(infractionData);
 
+	const pageSchema = {
+		"@context": "https://schema.org",
+		"@type": "CollectionPage",
+		"name": "Todos os Recursos de Multas | Auto Defesa",
+		"description": "Lista completa de infrações de trânsito atendidas pelo Auto Defesa.",
+		"author": {
+			"@type": "Person",
+			"name": "Rodrigo Carvalho",
+			"jobTitle": "Especialista em Direito de Trânsito"
+		}
+	};
+
 	return (
 		<MainLayout>
 			<SEO
 				title="Todos os Recursos de Multas | Auto Defesa"
 				description="Veja a lista completa de infrações de trânsito que o Auto Defesa atende. Recorra de multas e proteja sua CNH com tecnologia avançada."
+				structuredData={pageSchema}
 			/>
 			
 			<div className="bg-blue-50 py-16 text-center border-b border-blue-100">

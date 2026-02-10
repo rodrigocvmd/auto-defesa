@@ -16,6 +16,51 @@ const InfractionPage = () => {
 		setTimeout(() => setCopied(false), 3000);
 	};
 
+	// Function to transform FAQ array into JSON-LD FAQPage schema
+	const generateFaqSchema = (faq) => {
+		if (!faq || faq.length === 0) return null;
+		return {
+			"@context": "https://schema.org",
+			"@type": "FAQPage",
+			mainEntity: faq.map((item) => ({
+				"@type": "Question",
+				name: item.q,
+				acceptedAnswer: {
+					"@type": "Answer",
+					text: item.a,
+				},
+			})),
+		};
+	};
+
+	const faqSchema = generateFaqSchema(data?.faq);
+
+	const articleSchema = data ? {
+		"@context": "https://schema.org",
+		"@type": "Article",
+		headline: data.title,
+		description: data.description,
+		author: {
+			"@type": "Person",
+			name: "Rodrigo Carvalho",
+			jobTitle: "Especialista em Direito de Trânsito"
+		},
+		publisher: {
+			"@type": "Organization",
+			name: "Auto Defesa",
+			logo: {
+				"@type": "ImageObject",
+				url: "https://meuautodefesa.com.br/favicon.svg"
+			}
+		},
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": `https://meuautodefesa.com.br/artigo/${data.slug}`
+		}
+	} : null;
+
+	const structuredData = [faqSchema, articleSchema].filter(Boolean);
+
 	// Estado para slug não encontrado (fallback genérico)
 	if (!data) {
 		return (
@@ -43,7 +88,11 @@ const InfractionPage = () => {
 
 	return (
 		<MainLayout>
-			<SEO title={data.title} description={data.description} />
+			<SEO 
+				title={data.title} 
+				description={data.description} 
+				structuredData={structuredData}
+			/>
 			
 			{/* Hero Section */}
 			<div className="bg-blue-50 border-b border-blue-100">

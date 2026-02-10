@@ -6,11 +6,24 @@ import { articles } from '../data/articles';
 import { ArrowRight, BookOpen } from 'lucide-react';
 
 const BlogIndex = () => {
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Central de Defesa - Guia Auto Defesa",
+    "description": "Artigos técnicos e guias para proteger sua CNH",
+    "author": {
+      "@type": "Person",
+      "name": "Rodrigo Carvalho",
+      "jobTitle": "Especialista em Direito de Trânsito"
+    }
+  };
+
   return (
     <MainLayout>
       <SEO 
         title="Guia de Multas e Defesa de CNH | Auto Defesa" 
         description="Acesse nosso guia completo sobre multas de trânsito. Artigos técnicos e atualizados para te ajudar a recorrer e proteger sua CNH." 
+        structuredData={blogSchema}
       />
       
       {/* Header */}

@@ -38,8 +38,7 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq, i
 		author: {
 			"@type": "Person",
 			name: "Rodrigo Carvalho",
-			jobTitle: "Fundador e Especialista Jurídico",
-			hasCredential: "Bacharel em Direito",
+			jobTitle: "Especialista em Direito de Trânsito",
 		},
 	};
 
