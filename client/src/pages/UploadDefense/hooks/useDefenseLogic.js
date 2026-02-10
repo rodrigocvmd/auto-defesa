@@ -61,10 +61,18 @@ export const useDefenseLogic = (step) => {
 
     // Reset state if user navigates back to start
     useEffect(() => {
-        if (step === "upload" && result) {
-            resetDefense();
+        if (step === "upload") {
+            if (result) resetDefense();
+            setIsTestMode(false);
         }
     }, [step, result, resetDefense]);
+
+    // Ensure isTestMode matches the data presence
+    useEffect(() => {
+        if (isTestMode && !formData.name && !formData.cpf) {
+            setIsTestMode(false);
+        }
+    }, [formData, isTestMode]);
 
     // Restore pending data
     useEffect(() => {
@@ -571,10 +579,18 @@ export const useDefenseLogic = (step) => {
         setErrors({});
     };
 
+    const clearTestData = () => {
+        setFormData(initialFormState);
+        setIsTestMode(false);
+        setHasTested(false);
+        setErrors({});
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     const handleReturnToRealData = () => {
         resetDefense();
         setIsTestMode(false);
-        setHasTested(true);
+        setHasTested(false);
         navigate("/upload");
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
@@ -630,6 +646,7 @@ export const useDefenseLogic = (step) => {
         handlePreAnalysis,
         handleUnlockDefense,
         confirmTestMode,
+        clearTestData,
         handleReturnToRealData,
         handleSearchCode,
         handleChange,

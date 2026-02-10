@@ -10,6 +10,7 @@ import {
 	Gauge,
 	Loader2,
 	CheckCircle,
+	Upload,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { LoginPromptModal } from "../components/modals/LoginPromptModal";
@@ -44,6 +45,7 @@ export const FormStep = ({
 	setShowTestModal,
 	showTestModal,
 	confirmTestMode,
+	clearTestData,
 	handleReturnToRealData,
 	isTestMode,
 	file,
@@ -123,12 +125,20 @@ export const FormStep = ({
 							</button>
 						)}
 						{isTestMode && (
-							<button
-								type="button"
-								onClick={handleReturnToRealData}
-								className="text-red-600 bg-red-50 px-4 py-2 rounded-lg font-bold hover:bg-red-100 transition-colors text-sm flex items-center gap-2">
-								<ArrowLeft size={14} /> Remover Dados de Teste
-							</button>
+							<div className="flex flex-wrap gap-2">
+								<button
+									type="button"
+									onClick={() => navigate("/upload")}
+									className="text-blue-600 bg-blue-50 px-4 py-2 rounded-lg font-bold hover:bg-blue-100 transition-colors text-sm flex items-center gap-2">
+									<Upload size={14} /> Extrair dados da minha multa
+								</button>
+								<button
+									type="button"
+									onClick={clearTestData}
+									className="text-red-600 bg-red-50 px-4 py-2 rounded-lg font-bold hover:bg-red-100 transition-colors text-sm flex items-center gap-2">
+									<PenTool size={14} /> Remover Dados de Teste
+								</button>
+							</div>
 						)}
 					</div>
 				</div>
