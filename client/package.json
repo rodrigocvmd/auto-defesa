@@ -26,7 +26,8 @@
     "react-helmet-async": "^2.0.5",
     "react-quill": "^2.0.0",
     "react-router-dom": "^7.12.0",
-    "react-to-print": "^3.2.0"
+    "react-to-print": "^3.2.0",
+    "resend": "^6.9.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

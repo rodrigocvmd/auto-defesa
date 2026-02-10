@@ -123,7 +123,7 @@ export const api = {
             userId,
             credits,
             mode, // Envia o modo (payment ou subscription)
-            successUrl: successUrl || window.location.origin + '/profile?success=true',
+            successUrl: successUrl || window.location.origin + '/credit-success?success=true',
             cancelUrl: window.location.origin + '/pricing?canceled=true'
         }),
       });

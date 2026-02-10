@@ -17,6 +17,7 @@ const About = lazy(() => import('./pages/About'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const Profile = lazy(() => import('./pages/Profile'));
+const CreditSuccess = lazy(() => import('./pages/CreditSuccess'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const HowItWorks = lazy(() => import('./pages/HowItWorks'));
 const Help = lazy(() => import('./pages/Help'));
@@ -50,6 +51,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/credit-success" element={<CreditSuccess />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/email-confirmation" element={<EmailConfirmation />} />
               

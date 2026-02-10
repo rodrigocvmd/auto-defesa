@@ -46,7 +46,7 @@ exports.createCheckoutSession = (req, res) => {
 					},
 				],
 				mode: mode || "payment",
-				success_url: successUrl || "http://localhost:5173/profile?success=true",
+				success_url: successUrl || "http://localhost:5173/credit-success?success=true",
 				cancel_url: cancelUrl || "http://localhost:5173/pricing?canceled=true",
 				client_reference_id: userId,
 				metadata: {
