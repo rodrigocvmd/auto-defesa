@@ -26,6 +26,13 @@ const MainLayout = ({ children }) => {
 
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+			{/* Barra de Aviso Governamental */}
+			<div className="bg-gray-100 py-2 border-b border-gray-200">
+				<p className="text-xs text-gray-600 text-center px-4">
+					Auto Defesa é uma plataforma de tecnologia privada (SaaS) e não possui vínculo com o DETRAN ou órgãos governamentais.
+				</p>
+			</div>
+
 			{/* Header Responsivo */}
 			<header className="bg-white border-b border-gray-200 sticky top-0 z-50">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -387,9 +394,8 @@ const MainLayout = ({ children }) => {
 						</Link>
 					</div>
 
-					<p className="text-xs text-gray-600 max-w-3xl text-center mb-1">
-						O Auto Defesa é um assistente tecnológico para auxílio na redação de recursos. Não
-						substituímos a consultoria de um advogado.
+					<p className="text-xs text-gray-600 max-w-4xl text-center mb-1 leading-relaxed">
+						<strong>Aviso Legal:</strong> O Auto Defesa AI é um assistente jurídico automatizado desenvolvido pela iniciativa privada. Não representamos o DETRAN, CONTRAN ou qualquer órgão público. O uso da plataforma serve para auxiliar na elaboração de defesas administrativas com base na lei (CTB), mas não garante o deferimento dos recursos, que depende da análise dos órgãos julgadores. Seus dados são processados de acordo com a LGPD e nossa Política de Privacidade.
 					</p>
 
 					<p className="text-xs text-gray-600 mt-4">

@@ -51,8 +51,8 @@ const Home = () => {
 		<MainLayout>
 			<SEO
 				title="Recorra de Multas com IA | Advogado Virtual"
-				description="Anule sua multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
-				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online, anular multa"
+				description="Gere seu Recurso de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
+				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online"
 				isHome={true}
 			/>
 			<div className="flex flex-col gap-12 pb-8">
@@ -69,7 +69,7 @@ const Home = () => {
 								</div>
 
 								<h1 className="text-5xl lg:text-7xl font-black text-gray-900 tracking-tight mb-6 leading-tight animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-									Anule sua Multa de Trânsito com{" "}
+									Gere seu Recurso de Multa de Trânsito com{" "}
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
 										Inteligência Artificial
 									</span>
@@ -82,12 +82,17 @@ const Home = () => {
 								</p>
 
 								<div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 mb-12 relative">
-									<Link
-										to="/upload"
-										className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-4 px-8 rounded-xl shadow-xl shadow-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2">
-										<Upload size={24} />
-										Analisar Multa Grátis
-									</Link>
+									<div className="flex flex-col items-center lg:items-start gap-2">
+										<Link
+											to="/upload"
+											className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-4 px-8 rounded-xl shadow-xl shadow-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2">
+											<Upload size={24} />
+											Analisar Multa Grátis
+										</Link>
+										<span className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">
+											Serviço privado de análise e redação jurídica via IA
+										</span>
+									</div>
 									<div className="text-sm text-gray-600 font-medium relative">
 										<div className="flex items-center gap-1 justify-center lg:justify-start">
 											<CheckCircle size={16} className="text-green-500" /> Quase 500 multas

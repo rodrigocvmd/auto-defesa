@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UploadCloud, File, X, AlertTriangle, FileText, Loader2 } from "lucide-react";
+import { UploadCloud, File, X, AlertTriangle, FileText, Loader2, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -164,6 +164,14 @@ export const UploadStep = ({
 							</div>
 						</div>
 					</form>
+
+					<div className="mt-8 flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
+						<Lock className="text-gray-400 shrink-0 mt-0.5" size={18} />
+						<p className="text-xs text-gray-500 leading-relaxed">
+							Seus documentos são processados de forma criptografada apenas para a extração dos dados
+							da infração e geração da defesa. Não compartilhamos suas informações com terceiros.
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
