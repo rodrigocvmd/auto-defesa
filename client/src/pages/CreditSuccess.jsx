@@ -1,10 +1,34 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { CheckCircle, Upload, User, ArrowRight } from 'lucide-react';
 import MainLayout from '../layouts/MainLayout';
 import SEO from '../components/SEO';
 
 const CreditSuccess = () => {
+  const [searchParams] = useSearchParams();
+  const sessionId = searchParams.get('session_id');
+  const amount = searchParams.get('amount');
+  const planName = searchParams.get('plan');
+
+  useEffect(() => {
+    if (window.gtag && amount) {
+      window.gtag('event', 'purchase', {
+        'transaction_id': sessionId || '',
+        'value': parseFloat(amount),
+        'currency': 'BRL',
+        'items': [
+          {
+            'item_id': planName || 'créditos',
+            'item_name': planName || 'Créditos Auto Defesa',
+            'price': parseFloat(amount),
+            'quantity': 1
+          }
+        ]
+      });
+      console.log('Purchase tracked:', { amount, sessionId, planName });
+    }
+  }, [amount, sessionId, planName]);
+
   return (
     <MainLayout>
       <SEO 

@@ -90,7 +90,7 @@ const Pricing = () => {
 				userId: currentUser.uid,
 				credits: plan.credits, // Passa a quantidade de créditos do plano
 				mode: plan.mode, // Passa o modo (payment) para a API
-				successUrl: redirect ? window.location.origin + redirect : undefined,
+				successUrl: `${window.location.origin}/credit-success?session_id={CHECKOUT_SESSION_ID}&amount=${plan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(plan.name)}`,
 			});
 
 			if (response.url) {
