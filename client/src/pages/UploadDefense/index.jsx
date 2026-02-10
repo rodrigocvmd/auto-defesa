@@ -36,6 +36,8 @@ const UploadDefense = () => {
         setShowLoginPrompt,
         showDivergenceModal,
         setShowDivergenceModal,
+        showTestModal,
+        setShowTestModal,
         analysisData,
         handleUploadAndExtract,
         handlePreAnalysis,

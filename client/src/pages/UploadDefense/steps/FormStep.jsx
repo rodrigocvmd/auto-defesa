@@ -44,6 +44,7 @@ export const FormStep = ({
 	setShowTestModal,
 	showTestModal,
 	confirmTestMode,
+	handleReturnToRealData,
 	isTestMode,
 	file,
 }) => {
@@ -112,14 +113,24 @@ export const FormStep = ({
 				</div>
 				<div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-4 gap-4">
 					<div className="text-sm text-red-600 font-medium">* Campos obrigatórios</div>
-					{!hasTested && !file && (
-						<button
-							type="button"
-							onClick={() => setShowTestModal(true)}
-							className="text-blue-600 bg-blue-50 px-4 py-2 rounded-lg font-bold hover:bg-blue-100 transition-colors text-sm flex items-center gap-2">
-							<PenTool size={14} /> Preencher Dados de Teste
-						</button>
-					)}
+					<div className="flex items-center gap-2">
+						{!isTestMode && !file && (
+							<button
+								type="button"
+								onClick={() => setShowTestModal(true)}
+								className="text-blue-600 bg-blue-50 px-4 py-2 rounded-lg font-bold hover:bg-blue-100 transition-colors text-sm flex items-center gap-2">
+								<PenTool size={14} /> Preencher Dados de Teste
+							</button>
+						)}
+						{isTestMode && (
+							<button
+								type="button"
+								onClick={handleReturnToRealData}
+								className="text-red-600 bg-red-50 px-4 py-2 rounded-lg font-bold hover:bg-red-100 transition-colors text-sm flex items-center gap-2">
+								<ArrowLeft size={14} /> Remover Dados de Teste
+							</button>
+						)}
+					</div>
 				</div>
 			</header>
 

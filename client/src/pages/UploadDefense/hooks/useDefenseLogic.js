@@ -36,6 +36,7 @@ export const useDefenseLogic = (step) => {
     const [isTestMode, setIsTestMode] = useState(false);
     const [hasTested, setHasTested] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
+    const [showTestModal, setShowTestModal] = useState(false);
     
     // Refinement State
     const [isRefining, setIsRefining] = useState(false);
@@ -566,6 +567,7 @@ export const useDefenseLogic = (step) => {
         });
         setIsTestMode(true);
         setHasTested(true);
+        setShowTestModal(false);
         setErrors({});
     };
 
@@ -644,6 +646,7 @@ export const useDefenseLogic = (step) => {
         showLimitModal, setShowLimitModal,
         showDivergenceModal, setShowDivergenceModal,
         showHelpModal, setShowHelpModal,
+        showTestModal, setShowTestModal,
         resetDefense
     };
 };
