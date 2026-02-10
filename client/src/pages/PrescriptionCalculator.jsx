@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MainLayout from '../layouts/MainLayout';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
-import { Calendar, AlertTriangle, CheckCircle, Info, ArrowRight, Clock } from 'lucide-react';
+import { Calendar, AlertTriangle, CheckCircle, Info, ArrowRight, Clock, MessageCircle } from 'lucide-react';
 
 const PrescriptionCalculator = () => {
   const [dates, setDates] = useState({
@@ -90,6 +90,18 @@ const PrescriptionCalculator = () => {
     }
 
     setResults({ decadence: decadenceResult, prescription: prescriptionResult });
+  };
+
+  const shareOnWhatsApp = () => {
+    let text = "Fiz a verificação de prazos da minha multa no AutoDefesa:\n\n";
+    if (results.decadence) {
+      text += `📅 Notificação: ${results.decadence.status === 'warning' ? '⚠️ IRREGULAR' : '✅ REGULAR'}\n`;
+    }
+    if (results.prescription) {
+      text += `⏳ Prescrição: ${results.prescription.status === 'warning' ? '⚠️ PRESCRITA' : '✅ NO PRAZO'}\n`;
+    }
+    text += `\nVerifique sua multa também em: ${window.location.href}`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   return (
@@ -229,6 +241,13 @@ const PrescriptionCalculator = () => {
                     </div>
                   </div>
                 )}
+
+                <button 
+                  onClick={shareOnWhatsApp}
+                  className="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-all shadow-md shadow-green-100"
+                >
+                  <MessageCircle size={18} /> Compartilhar Resultado no WhatsApp
+                </button>
               </div>
             )}
           </div>

@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
 import { articles } from "../data/articles";
-import { Shield, CheckCircle, ArrowRight, User, Calendar, Clock, Share2 } from "lucide-react";
+import { Shield, CheckCircle, ArrowRight, User, Calendar, Clock, Share2, Check } from "lucide-react";
 
 const ArticlePage = ({ customSlug }) => {
 	const { slug: urlSlug } = useParams();
 	const slug = customSlug || urlSlug;
 	const article = articles.find((a) => a.slug === slug);
+	const [copied, setCopied] = useState(false);
+
+	const handleShare = () => {
+		navigator.clipboard.writeText(window.location.href);
+		setCopied(true);
+		setTimeout(() => setCopied(false), 3000);
+	};
 
 	// Function to transform FAQ array into JSON-LD FAQPage schema
 	const generateFaqSchema = (faq) => {
@@ -122,7 +129,7 @@ const ArticlePage = ({ customSlug }) => {
 								{article.description}
 							</p>
 
-							<div className="flex items-center justify-between border-y border-gray-100 py-6">
+							<div className="flex items-center justify-between border-y border-gray-100 py-6 relative">
 								<div className="flex items-center gap-3">
 									<div className="bg-gray-200 p-2 rounded-full">
 										<User size={20} className="text-gray-600" />
@@ -133,9 +140,19 @@ const ArticlePage = ({ customSlug }) => {
 										<p className="text-xs text-gray-600">Especialista em Direito de Trânsito</p>
 									</div>
 								</div>
-								<button className="text-gray-600 hover:text-blue-600 transition-colors">
-									<Share2 size={20} />
-								</button>
+								<div className="flex flex-col items-end gap-2">
+									<button 
+										onClick={handleShare}
+										className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm border border-gray-200 px-3 py-1.5 rounded-lg hover:border-blue-100"
+									>
+										<Share2 size={18} /> Compartilhar
+									</button>
+									{copied && (
+										<div className="absolute -bottom-8 right-0 bg-gray-900 text-white text-[10px] px-2 py-1 rounded shadow-lg animate-in fade-in slide-in-from-top-1 flex items-center gap-1">
+											<Check size={10} /> Link para compartilhamento copiado com sucesso!
+										</div>
+									)}
+								</div>
 							</div>
 						</header>
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
-import { Shield, AlertTriangle, Info, ArrowRight, RefreshCcw } from "lucide-react";
+import { Shield, AlertTriangle, Info, ArrowRight, RefreshCcw, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const ScoreCalculator = () => {
@@ -41,6 +41,16 @@ const ScoreCalculator = () => {
 	const progress = Math.min(100, (totalPoints / limit) * 100);
 	const isDanger = totalPoints >= limit;
 	const isWarning = totalPoints >= limit * 0.8 && totalPoints < limit;
+
+	const shareOnWhatsApp = () => {
+		const status = isDanger ? "ESTOU EM RISCO DE SUSPENSÃO" : isWarning ? "ESTOU EM ALERTA" : "ESTOU REGULAR";
+		const text = `Fiz a simulação da minha pontuação de CNH no AutoDefesa:\n\n` +
+					 `📊 Meus Pontos: ${totalPoints}\n` +
+					 `📉 Meu Limite: ${limit}\n` +
+					 `🚨 Status: ${status}\n\n` +
+					 `Calcule o seu também em: ${window.location.href}`;
+		window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
+	};
 
 	return (
 		<MainLayout>
@@ -155,7 +165,7 @@ const ScoreCalculator = () => {
 							</div>
 
 							{/* Rule Indicator */}
-							<div className="space-y-4 mb-8">
+							<div className="space-y-4 mb-6">
 								<div className={`p-4 rounded-2xl border ${scores.gravissima >= 2 ? 'bg-red-50 border-red-100 text-red-800' : 'bg-gray-50 border-gray-100 text-gray-600'}`}>
 									<p className="text-xs font-bold uppercase mb-1">Limite: 20 Pontos</p>
 									<p className="text-[10px] leading-tight">2 ou mais infrações gravíssimas</p>
@@ -179,12 +189,21 @@ const ScoreCalculator = () => {
 								</div>
 							)}
 
-							<Link 
-								to="/upload"
-								className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-blue-200 hover:-translate-y-1"
-							>
-								Recorrer Agora <ArrowRight size={18} />
-							</Link>
+							<div className="space-y-3">
+								<Link 
+									to="/upload"
+									className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-blue-200 hover:-translate-y-1"
+								>
+									Recorrer Agora <ArrowRight size={18} />
+								</Link>
+								
+								<button 
+									onClick={shareOnWhatsApp}
+									className="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-2xl transition-all shadow-md shadow-green-100"
+								>
+									<MessageCircle size={18} /> Compartilhar Resultado
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
-import { Shield, HelpCircle, CheckCircle, ArrowRight } from "lucide-react";
+import { Shield, HelpCircle, CheckCircle, ArrowRight, Share2, Check } from "lucide-react";
 import { articles } from "../data/articles";
 
 const InfractionPage = () => {
 	const { slug } = useParams();
 	const data = articles.find(article => article.slug === slug);
+	const [copied, setCopied] = useState(false);
+
+	const handleShare = () => {
+		navigator.clipboard.writeText(window.location.href);
+		setCopied(true);
+		setTimeout(() => setCopied(false), 3000);
+	};
 
 	// Estado para slug não encontrado (fallback genérico)
 	if (!data) {
@@ -49,9 +56,22 @@ const InfractionPage = () => {
 							<h1 className="text-3xl md:text-5xl font-black text-gray-900 leading-tight mb-6">
 								{data.title}
 							</h1>
-							<p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl">
+							<p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mb-8">
 								{data.description}
 							</p>
+							<div className="relative inline-block">
+								<button 
+									onClick={handleShare}
+									className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors font-bold text-sm bg-white border border-blue-200 px-4 py-2 rounded-xl shadow-sm hover:shadow-md"
+								>
+									<Share2 size={18} /> Compartilhar esta página
+								</button>
+								{copied && (
+									<div className="absolute -bottom-10 left-0 bg-gray-900 text-white text-[10px] px-2 py-1 rounded shadow-lg animate-in fade-in slide-in-from-top-1 flex items-center gap-1 whitespace-nowrap z-10">
+										<Check size={10} /> Link para compartilhamento copiado com sucesso!
+									</div>
+								)}
+							</div>
 						</div>
 					</div>
 				</div>
