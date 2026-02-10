@@ -69,10 +69,10 @@ const ScoreCalculator = () => {
 					</p>
 				</div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 					{/* Input Section */}
-					<div className="lg:col-span-2 space-y-6">
-						<div className="bg-white rounded-3xl shadow-xl shadow-blue-100/50 border border-blue-50 p-8">
+					<div className="lg:col-span-2 flex flex-col gap-6 h-full">
+						<div className="bg-white rounded-3xl shadow-xl shadow-blue-100/50 border border-blue-50 p-8 flex-1">
 							<div className="flex justify-between items-center mb-6">
 								<h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
 									Insira suas infrações
@@ -140,8 +140,8 @@ const ScoreCalculator = () => {
 					</div>
 
 					{/* Result Section */}
-					<div className="space-y-6">
-						<div className="bg-white rounded-3xl shadow-xl shadow-blue-100/50 border border-blue-50 p-8 sticky top-24">
+					<div className="h-full">
+						<div className="bg-white rounded-3xl shadow-xl shadow-blue-100/50 border border-blue-50 p-8 lg:sticky lg:top-24 h-full flex flex-col">
 							<h3 className="text-center text-gray-600 font-bold uppercase tracking-widest text-xs mb-6">
 								Seu Status Atual
 							</h3>
@@ -165,18 +165,18 @@ const ScoreCalculator = () => {
 							</div>
 
 							{/* Rule Indicator */}
-							<div className="space-y-4 mb-6">
-								<div className={`p-4 rounded-2xl border ${scores.gravissima >= 2 ? 'bg-red-50 border-red-100 text-red-800' : 'bg-gray-50 border-gray-100 text-gray-600'}`}>
-									<p className="text-xs font-bold uppercase mb-1">Limite: 20 Pontos</p>
-									<p className="text-[10px] leading-tight">2 ou mais infrações gravíssimas</p>
+							<div className="grid grid-cols-1 gap-3 mb-6 flex-1">
+								<div className={`p-3 rounded-2xl border transition-colors ${scores.gravissima >= 2 ? 'bg-red-50 border-red-100 text-red-800' : 'bg-gray-50 border-gray-100 text-gray-400'}`}>
+									<p className="text-[10px] font-bold uppercase mb-0.5">Limite: 20 Pontos</p>
+									<p className="text-[9px] leading-tight opacity-80">2 ou mais infrações gravíssimas</p>
 								</div>
-								<div className={`p-4 rounded-2xl border ${scores.gravissima === 1 ? 'bg-orange-50 border-orange-100 text-orange-800' : 'bg-gray-50 border-gray-100 text-gray-600'}`}>
-									<p className="text-xs font-bold uppercase mb-1">Limite: 30 Pontos</p>
-									<p className="text-[10px] leading-tight">Apenas 1 infração gravíssima</p>
+								<div className={`p-3 rounded-2xl border transition-colors ${scores.gravissima === 1 ? 'bg-orange-50 border-orange-100 text-orange-800' : 'bg-gray-50 border-gray-100 text-gray-400'}`}>
+									<p className="text-[10px] font-bold uppercase mb-0.5">Limite: 30 Pontos</p>
+									<p className="text-[9px] leading-tight opacity-80">Apenas 1 infração gravíssima</p>
 								</div>
-								<div className={`p-4 rounded-2xl border ${scores.gravissima === 0 ? 'bg-green-50 border-green-100 text-green-800' : 'bg-gray-50 border-gray-100 text-gray-600'}`}>
-									<p className="text-xs font-bold uppercase mb-1">Limite: 40 Pontos</p>
-									<p className="text-[10px] leading-tight">Nenhuma infração gravíssima</p>
+								<div className={`p-3 rounded-2xl border transition-colors ${scores.gravissima === 0 ? 'bg-green-50 border-green-100 text-green-800' : 'bg-gray-50 border-gray-100 text-gray-400'}`}>
+									<p className="text-[10px] font-bold uppercase mb-0.5">Limite: 40 Pontos</p>
+									<p className="text-[9px] leading-tight opacity-80">Nenhuma infração gravíssima</p>
 								</div>
 							</div>
 
@@ -189,19 +189,20 @@ const ScoreCalculator = () => {
 								</div>
 							)}
 
-							<div className="space-y-3">
+							<div className="space-y-3 mt-auto">
 								<Link 
 									to="/upload"
-									className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-blue-200 hover:-translate-y-1"
+									className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-blue-200 hover:-translate-y-1 text-base"
 								>
 									Recorrer Agora <ArrowRight size={18} />
 								</Link>
 								
 								<button 
 									onClick={shareOnWhatsApp}
-									className="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-2xl transition-all shadow-md shadow-green-100"
+									className="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-2xl transition-all shadow-md shadow-green-100 text-sm overflow-hidden whitespace-nowrap"
 								>
-									<MessageCircle size={18} /> Compartilhar Resultado
+									<MessageCircle size={20} className="shrink-0" /> 
+									<span>Compartilhar Resultado</span>
 								</button>
 							</div>
 						</div>
