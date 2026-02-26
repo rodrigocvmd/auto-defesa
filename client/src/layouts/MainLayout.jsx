@@ -29,7 +29,8 @@ const MainLayout = ({ children }) => {
 			{/* Barra de Aviso Governamental */}
 			<div className="bg-gray-100 py-2 border-b border-gray-100">
 				<p className="text-[10px] md:text-xs text-gray-500 text-center px-4 leading-tight">
-					Auto Defesa é uma plataforma de tecnologia privada (SaaS) e não possui vínculo com o DETRAN ou órgãos governamentais.
+					Auto Defesa é uma plataforma de tecnologia privada (SaaS) e não possui vínculo com o
+					DETRAN ou órgãos governamentais.
 				</p>
 			</div>
 
@@ -48,7 +49,7 @@ const MainLayout = ({ children }) => {
 						</Link>
 
 						{/* Desktop Navigation */}
-						<nav className="hidden md:flex items-center gap-6">
+						<nav className="hidden min-[900px]:flex items-center gap-6">
 							{!isHome && (
 								<Link
 									to="/"
@@ -90,7 +91,9 @@ const MainLayout = ({ children }) => {
 								</button>
 								<div className="absolute top-full left-0 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 hidden group-hover:block p-3 animate-in fade-in slide-in-from-top-2">
 									<div className="px-4 py-2 mb-2">
-										<Link to="/tools" className="text-xs font-bold text-gray-600 uppercase tracking-widest hover:text-blue-600 transition-colors">
+										<Link
+											to="/tools"
+											className="text-xs font-bold text-gray-600 uppercase tracking-widest hover:text-blue-600 transition-colors">
 											1. Ferramentas
 										</Link>
 										<div className="grid grid-cols-1 gap-1 mt-2">
@@ -115,24 +118,26 @@ const MainLayout = ({ children }) => {
 									<div className="h-px bg-gray-100 my-2"></div>
 
 									<div className="px-4 py-2 mb-2">
-										<Link to="/guia" className="text-xs font-bold text-gray-600 uppercase tracking-widest hover:text-blue-600 transition-colors">
+										<Link
+											to="/guia"
+											className="text-xs font-bold text-gray-600 uppercase tracking-widest hover:text-blue-600 transition-colors">
 											2. Artigos e Guias
 										</Link>
 										<div className="grid grid-cols-1 gap-1 mt-2">
 											<Link
 												to="/artigo/lei-seca"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Multa da Lei Seca
+												Lei Seca
 											</Link>
 											<Link
-												to="/artigo/recusa-bafometro"
+												to="/artigo/faixa-exclusiva"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Multa de Bafômetro
+												Faixa Exclusiva
 											</Link>
 											<Link
 												to="/artigo/excesso-velocidade"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Multa por Velocidade
+												Excesso de Velocidade
 											</Link>
 											<Link
 												to="/guia"
@@ -145,24 +150,26 @@ const MainLayout = ({ children }) => {
 									<div className="h-px bg-gray-100 my-2"></div>
 
 									<div className="px-4 py-2">
-										<Link to="/recursos" className="text-xs font-bold text-gray-600 uppercase tracking-widest hover:text-blue-600 transition-colors">
+										<Link
+											to="/recursos"
+											className="text-xs font-bold text-gray-600 uppercase tracking-widest hover:text-blue-600 transition-colors">
 											3. Recursos Úteis
 										</Link>
 										<div className="grid grid-cols-1 gap-1 mt-2">
 											<Link
 												to="/recorrer/lei-seca"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Multa da Lei Seca
+												Recurso Lei Seca
 											</Link>
 											<Link
-												to="/recorrer/recusa-bafometro"
+												to="/recorrer/faixa-exclusiva"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Multa de Bafômetro
+												Transitar em Faixa Exclusiva
 											</Link>
 											<Link
-												to="/recorrer/excesso-velocidade"
+												to="/recorrer/ultrapassagem-indevida"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Multa por Velocidade
+												Ultrapassagem Indevida
 											</Link>
 											<Link
 												to="/recursos"
@@ -212,7 +219,7 @@ const MainLayout = ({ children }) => {
 						</nav>
 
 						{/* Mobile Menu Button */}
-						<div className="md:hidden flex items-center">
+						<div className="min-[900px]:hidden flex items-center">
 							<button
 								onClick={() => setIsMenuOpen(!isMenuOpen)}
 								className="text-gray-600 hover:text-blue-600 p-2"
@@ -225,7 +232,7 @@ const MainLayout = ({ children }) => {
 
 				{/* Mobile Menu Overlay */}
 				{isMenuOpen && (
-					<div className="md:hidden bg-white border-b border-gray-200 absolute w-full left-0 top-16 z-40 shadow-lg animate-in slide-in-from-top-2">
+					<div className="min-[900px]:hidden bg-white border-b border-gray-200 absolute w-full left-0 top-16 z-40 shadow-lg animate-in slide-in-from-top-2">
 						<div className="px-4 py-4 space-y-2 text-center">
 							{!isHome && (
 								<Link
@@ -312,7 +319,7 @@ const MainLayout = ({ children }) => {
 									<Link
 										to="/profile"
 										onClick={() => setIsMenuOpen(false)}
-										className="flex items-center justify-center gap-2 text-gray-600 hover:text-blue-600 font-medium py-2">
+										className="flex items-center justify-center gap-2 text-gray-600 font-medium py-2">
 										<User size={18} /> Minha Conta (
 										{currentUser.displayName?.split(" ")[0] || "Perfil"})
 									</Link>
@@ -364,7 +371,12 @@ const MainLayout = ({ children }) => {
 					</div>
 
 					<p className="text-xs text-gray-600 max-w-4xl text-center mb-1 leading-relaxed">
-						<strong>Aviso Legal:</strong> O Auto Defesa AI é um assistente jurídico automatizado desenvolvido pela iniciativa privada. Não representamos o DETRAN, CONTRAN ou qualquer órgão público. O uso da plataforma serve para auxiliar na elaboração de defesas administrativas com base na lei (CTB), mas não garante o deferimento dos recursos, que depende da análise dos órgãos julgadores. Seus dados são processados de acordo com a LGPD e nossa Política de Privacidade.
+						<strong>Aviso Legal:</strong> O Auto Defesa AI é um assistente jurídico automatizado
+						desenvolvido pela iniciativa privada. Não representamos o DETRAN, CONTRAN ou qualquer
+						órgão público. O uso da plataforma serve para auxiliar na elaboração de defesas
+						administrativas com base na lei (CTB), mas não garante o deferimento dos recursos, que
+						depende da análise dos órgãos julgadores. Seus dados são processados de acordo com a
+						LGPD e nossa Política de Privacidade.
 					</p>
 
 					<p className="text-xs text-gray-600 mt-4">

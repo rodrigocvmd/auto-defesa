@@ -1,32 +1,32 @@
 export const infractionData = {
 	"lei-seca": {
-		title: "Recurso de Multa por Lei Seca (Art. 165 do CTB)",
+		title: "Recurso de Multa por Lei Seca e Recusa (Art. 165 e 165-A)",
 		description:
-			"A multa por dirigir sob influência de álcool é uma infração gravíssima que prevê multa multiplicada por 10 e suspensão da CNH por 12 meses. Nossa IA analisa erros formais no preenchimento do auto de infração e falhas nos procedimentos de fiscalização.",
+			"A multa da Lei Seca é gravíssima e prevê suspensão da CNH por 12 meses. Nossa IA analisa tanto casos de teste positivo (Art. 165) quanto casos de recusa ao bafômetro (Art. 165-A), buscando falhas processuais e falta de provas materiais.",
 		faq: [
 			{ q: "Qual o valor da multa?", a: "O valor atual é de R$ 2.934,70." },
 			{
 				q: "Posso continuar dirigindo enquanto recorro?",
-				a: "Sim, o direito de dirigir permanece até o fim de todas as instâncias do recurso administrativo.",
+				a: "Sim, o direito de dirigir permanece válido até o final de todas as instâncias do recurso administrativo.",
 			},
 			{
-				q: "Vale a pena recorrer?",
-				a: "Sim, erros formais no bafômetro ou no auto de infração podem anular a multa e a suspensão.",
+				q: "Recusar o bafômetro dá multa?",
+				a: "Sim, gera as mesmas penalidades. Mas a defesa técnica foca na falta de descrição dos sinais de embriaguez pelo agente.",
 			},
 		],
 	},
-	"recusa-bafometro": {
-		title: "Recurso por Recusa ao Bafômetro (Art. 165-A)",
+	"faixa-exclusiva": {
+		title: "Multa por Transitar em Faixa Exclusiva (Art. 184)",
 		description:
-			"A simples recusa ao teste do bafômetro não comprova embriaguez. O agente de trânsito deve observar e relatar sinais de alteração da capacidade psicomotora. Defendemos seu direito com base na técnica jurídica e ausência de provas materiais.",
+			"Transitar em faixa exclusiva de ônibus ou seletiva é infração gravíssima. A defesa é focada em situações de acesso local, conversões próximas ou falhas na sinalização da via.",
 		faq: [
 			{
-				q: "A recusa gera suspensão automática?",
-				a: "Não. É aberto um processo administrativo onde você tem amplo direito de defesa antes de qualquer penalidade.",
+				q: "Qual a pontuação dessa multa?",
+				a: "É uma infração gravíssima, gerando 7 pontos na CNH.",
 			},
 			{
-				q: "Como anular essa multa?",
-				a: "Focamos na falta de preenchimento correto do termo de constatação de sinais de embriaguez pelo agente.",
+				q: "Conversão à direita é permitida?",
+				a: "Sim, desde que feita no trecho pontilhado. Se a sinalização estiver precária, a multa deve ser anulada.",
 			},
 		],
 	},

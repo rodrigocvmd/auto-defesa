@@ -5,9 +5,9 @@ import { Shield, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
 export const articles = [
 	{
 		slug: "lei-seca",
-		title: "Recurso de Multa por Lei Seca (Art. 165 do CTB)",
+		title: "Multa por Lei Seca e Recusa (Art. 165 e 165-A)",
 		description:
-			"A multa por dirigir sob influência de álcool prevê suspensão da CNH por 12 meses e multa de quase R$ 3.000. Descubra como anular essa penalidade com base em erros técnicos.",
+			"Seja por teste positivo ou por recusa ao bafômetro, a multa da Lei Seca prevê suspensão da CNH por 12 meses. Descubra as teses jurídicas para anular essa penalidade.",
 		category: "Lei Seca",
 		publishDate: "2026-02-03",
 		faq: [
@@ -16,86 +16,58 @@ export const articles = [
 				a: "O valor atual é de R$ 2.934,70 (multa gravíssima multiplicada por 10).",
 			},
 			{
-				q: "Posso continuar dirigindo enquanto recorro?",
-				a: "Sim, o direito de dirigir permanece válido até o fim do processo administrativo (trânsito em julgado).",
+				q: "Recusar o bafômetro gera suspensão automática?",
+				a: "Não. É instaurado um processo onde você tem direito a defesa prévia e recursos à JARI e ao CETRAN antes de qualquer bloqueio na CNH.",
 			},
 			{
 				q: "Vale a pena recorrer?",
-				a: "Sempre. Erros formais no bafômetro ou no preenchimento do auto podem anular totalmente a infração.",
+				a: "Sim. Erros formais no bafômetro, falta de sinais de embriaguez descritos no auto ou falhas na notificação anulam totalmente a infração.",
 			},
 		],
 		content: (
 			<>
 				<p>
-					Receber uma autuação por Lei Seca é um dos momentos mais tensos para qualquer motorista.
-					Além do impacto financeiro imediato — uma multa de <strong>R$ 2.934,70</strong> — a
-					penalidade mais temida é a <strong>suspensão do direito de dirigir por 12 meses</strong>.
-				</p>
-				<p>
-					Muitos acreditam que, se o teste do bafômetro deu positivo, não há nada a fazer.{" "}
-					<strong>Isso é um mito.</strong> O sistema de trânsito brasileiro é extremamente
-					burocrático e exige que a fiscalização siga protocolos rígidos. Quando esses protocolos
-					não são seguidos, a multa pode e deve ser anulada.
+					A Lei Seca é uma das fiscalizações mais rigorosas do trânsito brasileiro. Tanto a{" "}
+					<strong>influência de álcool (Art. 165)</strong> quanto a{" "}
+					<strong>recusa ao teste (Art. 165-A)</strong> geram as mesmas penalidades: multa de{" "}
+					<strong>R$ 2.934,70</strong> e a <strong>suspensão da CNH por 12 meses</strong>.
 				</p>
 
 				<h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-					O que diz o Artigo 165 do CTB?
+					Teses de Defesa para Art. 165 (Teste Positivo)
 				</h2>
 				<p>
-					O Código de Trânsito Brasileiro define como infração gravíssima dirigir sob a influência
-					de álcool ou de qualquer outra substância psicoativa que determine dependência. A
-					tolerância atual é "zero", mas isso se refere à conduta, não necessariamente à medição
-					técnica, que possui margens de erro regulamentadas pelo INMETRO.
+					Quando há o teste, a defesa foca na validade técnica do etilômetro (bafômetro). O
+					equipamento deve ter sido verificado pelo INMETRO nos últimos 12 meses e o resultado deve
+					considerar o desconto da margem de erro regulamentar.
+				</p>
+
+				<h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+					Teses de Defesa para Art. 165-A (Recusa)
+				</h2>
+				<p>
+					A Constituição Federal garante que ninguém é obrigado a produzir provas contra si mesmo.
+					No caso de recusa, o agente de trânsito é obrigado a preencher um{" "}
+					<strong>Termo de Constatação de Sinais</strong>, descrevendo se o condutor apresentava
+					olhos vermelhos, fala alterada ou desequilíbrio. Se o auto de infração for baseado apenas
+					na recusa, sem descrição de sinais, ele é nulo.
 				</p>
 
 				<div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 my-8 rounded-r-xl">
 					<h4 className="font-bold text-yellow-800 mb-2 flex items-center gap-2">
-						<AlertTriangle size={20} /> Atenção às Consequências
+						<AlertTriangle size={20} /> Efeito Suspensivo
 					</h4>
 					<p className="text-sm text-yellow-800">
-						Além da suspensão da CNH e da multa, o veículo pode ser retido caso não seja apresentado
-						um condutor habilitado no momento da blitz.
+						Ao entrar com o recurso, sua CNH permanece ativa e você pode continuar dirigindo
+						normalmente até o julgamento final em última instância.
 					</p>
 				</div>
 
-				<h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-					Erros Comuns que Anulam a Multa
-				</h2>
-				<p>
-					Para que a multa seja válida, o agente de trânsito e o equipamento utilizado
-					(bafômetro/etilômetro) devem cumprir uma série de requisitos legais. A ausência de
-					qualquer um deles torna o auto de infração nulo.
-				</p>
-				<ul className="space-y-4 mt-4">
-					<li className="flex items-start gap-3">
-						<CheckCircle className="text-green-500 shrink-0 mt-1" size={20} />
-						<span>
-							<strong>Validade do Etilômetro:</strong> O aparelho deve ter sido verificado pelo
-							INMETRO nos últimos 12 meses. Se a data estiver vencida, a prova é inválida.
-						</span>
-					</li>
-					<li className="flex items-start gap-3">
-						<CheckCircle className="text-green-500 shrink-0 mt-1" size={20} />
-						<span>
-							<strong>Margem de Erro:</strong> O resultado deve descontar a margem de erro do
-							aparelho. Se o valor final ficar abaixo do limite legal considerado para infração, não
-							há multa.
-						</span>
-					</li>
-					<li className="flex items-start gap-3">
-						<CheckCircle className="text-green-500 shrink-0 mt-1" size={20} />
-						<span>
-							<strong>Preenchimento do Auto:</strong> Dados incorretos sobre o veículo, o local ou a
-							qualificação do condutor são fatais para a validade do processo.
-						</span>
-					</li>
-				</ul>
-
 				<div className="bg-blue-50 rounded-2xl p-8 mt-10 text-center border border-blue-100">
-					<h3 className="text-xl font-bold text-gray-900 mb-4">Sua multa possui esses erros?</h3>
+					<h3 className="text-xl font-bold text-gray-900 mb-4">Sua multa pode ser anulada?</h3>
 					<p className="text-gray-600 mb-6">
-						Nossa Inteligência Artificial analisa a cópia do seu Auto de Infração e verifica
-						automaticamente se existem falhas técnicas que garantem o cancelamento da multa.
+						Nossa IA analisa seu caso buscando erros formais e falta de materialidade que garantem o
+						cancelamento da multa e da suspensão.
 					</p>
 					<Link
 						to="/upload"
@@ -107,86 +79,72 @@ export const articles = [
 		),
 	},
 	{
-		slug: "recusa-bafometro",
-		title: "Recurso por Recusa ao Bafômetro (Art. 165-A)",
+		slug: "faixa-exclusiva",
+		title: "Multa por Transitar em Faixa Exclusiva (Art. 184)",
 		description:
-			"Você sabia que recusar o bafômetro não gera culpa automática? Entenda como a lei protege quem se recusa a produzir provas contra si mesmo e como recorrer.",
-		category: "Lei Seca",
-		publishDate: "2026-02-03",
+			"Transitar na faixa de ônibus ou seletiva gera multa gravíssima. Entenda as exceções como acesso a garagens ou conversões à direita que anulam a autuação.",
+		category: "Infrações Comuns",
+		publishDate: "2026-02-26",
 		faq: [
 			{
-				q: "A recusa gera suspensão automática?",
-				a: "Não. É instaurado um processo administrativo onde você tem direito a defesa prévia e recursos à JARI e ao CETRAN.",
+				q: "Qual o valor da multa?",
+				a: "Transitar na faixa exclusiva da direita ou esquerda (Art. 184, III) é infração gravíssima: R$ 293,47 e 7 pontos.",
 			},
 			{
-				q: "A multa é a mesma da Lei Seca?",
-				a: "Sim, o valor é o mesmo (R$ 2.934,70) e a penalidade de suspensão também (12 meses).",
+				q: "Posso entrar na faixa para virar à direita?",
+				a: "Sim. A manobra deve ser feita no trecho final da quadra (linhas pontilhadas). Entrar antes ou por tempo excessivo gera multa.",
 			},
 		],
 		content: (
 			<>
 				<p>
-					A infração por <strong>recusa ao teste do bafômetro</strong> (Art. 165-A) é uma das mais
-					polêmicas do Código de Trânsito Brasileiro. Ela parte do princípio de que o condutor que
-					se nega a soprar o aparelho deve ser punido com o mesmo rigor de quem foi flagrado
-					embriagado.
+					As faixas exclusivas para ônibus foram criadas para agilizar o transporte público, mas se
+					tornaram verdadeiras armadilhas para motoristas, especialmente pela fiscalização
+					eletrônica (radares de faixa).
 				</p>
+
+				<h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Acesso Local e Conversões</h2>
 				<p>
-					No entanto, a Constituição Federal garante que ninguém é obrigado a produzir provas contra
-					si mesmo. Embora administrativamente a infração exista, a aplicação dela exige requisitos
-					muito específicos que, na prática, raramente são cumpridos pelos agentes de trânsito.
+					O Código de Trânsito permite o uso da faixa exclusiva para fins de{" "}
+					<strong>acesso a lotes lindeiros</strong> (garagens, postos de combustíveis) ou para
+					realizar <strong>conversões à direita</strong>. Se você foi multado enquanto realizava
+					uma dessas manobras legítimas, a autuação é indevida.
 				</p>
 
 				<h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-					A Importância dos Sinais de Embriaguez
+					Principais Argumentos de Defesa
 				</h2>
-				<p>
-					Não basta o agente multar pela recusa. O CONTRAN exige que, no caso de recusa, o agente
-					fiscalizador preencha um relatório detalhado descrevendo se o condutor apresentava{" "}
-					<strong>sinais de alteração da capacidade psicomotora</strong> (como hálito etílico, olhos
-					vermelhos, desequilíbrio, fala alterada, etc.).
-				</p>
-				<p>
-					Se você foi multado apenas pela recusa, sem que o agente tenha constatado e descrito esses
-					sinais, a multa carece de materialidade.
-				</p>
-
-				<h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-					Argumentos Técnicos de Defesa
-				</h2>
-				<p>
-					A defesa técnica foca na legalidade do ato administrativo. Se o procedimento não foi
-					perfeito, a punição não pode ser aplicada.
-				</p>
 				<ul className="space-y-4 mt-4">
 					<li className="flex items-start gap-3">
 						<CheckCircle className="text-green-500 shrink-0 mt-1" size={20} />
 						<span>
-							<strong>Ausência do Termo de Constatação:</strong> A falta do documento específico
-							relatando os sinais visíveis de embriaguez é um dos principais motivos de deferimento.
+							<strong>Sinalização Horizontal:</strong> Se a pintura no chão (linha contínua) estiver
+							apagada ou não houver a sinalização pontilhada permitindo a entrada para conversão, a
+							multa não pode ser aplicada.
 						</span>
 					</li>
 					<li className="flex items-start gap-3">
 						<CheckCircle className="text-green-500 shrink-0 mt-1" size={20} />
 						<span>
-							<strong>Oferta do Teste:</strong> O agente deve provar que ofereceu o teste e que
-							houve recusa explícita. A presunção de recusa sem prova testemunhal ou documental é
-							questionável.
+							<strong>Foto de Radar:</strong> A foto deve mostrar o veículo transitando por um
+							longo trecho. Uma foto isolada não prova que o motorista não estava apenas entrando na
+							faixa para acessar uma garagem próxima.
 						</span>
 					</li>
 				</ul>
 
 				<div className="bg-blue-50 rounded-2xl p-8 mt-10 text-center border border-blue-100">
-					<h3 className="text-xl font-bold text-gray-900 mb-4">Foi multado apenas pela recusa?</h3>
+					<h3 className="text-xl font-bold text-gray-900 mb-4">
+						Foi multado por entrar na faixa de ônibus?
+					</h3>
 					<p className="text-gray-600 mb-6">
-						Muitas multas de recusa são aplicadas de forma genérica ("canetada"), sem observar os
-						direitos constitucionais do condutor. Verifique se o seu caso tem chances reais de
-						anulação.
+						Muitas vezes o sistema automático não identifica que você estava apenas manobrando para
+						entrar em um estacionamento. Recorra para anular os 7 pontos.
 					</p>
 					<Link
 						to="/upload"
 						className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg hover:-translate-y-1">
-						Verificar Viabilidade do Recurso <ArrowRight size={18} />
+						Verificar Viabilidade <ArrowRight size={18} />
 					</Link>
 				</div>
 			</>
