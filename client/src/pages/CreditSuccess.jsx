@@ -10,6 +10,7 @@ const CreditSuccess = () => {
   const amount = searchParams.get('amount');
   const planName = searchParams.get('plan');
 
+  // test
   useEffect(() => {
     if (window.gtag && amount) {
       window.gtag('event', 'purchase', {
