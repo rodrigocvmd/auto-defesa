@@ -13,31 +13,23 @@ const MODEL_FALLBACK = "gemini-flash-latest";
 
 // Testes / Lite:
 // const MODEL_FLASH = "gemini-2.5-flash-lite";
-// const MODEL_PRO = "gemini-2.5-flash-lite";
+// const MODEL_PRO = "gemini-2.5-flash-litee";
 // const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
- * Tenta gerar conteúdo com o modelo principal. Se der erro 503 (Overloaded),
- * tenta automaticamente com o modelo de fallback (gemini-1.5-flash).
+ * Tenta gerar conteúdo com o modelo principal. Se falhar,
+ * tenta automaticamente com o modelo de fallback.
  */
 async function generateWithFallback(genAI, primaryModelName, parts) {
 	try {
 		const model = genAI.getGenerativeModel({ model: primaryModelName });
 		return await model.generateContent(parts);
 	} catch (error) {
-		// Verifica erros comuns de sobrecarga ou indisponibilidade
-		if (
-			error.message.includes("503") ||
-			error.message.includes("overloaded") ||
-			error.status === 503
-		) {
-			console.warn(
-				`⚠️ Modelo ${primaryModelName} instável (${error.message}). Tentando fallback para ${MODEL_FALLBACK}...`,
-			);
-			const fallbackModel = genAI.getGenerativeModel({ model: MODEL_FALLBACK });
-			return await fallbackModel.generateContent(parts);
-		}
-		throw error;
+		console.warn(
+			`⚠️ Modelo ${primaryModelName} falhou (${error.message}). Tentando fallback para ${MODEL_FALLBACK}...`,
+		);
+		const fallbackModel = genAI.getGenerativeModel({ model: MODEL_FALLBACK });
+		return await fallbackModel.generateContent(parts);
 	}
 }
 
