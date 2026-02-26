@@ -122,17 +122,17 @@ const MainLayout = ({ children }) => {
 											<Link
 												to="/artigo/lei-seca"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Recurso de Lei Seca
+												Multa da Lei Seca
 											</Link>
 											<Link
 												to="/artigo/recusa-bafometro"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Recusa ao Bafômetro
+												Multa de Bafômetro
 											</Link>
 											<Link
 												to="/artigo/excesso-velocidade"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Excesso de Velocidade
+												Multa por Velocidade
 											</Link>
 											<Link
 												to="/guia"
@@ -152,17 +152,17 @@ const MainLayout = ({ children }) => {
 											<Link
 												to="/recorrer/lei-seca"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Lei Seca
+												Multa da Lei Seca
 											</Link>
 											<Link
 												to="/recorrer/recusa-bafometro"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Recusa ao Bafômetro
+												Multa de Bafômetro
 											</Link>
 											<Link
 												to="/recorrer/excesso-velocidade"
 												className="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-												Excesso de Velocidade
+												Multa por Velocidade
 											</Link>
 											<Link
 												to="/recursos"
@@ -345,37 +345,6 @@ const MainLayout = ({ children }) => {
 			<main className="flex-1 w-full max-w-8xl mx-auto px-0 sm:px-6 lg:px-1 py-0">
 				{children}
 				<footer className="border-t border-gray-100 py-6 mt-6 flex flex-col items-center">
-					{/* Recursos Úteis */}
-					{!location.pathname.startsWith("/upload") && (
-						<div className="w-full max-w-4xl mb-8 px-4">
-							<h4 className="text-gray-900 font-bold text-md mb-5 text-center">
-								Recursos Úteis 👇
-							</h4>
-							<div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6 text-center ">
-								<Link
-									to="/recorrer/recusa-bafometro"
-									className="text-gray-600 hover:text-blue-600 text-md transition-colors py-2 px-1">
-									Recusa ao Bafômetro
-								</Link>
-								<Link
-									to="/recorrer/excesso-velocidade"
-									className="text-gray-600 hover:text-blue-600 text-md transition-colors py-2 px-1">
-									Acima da Velocidade
-								</Link>
-								<Link
-									to="/recorrer/celular-direcao"
-									className="text-gray-600 hover:text-blue-600 text-md transition-colors py-2 px-1">
-									Utilização de Celular
-								</Link>
-								<Link
-									to="/recursos"
-									className="text-gray-600 hover:text-blue-600 text-md transition-colors py-2 px-1">
-									Ver Outras Infrações
-								</Link>
-							</div>
-						</div>
-					)}
-
 					<p className="text-md text-gray-600 mb-4">
 						Brasília/DF |{" "}
 						<a href="mailto:suporte@meuatodefesa.com.br" className="py-2 px-1">
