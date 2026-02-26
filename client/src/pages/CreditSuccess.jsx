@@ -11,32 +11,21 @@ const CreditSuccess = () => {
   const planName = searchParams.get('plan');
 
   useEffect(() => {
-    if (window.gtag) {
-      // Evento de Conversão Google Ads
-      window.gtag('event', 'conversion', {
-        'send_to': 'AW-17978593775/SUA_LABEL_DE_CONVERSAO',
-        'value': parseFloat(amount) || 17.90,
+    if (window.gtag && amount) {
+      window.gtag('event', 'purchase', {
+        'transaction_id': sessionId || '',
+        'value': parseFloat(amount),
         'currency': 'BRL',
-        'transaction_id': sessionId || ''
+        'items': [
+          {
+            'item_id': planName || 'créditos',
+            'item_name': planName || 'Créditos Auto Defesa',
+            'price': parseFloat(amount),
+            'quantity': 1
+          }
+        ]
       });
-
-      // Evento de Purchase GA4 (Existente)
-      if (amount) {
-        window.gtag('event', 'purchase', {
-          'transaction_id': sessionId || '',
-          'value': parseFloat(amount),
-          'currency': 'BRL',
-          'items': [
-            {
-              'item_id': planName || 'créditos',
-              'item_name': planName || 'Créditos Auto Defesa',
-              'price': parseFloat(amount),
-              'quantity': 1
-            }
-          ]
-        });
-      }
-      console.log('Conversion tracked:', { amount, sessionId, planName });
+      console.log('Purchase tracked:', { amount, sessionId, planName });
     }
   }, [amount, sessionId, planName]);
 
