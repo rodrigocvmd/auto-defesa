@@ -7,9 +7,9 @@ const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Produção:
-const MODEL_FLASH = "gemini-3-flash-preview";
-const MODEL_PRO = "gemini-3-pro-preview";
-const MODEL_FALLBACK = "gemini-2.5-flash";
+const MODEL_FLASH = "gemini-3.1-pro-preview";
+const MODEL_PRO = "gemini-3-flash-preview";
+const MODEL_FALLBACK = "gemini-flash-latest";
 
 // Testes / Lite:
 // const MODEL_FLASH = "gemini-2.5-flash-lite";
