@@ -12,7 +12,7 @@ import {
 	CheckCircle,
 	Upload,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { LoginPromptModal } from "../components/modals/LoginPromptModal";
 import { HardBlockModal } from "../components/modals/HardBlockModal";
 import { DivergenceWarningModal } from "../components/modals/DivergenceWarningModal";
@@ -114,7 +114,7 @@ export const FormStep = ({
 					</p>
 				</div>
 				<div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-4 gap-4">
-					<div className="text-sm text-red-600 font-medium">* Campos obrigatórios</div>
+					<div className="text-sm text-gray-500 font-medium">* Campos obrigatórios</div>
 					<div className="flex items-center gap-2">
 						{!isTestMode && !file && (
 							<button
@@ -861,9 +861,23 @@ export const FormStep = ({
 						className="w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all">
 						Analisar Caso (Grátis)
 					</button>
-					<p className="text-center text-gray-600 text-sm mt-3">
-						Nenhum crédito será cobrado nesta etapa.
-					</p>
+					<div className="max-w-xl text-center space-y-2">
+						<p className="text-gray-600 text-sm">
+							Nenhum crédito será cobrado nesta etapa.
+						</p>
+						<p className="text-[10px] md:text-xs text-gray-500 leading-relaxed">
+							Ao prosseguir, você concorda com nossos{" "}
+							<Link to="/terms" className="text-blue-600 hover:underline">
+								Termos de Uso
+							</Link>{" "}
+							e{" "}
+							<Link to="/privacy" className="text-blue-600 hover:underline">
+								Política de Privacidade
+							</Link>
+							. Seus dados são utilizados exclusivamente para a redação da sua defesa
+							administrativa e não são compartilhados com terceiros.
+						</p>
+					</div>
 				</div>
 			</form>
 			<style

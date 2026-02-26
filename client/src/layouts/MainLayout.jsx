@@ -27,8 +27,8 @@ const MainLayout = ({ children }) => {
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col font-sans">
 			{/* Barra de Aviso Governamental */}
-			<div className="bg-gray-100 py-2 border-b border-gray-200">
-				<p className="text-xs text-gray-600 text-center px-4">
+			<div className="bg-gray-100 py-2 border-b border-gray-100">
+				<p className="text-[10px] md:text-xs text-gray-500 text-center px-4 leading-tight">
 					Auto Defesa é uma plataforma de tecnologia privada (SaaS) e não possui vínculo com o DETRAN ou órgãos governamentais.
 				</p>
 			</div>
