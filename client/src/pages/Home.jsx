@@ -22,24 +22,24 @@ import Testimonials from "../components/Testimonials";
 import ScrollReveal from "../components/ScrollReveal";
 
 const Home = () => {
-    const [showScrollIndicator, setShowScrollIndicator] = useState(() => {
-        // Inicializa baseado no sessionStorage para persistir o "já scrollou" nesta sessão
-        return !sessionStorage.getItem("home_has_scrolled");
-    });
+	const [showScrollIndicator, setShowScrollIndicator] = useState(() => {
+		// Inicializa baseado no sessionStorage para persistir o "já scrollou" nesta sessão
+		return !sessionStorage.getItem("home_has_scrolled");
+	});
 
-    useEffect(() => {
-        if (!showScrollIndicator) return;
+	useEffect(() => {
+		if (!showScrollIndicator) return;
 
-        const handleScroll = () => {
-            if (window.scrollY > 100) {
-                setShowScrollIndicator(false);
-                sessionStorage.setItem("home_has_scrolled", "true");
-            }
-        };
+		const handleScroll = () => {
+			if (window.scrollY > 100) {
+				setShowScrollIndicator(false);
+				sessionStorage.setItem("home_has_scrolled", "true");
+			}
+		};
 
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [showScrollIndicator]);
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, [showScrollIndicator]);
 	const ScrollArrow = ({ className }) => (
 		<div
 			className={`flex flex-col items-center gap-1 animate-bounce transition-opacity duration-500 ${showScrollIndicator ? "opacity-100" : "opacity-0"} ${className}`}>
@@ -50,7 +50,7 @@ const Home = () => {
 	return (
 		<MainLayout>
 			<SEO
-				title="Recorra de Multas com IA | Advogado Virtual"
+				title="Recorra de Multas com IA | Recurso Pronto para protocolar em minutos | Apenas R$ 17,90"
 				description="Gere seu Recurso de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online"
 				isHome={true}
@@ -181,8 +181,8 @@ const Home = () => {
 						<div className="text-center mb-7">
 							<h2 className="text-3xl font-black text-gray-900 mb-4">Como funciona?</h2>
 							<p className="text-gray-600 max-w-3xl mx-auto">
-								Simplificamos a burocracia. Em poucos minutos você terá em mãos a defesa perfeita para
-								o seu caso.
+								Simplificamos a burocracia. Em poucos minutos você terá em mãos a defesa perfeita
+								para o seu caso.
 							</p>
 						</div>
 					</ScrollReveal>
@@ -210,8 +210,8 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">IA Analisa o Caso</h3>
 								<p className="text-gray-600 leading-relaxed">
-									O algoritmo verifica <strong>erros formais e materiais</strong> e busca as melhores
-									teses jurídicas na legislação para anular sua infração.
+									O algoritmo verifica <strong>erros formais e materiais</strong> e busca as
+									melhores teses jurídicas na legislação para anular sua infração.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -370,9 +370,9 @@ const Home = () => {
 									O recurso é personalizado para o meu caso?
 								</h3>
 								<p className="text-gray-600">
-									Sim. Diferente de modelos prontos da internet, nossa IA analisa os dados específicos
-									do seu auto de infração (horário, local, aferição do equipamento) para encontrar
-									nulidades reais que anulam a sua multa.
+									Sim. Diferente de modelos prontos da internet, nossa IA analisa os dados
+									específicos do seu auto de infração (horário, local, aferição do equipamento) para
+									encontrar nulidades reais que anulam a sua multa.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -382,8 +382,8 @@ const Home = () => {
 									Quanto tempo demora para receber o recurso?
 								</h3>
 								<p className="text-gray-600">
-									O processo é instantâneo. Após a análise da IA, seu recurso em PDF é gerado em menos
-									de 2 minutos, pronto para você imprimir, assinar e protocolar.
+									O processo é instantâneo. Após a análise da IA, seu recurso em PDF é gerado em
+									menos de 2 minutos, pronto para você imprimir, assinar e protocolar.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -486,8 +486,8 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Tecnologia de Ponta</h3>
 								<p className="text-gray-600">
-									Utilizamos OCR e visão computacional para ler sua multa automaticamente, eliminando
-									erros de digitação e agilizando o processo.
+									Utilizamos OCR e visão computacional para ler sua multa automaticamente,
+									eliminando erros de digitação e agilizando o processo.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -517,7 +517,9 @@ const Home = () => {
 									<div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 										<DollarSign size={24} />
 									</div>
-									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">R$ 517</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
+										R$ 293
+									</div>
 									<div className="text-gray-600 font-medium">Economia Média p/ Usuário</div>
 									<div className="mt-4 h-1 w-12 bg-green-600 rounded-full"></div>
 								</div>
@@ -569,8 +571,8 @@ const Home = () => {
 									Não deixe os pontos vencerem
 								</h2>
 								<p className="text-gray-600 text-lg mb-8 max-w-xl mx-auto">
-									Teste agora mesmo. A análise inicial de viabilidade é <strong>100% gratuita</strong>
-									.
+									Teste agora mesmo. A análise inicial de viabilidade é{" "}
+									<strong>100% gratuita</strong>.
 								</p>
 								<Link
 									to="/upload"

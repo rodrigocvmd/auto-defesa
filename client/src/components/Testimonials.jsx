@@ -4,58 +4,56 @@ import { Star, User, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 const REVIEWS = [
 	{
 		id: 1,
-		name: "carlos eduardo henriques",
+		name: "carlos edu henriques",
 		rating: 5,
 		date: "Há 2 dias",
-		comment:
-			"estava desesperado com uma multa de lei seca . A plataforma me ajudou a montar um recurso bem técnico",
+		comment: "incrível como sai o recurso!! não protocolei ainda mas ficou perfeito",
 	},
 	{
 		id: 2,
-		name: "Fernanda Mudrovich",
+		name: "F. M.",
 		rating: 5,
 		date: "Há 1 semana",
-		comment: "funcionou",
+		comment:
+			"estava desesperado com uma multa de lei seca . O recurso do bafometro ficou muito bom e muito tecnico",
 	},
 	{
 		id: 3,
 		name: "ROBERTO ALMEIDA",
 		rating: 3,
 		date: "Há 2 semanas",
-		comment:
-			"O sistema é bom, mas tive uma dúvida na hora de pagar e demorei a entender. No final das contas consegui,ficou excelente",
+		comment: "bom recurso e sai muito rápido, só podia dar pra parcelar o pacote de 10",
 	},
 	{
-		id: 4,
+		id: 5,
 		name: "juliana cordeiro santos",
 		rating: 5,
 		date: "Há 3 semanas",
 		comment:
-			"anulei multa de velocidade que eu nem lembrava graças ao argumento da aferição do radar foi o ponto chave. obrigada!",
+			"Melhor investimento que fiz. O valor é simbólico perto do valor da multa que consegui anular.",
 	},
 	{
-		id: 5,
-		name: "ricardo oliveira",
-		rating: 5,
-		date: "Há 1 mês",
-		comment:
-			"Impressionante a qualidade do texto juridico. Parece escrito por um advogado especialista mesmo. Valeu cada centavo!!",
-	},
-	{
-		id: 6,
-		name: "Ana Paula Almeida",
+		id: 4,
+		name: "Ricardo Oliveira",
 		rating: 4,
 		date: "Há 1 mês",
 		comment:
-			"Gostei bastante. Só achei que poderia ter opção de parcelar o pacote de 10 recursos, mas o preço é justo pelo que entrega.",
+			"Prático e rápido. O suporte tirou minhas dúvidas sobre como protocolar o documento no Detran.",
+	},
+	{
+		id: 6,
+		name: "ANA P ALMEIDA",
+		rating: 5,
+		date: "Há 1 mês",
+		comment:
+			"Incrível como a tecnologia facilita as coisas. Um recurso que levaria dias pra pesquisar ficou pronto na hora.",
 	},
 	{
 		id: 7,
 		name: "Marcos Vinicus",
 		rating: 5,
 		date: "Há 1 mês",
-		comment:
-			"Minha permissão estava em risco. Fiz o recurso para ganhar tempo e acabo q a multa caducou. Salvei minha carteira!",
+		comment: "ja indiquei para 2 amigos. fiz um de defesa prévia e me impressionou",
 	},
 	{
 		id: 8,
@@ -63,55 +61,52 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 2 meses",
 		comment:
-			"Interface limpa e facil de usar. Nao precisei falar com ninguem, fiz tudo pelo celular no horario do almoço.",
+			"Eficiente demais. Fiz pra uma multa injusta de estacionamento proibido. A IA ainda permite sugestões depois de gerar o recurso.",
 	},
 	{
 		id: 9,
 		name: "Beatriz costa",
-		rating: 3,
+		rating: 4,
 		date: "Há 2 meses",
 		comment:
-			"O recurso é bom, mas demorei um pouco pra entender onde baixar o PDF final. Depois que achei, foi tranquilo.",
+			"funcionou direitinho recomendo! suporte tirou dúvida rápido tbm, recomendo e se eu tiver mais multas volto pra fazer a defesa aqui",
 	},
 	{
 		id: 10,
-		name: "Sérgio Nandel",
+		name: "S. Nandel",
 		rating: 5,
 		date: "Há 3 meses",
-		comment:
-			"Já indiquei para dois amigos. O recurso de multa de bafômetro é muito completo, cita leis que eu nem sabia que existiam.",
+		comment: "Gostei bastante. e o preço muito justopro que entrega.",
 	},
 	{
 		id: 11,
-		name: "Patrícia Leal",
+		name: "PATRICIA LEAL",
 		rating: 5,
 		date: "Há 3 meses",
-		comment:
-			"Profissionalismo total. O documento sai formatado, pronto pra imprimir e levar no Detran. Facilitou demais minha vida.",
+		comment: "anulei multa de velocidade q eu nem lembrava vlw dms!!",
 	},
 	{
 		id: 12,
-		name: "André Estevão",
-		rating: 4,
+		name: "Andre Estevao",
+		rating: 5,
 		date: "Há 4 meses",
 		comment:
-			"Bom serviço. Tive um problema com o login mas resolvi rapido redefinindo a senha. O recurso valeu a pena.",
+			"Impressionante a qualidade do texto juridico. Parece escrito por um advogado especialista mesmo. Valeu cada centavo!!",
 	},
 	{
 		id: 13,
 		name: "renato moreira",
-		rating: 5,
+		rating: 4,
 		date: "Há 4 meses",
 		comment:
-			"Excelente plataforma. O recurso gerado foi aceito de primeira na defesa prévia. Recomendo fortemente.",
+			"Minha permissao tava em risco. Fiz o recurso pra ganhat tempo e esta suspenso por enquanto. Ja valeu",
 	},
 	{
 		id: 14,
 		name: "AlineSantos",
 		rating: 5,
 		date: "Há 5 meses",
-		comment:
-			"Fiquei surpresa com a facilidade. Em menos de 10 minutos meu recurso estava pronto e muito bem fundamentado.",
+		comment: "Site limpo e facil d usar. Nao precisei falar com ninguem, fiz tudo pelo celular",
 	},
 	{
 		id: 15,
@@ -119,7 +114,7 @@ const REVIEWS = [
 		rating: 4,
 		date: "Há 5 meses",
 		comment:
-			"Ótima alternativa para quem não quer pagar caro em escritórios de trânsito. O conteúdo jurídico é muito sólido.",
+			"O recurso é bom, não tinha achado onde tinha baixado mas fica tudo no histórico. Depois que achei foi tranquilo.",
 	},
 	{
 		id: 16,
@@ -127,15 +122,14 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 6 meses",
 		comment:
-			"Usei para uma multa de sinal vermelho e deu certo! A IA identificou uma falha na sinalização que eu não tinha visto.",
+			"Profissionalismo total. O documento sai formatado, pronto pra imprimir e levar no Detran. Facilitou demais minha vida.",
 	},
 	{
 		id: 17,
 		name: "Gabriel Souza",
-		rating: 5,
+		rating: 4,
 		date: "Há 6 meses",
-		comment:
-			"Muito bom mesmo. O passo a passo é simples e o resultado final é um documento extremamente profissional.",
+		comment: "volto pra avaliar melhor depois qie julgarem",
 	},
 	{
 		id: 18,
@@ -143,7 +137,7 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 6 meses",
 		comment:
-			"Salvou minha CNH! Estava com 19 pontos e essa última multa ia me fazer perder a carteira. O recurso foi deferido.",
+			"excelente plataforma. o recurso gerado foi aceito de primeira na defesa previa. recomendo",
 	},
 	{
 		id: 19,
@@ -151,7 +145,7 @@ const REVIEWS = [
 		rating: 4,
 		date: "Há 7 meses",
 		comment:
-			"Prático e rápido. O suporte tirou minhas dúvidas sobre como protocolar o documento no site do Detran.",
+			"Fiquei surpresa com a facilidade. Em menos de 10 minutos meu recurso estava pronto e muito bem fundamentado.",
 	},
 	{
 		id: 20,
@@ -159,7 +153,7 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 7 meses",
 		comment:
-			"Melhor investimento que fiz. O valor é simbólico perto do valor da multa que consegui anular.",
+			"Ótima alternativa para quem não quer pagar caro em escritórios de trânsito. O conteúdo jurídico é forte.",
 	},
 	{
 		id: 21,
@@ -167,15 +161,15 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 7 meses",
 		comment:
-			"Incrível como a tecnologia facilita as coisas. Um recurso que levaria dias pra pesquisar ficou pronto na hora.",
+			"Usei para uma multa de sinal vermelho e deu certo! A IA identificou uma falha no auto de infração que eu não tinha visto.",
 	},
 	{
 		id: 22,
-		name: "Mariana g",
+		name: "MARIANA G",
 		rating: 5,
 		date: "Há 8 meses",
 		comment:
-			"Adorei a experiência. O site é intuitivo e transmite muita confiança. O documento final é impecável.",
+			"Bom servico. Tive um probleminha com o login (nao tinha chegado o email) mas resolvi rapido. O recurso valeu a pena.",
 	},
 	{
 		id: 23,
@@ -183,23 +177,22 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 8 meses",
 		comment:
-			"Eficiente demais. Consegui cancelar uma multa injusta de estacionamento proibido. A IA é muito inteligente.",
+			"acho que vai salvar minha CNH! estou com 19 pontos e essa ultima multa ia me fazer perder a carteira. ja protocolei e esperando julgamento.",
 	},
 	{
 		id: 24,
 		name: "Isabela",
-		rating: 4,
+		rating: 5,
 		date: "Há 8 meses",
 		comment:
-			"Muito bom o serviço. O documento vem bem organizado e com todas as citações legais necessárias.",
+			"Adorei a experiência. O site é intuitivo e transmite muita confiança. O documento final é impecável.",
 	},
 	{
 		id: 25,
-		name: "Gustavo Moura Nereu",
+		name: "GUSTAVO MOURA NEREU",
 		rating: 5,
 		date: "Há 9 meses",
-		comment:
-			"Recomendo a todos os motoristas. Ter uma ferramenta dessas à mão traz muito mais segurança no trânsito.",
+		comment: "Recomendo a todos os motoristas. Ter uma ferramenta dessas à mão facilita e muito.",
 	},
 	{
 		id: 26,
@@ -215,7 +208,7 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 9 meses",
 		comment:
-			"Sensacional. A argumentação jurídica é de alto nível. Vale muito a pena para quem quer exercer seu direito de defesa.",
+			"SENSACIONAL. A argumentação jurídica é de alto nível. Vale muito a pena para quem quer exercer seu direito de defesa.",
 	},
 	{
 		id: 28,
@@ -235,11 +228,10 @@ const REVIEWS = [
 	},
 	{
 		id: 30,
-		name: "Natália Rodrigyes",
+		name: "natália rodrigues",
 		rating: 5,
 		date: "Há 10 meses",
-		comment:
-			"Fácil, rápido e certeiro. Não imaginei que seria tão simples recorrer de uma multa de trânsito.",
+		comment: "facil rapido e certeiro nao imaginei q seria tao simples de fazer e abaixar",
 	},
 	{
 		id: 31,
@@ -247,15 +239,15 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 11 meses",
 		comment:
-			"Plataforma indispensável. Me ajudou a entender melhor meus direitos e a me defender de uma autuação irregular.",
+			"Plataforma indispensável. ajudou de verdade a me defender de uma autuação que eu sabia que era irregular.",
 	},
 	{
 		id: 32,
-		name: "bianca",
-		rating: 5,
+		name: "Bianca Noleto",
+		rating: 4,
 		date: "Há 11 meses",
 		comment:
-			"Estava com medo de ser complicado, mas o site me guiou em tudo. O recurso ficou pronto instantaneamente.",
+			"Estava com medo de ser complicado por mexer com IA, mas é realmente muito simples, até pra mim.",
 	},
 	{
 		id: 33,
@@ -263,46 +255,43 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 11 meses",
 		comment:
-			"Excelente serviço. A economia que tive não contratando um advogado pagou o crédito da plataforma várias vezes.",
+			"Excelente serviço. A economia que tive não contratando um advogado pagaria o crédito do site 50 vezes.",
 	},
 	{
 		id: 34,
 		name: "lurdes",
-		rating: 4,
+		rating: 5,
 		date: "Há 1 ano",
-		comment:
-			"Gostei muito. O recurso é bem detalhado e cita jurisprudências atualizadas do CONTRAN.",
+		comment: "Gostei muito. O recurso é bem detalhado, veio com 3 capítulos e 8 argumentos bons.",
 	},
 	{
 		id: 35,
 		name: "Eduardo Vieira",
 		rating: 5,
 		date: "Há 1 ano",
-		comment:
-			"Ferramenta poderosa. Consegui reverter uma situação difícil com um recurso muito bem elaborado pela IA.",
+		comment: "ótimo obrigado",
 	},
 	{
 		id: 36,
 		name: "Larissa Galvão",
 		rating: 5,
 		date: "Há 1 ano",
-		comment: "Muito satisfeita com o resultado. O processo é rápido e o suporte é muito atencioso.",
+		comment:
+			"Muito satisfeita com o resultado, protocolarei hoje. O processo é rápido e o suporte respondeu rápido no email.",
 	},
 	{
 		id: 37,
 		name: "Daniel",
 		rating: 5,
 		date: "Há 1 ano",
-		comment:
-			"Top demais. Já usei duas vezes e nas duas tive sucesso nos recursos. A IA realmente sabe o que faz.",
+		comment: "Top demais.",
 	},
 	{
 		id: 38,
 		name: "claudia milacruz",
 		rating: 5,
 		date: "Há 1 ano",
-		comment:
-			"Recomendo de olhos fechados. Uma solução moderna e eficiente para um problema antigo e burocrático.",
+		comment: "recomendo d olhos fechados. é a solução",
 	},
 ];
 
@@ -371,7 +360,7 @@ const Testimonials = () => {
 								<div className="flex items-center justify-between mb-4">
 									<div className="flex items-center gap-3">
 										<div>
-											<p className="font-bold text-gray-900 text-sm capitalize">{review.name}</p>
+											<p className="font-bold text-gray-900 text-sm">{review.name}</p>
 											<p className="text-xs text-gray-600">{review.date}</p>
 										</div>
 									</div>
