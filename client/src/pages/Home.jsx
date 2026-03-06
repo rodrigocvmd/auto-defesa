@@ -57,69 +57,76 @@ const Home = () => {
 			/>
 			<div className="flex flex-col gap-12 pb-8">
 				{/* HERO SECTION */}
-				<section className="relative pt-5 !pb-0 lg:pt-10 lg:pb-10 overflow-hidden flex flex-col justify-center">
-					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/50 via-gray-50 to-white"></div>
+				<section className="relative pt-5 pb-12 lg:pt-16 lg:pb-20 overflow-hidden flex flex-col justify-center min-h-[85vh]">
+					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/70 via-gray-50 to-white"></div>
+                    {/* Elementos decorativos de fundo */}
+                    <div className="absolute top-20 left-[-5%] w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[8000ms]"></div>
+                    <div className="absolute bottom-20 right-[-5%] w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[10000ms]"></div>
 
-					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-						<div className="grid lg:grid-cols-2 gap-2 items-center">
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+						<div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 							{/* Texto Hero */}
-							<div className="text-center lg:text-left">
-								<div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-									<Star size={14} fill="currentColor" /> Tecnologia Avançada de Recursos
-								</div>
-
-								<h1 className="text-5xl lg:text-7xl font-black text-gray-900 tracking-tight mb-6 leading-tight animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-									Gere seu Recurso de Multa de Trânsito com{" "}
-									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-4 lg:pt-0">
+								<h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight mb-4 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700">
+									Cancele sua multa com <br className="hidden lg:block" />
+									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
 										Inteligência Artificial
 									</span>
 								</h1>
 
-								<p className="text-xl text-gray-600 mb-8 leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
-									Não gaste R$ 400,00 com advogados. Nossa IA analisa seu caso gratuitamente e gera
-									um <strong>recurso administrativo profissional</strong>, fundamentado na lei,
-									completo e <strong>pronto para assinatura e protocolo</strong>.
+								<p className="text-lg sm:text-xl text-gray-600 mb-6 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
+									Pare de perder dinheiro e pontos na CNH. Nossa IA encontra <strong>falhas reais</strong> na sua autuação e gera uma defesa técnica profissional, pronta para protocolar, por <strong>apenas R$ 17,90</strong>.
 								</p>
 
-								<div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 mb-12 relative">
-									<div className="flex flex-col items-center lg:items-start gap-2">
-										<Link
-											to="/upload"
-											className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-4 px-8 rounded-xl shadow-xl shadow-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2">
-											<Upload size={24} />
-											Analisar Multa Grátis
-										</Link>
-										<span className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">
-											Serviço privado de análise e redação jurídica via IA
-										</span>
-									</div>
-									<div className="text-sm text-gray-600 font-medium relative">
-										<div className="flex items-center gap-1 justify-center lg:justify-start">
-											<CheckCircle size={16} className="text-green-500" /> Quase 500 multas
-											analisadas
-										</div>
-									</div>
-								</div>
+                                {/* Benefícios - CRO focado */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8 w-full max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
+                                    <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm">
+                                        <div className="bg-blue-100 p-1.5 rounded-lg text-blue-600"><Zap size={16} /></div>
+                                        <span className="text-sm font-bold text-gray-800">Pronto em 2 minutos</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm">
+                                        <div className="bg-green-100 p-1.5 rounded-lg text-green-600"><Shield size={16} /></div>
+                                        <span className="text-sm font-bold text-gray-800">Baseado no CTB</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm">
+                                        <div className="bg-indigo-100 p-1.5 rounded-lg text-indigo-600"><FileCheck size={16} /></div>
+                                        <span className="text-sm font-bold text-gray-800">PDF pronto para envio</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm">
+                                        <div className="bg-yellow-100 p-1.5 rounded-lg text-yellow-700"><CheckCircle size={16} /></div>
+                                        <span className="text-sm font-bold text-gray-800">Análise Inicial Grátis</span>
+                                    </div>
+                                </div>
 
-								{/* Trust Strip / Logos */}
-								{/* <div className="border-t border-gray-100 pt-8 animate-in fade-in delay-500">
-									<p className="text-sm text-gray-600 font-medium mb-4 uppercase tracking-wider">
-										Visto em / Tecnologia usada por:
-									</p>
-									<div className="flex flex-wrap justify-center lg:justify-start gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-										{/* Placeholders de Logos - Substitua por logos reais
-										<div className="font-black text-xl text-gray-800">G1</div>
-										<div className="font-black text-xl text-gray-800">QUATRO RODAS</div>
-										<div className="font-black text-xl text-gray-800">UOL</div>
-										<div className="font-black text-xl text-gray-800">ESTADÃO</div>
-									</div>
-								</div>  */}
+								<div className="flex flex-col items-center lg:items-start w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
+                                    <Link
+                                        to="/upload"
+                                        className="group relative w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-black py-4 px-10 rounded-2xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] active:translate-y-0 flex items-center justify-center gap-3 overflow-hidden"
+                                    >
+                                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+                                        <Upload size={24} className="relative z-10 group-hover:-translate-y-1 transition-transform" />
+                                        <span className="relative z-10">Analisar Minha Multa Grátis</span>
+                                    </Link>
+                                    
+                                    <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
+                                        <div className="flex items-center gap-0.5 text-yellow-400">
+                                            <Star size={14} fill="currentColor" />
+                                            <Star size={14} fill="currentColor" />
+                                            <Star size={14} fill="currentColor" />
+                                            <Star size={14} fill="currentColor" />
+                                            <Star size={14} fill="currentColor" />
+                                        </div>
+                                        <span className="text-xs">+5.000 motoristas ajudados</span>
+                                    </div>
+								</div>
 							</div>
 
 							{/* Imagem Hero */}
-							<div className="block relative animate-in fade-in slide-in-from-right-8 duration-1500 delay-500">
-								<div className="absolute inset-0 bg-blue-600 rounded-[2.5rem] rotate-3 opacity-10 blur-3xl -z-10"></div>
-								<div className="relative rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl">
+							<div className="lg:col-span-5 relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-400 mt-4 lg:mt-0 w-full max-w-[300px] sm:max-w-sm mx-auto lg:max-w-none flex justify-center lg:justify-end">
+                                {/* Soft backdrop for blending */}
+								<div className="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full opacity-20 blur-[80px] -z-10 transform scale-110"></div>
+								
+                                <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500">
 									<img
 										src="/imagemLanding.webp"
 										srcSet="/imagemLanding-SM.webp 600w, /imagemLanding.webp 1200w"
@@ -127,50 +134,16 @@ const Home = () => {
 										width="1200"
 										height="1600"
 										alt="Motorista segurando celular com recurso procedente"
-										className="w-full h-full object-cover"
+										className="w-full h-auto object-cover max-h-[500px] lg:max-h-[600px] rounded-[2.5rem] mix-blend-multiply"
 										fetchpriority="high"
 									/>
-									{/* Float Card 1 */}
-									<div className="hidden sm:flex absolute top-10 left-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 items-center gap-3 animate-bounce duration-[9000ms]">
-										<div className="bg-green-100 p-2 rounded-full text-green-600">
-											<CheckCircle size={20} />
-										</div>
-										<div>
-											<p className="font-bold text-gray-900 text-sm">Recurso Deferido</p>
-											<p className="text-xs text-gray-600">Economia média de R$ 293,47</p>
-										</div>
-									</div>
-									{/* Float Card 2 */}
-									<div className="hidden sm:flex absolute bottom-10 right-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 items-center gap-3 animate-pulse">
-										<div className="bg-blue-100 p-2 rounded-full text-blue-600">
-											<FileText size={20} />
-										</div>
-										<div>
-											<p className="font-bold text-gray-900 text-sm">PDF Gerado</p>
-											<p className="text-xs text-gray-600">Pronto em 2 minutos</p>
-										</div>
-									</div>
 								</div>
-							</div>
-						</div>
-
-						<div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-600 animate-in fade-in duration-1000 delay-500 lg:hidden">
-							<div className="flex items-center gap-2">
-								<CheckCircle size={16} className="text-green-500" /> Baseado no CTB e Normativas
-								CONTRAN
-							</div>
-							<div className="flex items-center gap-2">
-								<CheckCircle size={16} className="text-green-500" /> Análise de Viabilidade Imediata
-							</div>
-							<div className="flex items-center gap-2">
-								<CheckCircle size={16} className="text-green-500" /> Documento em PDF Pronto para
-								Protocolo
 							</div>
 						</div>
 					</div>
 
 					{/* Global Scroll Indicator - Absolute at bottom of hero fold */}
-					<div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+					<div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
 						<ScrollArrow className="" />
 					</div>
 				</section>
