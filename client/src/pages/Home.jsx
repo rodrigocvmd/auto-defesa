@@ -10,6 +10,7 @@ import {
 	DollarSign,
 	FileCheck,
 	Star,
+	StarHalf,
 	ChevronDown,
 	ChevronRight,
 	Scale,
@@ -57,76 +58,103 @@ const Home = () => {
 			/>
 			<div className="flex flex-col gap-12 pb-8">
 				{/* HERO SECTION */}
-				<section className="relative pt-5 pb-12 lg:pt-16 lg:pb-20 overflow-hidden flex flex-col justify-center min-h-[85vh]">
+				<section className="relative pt-1 pb-12 lg:pt-4 lg:pb-20 overflow-hidden flex flex-col justify-center min-h-[85vh]">
 					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/70 via-gray-50 to-white"></div>
-                    {/* Elementos decorativos de fundo */}
-                    <div className="absolute top-20 left-[-5%] w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[8000ms]"></div>
-                    <div className="absolute bottom-20 right-[-5%] w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[10000ms]"></div>
+					{/* Elementos decorativos de fundo */}
+					<div className="absolute top-20 left-[-5%] w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[8000ms]"></div>
+					<div className="absolute bottom-20 right-[-5%] w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[10000ms]"></div>
 
 					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
 						<div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 							{/* Texto Hero */}
 							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-4 lg:pt-0">
-								<h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight mb-4 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700">
+								<h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight mb-4 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center">
 									Cancele sua multa com <br className="hidden lg:block" />
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
 										Inteligência Artificial
 									</span>
 								</h1>
 
-								<p className="text-lg sm:text-xl text-gray-600 mb-6 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-									Pare de perder dinheiro e pontos na CNH. Nossa IA encontra <strong>falhas reais</strong> na sua autuação e gera uma defesa técnica profissional, pronta para protocolar, por <strong>apenas R$ 17,90</strong>.
+								<p className="text-lg sm:text-xl text-gray-600 mb-6 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center">
+									Pare de perder dinheiro e pontos na CNH. Nossa IA encontra{" "}
+									<strong>falhas reais</strong> na sua autuação e gera uma defesa técnica
+									profissional, pronta para protocolar, por <strong>apenas R$ 17,90</strong>.
 								</p>
 
-                                {/* Benefícios - CRO focado */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8 w-full max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
-                                    <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm">
-                                        <div className="bg-blue-100 p-1.5 rounded-lg text-blue-600"><Zap size={16} /></div>
-                                        <span className="text-sm font-bold text-gray-800">Pronto em 2 minutos</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm">
-                                        <div className="bg-green-100 p-1.5 rounded-lg text-green-600"><Shield size={16} /></div>
-                                        <span className="text-sm font-bold text-gray-800">Baseado no CTB</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm">
-                                        <div className="bg-indigo-100 p-1.5 rounded-lg text-indigo-600"><FileCheck size={16} /></div>
-                                        <span className="text-sm font-bold text-gray-800">PDF pronto para envio</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm">
-                                        <div className="bg-yellow-100 p-1.5 rounded-lg text-yellow-700"><CheckCircle size={16} /></div>
-                                        <span className="text-sm font-bold text-gray-800">Análise Inicial Grátis</span>
-                                    </div>
-                                </div>
+								{/* Benefícios - CRO focado */}
+								<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8 w-full max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
+									<div className="flex flex-row items-center justify-start text-left gap-4 bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100 shadow-sm transition-all">
+										<div className="bg-blue-100 p-2 rounded-lg text-blue-600 shrink-0">
+											<Zap size={16} />
+										</div>
+										<span className="text-sm font-bold text-gray-800">Pronto em 2 minutos</span>
+									</div>
+									<div className="flex flex-row items-center justify-start text-left gap-4 bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100 shadow-sm transition-all">
+										<div className="bg-green-100 p-2 rounded-lg text-green-600 shrink-0">
+											<Shield size={16} />
+										</div>
+										<span className="text-sm font-bold text-gray-800">Baseado no CTB</span>
+									</div>
+									<div className="flex flex-row items-center justify-start text-left gap-4 bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100 shadow-sm transition-all">
+										<div className="bg-indigo-100 p-2 rounded-lg text-indigo-600 shrink-0">
+											<FileCheck size={16} />
+										</div>
+										<span className="text-sm font-bold text-gray-800">PDF pronto para envio</span>
+									</div>
+									<div className="flex flex-row items-center justify-start text-left gap-4 bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100 shadow-sm transition-all">
+										<div className="bg-yellow-100 p-2 rounded-lg text-yellow-700 shrink-0">
+											<CheckCircle size={16} />
+										</div>
+										<span className="text-sm font-bold text-gray-800">Análise Inicial Grátis</span>
+									</div>
+								</div>
 
-								<div className="flex flex-col items-center lg:items-start w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
-                                    <Link
-                                        to="/upload"
-                                        className="group relative w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-black py-4 px-10 rounded-2xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] active:translate-y-0 flex items-center justify-center gap-3 overflow-hidden"
-                                    >
-                                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-                                        <Upload size={24} className="relative z-10 group-hover:-translate-y-1 transition-transform" />
-                                        <span className="relative z-10">Analisar Minha Multa Grátis</span>
-                                    </Link>
-                                    
-                                    <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
-                                        <div className="flex items-center gap-0.5 text-yellow-400">
-                                            <Star size={14} fill="currentColor" />
-                                            <Star size={14} fill="currentColor" />
-                                            <Star size={14} fill="currentColor" />
-                                            <Star size={14} fill="currentColor" />
-                                            <Star size={14} fill="currentColor" />
-                                        </div>
-                                        <span className="text-xs">+5.000 motoristas ajudados</span>
-                                    </div>
+								<div className="flex flex-col items-center lg:items-center w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
+									<Link
+										to="/upload"
+										className="group relative w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-black py-4 px-10 rounded-2xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] active:translate-y-0 flex items-center justify-center gap-3 overflow-hidden">
+										<div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+										<Upload
+											size={24}
+											className="relative z-10 group-hover:-translate-y-1 transition-transform"
+										/>
+										<span className="relative z-10">Analisar Minha Multa Grátis</span>
+									</Link>
+
+									<div className="flex items-center justify-center gap-8 sm:gap-12 text-gray-500 font-medium w-full">
+										<div className="flex flex-col items-center gap-1">
+											<div className="flex items-center gap-0.5 text-yellow-400 mb-1">
+												<Star size={16} fill="currentColor" />
+												<Star size={16} fill="currentColor" />
+												<Star size={16} fill="currentColor" />
+												<Star size={16} fill="currentColor" />
+												<StarHalf size={16} fill="currentColor" />
+											</div>
+											<span className="text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-400">
+												4.7 de avaliação geral
+											</span>
+										</div>
+
+										<div className="flex flex-col items-center gap-1">
+											<div className="flex items-center -space-x-1 mb-1 text-blue-600">
+												<FileText size={18} className="drop-shadow-sm" />
+												<FileText size={18} className="drop-shadow-sm translate-y-0.5" />
+												<FileText size={18} className="drop-shadow-sm translate-y-1" />
+											</div>
+											<span className="text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-400">
+												+500 recursos gerados
+											</span>
+										</div>
+									</div>
 								</div>
 							</div>
 
 							{/* Imagem Hero */}
 							<div className="lg:col-span-5 relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-400 mt-4 lg:mt-0 w-full max-w-[300px] sm:max-w-sm mx-auto lg:max-w-none flex justify-center lg:justify-end">
-                                {/* Soft backdrop for blending */}
+								{/* Soft backdrop for blending */}
 								<div className="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full opacity-20 blur-[80px] -z-10 transform scale-110"></div>
-								
-                                <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500">
+
+								<div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500">
 									<img
 										src="/imagemLanding.webp"
 										srcSet="/imagemLanding-SM.webp 600w, /imagemLanding.webp 1200w"
