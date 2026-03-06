@@ -143,8 +143,8 @@ export const AnalysisStep = ({
 						{isTestMode ? (
 							<button
 								onClick={handleReturnToRealData}
-								className="w-full bg-white text-gray-900 font-black py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2 mb-3">
-								Preencher Meus Dados Reais <PenTool size={20} />
+								className="w-full bg-white text-gray-900 font-black py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2 mb-3 px-1 md:px-0">
+								Preencher Meus Dados Reais <PenTool size={20} className="hidden sm:block" />
 							</button>
 						) : !currentUser ? (
 							<div className="flex flex-col gap-3">
@@ -240,7 +240,9 @@ export const AnalysisStep = ({
 								className="text-blue-200 text-xs uppercase font-bold tracking-widest mb-1">
 								Seu Saldo Atual
 							</span>
-							<div id="creditosAtual" className="bg-white/20 px-4 py-1 rounded-full text-white font-black text-lg flex items-center gap-2">
+							<div
+								id="creditosAtual"
+								className="bg-white/20 px-4 py-1 rounded-full text-white font-black text-lg flex items-center gap-2">
 								{userData ? userData.credits : <Loader2 size={14} className="animate-spin" />}{" "}
 								<span className="text-sm font-normal opacity-80">
 									{userData?.credits <= 1 ? "crédito" : "créditos"}
