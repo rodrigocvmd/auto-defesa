@@ -65,7 +65,7 @@ export const FormStep = ({
 	};
 
 	return (
-		<div className="max-w-5xl mx-auto py-8">
+		<div className="max-w-5xl mx-5 md:mx-auto py-8">
 			{showLoginPrompt && (
 				<LoginPromptModal
 					onClose={() => setShowLoginPrompt(false)}

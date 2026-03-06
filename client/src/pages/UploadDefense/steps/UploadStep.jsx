@@ -67,7 +67,7 @@ export const UploadStep = ({
 					<ArrowLeft size={20} className="mr-1" /> Início
 				</Link>
 				<h1 className="text-3xl font-bold text-gray-900">Análise de Documento</h1>
-				<p className="text-gray-600 mt-2 mb-8">
+				<p className="text-gray-600 mt-2 mb-8 mx-4 md:mx-auto">
 					Envie a foto da <strong>Notificação de Autuação</strong>, <strong>Multa/Boleto</strong> ou
 					da <strong>Decisão que negou</strong> seu recurso anterior.
 					<br />A IA identificará a fase e preencherá os dados automaticamente.

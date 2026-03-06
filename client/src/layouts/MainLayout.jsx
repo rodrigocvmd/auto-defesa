@@ -370,7 +370,7 @@ const MainLayout = ({ children }) => {
 						</Link>
 					</div>
 
-					<p className="text-xs text-gray-600 max-w-4xl text-center mb-1 leading-relaxed">
+					<p className="text-xs text-gray-600 max-w-4xl mx-3 text-center mb-1 leading-relaxed">
 						<strong>Aviso Legal:</strong> O Auto Defesa AI é um assistente jurídico automatizado
 						desenvolvido pela iniciativa privada. Não representamos o DETRAN, CONTRAN ou qualquer
 						órgão público. O uso da plataforma serve para auxiliar na elaboração de defesas

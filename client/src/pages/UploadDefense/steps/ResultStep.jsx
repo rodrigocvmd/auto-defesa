@@ -194,7 +194,7 @@ export const ResultStep = ({
 				</div>
 			)}
 
-			<div className="sticky top-20 z-40 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4">
+			<div className="sticky top-20 z-40 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4 mx-2 md:mx-0">
 				<div>
 					<h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
 						<CheckCircle className="text-green-500" /> Revisão Final
@@ -228,7 +228,7 @@ export const ResultStep = ({
 			<div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 				<div
 					className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
-					<div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r-lg flex gap-3 items-start">
+					<div id="avisoPreview" className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 mx-2 md:mx-0 !rounded-md flex gap-3 items-start">
 						<AlertCircle className="text-yellow-600 shrink-0 mt-0.5" size={20} />
 						<div>
 							<h4 className="font-bold text-yellow-800 text-sm">Modo de Conferência e Edição</h4>
@@ -236,14 +236,10 @@ export const ResultStep = ({
 								Leia todo o conteúdo. Se, porventura, encontrar nomes errados, datas incorretas ou
 								argumentos indesejados, use o botão <strong>"Solicitar Correção via IA"</strong>.
 							</p>
-							<p className="text-yellow-700 text-sm mt-1">
-								Está seção é apenas uma pré-viusalização do documento final para verificação do
-								conteúdo. <strong>A formatação final será aplicada ao baixar o PDF.</strong>
-							</p>
 						</div>
 					</div>
 
-					<div className="flex justify-center bg-gray-200/80 py-8 rounded-xl border border-gray-200 overflow-hidden relative min-h-screen">
+					<div className="flex justify-center bg-gray-200/80 py-8 rounded-xl mx-2 md:mx-0 border border-gray-200 overflow-hidden relative min-h-screen">
 						<div id="defense-preview-content" className="print-content">
 							<style>{`
                                 /* Estilos do Documento A4 na Tela */

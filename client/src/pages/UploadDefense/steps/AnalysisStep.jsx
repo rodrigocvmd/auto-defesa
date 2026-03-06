@@ -163,8 +163,8 @@ export const AnalysisStep = ({
 										);
 										navigate("/register?redirect=/upload");
 									}}
-									className="w-full bg-white text-blue-600 font-black py-4 rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2">
-									Salvar Análise e Criar Conta <User size={20} />
+									className="salvarECriarConta w-full bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2">
+									Salvar Análise e Criar Conta <User size={20} className="hidden sm:block" />
 								</button>
 								<button
 									onClick={() => {
@@ -186,14 +186,14 @@ export const AnalysisStep = ({
 							<button
 								onClick={handleUnlockDefense}
 								disabled={loading}
-								className={`w-full bg-white text-blue-600 font-black py-4 rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2 ${loading ? "opacity-75 cursor-not-allowed" : ""}`}>
+								className={`salvarECriarConta w-full bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2 ${loading ? "opacity-75 cursor-not-allowed" : ""}`}>
 								{loading ? (
 									<>
 										<Loader2 className="animate-spin" size={20} /> Gerando Defesa...
 									</>
 								) : (
 									<>
-										Utilizar 1 Crédito <FileText size={20} />
+										Utilizar 1 Crédito <FileText size={20} className="hidden sm:block" />
 									</>
 								)}
 							</button>
@@ -223,8 +223,8 @@ export const AnalysisStep = ({
 										);
 										navigate("/pricing?redirect=/upload");
 									}}
-									className="w-full bg-white text-blue-600 font-black py-4 rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2">
-									Adquirir Créditos <Coins size={20} />
+									className="salvarECriarConta w-full bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2">
+									Adquirir Créditos <Coins size={20} className="hidden sm:block" />
 								</button>
 								<button
 									disabled
@@ -235,10 +235,12 @@ export const AnalysisStep = ({
 						)}
 
 						<div className="mt-4 flex flex-col items-center">
-							<span id="saldoAtualRecurso" className="text-blue-200 text-xs uppercase font-bold tracking-widest mb-1">
+							<span
+								id="saldoAtualRecurso"
+								className="text-blue-200 text-xs uppercase font-bold tracking-widest mb-1">
 								Seu Saldo Atual
 							</span>
-							<div className="bg-white/20 px-4 py-1 rounded-full text-white font-black text-lg flex items-center gap-2">
+							<div id="creditosAtual" className="bg-white/20 px-4 py-1 rounded-full text-white font-black text-lg flex items-center gap-2">
 								{userData ? userData.credits : <Loader2 size={14} className="animate-spin" />}{" "}
 								<span className="text-sm font-normal opacity-80">
 									{userData?.credits <= 1 ? "crédito" : "créditos"}

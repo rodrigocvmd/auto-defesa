@@ -6,7 +6,7 @@ export const PhaseSelectionStep = ({ setFormData, setShowHelpModal }) => {
 	const navigate = useNavigate();
 
 	return (
-		<div className="max-w-4xl mx-auto py-10">
+		<div className="max-w-4xl mx-4 md:mx-auto py-10">
 			<header className="mb-12 text-center">
 				<button
 					onClick={() => navigate("/upload")}
