@@ -21,7 +21,9 @@ import {
 	AlertTriangle,
 	Trash2,
     Check,
-    X
+    X,
+    Star,
+    MessageSquare
 } from "lucide-react";
 import { updateProfile, updatePassword } from "firebase/auth";
 import {
@@ -39,6 +41,7 @@ import { api } from "../services/api";
 import { formatDefenseToHtml } from "../utils/textToHtml";
 import { pdf } from "@react-pdf/renderer";
 import DefenseDocument from "../components/DefensePDF";
+import { FeedbackModal } from "../components/FeedbackModal";
 
 export default function Profile() {
 	const { currentUser, userData, updateUserEmail, deleteUserAccount, checkEmailExists, logout } = useAuth();
@@ -50,6 +53,7 @@ export default function Profile() {
 	const [message, setMessage] = useState({ type: "", content: "" });
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 	const [selectedDefense, setSelectedDefense] = useState(null);
 
 	// Estados do Formulário de Perfil
@@ -380,6 +384,35 @@ export default function Profile() {
 						}`}>
 						<Shield size={18} /> Dados e Segurança
 					</button>
+
+					{/* Botão de Avaliação */}
+					<div className="relative group flex justify-center">
+						<button
+							disabled={defenses.length === 0 || userData?.hasGivenFeedback}
+							onClick={() => setShowFeedbackModal(true)}
+							className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-all justify-center border ${
+								userData?.hasGivenFeedback
+									? "bg-green-50 text-green-600 border-green-200 cursor-default opacity-80"
+									: defenses.length === 0
+									? "bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed"
+									: "bg-white text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 hover:border-yellow-200"
+							}`}>
+							{userData?.hasGivenFeedback ? (
+								<>
+									<Check size={18} /> Avaliação realizada
+								</>
+							) : (
+								<>
+									<Star size={18} className={defenses.length > 0 ? "text-yellow-500 fill-yellow-500" : ""} /> Avaliar serviço
+								</>
+							)}
+						</button>
+						{defenses.length === 0 && !userData?.hasGivenFeedback && (
+							<div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-gray-800 text-white text-[10px] p-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-center">
+								Disponível após gerar seu primeiro recurso.
+							</div>
+						)}
+					</div>
 				</div>
 
 				{/* Conteúdo das Abas */}
@@ -671,6 +704,10 @@ export default function Profile() {
                     btnText="Fechar"
                     onBtnClick={() => setShowSuccessModal(false)}
                 />
+            )}
+
+            {showFeedbackModal && (
+                <FeedbackModal onClose={() => setShowFeedbackModal(false)} />
             )}
 		</MainLayout>
 	);
