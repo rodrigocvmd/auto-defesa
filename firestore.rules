@@ -22,5 +22,13 @@ service cloud.firestore {
     match /infracoes/{infracaoId} {
       allow get: if true;
     }
+
+    // Regra para a coleção 'feedbacks'
+    match /feedbacks/{feedbackId} {
+      // Permite que qualquer pessoa (logada ou não) envie feedback
+      allow create: if true;
+      // Impede leitura, atualização ou exclusão pelo cliente
+      allow read, update, delete: if false;
+    }
   }
 }
