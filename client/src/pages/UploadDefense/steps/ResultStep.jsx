@@ -261,14 +261,19 @@ export const ResultStep = ({
                                     display: none !important;
                                 }
                                 
-                                /* O Papel A4 */
+                                /* O Papel A4 - Responsivo */
                                 .ql-editor {
-                                    width: 210mm;
+                                    width: 100%;
+                                    max-width: 210mm;
                                     min-height: 297mm;
                                     background-color: white;
                                     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
                                     margin: 0 auto;
                                     padding: 20mm !important; /* Margens A4 Padrão */
+                                    box-sizing: border-box !important;
+                                    overflow-wrap: break-word !important;
+                                    word-wrap: break-word !important;
+                                    word-break: break-word !important;
                                     
                                     /* Tipografia Final */
                                     font-family: 'Times New Roman', Times, serif !important;
@@ -277,13 +282,27 @@ export const ResultStep = ({
                                     color: #000 !important;
                                 }
 
-                                /* Ajustes para Mobile - Garantir que caiba na tela */
+                                /* Ajustes dinâmicos para telas menores que um A4 */
                                 @media (max-width: 210mm) {
                                     .ql-editor {
-                                        width: 100% !important;
-                                        min-height: auto !important;
-                                        padding: 15px !important;
+                                        padding: 10mm !important; /* Reduz margens em tablets */
                                         box-shadow: none !important;
+                                    }
+                                }
+
+                                /* Ajustes para Mobile */
+                                @media (max-width: 480px) {
+                                    .ql-editor {
+                                        padding: 20px !important; /* Margens equilibradas para mobile */
+                                        font-size: 11pt !important;
+                                    }
+                                }
+
+                                /* Ajustes para Mobile Ultra-estreito (abaixo de 380px) */
+                                @media (max-width: 380px) {
+                                    .ql-editor {
+                                        padding: 12px !important; /* Margens mínimas */
+                                        font-size: 10.5pt !important; /* Fonte menor para evitar quebra de linha excessiva */
                                     }
                                 }
 
