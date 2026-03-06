@@ -243,9 +243,9 @@ export const AnalysisStep = ({
 							<div
 								id="creditosAtual"
 								className="bg-white/20 px-4 py-1 rounded-full text-white font-black text-lg flex items-center gap-2">
-								{userData ? userData.credits : <Loader2 size={14} className="animate-spin" />}{" "}
+								{userData ? userData.credits : 0}{" "}
 								<span className="text-sm font-normal opacity-80">
-									{userData?.credits <= 1 ? "crédito" : "créditos"}
+									{!userData || userData?.credits <= 1 ? "crédito" : "créditos"}
 								</span>
 							</div>
 						</div>
