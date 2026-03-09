@@ -186,8 +186,18 @@ const Home = () => {
 					</div>
 
 					{/* Global Scroll Indicator - Absolute at bottom of hero fold */}
-					<div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
-						<ScrollArrow className="" />
+					<div
+						className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-30 transition-all duration-700 pointer-events-none ${
+							showScrollIndicator ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+						}`}>
+						<div className="flex flex-col items-center gap-1">
+							<span className="text-[10px] uppercase tracking-[0.2em] font-bold text-blue-400/60 mb-1">
+								Role para ver mais
+							</span>
+							<div className="animate-bounce">
+								<ChevronDown size={28} className="text-blue-500/50 stroke-[1.5px]" />
+							</div>
+						</div>
 					</div>
 				</section>
 
