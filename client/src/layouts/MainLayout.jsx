@@ -39,7 +39,9 @@ const MainLayout = ({ children }) => {
 		<div className="min-h-screen bg-gray-50 flex flex-col font-sans">
 			{/* Barra de Aviso Governamental */}
 			{isWarningVisible && (
-				<div id="infoWarning" className="infoWarning bg-gray-100 py-2 border-b border-gray-100 animate-in fade-in slide-in-from-top duration-300">
+				<div
+					id="infoWarning"
+					className="infoWarning bg-gray-100 py-2 border-b border-gray-100 animate-in fade-in slide-in-from-top duration-300">
 					<p className="text-[10px] md:text-xs text-gray-500 text-center px-4 leading-tight">
 						Auto Defesa é uma plataforma de tecnologia privada (SaaS) e não possui vínculo com o
 						DETRAN ou órgãos governamentais.
@@ -374,7 +376,7 @@ const MainLayout = ({ children }) => {
 			<VerificationBanner />
 
 			{/* Main Content Area */}
-			<main className="flex-1 w-full max-w-8xl mx-auto px-0 sm:px-6 lg:px-1 py-0">
+			<main className="flex-1 w-full max-w-8xl mx-auto px-0 py-0">
 				{children}
 				<footer className="border-t border-gray-100 py-6 mt-6 flex flex-col items-center">
 					<p className="text-md text-gray-600 mb-4">

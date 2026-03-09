@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
 	Upload,
@@ -23,31 +23,6 @@ import Testimonials from "../components/Testimonials";
 import ScrollReveal from "../components/ScrollReveal";
 
 const Home = () => {
-	const [showScrollIndicator, setShowScrollIndicator] = useState(() => {
-		// Inicializa baseado no sessionStorage para persistir o "já scrollou" nesta sessão
-		return !sessionStorage.getItem("home_has_scrolled");
-	});
-
-	useEffect(() => {
-		if (!showScrollIndicator) return;
-
-		const handleScroll = () => {
-			if (window.scrollY > 100) {
-				setShowScrollIndicator(false);
-				sessionStorage.setItem("home_has_scrolled", "true");
-			}
-		};
-
-		window.addEventListener("scroll", handleScroll, { passive: true });
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, [showScrollIndicator]);
-	const ScrollArrow = ({ className }) => (
-		<div
-			className={`flex flex-col items-center gap-1 animate-bounce transition-opacity duration-500 ${showScrollIndicator ? "opacity-100" : "opacity-0"} ${className}`}>
-			<ChevronDown size={24} className="text-blue-400" />
-		</div>
-	);
-
 	return (
 		<MainLayout>
 			<SEO
@@ -56,19 +31,19 @@ const Home = () => {
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online"
 				isHome={true}
 			/>
-			<div className="flex flex-col gap-12 pb-8">
+			<div className="flex flex-col gap-8 md:gap-12 pb-8">
 				{/* HERO SECTION */}
-				<section className="relative pt-1 pb-12 lg:pt-4 lg:pb-20 overflow-hidden flex flex-col justify-center min-h-[85vh]">
+				<section className="relative pt-1 mb-6 md:mb-0 overflow-hidden flex flex-col justify-center">
 					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/70 via-gray-50 to-white"></div>
 					{/* Elementos decorativos de fundo */}
 					<div className="absolute top-20 left-[-5%] w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[8000ms]"></div>
 					<div className="absolute bottom-20 right-[-5%] w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[10000ms]"></div>
 
-					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-						<div className="grid lg:grid-cols-12 gap-8 items-center">
+					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 mt-3">
+						<div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-center md:mt-4">
 							{/* Texto Hero */}
-							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-4 lg:pt-0">
-								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-4 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
+							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0">
+								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-8 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
 									Elabore um{" "}
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
 										Recurso
@@ -79,56 +54,44 @@ const Home = () => {
 									</span>
 								</h1>
 
-								<p className="text-md sm:text-xl text-gray-600 mb-6 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center">
-									Não perca mais dinheiro ou pontos na sua CNH. Nossa IA encontra{" "}
-									<strong>falhas reais</strong> e <strong>argumentos viáveis</strong> na sua
-									autuação e elabora uma <strong>defesa técnica</strong> profissional, pronta para
-									protocolar.
+								<p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
+									Não perca mais dinheiro ou pontos na sua CNH. Em <strong>2 minutos</strong>, nossa
+									IA encontra <strong>falhas reais</strong> e <strong>argumentos viáveis</strong> na
+									sua autuação para elaborar uma <strong>Defesa Técnica Profissional</strong>{" "}
+									totalmente pronta. Você apenas <strong>assina e protocola</strong>.
 								</p>
 
-								{/* Benefícios - CRO focado */}
-								<div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 w-full max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200 mx-auto px-4 sm:px-0">
-									<div className="infoCards flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm transition-all">
-										<div className="bg-blue-100 p-2 rounded-lg text-blue-600 shrink-0">
-											<Zap size={16} />
-										</div>
-										<span className="text-[13px] md:text-md font-bold text-gray-800 leading-tight">
-											Disponível em <br className="max-sm:block hidden" /> 2 minutos
-										</span>
-									</div>
-									<div className="infoCards flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm transition-all text-lg">
-										<div className="bg-green-100 p-2 rounded-lg text-green-600 shrink-0">
-											<Shield size={16} />
-										</div>
-										<span className="text-[13px] md:text-md font-bold text-gray-800 leading-tight">
-											Código de Trânsito
-											<br className="max-sm:block hidden" /> Atualizado
-										</span>
-									</div>
-
-									<div className="infoCards flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm transition-all text-lg">
-										<div className="bg-yellow-100 p-2 rounded-lg text-yellow-700 shrink-0">
-											<CheckCircle size={16} />
-										</div>
-										<span className="text-[13px] md:text-md font-bold text-gray-800 leading-tight">
-											Análise <br className="max-sm:block hidden" /> Grátis da Infração
-										</span>
-									</div>
-									<div className="infoCards flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm transition-all text-lg">
-										<div className="bg-indigo-100 p-2 rounded-lg text-indigo-600 shrink-0">
-											<FileCheck size={16} />
-										</div>
-										<span className="text-[13px] md:text-md font-bold text-gray-800 leading-tight">
-											Recurso Pronto <br className="max-sm:block hidden" /> para Protocolo
-										</span>
-									</div>
+								{/* Benefícios - Narrativa Estilizada */}
+								<div>
+									{/* <div className="relative py-5 px-6 bg-gradient-to-r from-blue-50/50 via-white/50 to-indigo-50/50 rounded-[2rem] border border-blue-100/30 shadow-sm">
+										<p className="text-gray-600 font-medium leading-relaxed text-sm md:text-base">
+											<span className="text-blue-600 font-black inline-flex items-center gap-1">
+												<Zap size={18} /> Em 2 minutos
+											</span>
+											, sua{" "}
+											<span className="text-indigo-600 font-black inline-flex items-center gap-1">
+												<CheckCircle size={18} /> Análise Gratuita
+											</span>{" "}
+											se torna um{" "}
+											<span className="text-blue-700 font-black inline-flex items-center gap-1">
+												<FileCheck size={18} /> Recurso Pronto
+											</span>{" "}
+											totalmente baseado no{" "}
+											<span className="text-indigo-700 font-black inline-flex items-center gap-1">
+												<Shield size={18} /> CTB Atualizado
+											</span>
+											.
+										</p>
+									</div> */}
 								</div>
 
 								<div className="flex flex-col items-center lg:items-center w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
 									<Link
 										to="/upload"
-										className="group relative w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-black py-4 px-10 rounded-2xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] active:translate-y-0 flex items-center justify-center gap-3 overflow-hidden">
-										<div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+										className="group relative w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-black py-4 px-6 rounded-2xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] active:translate-y-0 flex items-center justify-center gap-3 overflow-hidden">
+										{/* Shimmer Effect */}
+										<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
+										<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
 										<Upload
 											size={24}
 											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
@@ -136,7 +99,7 @@ const Home = () => {
 										<span className="relative z-10">Analisar Multa Gratuitamente</span>
 									</Link>
 
-									<div className="flex items-center justify-center gap-8 sm:gap-12 text-gray-500 font-medium w-full mt-4">
+									<div className="flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
 											<div className="flex items-center gap-0.5 text-yellow-400 mb-1">
 												<Star size={16} fill="currentColor" />
@@ -146,7 +109,8 @@ const Home = () => {
 												<StarHalf size={16} fill="currentColor" />
 											</div>
 											<span className="text-[13px] md:text-md uppercase tracking-wider font-bold text-gray-400">
-												4.7 de avaliação geral
+												4.7 <br />
+												avaliação geral
 											</span>
 										</div>
 
@@ -156,8 +120,10 @@ const Home = () => {
 												<FileText size={18} className="drop-shadow-sm translate-y-0.5" />
 												<FileText size={18} className="drop-shadow-sm translate-y-1" />
 											</div>
-											<span className="text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-400">
-												+500 recursos gerados
+											<span className="text-[13px] sm:text-xs uppercase tracking-wider font-bold text-gray-400">
+												+500
+												<br />
+												recursos gerados
 											</span>
 										</div>
 									</div>
@@ -165,7 +131,7 @@ const Home = () => {
 							</div>
 
 							{/* Imagem Hero */}
-							<div className="lg:col-span-5 relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-400 mt-4 lg:mt-0 w-full max-w-[300px] sm:max-w-sm mx-auto lg:max-w-none flex justify-center lg:justify-end">
+							<div className="hidden md:flex lg:col-span-5 relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-400 mt-4 lg:mt-0 w-full max-w-[300px] sm:max-w-sm mx-auto lg:max-w-none justify-center lg:justify-end">
 								{/* Soft backdrop for blending */}
 								<div className="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full opacity-20 blur-[80px] -z-10 transform scale-110"></div>
 
@@ -181,21 +147,6 @@ const Home = () => {
 										fetchpriority="high"
 									/>
 								</div>
-							</div>
-						</div>
-					</div>
-
-					{/* Global Scroll Indicator - Absolute at bottom of hero fold */}
-					<div
-						className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-30 transition-all duration-700 pointer-events-none ${
-							showScrollIndicator ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-						}`}>
-						<div className="flex flex-col items-center gap-1">
-							<span className="text-[10px] uppercase tracking-[0.2em] font-bold text-blue-400/60 mb-1">
-								Role para ver mais
-							</span>
-							<div className="animate-bounce">
-								<ChevronDown size={28} className="text-blue-500/50 stroke-[1.5px]" />
 							</div>
 						</div>
 					</div>
