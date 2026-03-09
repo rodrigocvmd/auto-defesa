@@ -79,7 +79,7 @@ const Home = () => {
 									</span>
 								</h1>
 
-								<p className="text-lg sm:text-xl text-gray-600 mb-6 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center">
+								<p className="text-md sm:text-xl text-gray-600 mb-6 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center">
 									Não perca mais dinheiro ou pontos na sua CNH. Nossa IA encontra{" "}
 									<strong>falhas reais</strong> e <strong>argumentos viáveis</strong> na sua
 									autuação e elabora uma <strong>defesa técnica</strong> profissional, pronta para
@@ -87,7 +87,7 @@ const Home = () => {
 								</p>
 
 								{/* Benefícios - CRO focado */}
-								<div className="grid grid-cols-2 gap-3 sm:gap-4 mb-10 w-full max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200 mx-auto px-4 sm:px-0">
+								<div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 w-full max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200 mx-auto px-4 sm:px-0">
 									<div className="infoCards flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm transition-all">
 										<div className="bg-blue-100 p-2 rounded-lg text-blue-600 shrink-0">
 											<Zap size={16} />

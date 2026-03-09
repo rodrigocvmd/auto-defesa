@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Shield, User, Menu, X, BookOpen } from "lucide-react";
+import { Shield, User, Menu, X, BookOpen, ChevronDown, ChevronUp, Info } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import VerificationBanner from "../components/VerificationBanner";
 import CookieBanner from "../components/CookieBanner";
+
+// Global flag to track if the warning has been shown during this session (until refresh)
+let hasShownWarningInitially = false;
 
 const MainLayout = ({ children }) => {
 	const location = useLocation();
@@ -11,7 +14,15 @@ const MainLayout = ({ children }) => {
 	const { currentUser } = useAuth();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
+	const [isWarningVisible, setIsWarningVisible] = useState(!hasShownWarningInitially);
 	const isHome = location.pathname === "/";
+
+	useEffect(() => {
+		// After the first render where it might be shown, mark it as shown so it's supressed on next route changes
+		if (!hasShownWarningInitially) {
+			hasShownWarningInitially = true;
+		}
+	}, []);
 
 	const data = new Date();
 
@@ -27,26 +38,40 @@ const MainLayout = ({ children }) => {
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col font-sans">
 			{/* Barra de Aviso Governamental */}
-			<div id="infoWarning" className="infoWarning bg-gray-100 py-2 border-b border-gray-100">
-				<p className="text-[10px] md:text-xs text-gray-500 text-center px-4 leading-tight">
-					Auto Defesa é uma plataforma de tecnologia privada (SaaS) e não possui vínculo com o
-					DETRAN ou órgãos governamentais.
-				</p>
-			</div>
+			{isWarningVisible && (
+				<div id="infoWarning" className="infoWarning bg-gray-100 py-2 border-b border-gray-100 animate-in fade-in slide-in-from-top duration-300">
+					<p className="text-[10px] md:text-xs text-gray-500 text-center px-4 leading-tight">
+						Auto Defesa é uma plataforma de tecnologia privada (SaaS) e não possui vínculo com o
+						DETRAN ou órgãos governamentais.
+					</p>
+				</div>
+			)}
 
 			{/* Header Responsivo */}
 			<header className="bg-white border-b border-gray-200 sticky top-0 z-50">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex justify-between items-center h-16">
-						{/* Logo Area */}
-						<Link to="/" className="flex items-center gap-2 group">
-							<div className="bg-blue-600 p-2 rounded-lg group-hover:bg-blue-700 transition-colors">
-								<Shield size={24} className="text-white" />
-							</div>
-							<span className="font-bold text-xl text-gray-900 tracking-tight">
-								Auto<span className="text-blue-600">Defesa</span>
-							</span>
-						</Link>
+						{/* Logo Area com Toggle */}
+						<div className="flex items-center gap-1 sm:gap-2">
+							<button
+								onClick={() => setIsWarningVisible(!isWarningVisible)}
+								className="text-gray-400 hover:text-blue-600 transition-colors px-1.5 py-1 flex flex-col items-center justify-center rounded-lg hover:bg-gray-50 group/toggle"
+								title={isWarningVisible ? "Esconder aviso legal" : "Mostrar aviso legal"}>
+								<div className="transition-transform duration-300">
+									{isWarningVisible ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+								</div>
+								<Info size={10} className="-mt-0.5 opacity-70 group-hover/toggle:opacity-100" />
+							</button>
+
+							<Link to="/" className="flex items-center gap-2 group">
+								<div className="bg-blue-600 p-2 rounded-lg group-hover:bg-blue-700 transition-colors">
+									<Shield size={24} className="text-white" />
+								</div>
+								<span className="font-bold text-xl text-gray-900 tracking-tight">
+									Auto<span className="text-blue-600">Defesa</span>
+								</span>
+							</Link>
+						</div>
 
 						{/* Desktop Navigation */}
 						<nav className="hidden min-[900px]:flex items-center gap-6">
