@@ -31,7 +31,7 @@ const Home = () => {
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online"
 				isHome={true}
 			/>
-			<div className="flex flex-col gap-8 md:gap-12 pb-8">
+			<div className="flex flex-col pb-8">
 				{/* HERO SECTION */}
 				<section className="relative pt-1 mb-6 md:mb-0 overflow-hidden flex flex-col justify-center">
 					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/70 via-gray-50 to-white"></div>
@@ -40,7 +40,7 @@ const Home = () => {
 					<div className="absolute bottom-20 right-[-5%] w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[10000ms]"></div>
 
 					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 mt-3">
-						<div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-center md:mt-4">
+						<div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-center md:mt-4 !pb-5 md:!pb-0">
 							{/* Texto Hero */}
 							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0">
 								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-8 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
@@ -131,7 +131,7 @@ const Home = () => {
 							</div>
 
 							{/* Imagem Hero */}
-							<div className="hidden md:flex lg:col-span-5 relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-400 mt-4 lg:mt-0 w-full max-w-[300px] sm:max-w-sm mx-auto lg:max-w-none justify-center lg:justify-end">
+							<div className="hidden md:block lg:col-span-5 relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-400 mt-4 lg:mt-0 w-full max-w-[300px] sm:max-w-sm mx-auto lg:max-w-none justify-center lg:justify-end">
 								{/* Soft backdrop for blending */}
 								<div className="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full opacity-20 blur-[80px] -z-10 transform scale-110"></div>
 
@@ -156,8 +156,10 @@ const Home = () => {
 				<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<ScrollReveal>
 						<div className="text-center mb-7">
-							<h2 className="text-3xl font-black text-gray-900 mb-4">Como funciona?</h2>
-							<p className="text-gray-600 max-w-3xl mx-auto">
+							<h2 className="text-3xl font-black text-gray-900 mt-2 mb-4 lg:mt-10">
+								Como funciona?
+							</h2>
+							<p className="text-gray-600 max-w-3xl mx-auto text-lg lg:text-xl">
 								Simplificamos a burocracia. Em poucos minutos você terá em mãos a defesa perfeita
 								para o seu caso.
 							</p>
@@ -210,7 +212,7 @@ const Home = () => {
 				</section>
 
 				{/* VALOR / COMPARATIVO */}
-				<section className="bg-gray-900 rounded-[3rem] py-20 mx-4 sm:mx-8 text-white relative overflow-hidden">
+				<section className="bg-gray-900 rounded-[3rem] py-20 mx-4 sm:mx-8 text-white relative overflow-hidden mt-5 lg:mt-16">
 					<div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
 						<div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-500 rounded-full blur-[100px]"></div>
 						<div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-500 rounded-full blur-[100px]"></div>
@@ -298,10 +300,10 @@ const Home = () => {
 				</section>
 
 				{/* FAQ SIMPLIFICADO */}
-				<section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+				<section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:mt-5">
 					<ScrollReveal>
-						<div className="text-center mb-12">
-							<h2 className="text-3xl font-black text-gray-900 mb-4">Dúvidas Frequentes</h2>
+						<div className="text-center mb-7">
+							<h2 className="text-3xl font-black text-gray-900 mt-12">Dúvidas Frequentes</h2>
 						</div>
 					</ScrollReveal>
 
