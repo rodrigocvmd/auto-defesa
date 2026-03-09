@@ -1,7 +1,16 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 
-const SEO = ({ title, description, keywords, canonical, type = "website", faq, isHome = false, structuredData: extraStructuredData }) => {
+const SEO = ({
+	title,
+	description,
+	keywords,
+	canonical,
+	type = "website",
+	faq,
+	isHome = false,
+	structuredData: extraStructuredData,
+}) => {
 	const siteName = "AutoDefesa";
 	// Descrição padrão focada na autoridade e especialidade
 	const defaultDescription =
@@ -10,9 +19,11 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq, i
 
 	const fullTitle = title ? `${title} | ${siteName}` : `${siteName} - Recorra de Multas com IA`;
 	const fullDescription = description || defaultDescription;
-	
-	const formattedCanonical = canonical 
-		? (canonical.startsWith("/") ? canonical : `/${canonical}`) 
+
+	const formattedCanonical = canonical
+		? canonical.startsWith("/")
+			? canonical
+			: `/${canonical}`
 		: "";
 	const fullUrl = `${baseUrl}${formattedCanonical}`;
 
@@ -98,13 +109,13 @@ const SEO = ({ title, description, keywords, canonical, type = "website", faq, i
 			<meta property="og:description" content={fullDescription} />
 			<meta property="og:url" content={fullUrl} />
 			<meta property="og:site_name" content={siteName} />
-			<meta property="og:image" content={`${baseUrl}/og-image.jpg`} />{" "}
-			{/* Ideal: Criar uma imagem og-image.jpg em public/ */}
+			<meta property="og:image" content={`${baseUrl}/og-image.png`} />{" "}
+			{/* Ideal: Criar uma imagem og-image.png em public/ */}
 			{/* Twitter */}
 			<meta name="twitter:card" content="summary_large_image" />
 			<meta name="twitter:title" content={fullTitle} />
 			<meta name="twitter:description" content={fullDescription} />
-			<meta name="twitter:image" content={`${baseUrl}/og-image.jpg`} />
+			<meta name="twitter:image" content={`${baseUrl}/og-image.png`} />
 			{/* Structured Data */}
 			<script type="application/ld+json">{JSON.stringify(structuredData)}</script>
 		</Helmet>
