@@ -64,48 +64,63 @@ const Home = () => {
 					<div className="absolute top-20 left-[-5%] w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[8000ms]"></div>
 					<div className="absolute bottom-20 right-[-5%] w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[10000ms]"></div>
 
-					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-						<div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+						<div className="grid lg:grid-cols-12 gap-8 items-center">
 							{/* Texto Hero */}
 							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-4 lg:pt-0">
-								<h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight mb-4 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center">
-									Cancele sua multa com <br className="hidden lg:block" />
+								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-4 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
+									Elabore um{" "}
+									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
+										Recurso
+									</span>{" "}
+									e cancele sua multa com <br className="hidden lg:block" />
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
 										Inteligência Artificial
 									</span>
 								</h1>
 
 								<p className="text-lg sm:text-xl text-gray-600 mb-6 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center">
-									Pare de perder dinheiro e pontos na CNH. Nossa IA encontra{" "}
-									<strong>falhas reais</strong> na sua autuação e gera uma defesa técnica
-									profissional, pronta para protocolar, por <strong>apenas R$ 17,90</strong>.
+									Não perca mais dinheiro ou pontos na sua CNH. Nossa IA encontra{" "}
+									<strong>falhas reais</strong> e <strong>argumentos viáveis</strong> na sua
+									autuação e elabora uma <strong>defesa técnica</strong> profissional, pronta para
+									protocolar.
 								</p>
 
 								{/* Benefícios - CRO focado */}
-								<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8 w-full max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
-									<div className="flex flex-row items-center justify-start text-left gap-4 bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100 shadow-sm transition-all">
+								<div className="grid grid-cols-2 gap-3 sm:gap-4 mb-10 w-full max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200 mx-auto px-4 sm:px-0">
+									<div className="infoCards flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm transition-all">
 										<div className="bg-blue-100 p-2 rounded-lg text-blue-600 shrink-0">
 											<Zap size={16} />
 										</div>
-										<span className="text-sm font-bold text-gray-800">Pronto em 2 minutos</span>
+										<span className="text-[13px] md:text-md font-bold text-gray-800 leading-tight">
+											Disponível em <br className="max-sm:block hidden" /> 2 minutos
+										</span>
 									</div>
-									<div className="flex flex-row items-center justify-start text-left gap-4 bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100 shadow-sm transition-all">
+									<div className="infoCards flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm transition-all text-lg">
 										<div className="bg-green-100 p-2 rounded-lg text-green-600 shrink-0">
 											<Shield size={16} />
 										</div>
-										<span className="text-sm font-bold text-gray-800">Baseado no CTB</span>
+										<span className="text-[13px] md:text-md font-bold text-gray-800 leading-tight">
+											Código de Trânsito
+											<br className="max-sm:block hidden" /> Atualizado
+										</span>
 									</div>
-									<div className="flex flex-row items-center justify-start text-left gap-4 bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100 shadow-sm transition-all">
-										<div className="bg-indigo-100 p-2 rounded-lg text-indigo-600 shrink-0">
-											<FileCheck size={16} />
-										</div>
-										<span className="text-sm font-bold text-gray-800">PDF pronto para envio</span>
-									</div>
-									<div className="flex flex-row items-center justify-start text-left gap-4 bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100 shadow-sm transition-all">
+
+									<div className="infoCards flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm transition-all text-lg">
 										<div className="bg-yellow-100 p-2 rounded-lg text-yellow-700 shrink-0">
 											<CheckCircle size={16} />
 										</div>
-										<span className="text-sm font-bold text-gray-800">Análise Inicial Grátis</span>
+										<span className="text-[13px] md:text-md font-bold text-gray-800 leading-tight">
+											Análise <br className="max-sm:block hidden" /> Grátis da Infração
+										</span>
+									</div>
+									<div className="infoCards flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm transition-all text-lg">
+										<div className="bg-indigo-100 p-2 rounded-lg text-indigo-600 shrink-0">
+											<FileCheck size={16} />
+										</div>
+										<span className="text-[13px] md:text-md font-bold text-gray-800 leading-tight">
+											Recurso Pronto <br className="max-sm:block hidden" /> para Protocolo
+										</span>
 									</div>
 								</div>
 
@@ -116,12 +131,12 @@ const Home = () => {
 										<div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
 										<Upload
 											size={24}
-											className="relative z-10 group-hover:-translate-y-1 transition-transform"
+											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
 										/>
-										<span className="relative z-10">Analisar Minha Multa Grátis</span>
+										<span className="relative z-10">Analisar Multa Gratuitamente</span>
 									</Link>
 
-									<div className="flex items-center justify-center gap-8 sm:gap-12 text-gray-500 font-medium w-full">
+									<div className="flex items-center justify-center gap-8 sm:gap-12 text-gray-500 font-medium w-full mt-4">
 										<div className="flex flex-col items-center gap-1">
 											<div className="flex items-center gap-0.5 text-yellow-400 mb-1">
 												<Star size={16} fill="currentColor" />
@@ -130,7 +145,7 @@ const Home = () => {
 												<Star size={16} fill="currentColor" />
 												<StarHalf size={16} fill="currentColor" />
 											</div>
-											<span className="text-[11px] sm:text-xs uppercase tracking-wider font-bold text-gray-400">
+											<span className="text-[13px] md:text-md uppercase tracking-wider font-bold text-gray-400">
 												4.7 de avaliação geral
 											</span>
 										</div>
@@ -154,7 +169,7 @@ const Home = () => {
 								{/* Soft backdrop for blending */}
 								<div className="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full opacity-20 blur-[80px] -z-10 transform scale-110"></div>
 
-								<div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500">
+								<div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500 hidden lg:block">
 									<img
 										src="/imagemLanding.webp"
 										srcSet="/imagemLanding-SM.webp 600w, /imagemLanding.webp 1200w"
