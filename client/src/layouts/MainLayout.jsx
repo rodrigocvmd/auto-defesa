@@ -378,7 +378,7 @@ const MainLayout = ({ children }) => {
 			{/* Main Content Area */}
 			<main className="flex-1 w-full max-w-8xl mx-auto px-0 py-0">
 				{children}
-				<footer className="border-t border-gray-100 py-6 mt-6 flex flex-col items-center">
+				<footer className="border-t border-gray-100 py-6 mt-2 flex flex-col items-center">
 					<p className="text-md text-gray-600 mb-4">
 						Brasília/DF |{" "}
 						<a href="mailto:suporte@meuatodefesa.com.br" className="py-2 px-1">

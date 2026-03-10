@@ -59,22 +59,38 @@ export const UploadStep = ({
 	};
 
 	return (
-		<div className="max-w-3xl mx-auto pt-5 pb-10">
-			<div className="mb-8 text-center">
-				<Link
-					to="/"
-					className="inline-flex items-center text-gray-600 hover:text-blue-600 mb-5 transition-colors">
-					<ArrowLeft size={20} className="mr-1" /> Início
-				</Link>
-				<h1 className="text-3xl font-bold text-gray-900">Análise de Documento</h1>
-				<p className="text-gray-600 mt-2 mb-8 mx-4 md:mx-auto">
-					Envie a foto da <strong>Notificação de Autuação</strong>, <strong>Multa/Boleto</strong> ou
-					da <strong>Decisão que negou</strong> seu recurso anterior.
-					<br />A IA identificará a fase e preencherá os dados automaticamente.
+		<div className="max-w-3xl mx-auto pt-5 pb-1">
+			<div className="docUploadInfo mb-5 text-center relative md:mx-5">
+				<h1 className="text-3xl font-bold text-gray-900 mb-4">Análise de Documento</h1>
+				<p className="text-gray-600 mt-2 mb-4 mx-2 md:mx-5">
+					Envie a foto ou arquivo da <strong>Notificação de Autuação</strong>,{" "}
+					<strong>Multa/Boleto</strong> ou da <strong>Decisão que negou</strong> seu recurso
+					anterior.
 				</p>
+				<p className="text-gray-600 mt-2 mb-4 mx-7">
+					A IA <strong>identificará a fase</strong> e preencherá os dados{" "}
+					<strong>automaticamente</strong>.
+				</p>
+				<p className="text-gray-600 mt-2 mb-4 mx-10">Não tem o arquivo ou imagem da infração?</p>
+				<div className="text-center">
+					{currentUser && !currentUser.emailVerified ? (
+						<button
+							disabled
+							className="text-gray-600 font-bold flex text-sm items-center justify-center gap-1 mx-auto cursor-not-allowed"
+							title="Confirme seu email para utilizar">
+							<FileText size={14} /> Inserir dados manualmente
+						</button>
+					) : (
+						<button
+							onClick={handleManualEntry}
+							className="text-blue-600 font-bold hover:text-blue-700 transition-colors flex items-center justify-center gap-1 mx-auto bg-blue-50 px-4 py-2 rounded-lg border border-blue-100">
+							<FileText size={16} /> Inserir dados manualmente
+						</button>
+					)}
+				</div>
 			</div>
 			<div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
-				<div className="p-6 md:p-8">
+				<div className="generalUploadBox p-6 md:p-8">
 					{error && (
 						<div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl flex gap-3 text-red-700 items-start">
 							<AlertTriangle className="shrink-0" />
@@ -98,7 +114,7 @@ export const UploadStep = ({
 										<UploadCloud size={40} className="text-blue-600" />
 									</div>
 									<span className="font-semibold text-lg text-gray-700">
-										Clique ou arraste aqui
+										Clique aqui ou arraste o arquivo
 									</span>
 									<input
 										type="file"
@@ -142,37 +158,25 @@ export const UploadStep = ({
 									"Analisar com IA"
 								)}
 							</button>
-
-							<div className="text-center">
-								<p className="text-gray-600 text-sm mb-1">
-									Não tem o arquivo ou imagem da infração?
-								</p>
-								{currentUser && !currentUser.emailVerified ? (
-									<button
-										disabled
-										className="text-gray-600 font-bold flex text-sm items-center justify-center gap-1 mx-auto cursor-not-allowed"
-										title="Confirme seu email para utilizar">
-										<FileText size={14} /> Inserir dados manualmente
-									</button>
-								) : (
-									<button
-										onClick={handleManualEntry}
-										className="text-blue-600 font-bold hover:text-blue-700 transition-colors flex items-center justify-center gap-1 mx-auto bg-blue-50 px-4 py-2 rounded-lg border border-blue-100">
-										<FileText size={16} /> Inserir dados manualmente
-									</button>
-								)}
-							</div>
 						</div>
 					</form>
 
-					<div className="mt-8 flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
-						<Lock className="text-gray-400 shrink-0 mt-0.5" size={18} />
-						<p className="text-xs text-gray-500 leading-relaxed">
-							Seus documentos são processados de forma criptografada apenas para a extração dos dados
-							da infração e geração da defesa. Não compartilhamos suas informações com terceiros.
+					<div className="mt-8 flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
+						<Lock className="lockerIcon text-gray-400 shrink-0" size={18} />
+						<p className="lockerInfo text-xs text-gray-500 leading-relaxed">
+							Seus documentos são processados de forma criptografada apenas para a extração dos
+							dados da infração e geração da defesa. Não guardamos ou compartilhamos suas informações com
+							terceiros.
 						</p>
 					</div>
 				</div>
+			</div>
+			<div className="mt-8 text-center">
+				<Link
+					to="/"
+					className="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors font-medium">
+					<ArrowLeft size={20} className="mr-1" /> Voltar para o Início
+				</Link>
 			</div>
 		</div>
 	);

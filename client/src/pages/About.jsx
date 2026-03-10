@@ -349,7 +349,7 @@ const About = () => {
 								</Link>
 								<Link
 									to="/help"
-									className="inline-flex items-center justify-center gap-2 bg-blue-700 text-white font-bold py-5 px-8 rounded-2xl hover:bg-blue-800 transition-all">
+									className="inline-flex items-center justify-center gap-2 bg-blue-700 text-white font-bold py-5 px-8 rounded-2xl hover:bg-blue-800 transition-all !text-lg">
 									Falar com Suporte <ChevronRight size={20} />
 								</Link>
 							</div>

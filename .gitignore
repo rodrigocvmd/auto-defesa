@@ -22,3 +22,5 @@ scripts/serviceAccountKey.json
 scripts/*.csv
 
 .cache/
+
+GEMINI.md

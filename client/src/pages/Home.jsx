@@ -108,7 +108,7 @@ const Home = () => {
 												<Star size={16} fill="currentColor" />
 												<StarHalf size={16} fill="currentColor" />
 											</div>
-											<span className="text-[13px] md:text-md uppercase tracking-wider font-bold text-gray-400">
+											<span className="!text-[13px] md:text-md text-center uppercase tracking-wider font-bold text-gray-400">
 												4.7 <br />
 												avaliação geral
 											</span>
@@ -120,7 +120,7 @@ const Home = () => {
 												<FileText size={18} className="drop-shadow-sm translate-y-0.5" />
 												<FileText size={18} className="drop-shadow-sm translate-y-1" />
 											</div>
-											<span className="text-[13px] sm:text-xs uppercase tracking-wider font-bold text-gray-400">
+											<span className="!text-[13px] sm:text-xs text-center uppercase tracking-wider font-bold text-gray-400">
 												+500
 												<br />
 												recursos gerados
@@ -485,7 +485,7 @@ const Home = () => {
 									<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 										<FileText size={24} />
 									</div>
-									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+493</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+587</div>
 									<div className="text-gray-600 font-medium">Recursos Elaborados</div>
 									<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
 								</div>
@@ -509,7 +509,7 @@ const Home = () => {
 									<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 										<Star size={24} fill="currentColor" />
 									</div>
-									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">93%</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">94%</div>
 									<div className="text-gray-600 font-medium">Satisfação dos Usuários</div>
 									<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
 								</div>

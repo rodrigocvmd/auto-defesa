@@ -267,8 +267,8 @@ const Privacy = () => {
 								nosso Encarregado de Proteção de Dados através do e-mail:{" "}
 								<a
 									className="text-blue-600 font-bold hover:underline"
-									href="mailto:contato@meuautodefesa.com.br">
-									contato@meuautodefesa.com.br
+									href="mailto:suporte@meuautodefesa.com.br">
+									suporte@meuautodefesa.com.br
 								</a>
 							</p>
 							<p className="mt-8 text-sm font-medium text-gray-500 italic text-center">
