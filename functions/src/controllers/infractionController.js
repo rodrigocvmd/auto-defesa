@@ -6,7 +6,7 @@ exports.getInfraction = (req, res) => {
 	cors(req, res, async () => {
 		try {
             // FIX: Added rate limit for public query
-            await checkIpRateLimit(req, 60, 1); // 60 requests per hour seems reasonable for a user searching codes
+            await checkIpRateLimit(req, 24, 1); 
         } catch (e) {
              if (e.message === "RATE_LIMIT_EXCEEDED") {
 				return res

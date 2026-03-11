@@ -26,6 +26,20 @@ const getAuthHeaders = async () => {
   return headers;
 };
 
+const handleResponse = async (response) => {
+  if (!response.ok) {
+    let errorMessage = 'Erro na comunicação com o servidor';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorData.details || errorMessage;
+    } catch (e) {
+      errorMessage = response.statusText || errorMessage;
+    }
+    throw new Error(errorMessage);
+  }
+  return await response.json();
+};
+
 export const api = {
   // 6. Extração de Dados (OCR)
   extractData: async (imageBase64, mimeType) => {
@@ -37,8 +51,7 @@ export const api = {
         body: JSON.stringify({ image: imageBase64, mimeType }),
       });
 
-      if (!response.ok) throw new Error('Erro na leitura da imagem');
-      return await response.json();
+      return await handleResponse(response);
     } catch (error) {
       console.error("Extraction API Error:", error);
       throw error;

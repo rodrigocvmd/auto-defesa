@@ -1,6 +1,6 @@
 const cors = require("../middleware/cors");
 const { verifyAuth } = require("../middleware/auth");
-const { checkIpRateLimit } = require("../middleware/rateLimit");
+const { checkIpRateLimit, checkUserRateLimit } = require("../middleware/rateLimit");
 const { checkCredits, deductCredits } = require("../services/userService");
 const { db } = require("../services/firebase");
 const { FieldValue } = require("firebase-admin/firestore");
@@ -282,13 +282,22 @@ exports.extractDataFromImage = (req, res) => {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
 
+		let userId = null;
 		try {
-			await checkIpRateLimit(req, 10, 1);
+			userId = await verifyAuth(req);
+		} catch (e) {}
+
+		try {
+			if (userId) {
+				await checkUserRateLimit(userId, 25, 1);
+			} else {
+				await checkIpRateLimit(req, 20, 1);
+			}
 		} catch (e) {
 			if (e.message === "RATE_LIMIT_EXCEEDED") {
 				return res
 					.status(429)
-					.json({ error: "Muitas tentativas. Aguarde um pouco antes de enviar nova imagem." });
+					.json({ error: "Muitas tentativas. Aguarde um pouco antes de tentar novamente." });
 			}
 		}
 
@@ -363,15 +372,17 @@ exports.preAnalyze = (req, res) => {
 			userId = await verifyAuth(req);
 		} catch (e) {}
 
-		if (!userId) {
-			try {
-				await checkIpRateLimit(req, 5, 1);
-			} catch (e) {
-				if (e.message === "RATE_LIMIT_EXCEEDED") {
-					return res
-						.status(429)
-						.json({ error: "Muitas tentativas. Tente novamente em 1 hora ou faça login." });
-				}
+		try {
+			if (userId) {
+				await checkUserRateLimit(userId, 25, 1);
+			} else {
+				await checkIpRateLimit(req, 8, 1);
+			}
+		} catch (e) {
+			if (e.message === "RATE_LIMIT_EXCEEDED") {
+				return res
+					.status(429)
+					.json({ error: "Muitas tentativas. Aguarde um pouco ou faça login para continuar." });
 			}
 		}
 
