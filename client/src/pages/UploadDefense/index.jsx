@@ -10,6 +10,7 @@ import { FormStep } from './steps/FormStep';
 import { PhaseConfirmationStep } from './steps/PhaseConfirmationStep';
 import { PhaseSelectionStep } from './steps/PhaseSelectionStep';
 import { AnalysisStep } from './steps/AnalysisStep';
+import { QualificacaoStep } from './steps/QualificacaoStep';
 import { ResultStep } from './steps/ResultStep';
 import { HelpModal } from './components/modals/HelpModal';
 import { HardBlockModal } from './components/modals/HardBlockModal';
@@ -56,6 +57,8 @@ const UploadDefense = () => {
                 return <PhaseSelectionStep setFormData={logic.setFormData} setShowHelpModal={setShowHelpModal} />;
             case "analysis":
                 return <AnalysisStep {...logic} />;
+            case "qualification":
+                return <QualificacaoStep {...logic} />;
             case "result":
                 return <ResultStep {...logic} />;
             default:

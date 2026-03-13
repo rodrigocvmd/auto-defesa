@@ -184,18 +184,9 @@ export const AnalysisStep = ({
 							</div>
 						) : userData?.credits > 0 ? (
 							<button
-								onClick={handleUnlockDefense}
-								disabled={loading}
-								className={`salvarECriarConta w-full bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2 ${loading ? "opacity-75 cursor-not-allowed" : ""}`}>
-								{loading ? (
-									<>
-										<Loader2 className="animate-spin" size={20} /> Gerando Defesa...
-									</>
-								) : (
-									<>
-										Utilizar 1 Crédito <FileText size={20} className="hidden sm:block" />
-									</>
-								)}
+								onClick={() => navigate("/upload/qualification")}
+								className={`salvarECriarConta w-full bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2`}>
+								Preencher Dados Finais e Utilizar 1 Crédito <FileText size={20} className="hidden sm:block" />
 							</button>
 						) : (
 							<div className="flex flex-col gap-3">
