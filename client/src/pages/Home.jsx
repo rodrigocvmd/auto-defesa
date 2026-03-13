@@ -26,9 +26,9 @@ const Home = () => {
 	return (
 		<MainLayout>
 			<SEO
-				title="Auto Defesa - Recursos de Trânsito com IA | Recurso Pronto para protocolar em minutos"
-				description="Gere seu Recurso de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
-				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online"
+				title="Auto Defesa - Recursos de Trânsito com IA | Defesa Técnica em minutos"
+				description="Gere sua Defesa de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e fundamentado."
+				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, defesa de transito"
 				isHome={true}
 			/>
 			<div className="flex flex-col pb-8">
@@ -44,46 +44,23 @@ const Home = () => {
 							{/* Texto Hero */}
 							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0">
 								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-8 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
-									Elabore um{" "}
+									Elabore sua{" "}
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
-										Recurso
+										Defesa Técnica
 									</span>{" "}
-									e cancele sua multa com <br className="hidden lg:block" />
+									e recorra de forma justa com <br className="hidden lg:block" />
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
 										Inteligência Artificial
 									</span>
 								</h1>
 
 								<p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
-									Não perca mais dinheiro ou pontos na sua CNH. Em <strong>2 minutos</strong>, nossa
-									IA encontra <strong>falhas reais</strong> e <strong>argumentos viáveis</strong> na
-									sua autuação para elaborar uma <strong>Defesa Técnica Profissional</strong>{" "}
-									totalmente pronta. Você apenas <strong>assina e protocola</strong>.
+									Proteja seu direito de dirigir de forma técnica. Em <strong>2 minutos</strong>,
+									nossa IA identifica <strong>falhas formais</strong> e{" "}
+									<strong>vícios administrativos</strong> na sua autuação para fundamentar uma{" "}
+									<strong>Defesa Técnica Profissional</strong>. Aumente suas chances com
+									argumentos baseados na legislação atualizada.
 								</p>
-
-								{/* Benefícios - Narrativa Estilizada */}
-								<div>
-									{/* <div className="relative py-5 px-6 bg-gradient-to-r from-blue-50/50 via-white/50 to-indigo-50/50 rounded-[2rem] border border-blue-100/30 shadow-sm">
-										<p className="text-gray-600 font-medium leading-relaxed text-sm md:text-base">
-											<span className="text-blue-600 font-black inline-flex items-center gap-1">
-												<Zap size={18} /> Em 2 minutos
-											</span>
-											, sua{" "}
-											<span className="text-indigo-600 font-black inline-flex items-center gap-1">
-												<CheckCircle size={18} /> Análise Gratuita
-											</span>{" "}
-											se torna um{" "}
-											<span className="text-blue-700 font-black inline-flex items-center gap-1">
-												<FileCheck size={18} /> Recurso Pronto
-											</span>{" "}
-											totalmente baseado no{" "}
-											<span className="text-indigo-700 font-black inline-flex items-center gap-1">
-												<Shield size={18} /> CTB Atualizado
-											</span>
-											.
-										</p>
-									</div> */}
-								</div>
 
 								<div className="flex flex-col items-center lg:items-center w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
 									<Link
@@ -96,8 +73,13 @@ const Home = () => {
 											size={24}
 											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
 										/>
-										<span className="relative z-10">Analisar Multa Gratuitamente</span>
+										<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
 									</Link>
+
+									<p className="text-[10px] md:text-xs text-gray-500 mt-2 text-center max-w-sm">
+										*A análise inicial de falhas é 100% gratuita. A emissão do documento final
+										em PDF tem um custo único de R$ 17,90.
+									</p>
 
 									<div className="flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
@@ -123,7 +105,7 @@ const Home = () => {
 											<span className="!text-[13px] sm:text-xs text-center uppercase tracking-wider font-bold text-gray-400">
 												+500
 												<br />
-												recursos gerados
+												defesas geradas
 											</span>
 										</div>
 									</div>
@@ -160,7 +142,7 @@ const Home = () => {
 								Como funciona?
 							</h2>
 							<p className="text-gray-600 max-w-3xl mx-auto text-lg lg:text-xl">
-								Simplificamos a burocracia. Em poucos minutos você terá em mãos a defesa perfeita
+								Simplificamos a burocracia. Em poucos minutos você terá em mãos a fundamentação técnica
 								para o seu caso.
 							</p>
 						</div>
@@ -190,7 +172,7 @@ const Home = () => {
 								<h3 className="text-xl font-bold text-gray-900 mb-3">IA Analisa o Caso</h3>
 								<p className="text-gray-600 leading-relaxed">
 									O algoritmo verifica <strong>erros formais e materiais</strong> e busca as
-									melhores teses jurídicas na legislação para anular sua infração.
+									melhores teses jurídicas na legislação para exercer seu direito de defesa.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -268,7 +250,7 @@ const Home = () => {
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Custo</span>
 											<span className="font-black text-green-600 text-xl sm:text-2xl">
-												Apenas R$ 17,90
+												Apenas R$ 17,90 (emissão do PDF)
 											</span>
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
@@ -279,7 +261,7 @@ const Home = () => {
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Qualidade</span>
-											<span className="font-bold text-gray-900">IA Especializada em Recursos</span>
+											<span className="font-bold text-gray-900">IA Especializada em Defesas</span>
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Resultado</span>
@@ -291,7 +273,7 @@ const Home = () => {
 									<Link
 										to="/upload"
 										className="mt-8 w-full block bg-gray-900 hover:bg-gray-800 text-white text-center font-bold py-4 rounded-xl transition-all">
-										Analisar um Recurso gratuitamente agora
+										Analisar Viabilidade (Grátis)
 									</Link>
 								</div>
 							</ScrollReveal>
@@ -314,7 +296,7 @@ const Home = () => {
 									O documento serve para qualquer estado?
 								</h3>
 								<p className="text-gray-600">
-									Sim. A legislação de trânsito (CTB) é federal. Nossa IA gera o recurso endereçado
+									Sim. A legislação de trânsito (CTB) é federal. Nossa IA gera a defesa endereçada
 									corretamente para o órgão autuador de qualquer estado do Brasil.
 								</p>
 							</div>
@@ -325,7 +307,7 @@ const Home = () => {
 									Preciso contratar advogado depois?
 								</h3>
 								<p className="text-gray-600">
-									Não. O recurso administrativo não exige advogado em nenhuma etapa. O documento que
+									Não. O processo administrativo não exige advogado em nenhuma etapa. O documento que
 									geramos já vem com a fundamentação legal e técnica necessária. É só assinar e
 									entregar.
 								</p>
@@ -339,30 +321,30 @@ const Home = () => {
 								<p className="text-gray-600">
 									Fique tranquilo. Ao fazer o upload da notificação, nossa IA identifica
 									automaticamente o artigo e materialidade da infração e os detalhes para montar a
-									melhor defesa possível.
+									melhor defesa técnica possível.
 								</p>
 							</div>
 						</ScrollReveal>
 						<ScrollReveal delay={250}>
 							<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
 								<h3 className="font-bold text-lg text-gray-900 mb-2">
-									O recurso é personalizado para o meu caso?
+									A defesa é personalizada para o meu caso?
 								</h3>
 								<p className="text-gray-600">
 									Sim. Diferente de modelos prontos da internet, nossa IA analisa os dados
 									específicos do seu auto de infração (horário, local, aferição do equipamento) para
-									encontrar nulidades reais que anulam a sua multa.
+									encontrar nulidades reais que fundamentam sua defesa.
 								</p>
 							</div>
 						</ScrollReveal>
 						<ScrollReveal delay={300}>
 							<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
 								<h3 className="font-bold text-lg text-gray-900 mb-2">
-									Quanto tempo demora para receber o recurso?
+									Quanto tempo demora para receber o documento?
 								</h3>
 								<p className="text-gray-600">
-									O processo é instantâneo. Após a análise da IA, seu recurso em PDF é gerado em
-									menos de 2 minutos, pronto para você imprimir, assinar e protocolar.
+									O processo é instantâneo. Após a análise da IA, sua defesa em PDF é gerada em
+									menos de 2 minutos, pronta para você imprimir, assinar e protocolar.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -409,8 +391,8 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Foco em Nulidades</h3>
 								<p className="text-gray-600">
-									Buscamos erros de procedimento e vícios formais que, por lei, tornam o auto de
-									infração insubsistente e passível de anulação.
+									Buscamos erros de procedimento e vícios formais que, por lei, podem tornar o auto de
+									infração insubsistente por meio de defesa técnica.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -421,9 +403,9 @@ const Home = () => {
 								<div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 mb-6">
 									<FileCheck size={24} />
 								</div>
-								<h3 className="text-xl font-bold text-gray-900 mb-3">Recurso Pronto para Uso</h3>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">Defesa Pronta para Uso</h3>
 								<p className="text-gray-600">
-									Ao detectar uma falha, geramos automaticamente o recurso administrativo em PDF,
+									Ao detectar uma falha, geramos automaticamente o documento administrativo em PDF,
 									fundamentado e pronto para ser protocolado.
 								</p>
 							</div>
@@ -437,8 +419,8 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Honestidade Jurídica</h3>
 								<p className="text-gray-600">
-									Não prometemos milagres. Oferecemos uma análise técnica real para que você saiba
-									exatamente quais são as suas chances de sucesso.
+									Não prometemos milagres. Oferecemos uma análise técnica real para que você possa
+									exercer seu direito de defesa com as melhores teses disponíveis.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -451,8 +433,8 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Resposta Instantânea</h3>
 								<p className="text-gray-600">
-									Em poucos segundos, nossa IA processa os dados e indica se vale a pena investir
-									tempo e esforço no seu recurso de multa.
+									Em poucos segundos, nossa IA processa os dados e indica o caminho técnico mais
+									viável para sua defesa de multa.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -486,7 +468,7 @@ const Home = () => {
 										<FileText size={24} />
 									</div>
 									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+587</div>
-									<div className="text-gray-600 font-medium">Recursos Elaborados</div>
+									<div className="text-gray-600 font-medium">Defesas Elaboradas</div>
 									<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
 								</div>
 							</ScrollReveal>
@@ -556,7 +538,7 @@ const Home = () => {
 								<Link
 									to="/upload"
 									className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-bold text-xl py-4 px-10 rounded-xl hover:bg-gray-800 transition-all hover:scale-105 shadow-lg">
-									Iniciar Defesa Gratuita <ArrowRight size={20} />
+									Analisar Viabilidade (Grátis) <ArrowRight size={20} />
 								</Link>
 							</div>
 						</div>
