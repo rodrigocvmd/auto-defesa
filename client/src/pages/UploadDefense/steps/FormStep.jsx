@@ -10,6 +10,7 @@ import {
 	Loader2,
 	CheckCircle,
 	Upload,
+	Lock,
 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { LoginPromptModal } from "../components/modals/LoginPromptModal";
@@ -51,6 +52,7 @@ export const FormStep = ({
 	const navigate = useNavigate();
 	const [isManualInfraction, setIsManualInfraction] = useState(false);
 	const [showCodeNotFoundModal, setShowCodeNotFoundModal] = useState(false);
+	const [consent, setConsent] = useState(false);
 
 	// Wrapper for handleSearchCode to handle UI state locally
 	const onSearchCode = async () => {
@@ -542,25 +544,48 @@ export const FormStep = ({
 					</div>
 				</section>
 				<div className="flex flex-col items-center gap-4 py-8">
+					<div className="w-full max-w-xl mb-4">
+						<label className="flex items-start gap-3 cursor-pointer group">
+							<input
+								type="checkbox"
+								required
+								checked={consent}
+								onChange={(e) => setConsent(e.target.checked)}
+								className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+							/>
+							<span className="text-sm text-gray-600 leading-tight">
+								Declaro que li e concordo com os{" "}
+								<Link to="/terms" className="text-blue-600 hover:underline">
+									Termos de Uso
+								</Link>{" "}
+								e{" "}
+								<Link to="/privacy" className="text-blue-600 hover:underline">
+									Política de Privacidade
+								</Link>
+								, e autorizo o processamento dos dados estritamente para a análise e geração da
+								defesa.
+							</span>
+						</label>
+					</div>
+
 					<button
 						type="submit"
-						className="w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all">
-						Analisar Caso (Grátis)
+						className="w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+						disabled={!consent}>
+						Analisar Viabilidade (Grátis)
 					</button>
-					<div className="max-w-xl text-center space-y-2">
+
+					<div className="flex items-center gap-2 text-gray-500 text-sm mt-2">
+						<Lock size={14} className="text-green-500" />
+						<span>Ambiente Seguro e Dados Criptografados de Ponta a Ponta</span>
+					</div>
+
+					<div className="max-w-xl text-center space-y-2 mt-4">
 						<p className="text-gray-600 text-sm">
 							Nenhum crédito será cobrado nesta etapa.
 						</p>
 						<p className="text-[10px] md:text-xs text-gray-500 leading-relaxed">
-							Ao prosseguir, você concorda com nossos{" "}
-							<Link to="/terms" className="text-blue-600 hover:underline">
-								Termos de Uso
-							</Link>{" "}
-							e{" "}
-							<Link to="/privacy" className="text-blue-600 hover:underline">
-								Política de Privacidade
-							</Link>
-							. Seus dados são utilizados exclusivamente para a redação da sua defesa
+							Seus dados são utilizados exclusivamente para a redação da sua defesa
 							administrativa e não são compartilhados com terceiros.
 						</p>
 					</div>

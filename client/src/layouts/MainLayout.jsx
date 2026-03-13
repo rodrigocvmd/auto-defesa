@@ -378,26 +378,36 @@ const MainLayout = ({ children }) => {
 			{/* Main Content Area */}
 			<main className="flex-1 w-full max-w-8xl mx-auto px-0 py-0">
 				{children}
-				<footer className="border-t border-gray-100 py-6 mt-2 flex flex-col items-center">
-					<p className="text-md text-gray-600 mb-4">
-						Brasília/DF |{" "}
-						<a href="mailto:suporte@meuatodefesa.com.br" className="py-2 px-1">
-							suporte@meuatodefesa.com.br
-						</a>{" "}
-					</p>
-					<div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-md text-gray-600 mb-6">
-						<Link to="/about" className="hover:underline py-2 px-1">
+				<footer className="border-t border-gray-100 py-8 mt-4 flex flex-col items-center">
+					<div className="text-center mb-6 space-y-1">
+						<p className="text-sm font-bold text-gray-800">
+							Razão Social: [NOME DA SUA EMPRESA] | CNPJ: XX.XXX.XXX/0001-XX
+						</p>
+						<p className="text-xs text-gray-600">
+							Endereço: Setor Comercial Sul, Quadra X, Bloco X, Sala XXX - Brasília/DF, CEP:
+							70300-000
+						</p>
+						<p className="text-xs text-gray-600">
+							Contato:{" "}
+							<a href="mailto:suporte@meuautodefesa.com.br" className="hover:text-blue-600 underline">
+								suporte@meuautodefesa.com.br
+							</a>
+						</p>
+					</div>
+
+					<div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-gray-600 mb-6">
+						<Link to="/about" className="hover:text-blue-600 hover:underline">
 							Sobre Nós
 						</Link>
-						<Link to="/terms" className="hover:underline py-2 px-1">
+						<Link to="/terms" className="hover:text-blue-600 hover:underline">
 							Termos de Uso
 						</Link>
-						<Link to="/privacy" className="hover:underline py-2 px-1">
+						<Link to="/privacy" className="hover:text-blue-600 hover:underline">
 							Privacidade
 						</Link>
 					</div>
 
-					<p className="text-xs text-gray-600 max-w-4xl mx-3 text-center mb-1 leading-relaxed">
+					<p className="text-[10px] md:text-xs text-gray-500 max-w-4xl mx-4 text-center mb-2 leading-relaxed">
 						<strong>Aviso Legal:</strong> O Auto Defesa - Recursos de Trânsito é um assistente
 						jurídico automatizado desenvolvido pela iniciativa privada. Não representamos o DETRAN,
 						CONTRAN ou qualquer órgão público. O uso da plataforma serve para auxiliar na elaboração
@@ -406,7 +416,7 @@ const MainLayout = ({ children }) => {
 						acordo com a LGPD e nossa Política de Privacidade.
 					</p>
 
-					<p className="text-xs text-gray-600 mt-4">
+					<p className="text-[10px] text-gray-400 mt-4">
 						&copy; {ano} Auto Defesa - Recursos de Trânsito. Todos os direitos reservados.
 					</p>
 				</footer>
