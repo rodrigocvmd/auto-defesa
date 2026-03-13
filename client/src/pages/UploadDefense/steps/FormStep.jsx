@@ -64,7 +64,7 @@ export const FormStep = ({
 	};
 
 	return (
-		<div className="max-w-5xl mx-5 md:mx-auto py-8">
+		<div className="md:max-w-5xl mx-3 md:mx-auto py-8">
 			{showLoginPrompt && (
 				<LoginPromptModal
 					onClose={() => setShowLoginPrompt(false)}
@@ -146,7 +146,7 @@ export const FormStep = ({
 
 			<form
 				onSubmit={handlePreAnalysis}
-				className="space-y-8 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+				className="space-y-8 bg-white px-0 py-0 md:p-8 rounded-3xl shadow-sm border border-gray-100">
 				{loading && (
 					<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center">
 						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
@@ -161,7 +161,7 @@ export const FormStep = ({
 					</div>
 				)}
 
-				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
+				<section className="bg-white px-3 md:px-4 py-4 md:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
 						<MapPin className="text-blue-600" />
 						<h3 className="text-xl font-bold text-gray-800">1. Infração</h3>
@@ -421,23 +421,23 @@ export const FormStep = ({
 						</div>{" "}
 					</div>
 				</section>
-				<div className="flex flex-col items-center gap-4 py-8">
-					<div className="w-full max-w-xl mb-4">
-						<label className="flex items-start gap-3 cursor-pointer group">
+				<div className="flex flex-col items-center gap-4 md:py-2">
+					<div className="w-full max-w-2xl mb-4">
+						<label className="flex items-center justify-center gap-3 cursor-pointer group">
 							<input
 								type="checkbox"
 								required
 								checked={consent}
 								onChange={(e) => setConsent(e.target.checked)}
-								className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+								className="cursor-pointer mr-2 w-4 h-4 shrink-0 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
 							/>
-							<span className="text-sm text-gray-600 leading-tight">
+							<span className="text-gray-600 leading-tight text-center sm:text-left">
 								Declaro que li e concordo com os{" "}
-								<Link to="/terms" className="text-blue-600 hover:underline">
+								<Link target="_blank" to="/terms" className="text-blue-600 hover:underline">
 									Termos de Uso
 								</Link>{" "}
 								e{" "}
-								<Link to="/privacy" className="text-blue-600 hover:underline">
+								<Link target="_blank" to="/privacy" className="text-blue-600 hover:underline">
 									Política de Privacidade
 								</Link>
 								, e autorizo o processamento dos dados estritamente para a análise e geração da

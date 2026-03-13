@@ -8,6 +8,7 @@ import {
 	PenTool,
 	User,
 	FileText,
+	ArrowLeft,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -33,7 +34,7 @@ export const AnalysisStep = ({
 	const isPossibleViability = viability === "Possível";
 
 	return (
-		<div className="max-w-2xl mx-auto py-12 px-4">
+		<div className="completeLoadingInfo max-w-2xl mx-auto py-12 px-4">
 			{loading && (
 				<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
 					<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
@@ -188,11 +189,14 @@ export const AnalysisStep = ({
 							</button>
 						)}
 					</div>
-					<button
+					<div className="w-full flex justify-center">
+						<button
 						onClick={() => navigate("/upload/form")}
-						className="w-full text-center text-gray-600 text-md mt-6 hover:text-gray-800">
-						Voltar e editar dados
+						className="w-1/2 text-center text-gray-600 text-sm mt-8 hover:text-blue-600 hover:bg-blue-50/50 transition-all border border-gray-200 hover:border-blue-200 rounded-xl py-3 flex items-center justify-center  gap-2 font-medium">
+						<ArrowLeft size={16} /> Voltar e editar dados da infração
 					</button>
+					</div>
+					
 				</div>
 			</div>
 		</div>
