@@ -102,7 +102,7 @@ export const AnalysisStep = ({
 						{analysisData.arguments.slice(0, 3).map((arg, idx) => (
 							<div
 								key={idx}
-								className="relative flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 overflow-hidden max-h-[80px] select-none">
+								className="text-justify relative flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 overflow-hidden max-h-[115px] md:max-h-[80px] select-none">
 								<div className="bg-blue-100 p-1 rounded-full mt-0.5 shrink-0">
 									<CheckCircle size={14} className="text-blue-600" />
 								</div>
@@ -120,7 +120,7 @@ export const AnalysisStep = ({
 							</div>
 						))}
 					</div>
-					<div className="flex items-center justify-center gap-2 mb-8 text-blue-600 font-bold bg-blue-50 p-3 rounded-lg border border-blue-100 border-dashed">
+					<div className="flex text-centeritems-center justify-center gap-2 mb-8 text-blue-600 font-bold bg-blue-50 p-3 rounded-lg border border-blue-100 border-dashed">
 						<Lock size={16} />
 						<span>+ {exclusiveThesesCount} teses exclusivas identificadas</span>
 					</div>
@@ -191,12 +191,11 @@ export const AnalysisStep = ({
 					</div>
 					<div className="w-full flex justify-center">
 						<button
-						onClick={() => navigate("/upload/form")}
-						className="w-1/2 text-center text-gray-600 text-sm mt-8 hover:text-blue-600 hover:bg-blue-50/50 transition-all border border-gray-200 hover:border-blue-200 rounded-xl py-3 flex items-center justify-center  gap-2 font-medium">
-						<ArrowLeft size={16} /> Voltar e editar dados da infração
-					</button>
+							onClick={() => navigate("/upload/form")}
+							className="w-full md:w-1/2 text-center text-gray-600 text-sm mt-8 hover:text-blue-600 hover:bg-blue-50/50 transition-all border border-gray-200 hover:border-blue-200 rounded-xl py-3 flex items-center justify-center gap-2 font-medium">
+							<ArrowLeft size={16} /> Voltar e editar dados da infração
+						</button>
 					</div>
-					
 				</div>
 			</div>
 		</div>

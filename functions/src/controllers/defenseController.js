@@ -401,12 +401,13 @@ exports.preAnalyze = (req, res) => {
 			        {
 			          "viability": "Muito Alta" | "Alta" | "Possível",
 			          "summary": "Uma frase curta e impactante sobre a chance de anulação.",
-			          "arguments": ["Argumento técnico 1", "Argumento técnico 2", "Argumento técnico 3", "Argumento técnico 4", "Argumento técnico 5"],
+			          "arguments": ["Argumento técnico 1 (mínimo 175 caracteres)", "Argumento técnico 2 (mínimo 175 caracteres)", "Argumento técnico 3 (mínimo 175 caracteres)", "Argumento técnico 4 (mínimo 175 caracteres)", "Argumento técnico 5 (mínimo 175 caracteres)"],
 			          "divergence": {
 			             "isDivergent": boolean,
 			             "message": "Se houver divergência forte, explique em 1 frase curta alertando o usuário. Caso contrário, string vazia."
 			          }
 			        }
+			        REQUISITO DOS ARGUMENTOS: Cada um dos 5 argumentos técnicos deve ser detalhado e possuir, obrigatoriamente, no mínimo 175 caracteres de extensão.
 			      `;
 
 			const userPrompt = `
