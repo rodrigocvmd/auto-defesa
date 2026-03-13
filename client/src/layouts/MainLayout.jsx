@@ -381,15 +381,16 @@ const MainLayout = ({ children }) => {
 				<footer className="border-t border-gray-100 py-8 mt-4 flex flex-col items-center">
 					<div className="text-center mb-6 space-y-1">
 						<p className="text-sm font-bold text-gray-800">
-							Razão Social: [NOME DA SUA EMPRESA] | CNPJ: XX.XXX.XXX/0001-XX
+							Razão Social: RC SOFTWARE E TECNOLOGIA LTDA | CNPJ: 26.560.542/0001-02
 						</p>
 						<p className="text-xs text-gray-600">
-							Endereço: Setor Comercial Sul, Quadra X, Bloco X, Sala XXX - Brasília/DF, CEP:
-							70300-000
+							Endereço: QD SBS QD 2 12 BL E, SL - Brasília/DF, CEP: 70070-120
 						</p>
 						<p className="text-xs text-gray-600">
 							Contato:{" "}
-							<a href="mailto:suporte@meuautodefesa.com.br" className="hover:text-blue-600 underline">
+							<a
+								href="mailto:suporte@meuautodefesa.com.br"
+								className="hover:text-blue-600 underline">
 								suporte@meuautodefesa.com.br
 							</a>
 						</p>

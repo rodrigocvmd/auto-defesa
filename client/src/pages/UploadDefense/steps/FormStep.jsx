@@ -3,7 +3,6 @@ import {
 	ArrowLeft,
 	Info,
 	PenTool,
-	Car,
 	MapPin,
 	Search,
 	Gauge,
@@ -109,8 +108,7 @@ export const FormStep = ({
 				<div className="flex items-center gap-2 mt-2 p-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800 max-w-2xl">
 					<Info size={18} className="shrink-0" />
 					<p>
-						Os dados solicitados abaixo são obrigatórios conforme a{" "}
-						<strong>Resolução CONTRAN nº 900/2022</strong>.
+						Os dados solicitados abaixo são necessários para a análise técnica da sua infração.
 					</p>
 				</div>
 				<div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-4 gap-4">
@@ -163,94 +161,8 @@ export const FormStep = ({
 
 				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
-						<Car className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">1. Veículo</h3>
-					</div>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-						<div>
-							<label className="label-form">
-								Placa <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="plate"
-								value={formData.plate}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.plate ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.plate && <p className="text-red-500 text-xs mt-1">{errors.plate}</p>}
-						</div>
-						<div>
-							<label className="label-form">
-								UF da Placa <span className="text-red-500">*</span>
-							</label>
-							<select
-								name="plateUF"
-								value={formData.plateUF}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.plateUF ? "border-red-500" : ""}`}
-								required>
-								<option value="">Selecione...</option>
-								{[
-									"AC",
-									"AL",
-									"AP",
-									"AM",
-									"BA",
-									"CE",
-									"DF",
-									"ES",
-									"GO",
-									"MA",
-									"MT",
-									"MS",
-									"MG",
-									"PA",
-									"PB",
-									"PR",
-									"PE",
-									"PI",
-									"RJ",
-									"RN",
-									"RS",
-									"RO",
-									"RR",
-									"SC",
-									"SP",
-									"SE",
-									"TO",
-								].map((uf) => (
-									<option key={uf} value={uf}>
-										{uf}
-									</option>
-								))}
-							</select>
-							{errors.plateUF && <p className="text-red-500 text-xs mt-1">{errors.plateUF}</p>}
-						</div>
-						<div>
-							<label className="label-form">
-								Marca/Modelo <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="vehicleModel"
-								value={formData.vehicleModel}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.vehicleModel ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.vehicleModel && (
-								<p className="text-red-500 text-xs mt-1">{errors.vehicleModel}</p>
-							)}
-						</div>
-					</div>
-				</section>
-				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
-					<div className="flex items-center gap-2 border-b pb-4">
 						<MapPin className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">2. Infração</h3>
+						<h3 className="text-xl font-bold text-gray-800">1. Infração</h3>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-10 gap-5">
 						{/* Linha 1: AIT, Cód, Desd, Amparo */}
@@ -412,7 +324,7 @@ export const FormStep = ({
 				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
 						<Gauge className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">3. Argumentação</h3>
+						<h3 className="text-xl font-bold text-gray-800">2. Argumentação</h3>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 						<div>
@@ -505,42 +417,6 @@ export const FormStep = ({
 								<p className="text-red-500 text-xs mt-1">{errors.description}</p>
 							)}
 						</div>{" "}
-					</div>
-				</section>
-				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
-					<div className="flex items-center gap-2 border-b pb-4">
-						<PenTool className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">4. Finalização</h3>
-					</div>
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-						<div>
-							<label className="label-form">
-								Cidade de Assinatura <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="signCity"
-								value={formData.signCity}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.signCity ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.signCity && <p className="text-red-500 text-xs mt-1">{errors.signCity}</p>}
-						</div>
-						<div>
-							<label className="label-form">
-								Data de Assinatura <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="signDate"
-								value={formData.signDate}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.signDate ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.signDate && <p className="text-red-500 text-xs mt-1">{errors.signDate}</p>}
-						</div>
 					</div>
 				</section>
 				<div className="flex flex-col items-center gap-4 py-8">
