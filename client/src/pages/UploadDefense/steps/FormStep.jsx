@@ -3,7 +3,6 @@ import {
 	ArrowLeft,
 	Info,
 	PenTool,
-	User,
 	Car,
 	MapPin,
 	Search,
@@ -27,7 +26,6 @@ export const FormStep = ({
 	setErrors,
 	handleChange,
 	handleBlur,
-	loadingCep,
 	searchingCode,
 	handleSearchCode,
 	handlePreAnalysis,
@@ -163,320 +161,8 @@ export const FormStep = ({
 
 				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
-						<User className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">1. Qualificação</h3>
-					</div>
-					<div className="grid grid-cols-1 md:grid-cols-10 gap-5">
-						{/* Linha 1 */}
-						<div className="md:col-span-5">
-							<label className="label-form">
-								Nome Completo <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="name"
-								value={formData.name}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.name ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
-						</div>
-						<div className="md:col-span-5">
-							<label className="label-form">
-								CPF <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="cpf"
-								value={formData.cpf}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.cpf ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.cpf && <p className="text-red-500 text-xs mt-1">{errors.cpf}</p>}
-						</div>
-
-						{/* Linha 2 */}
-						<div className="md:col-span-2">
-							<label className="label-form">
-								RG <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="rg"
-								value={formData.rg}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.rg ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.rg && <p className="text-red-500 text-xs mt-1">{errors.rg}</p>}
-						</div>
-						<div className="md:col-span-2">
-							<label className="label-form">
-								UF do RG <span className="text-red-500">*</span>
-							</label>
-							<select
-								name="rgIssuer"
-								value={formData.rgIssuer}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.rgIssuer ? "border-red-500" : ""}`}
-								required>
-								<option value="">Selecione...</option>
-								{[
-									"AC",
-									"AL",
-									"AP",
-									"AM",
-									"BA",
-									"CE",
-									"DF",
-									"ES",
-									"GO",
-									"MA",
-									"MT",
-									"MS",
-									"MG",
-									"PA",
-									"PB",
-									"PR",
-									"PE",
-									"PI",
-									"RJ",
-									"RN",
-									"RS",
-									"RO",
-									"RR",
-									"SC",
-									"SP",
-									"SE",
-									"TO",
-								].map((uf) => (
-									<option key={uf} value={uf}>
-										{uf}
-									</option>
-								))}
-							</select>
-							{errors.rgIssuer && <p className="text-red-500 text-xs mt-1">{errors.rgIssuer}</p>}
-						</div>
-						<div className="md:col-span-3">
-							<label className="label-form">
-								Como prefere ser tratado? <span className="text-red-500">*</span>
-							</label>
-							<select
-								name="preferredTreatment"
-								value={formData.preferredTreatment || ""}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.preferredTreatment ? "border-red-500" : ""}`}
-								required>
-								<option value="">Selecione...</option>
-								<option value="O Recorrente">O Recorrente (Masculino)</option>
-								<option value="A Recorrente">A Recorrente (Feminino)</option>
-								<option value="Tratamento neutro">Tratamento neutro</option>
-							</select>
-							{errors.preferredTreatment && (
-								<p className="text-red-500 text-xs mt-1">{errors.preferredTreatment}</p>
-							)}
-						</div>
-
-						{/* Linha 3 */}
-						<div className="md:col-span-3">
-							<label className="label-form">CNH</label>
-							<input
-								name="cnh"
-								value={formData.cnh}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.cnh ? "border-red-500" : ""}`}
-							/>
-							{errors.cnh && <p className="text-red-500 text-xs mt-1">{errors.cnh}</p>}
-						</div>
-
-						{/* Linha 4 */}
-						<div className="md:col-span-5">
-							<label className="label-form">
-								Telefone (para notificações do processo) <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="phone"
-								value={formData.phone}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.phone ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
-						</div>
-						<div className="md:col-span-5">
-							<label className="label-form">
-								E-mail (para notificações do processo) <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="email"
-								value={formData.email}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								type="email"
-								className={`input-form ${errors.email ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-						</div>
-					</div>
-
-					{/* Endereço Mantido como estava, mas ajustando classes se necessário para compatibilidade */}
-					<div className="pt-4 border-t border-gray-100 mt-2">
-						<h4 className="text-sm font-bold text-gray-600 mb-4 uppercase">Endereço Completo</h4>
-						<div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-							<div>
-								<label className="label-form">
-									CEP <span className="text-red-500">*</span>
-								</label>
-								<div className="relative">
-									<input
-										name="zipCode"
-										value={formData.zipCode}
-										onChange={handleChange}
-										onBlur={handleBlur}
-										className={`input-form ${errors.zipCode ? "border-red-500" : ""}`}
-										required
-									/>
-									{loadingCep && (
-										<Loader2
-											className="animate-spin absolute right-3 top-3 text-blue-600"
-											size={20}
-										/>
-									)}
-								</div>
-								{errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
-							</div>
-							<div className="md:col-span-3">
-								<label className="label-form">
-									Logradouro <span className="text-red-500">*</span>
-								</label>
-								<input
-									name="address"
-									value={formData.address}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									className={`input-form ${errors.address ? "border-red-500" : ""}`}
-									required
-								/>
-								{errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
-							</div>
-							<div>
-								<label className="label-form">
-									Número <span className="text-red-500">*</span>
-								</label>
-								<input
-									name="addressNumber"
-									value={formData.addressNumber}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									className={`input-form ${errors.addressNumber ? "border-red-500" : ""}`}
-									required
-								/>
-								{errors.addressNumber && (
-									<p className="text-red-500 text-xs mt-1">{errors.addressNumber}</p>
-								)}
-							</div>
-							<div>
-								<label className="label-form">Complemento</label>
-								<input
-									name="addressComplement"
-									value={formData.addressComplement}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									className="input-form"
-								/>
-							</div>
-							<div className="md:col-span-2">
-								<label className="label-form">
-									Bairro <span className="text-red-500">*</span>
-								</label>
-								<input
-									name="neighborhood"
-									value={formData.neighborhood}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									className={`input-form ${errors.neighborhood ? "border-red-500" : ""}`}
-									required
-								/>
-								{errors.neighborhood && (
-									<p className="text-red-500 text-xs mt-1">{errors.neighborhood}</p>
-								)}
-							</div>
-							<div className="md:col-span-2">
-								<label className="label-form">
-									Cidade <span className="text-red-500">*</span>
-								</label>
-								<input
-									name="city"
-									value={formData.city}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									className={`input-form ${errors.city ? "border-red-500" : ""}`}
-									required
-								/>
-								{errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
-							</div>
-							<div className="md:col-span-2">
-								<label className="label-form">
-									UF <span className="text-red-500">*</span>
-								</label>
-								<select
-									name="state"
-									value={formData.state}
-									onChange={handleChange}
-									onBlur={handleBlur}
-									className={`input-form ${errors.state ? "border-red-500" : ""}`}
-									required>
-									<option value="">Selecione...</option>
-									{[
-										"AC",
-										"AL",
-										"AP",
-										"AM",
-										"BA",
-										"CE",
-										"DF",
-										"ES",
-										"GO",
-										"MA",
-										"MT",
-										"MS",
-										"MG",
-										"PA",
-										"PB",
-										"PR",
-										"PE",
-										"PI",
-										"RJ",
-										"RN",
-										"RS",
-										"RO",
-										"RR",
-										"SC",
-										"SP",
-										"SE",
-										"TO",
-									].map((uf) => (
-										<option key={uf} value={uf}>
-											{uf}
-										</option>
-									))}
-								</select>
-								{errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
-							</div>
-						</div>
-					</div>
-				</section>
-				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
-					<div className="flex items-center gap-2 border-b pb-4">
 						<Car className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">2. Veículo</h3>
+						<h3 className="text-xl font-bold text-gray-800">1. Veículo</h3>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-5">
 						<div>
@@ -562,7 +248,7 @@ export const FormStep = ({
 				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
 						<MapPin className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">3. Infração</h3>
+						<h3 className="text-xl font-bold text-gray-800">2. Infração</h3>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-10 gap-5">
 						{/* Linha 1: AIT, Cód, Desd, Amparo */}
@@ -724,7 +410,7 @@ export const FormStep = ({
 				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
 						<Gauge className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">4. Argumentação</h3>
+						<h3 className="text-xl font-bold text-gray-800">3. Argumentação</h3>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 						<div>
@@ -822,7 +508,7 @@ export const FormStep = ({
 				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
 						<PenTool className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">5. Finalização</h3>
+						<h3 className="text-xl font-bold text-gray-800">4. Finalização</h3>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 						<div>
