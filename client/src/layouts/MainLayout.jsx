@@ -398,12 +398,12 @@ const MainLayout = ({ children }) => {
 					</div>
 
 					<p className="text-xs text-gray-600 max-w-4xl mx-3 text-center mb-1 leading-relaxed">
-						<strong>Aviso Legal:</strong> O Auto Defesa AI é um assistente jurídico automatizado
-						desenvolvido pela iniciativa privada. Não representamos o DETRAN, CONTRAN ou qualquer
-						órgão público. O uso da plataforma serve para auxiliar na elaboração de defesas
-						administrativas com base na lei (CTB), mas não garante o deferimento dos recursos, que
-						depende da análise dos órgãos julgadores. Seus dados são processados de acordo com a
-						LGPD e nossa Política de Privacidade.
+						<strong>Aviso Legal:</strong> O Auto Defesa - Recursos de Trânsito é um assistente
+						jurídico automatizado desenvolvido pela iniciativa privada. Não representamos o DETRAN,
+						CONTRAN ou qualquer órgão público. O uso da plataforma serve para auxiliar na elaboração
+						de defesas administrativas com base na lei (CTB), mas não garante o deferimento dos
+						recursos, que depende da análise dos órgãos julgadores. Seus dados são processados de
+						acordo com a LGPD e nossa Política de Privacidade.
 					</p>
 
 					<p className="text-xs text-gray-600 mt-4">

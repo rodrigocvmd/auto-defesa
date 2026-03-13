@@ -11,13 +11,13 @@ const SEO = ({
 	isHome = false,
 	structuredData: extraStructuredData,
 }) => {
-	const siteName = "AutoDefesa";
+	const siteName = "Auto Defesa - Recursos de Trânsito";
 	// Descrição padrão focada na autoridade e especialidade
 	const defaultDescription =
-		"Auto Defesa: A autoridade em recursos de multas de trânsito. Tecnologia jurídica avançada para anular infrações e proteger sua CNH com base no CTB.";
+		"Auto Defesa - Recursos de Trânsito: A autoridade em recursos de multas com IA. Tecnologia jurídica avançada para anular infrações e proteger sua CNH com base no CTB.";
 	const baseUrl = "https://meuautodefesa.com.br";
 
-	const fullTitle = title ? `${title} | ${siteName}` : `${siteName} - Recorra de Multas com IA`;
+	const fullTitle = title ? `${title} | ${siteName}` : `${siteName} com IA`;
 	const fullDescription = description || defaultDescription;
 
 	const formattedCanonical = canonical
@@ -31,7 +31,7 @@ const SEO = ({
 	const softwareAppData = {
 		"@context": "https://schema.org",
 		"@type": "SoftwareApplication",
-		name: "Auto Defesa",
+		name: "Auto Defesa - Recursos de Trânsito",
 		applicationCategory: "LegalApplication",
 		operatingSystem: "Windows, macOS, Android, iOS, Web",
 		image: "https://meuautodefesa.com.br/favicon.svg",
