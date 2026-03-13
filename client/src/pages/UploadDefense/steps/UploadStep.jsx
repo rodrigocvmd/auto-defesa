@@ -61,14 +61,11 @@ export const UploadStep = ({
 	return (
 		<div className="max-w-3xl mx-auto pt-5 pb-1">
 			<div className="docUploadInfo mb-5 text-center relative md:mx-5">
-				<h1 className="text-3xl font-bold text-gray-900 mb-4">Análise de Documento</h1>
+				<h1 className="text-2xl font-bold text-gray-700 mb-4">Análise de Documento</h1>
 				<p className="text-gray-600 mt-2 mb-4 mx-2 md:mx-5">
 					Envie a foto ou arquivo da <strong>Notificação de Autuação</strong>,{" "}
 					<strong>Multa/Boleto</strong> ou da <strong>Decisão que negou</strong> seu recurso
-					anterior.
-				</p>
-				<p className="text-gray-600 mt-2 mb-4 mx-7">
-					A IA <strong>identificará a fase</strong> e preencherá os dados{" "}
+					anterior. A IA <strong>identificará a fase</strong> e preencherá os dados{" "}
 					<strong>automaticamente</strong>.
 				</p>
 				<p className="text-gray-600 mt-2 mb-4 mx-10">Não tem o arquivo ou imagem da infração?</p>

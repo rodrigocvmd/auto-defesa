@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
 	Upload,
@@ -23,6 +23,19 @@ import Testimonials from "../components/Testimonials";
 import ScrollReveal from "../components/ScrollReveal";
 
 const Home = () => {
+	const [showArrow, setShowArrow] = useState(true);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			if (window.scrollY > 20) {
+				setShowArrow(false);
+			}
+		};
+
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
+
 	return (
 		<MainLayout>
 			<SEO
@@ -43,18 +56,18 @@ const Home = () => {
 						<div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-center md:mt-4 !pb-5 md:!pb-0">
 							{/* Texto Hero */}
 							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0">
-								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-8 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
-									Elabore sua{" "}
+								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-5 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
+									Elabore um{" "}
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
-										Defesa Técnica
+										Recurso
 									</span>{" "}
-									e recorra de forma justa com <br className="hidden lg:block" />
+									e cancele sua multa com <br className="hidden lg:block" />
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
 										Inteligência Artificial
 									</span>
 								</h1>
 
-								<p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
+								<p className="md:text-lg text-gray-600 mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
 									Proteja seu direito de dirigir de forma técnica. Em <strong>2 minutos</strong>,
 									nossa IA identifica <strong>falhas formais</strong> e{" "}
 									<strong>vícios administrativos</strong> na sua autuação para fundamentar uma{" "}
@@ -78,10 +91,10 @@ const Home = () => {
 
 									<p className="text-[10px] md:text-xs text-gray-500 mt-2 text-center max-w-sm">
 										*A análise inicial de falhas é 100% gratuita. A emissão do documento final
-										em PDF tem um custo único de R$ 17,90.
+										em PDF tem um custo único a partir de R$ 4,79.
 									</p>
 
-									<div className="flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-4 !mx-20">
+									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
 											<div className="flex items-center gap-0.5 text-yellow-400 mb-1">
 												<Star size={16} fill="currentColor" />
@@ -90,7 +103,7 @@ const Home = () => {
 												<Star size={16} fill="currentColor" />
 												<StarHalf size={16} fill="currentColor" />
 											</div>
-											<span className="!text-[13px] md:text-md text-center uppercase tracking-wider font-bold text-gray-400">
+											<span className="!text-[12px] md:text-md text-center uppercase tracking-wider font-bold text-gray-400">
 												4.7 <br />
 												avaliação geral
 											</span>
@@ -102,13 +115,20 @@ const Home = () => {
 												<FileText size={18} className="drop-shadow-sm translate-y-0.5" />
 												<FileText size={18} className="drop-shadow-sm translate-y-1" />
 											</div>
-											<span className="!text-[13px] sm:text-xs text-center uppercase tracking-wider font-bold text-gray-400">
+											<span className="!text-[12px] sm:text-xs text-center uppercase tracking-wider font-bold text-gray-400">
 												+500
 												<br />
 												defesas geradas
 											</span>
 										</div>
 									</div>
+
+									{/* Seta indicativa para mobile */}
+									{showArrow && (
+										<div className="md:hidden flex flex-col items-center -mt-2 animate-bounce text-blue-500/60">
+											<ChevronDown size={24} />
+										</div>
+									)}
 								</div>
 							</div>
 
@@ -156,7 +176,7 @@ const Home = () => {
 									1
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Envie a Notificação</h3>
-								<p className="text-gray-600 leading-relaxed">
+								<p className="text-gray-600 leading-relaxed text-justify">
 									Envie o arquivo ou foto da multa ou ainda digite os dados manualmente. Nossa{" "}
 									<strong>tecnologia OCR</strong> lê as informações instantaneamente.
 								</p>
@@ -170,7 +190,7 @@ const Home = () => {
 									2
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">IA Analisa o Caso</h3>
-								<p className="text-gray-600 leading-relaxed">
+								<p className="text-gray-600 leading-relaxed text-justify">
 									O algoritmo verifica <strong>erros formais e materiais</strong> e busca as
 									melhores teses jurídicas na legislação para exercer seu direito de defesa.
 								</p>
@@ -184,7 +204,7 @@ const Home = () => {
 									3
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Baixe e Protocole</h3>
-								<p className="text-gray-600 leading-relaxed">
+								<p className="text-gray-600 leading-relaxed text-justify">
 									Receba o <strong>documento completo em PDF</strong>. Basta imprimir ou assinar
 									digitalmente e enviar ou protocolar junto ao órgão autuador.
 								</p>

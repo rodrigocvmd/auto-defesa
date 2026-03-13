@@ -7,8 +7,11 @@ import {
 	FileText,
 	Loader2,
 	Lock,
+	AlertTriangle,
+	Coins,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export const QualificacaoStep = ({
 	formData,
@@ -17,20 +20,25 @@ export const QualificacaoStep = ({
 	handleChange,
 	handleBlur,
 	handleUnlockDefense,
+	analysisData,
 }) => {
 	const navigate = useNavigate();
+	const { userData } = useAuth();
 
 	return (
 		<div className="max-w-5xl mx-5 md:mx-auto py-8">
-			<header className="mb-8">
+			<header className="mb-8 text-center flex flex-col items-center">
 				<button
 					onClick={() => navigate("/upload/analysis")}
 					className="text-gray-600 hover:text-blue-600 flex items-center mb-4 transition-colors font-medium">
 					<ArrowLeft size={20} className="mr-1" /> Voltar para Análise
 				</button>
-				<h1 className="text-3xl font-bold text-gray-900">Qualificação do Recorrente</h1>
-				<p className="text-gray-600">
-					Estes dados são obrigatórios por lei para a validade jurídica do documento e não são compartilhados.
+				<h1 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 mb-2">
+					Qualificação do Recorrente
+				</h1>
+				<p className="text-gray-600 max-w-2xl">
+					Estes dados são obrigatórios por lei para a validade jurídica do documento e não são
+					compartilhados.
 				</p>
 			</header>
 
@@ -39,8 +47,7 @@ export const QualificacaoStep = ({
 					e.preventDefault();
 					handleUnlockDefense();
 				}}
-				className="space-y-8 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-				
+				className="space-y-8 bg-white p-8 pb-5 rounded-3xl shadow-sm border border-gray-100">
 				{/* Seção 1: Dados Pessoais */}
 				<section className="space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
@@ -103,10 +110,37 @@ export const QualificacaoStep = ({
 								required>
 								<option value="">Selecione...</option>
 								{[
-									"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
-									"PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
+									"AC",
+									"AL",
+									"AP",
+									"AM",
+									"BA",
+									"CE",
+									"DF",
+									"ES",
+									"GO",
+									"MA",
+									"MT",
+									"MS",
+									"MG",
+									"PA",
+									"PB",
+									"PR",
+									"PE",
+									"PI",
+									"RJ",
+									"RN",
+									"RS",
+									"RO",
+									"RR",
+									"SC",
+									"SP",
+									"SE",
+									"TO",
 								].map((uf) => (
-									<option key={uf} value={uf}>{uf}</option>
+									<option key={uf} value={uf}>
+										{uf}
+									</option>
 								))}
 							</select>
 							{errors.rgIssuer && <p className="text-red-500 text-xs mt-1">{errors.rgIssuer}</p>}
@@ -221,7 +255,9 @@ export const QualificacaoStep = ({
 								className={`input-form ${errors.addressNumber ? "border-red-500" : ""}`}
 								required
 							/>
-							{errors.addressNumber && <p className="text-red-500 text-xs mt-1">{errors.addressNumber}</p>}
+							{errors.addressNumber && (
+								<p className="text-red-500 text-xs mt-1">{errors.addressNumber}</p>
+							)}
 						</div>
 						<div>
 							<label className="label-form">Complemento</label>
@@ -245,7 +281,9 @@ export const QualificacaoStep = ({
 								className={`input-form ${errors.neighborhood ? "border-red-500" : ""}`}
 								required
 							/>
-							{errors.neighborhood && <p className="text-red-500 text-xs mt-1">{errors.neighborhood}</p>}
+							{errors.neighborhood && (
+								<p className="text-red-500 text-xs mt-1">{errors.neighborhood}</p>
+							)}
 						</div>
 						<div className="md:col-span-2">
 							<label className="label-form">
@@ -274,10 +312,37 @@ export const QualificacaoStep = ({
 								required>
 								<option value="">Selecione...</option>
 								{[
-									"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
-									"PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
+									"AC",
+									"AL",
+									"AP",
+									"AM",
+									"BA",
+									"CE",
+									"DF",
+									"ES",
+									"GO",
+									"MA",
+									"MT",
+									"MS",
+									"MG",
+									"PA",
+									"PB",
+									"PR",
+									"PE",
+									"PI",
+									"RJ",
+									"RN",
+									"RS",
+									"RO",
+									"RR",
+									"SC",
+									"SP",
+									"SE",
+									"TO",
 								].map((uf) => (
-									<option key={uf} value={uf}>{uf}</option>
+									<option key={uf} value={uf}>
+										{uf}
+									</option>
 								))}
 							</select>
 							{errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
@@ -319,10 +384,37 @@ export const QualificacaoStep = ({
 								required>
 								<option value="">Selecione...</option>
 								{[
-									"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
-									"PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
+									"AC",
+									"AL",
+									"AP",
+									"AM",
+									"BA",
+									"CE",
+									"DF",
+									"ES",
+									"GO",
+									"MA",
+									"MT",
+									"MS",
+									"MG",
+									"PA",
+									"PB",
+									"PR",
+									"PE",
+									"PI",
+									"RJ",
+									"RN",
+									"RS",
+									"RO",
+									"RR",
+									"SC",
+									"SP",
+									"SE",
+									"TO",
 								].map((uf) => (
-									<option key={uf} value={uf}>{uf}</option>
+									<option key={uf} value={uf}>
+										{uf}
+									</option>
 								))}
 							</select>
 							{errors.plateUF && <p className="text-red-500 text-xs mt-1">{errors.plateUF}</p>}
@@ -339,7 +431,9 @@ export const QualificacaoStep = ({
 								className={`input-form ${errors.vehicleModel ? "border-red-500" : ""}`}
 								required
 							/>
-							{errors.vehicleModel && <p className="text-red-500 text-xs mt-1">{errors.vehicleModel}</p>}
+							{errors.vehicleModel && (
+								<p className="text-red-500 text-xs mt-1">{errors.vehicleModel}</p>
+							)}
 						</div>
 					</div>
 				</section>
@@ -382,23 +476,96 @@ export const QualificacaoStep = ({
 					</div>
 				</section>
 
-				<div className="flex flex-col items-center gap-4 py-8">
-					<button
-						type="submit"
-						disabled={loading}
-						className="w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3">
-						{loading ? (
-							<>
-								<Loader2 className="animate-spin" size={24} /> Gerando Defesa...
-							</>
-						) : (
-							"Gerar Defesa Oficial (Utiliza 1 Crédito)"
-						)}
-					</button>
+				<div className="flex flex-col items-center gap-4 py-5">
+					{!userData ? (
+						<div className="flex justify-center p-8">
+							<Loader2 className="animate-spin text-blue-600" size={32} />
+						</div>
+					) : userData.credits > 0 ? (
+						<>
+							<button
+								type="submit"
+								disabled={loading}
+								className="creditUse w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-5 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 sm:gap-3">
+								{loading ? (
+									<>
+										<Loader2 className="animate-spin" size={24} /> Gerando Defesa...
+									</>
+								) : (
+									<div className="flex flex-col sm:flex-row items-center sm:gap-2">
+										<span className="text-xl">Gerar Recurso Oficial</span>
+										<span className="text-xl font-bold sm:font-black">(Utiliza 1 Crédito)</span>
+									</div>
+								)}
+							</button>
+							<div className="creditAmountInfo mt-4 flex flex-col items-center">
+								<span className="text-gray-400 text-sm uppercase font-bold tracking-widest mb-2">
+									Seu Saldo Atual
+								</span>
+								<div className="bg-gray-100 px-4 py-1 rounded-full text-gray-600 font-black text-lg flex items-center gap-2">
+									{userData.credits}{" "}
+									<span className="text-md font-normal opacity-80">
+										{userData.credits <= 1 ? "crédito" : "créditos"}
+									</span>
+								</div>
+							</div>
+						</>
+					) : (
+						<div className="w-full max-w-xl flex flex-col gap-4">
+							<div className="noCreditsInfo bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+								<div className="flex flex-col items-center gap-2">
+									<AlertTriangle size={32} className="text-red-500 mb-2" />
+									<p className="font-bold text-red-900 text-lg">Saldo Insuficiente</p>
+									<p className="text-red-700">
+										Você não possui créditos para gerar este documento. Adquira créditos agora para
+										finalizar sua defesa oficial.
+									</p>
+								</div>
+							</div>
+
+							<button
+								type="button"
+								onClick={() => {
+									localStorage.setItem(
+										"pendingDefenseData",
+										JSON.stringify({
+											formData,
+											analysisData,
+											source: "upload",
+										}),
+									);
+									navigate("/pricing?redirect=/upload/qualification");
+								}}
+								className="aquireCredit relative overflow-hidden w-full bg-blue-600 text-white font-black py-5 rounded-2xl hover:bg-blue-700 transition-all shadow-lg flex items-center justify-center gap-2 text-xl group">
+								{/* Shimmer Effect */}
+								<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/30 to-transparent w-full h-full animate-shimmer"></div>
+								<span className="relative z-10 flex items-center gap-2">
+									Adquirir Créditos <Coins size={24} />
+								</span>
+							</button>
+
+							<button
+								disabled
+								className="w-full bg-gray-100 text-gray-400 font-bold py-4 rounded-2xl cursor-not-allowed flex items-center justify-center gap-2">
+								Gerar Recurso Oficial
+							</button>
+
+							<div className="creditAmountInfo mt-2 flex flex-col items-center">
+								<span className="text-gray-400 text-xs uppercase font-bold tracking-widest mb-1">
+									Seu Saldo Atual
+								</span>
+								<div className="bg-gray-100 px-4 py-1 rounded-full text-gray-600 font-black text-lg flex items-center gap-2">
+									0 <span className="!text-md font-normal opacity-80">créditos</span>
+								</div>
+							</div>
+						</div>
+					)}
 
 					<div className="flex items-center gap-2 text-gray-500 text-sm mt-2">
-						<Lock size={14} className="text-green-500" />
-						<span>Ambiente Seguro e Dados Criptografados de Ponta a Ponta</span>
+						<Lock size={26} className="text-green-500" />
+						<span className="text-center">
+							Ambiente Seguro e Dados Criptografados de Ponta a Ponta
+						</span>
 					</div>
 				</div>
 			</form>

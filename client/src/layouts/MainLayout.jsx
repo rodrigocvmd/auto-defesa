@@ -378,23 +378,8 @@ const MainLayout = ({ children }) => {
 			{/* Main Content Area */}
 			<main className="flex-1 w-full max-w-8xl mx-auto px-0 py-0">
 				{children}
-				<footer className="border-t border-gray-100 py-8 mt-4 flex flex-col items-center">
-					<div className="text-center mb-6 space-y-1">
-						<p className="text-sm font-bold text-gray-800">
-							Razão Social: RC SOFTWARE E TECNOLOGIA LTDA | CNPJ: 26.560.542/0001-02
-						</p>
-						<p className="text-xs text-gray-600">
-							Endereço: QD SBS QD 2 12 BL E, SL - Brasília/DF, CEP: 70070-120
-						</p>
-						<p className="text-xs text-gray-600">
-							Contato:{" "}
-							<a
-								href="mailto:suporte@meuautodefesa.com.br"
-								className="hover:text-blue-600 underline">
-								suporte@meuautodefesa.com.br
-							</a>
-						</p>
-					</div>
+				<footer className="border-t border-gray-100 pb-8 mt-1 flex flex-col items-center">
+					
 
 					<div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-gray-600 mb-6">
 						<Link to="/about" className="hover:text-blue-600 hover:underline">
@@ -416,6 +401,23 @@ const MainLayout = ({ children }) => {
 						recursos, que depende da análise dos órgãos julgadores. Seus dados são processados de
 						acordo com a LGPD e nossa Política de Privacidade.
 					</p>
+
+					<div className="text-center space-y-1 mt-4">
+						<p className="!text-xs font-bold text-gray-500">
+							RC SOFTWARE E TECNOLOGIA LTDA | CNPJ: 26.560.542/0001-02
+						</p>
+						<p className="text-xs text-gray-600">
+							Endereço: QD SBS QD 2 12 BL E, SL - Brasília/DF, CEP: 70070-120
+						</p>
+						<p className="text-xs text-gray-600">
+							Contato:{" "}
+							<a
+								href="mailto:suporte@meuautodefesa.com.br"
+								className="hover:text-blue-600 underline">
+								suporte@meuautodefesa.com.br
+							</a>
+						</p>
+					</div>
 
 					<p className="text-[10px] text-gray-400 mt-4">
 						&copy; {ano} Auto Defesa - Recursos de Trânsito. Todos os direitos reservados.

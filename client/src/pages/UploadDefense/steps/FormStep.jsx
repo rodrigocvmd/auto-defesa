@@ -95,23 +95,25 @@ export const FormStep = ({
 				<TestInfoModal onClose={() => setShowTestModal(false)} onConfirm={confirmTestMode} />
 			)}
 
-			<header className="mb-8">
+			<header className="mb-8 text-center flex flex-col items-center">
 				<button
 					onClick={() => navigate("/upload")}
 					className="text-gray-600 hover:text-blue-600 flex items-center mb-4 transition-colors font-medium">
 					<ArrowLeft size={20} className="mr-1" /> Voltar
 				</button>
-				<h1 className="text-3xl font-bold text-gray-900">Revise os Dados</h1>
-				<p className="text-gray-600">
+				<h1 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 mb-2">
+					Revise os Dados
+				</h1>
+				<p className="text-gray-600 max-w-2xl">
 					Nossa IA leu seu documento. Verifique e complete as informações abaixo.
 				</p>
-				<div className="flex items-center gap-2 mt-2 p-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800 max-w-2xl">
+				<div className="flex items-center gap-2 mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800 max-w-2xl text-left">
 					<Info size={18} className="shrink-0" />
 					<p>
 						Os dados solicitados abaixo são necessários para a análise técnica da sua infração.
 					</p>
 				</div>
-				<div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-4 gap-4">
+				<div className="flex flex-col md:flex-row justify-between items-center w-full mt-6 gap-4">
 					<div className="text-sm text-gray-500 font-medium">* Campos obrigatórios</div>
 					<div className="flex items-center gap-2">
 						{!isTestMode && !file && (

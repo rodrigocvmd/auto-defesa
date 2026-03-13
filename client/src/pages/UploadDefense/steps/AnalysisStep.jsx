@@ -8,8 +8,6 @@ import {
 	PenTool,
 	User,
 	FileText,
-	AlertTriangle,
-	Coins,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -134,10 +132,10 @@ export const AnalysisStep = ({
 						<h3 className="text-xl font-bold mb-4">
 							{isTestMode ? "Modo de Demonstração" : "Desbloquear Defesa Pronta"}
 						</h3>
-						<p className={`${isTestMode ? "text-gray-300" : "text-blue-100"} text-sm mb-6`}>
+						<p className={`${isTestMode ? "text-gray-300" : "text-blue-100"} text-md mb-6`}>
 							{isTestMode
 								? "Estes são resultados baseados em dados fictícios. Para gerar um recurso válido juridicamente, insira seus dados reais."
-								: "Nossa IA já estruturou toda a argumentação jurídica baseada nas teses acima. Baixe o documento final editável agora."}
+								: "Nossa IA já estruturou toda a argumentação jurídica baseada nas teses acima. Prossiga para realizar a inserção de dados complementares para a elaboração do recurso."}
 						</p>
 
 						{isTestMode ? (
@@ -148,7 +146,7 @@ export const AnalysisStep = ({
 							</button>
 						) : !currentUser ? (
 							<div className="flex flex-col gap-3">
-								<p className="text-blue-100 text-sm mb-2 font-medium">
+								<p className="text-blue-100 text-md mb-2 font-medium">
 									Você precisa estar logado para gerar o documento final.
 								</p>
 								<button
@@ -178,72 +176,21 @@ export const AnalysisStep = ({
 										);
 										navigate("/login?redirect=/upload");
 									}}
-									className="w-full bg-blue-700 text-white font-bold py-3 rounded-xl hover:bg-blue-800 transition-colors shadow-sm flex items-center justify-center gap-2 text-sm">
+									className="w-full bg-blue-700 text-white font-bold py-3 rounded-xl hover:bg-blue-800 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
 									Já tenho conta (Entrar)
 								</button>
 							</div>
-						) : userData?.credits > 0 ? (
+						) : (
 							<button
 								onClick={() => navigate("/upload/qualification")}
 								className={`salvarECriarConta w-full bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2`}>
-								Preencher Dados Finais e Utilizar 1 Crédito <FileText size={20} className="hidden sm:block" />
+								Inserir dados complementares <FileText size={20} className="hidden sm:block" />
 							</button>
-						) : (
-							<div className="flex flex-col gap-3">
-								<div className="bg-red-500/20 border border-red-500/30 rounded-xl p-4 text-white text-sm">
-									<div className="flex flex-col !w-full !justify-center text-center ">
-										<p className="font-bold flex justify-center items-center gap-2 mb-1">
-											<AlertTriangle size={16} /> Saldo Insuficiente
-										</p>
-										<p className="opacity-90">
-											Você não possui créditos. Seus dados já estão salvos. Adquira créditos para
-											finalizar agora.
-										</p>
-									</div>
-								</div>
-
-								<button
-									onClick={() => {
-										localStorage.setItem(
-											"pendingDefenseData",
-											JSON.stringify({
-												formData,
-												analysisData,
-												source: "upload",
-											}),
-										);
-										navigate("/pricing?redirect=/upload");
-									}}
-									className="salvarECriarConta w-full bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2">
-									Adquirir Créditos <Coins size={20} className="hidden sm:block" />
-								</button>
-								<button
-									disabled
-									className="w-full bg-gray-400/50 text-white/50 font-bold py-3 rounded-xl cursor-not-allowed flex items-center justify-center gap-2">
-									Utilizar 1 Crédito <FileText size={20} />
-								</button>
-							</div>
 						)}
-
-						<div className="mt-4 flex flex-col items-center">
-							<span
-								id="saldoAtualRecurso"
-								className="text-blue-200 text-xs uppercase font-bold tracking-widest mb-1">
-								Seu Saldo Atual
-							</span>
-							<div
-								id="creditosAtual"
-								className="bg-white/20 px-4 py-1 rounded-full text-white font-black text-lg flex items-center gap-2">
-								{userData ? userData.credits : 0}{" "}
-								<span className="text-sm font-normal opacity-80">
-									{!userData || userData?.credits <= 1 ? "crédito" : "créditos"}
-								</span>
-							</div>
-						</div>
 					</div>
 					<button
 						onClick={() => navigate("/upload/form")}
-						className="w-full text-center text-gray-600 text-sm mt-6 hover:text-gray-800">
+						className="w-full text-center text-gray-600 text-md mt-6 hover:text-gray-800">
 						Voltar e editar dados
 					</button>
 				</div>
