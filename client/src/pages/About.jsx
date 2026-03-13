@@ -38,10 +38,25 @@ const About = () => {
 	return (
 		<MainLayout>
 			<SEO
-				title="Sobre Nós"
-				description="Conheça o Auto Defesa: Unimos inteligência artificial e expertise jurídica para proteger o direito de dirigir de milhares de brasileiros."
+				title="Sobre a Auto Defesa - Recursos de Trânsito"
+				description="Conheça o Auto Defesa - Recursos de Trânsito: Unimos inteligência artificial e expertise jurídica para proteger o direito de dirigir de milhares de brasileiros."
 			/>
-			<script type="application/ld+json">{JSON.stringify(aboutSchema)}</script>
+			<script type="application/ld+json">{JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "AboutPage",
+				mainEntity: {
+					"@type": "Organization",
+					name: "Auto Defesa - Recursos de Trânsito",
+					description:
+						"Tecnologia jurídica avançada para democratizar o direito de defesa dos motoristas brasileiros.",
+					founder: {
+						"@type": "Person",
+						name: "Rodrigo Carvalho",
+						jobTitle: "Especialista em Direito de Trânsito",
+						knowsAbout: ["Direito de Trânsito", "CTB", "Inteligência Artificial"],
+					},
+				},
+			})}</script>
 
 			{/* 1. Hero Section */}
 			<section className="bg-blue-50 border-b border-blue-100 overflow-hidden">
@@ -77,11 +92,12 @@ const About = () => {
 								</h2>
 								<div className="space-y-6 text-lg text-gray-600 leading-relaxed">
 									<p>
-										O Auto Defesa nasceu de uma frustração comum: a complexidade desnecessária do
-										sistema de trânsito brasileiro. Percebemos que milhares de motoristas aceitavam
-										multas injustas ou perdiam suas carteiras de habilitação não porque eram culpados,
-										mas porque não sabiam como se defender tecnicamente ou não podiam arcar com os
-										custos de um escritório de advocacia tradicional.
+										O Auto Defesa - Recursos de Trânsito nasceu de uma frustração comum: a
+										complexidade desnecessária do sistema de trânsito brasileiro. Percebemos que
+										milhares de motoristas aceitavam multas injustas ou perdiam suas carteiras de
+										habilitação não porque eram culpados, mas porque não sabiam como se defender
+										tecnicamente ou não podiam arcar com os custos de um escritório de advocacia
+										tradicional.
 									</p>
 									<p>
 										Entendemos que o Código de Trânsito Brasileiro (CTB) é técnico e rigoroso, e que a
@@ -120,9 +136,9 @@ const About = () => {
 								Inteligência Artificial treinada na Legislação de Trânsito
 							</h2>
 							<p className="text-lg text-gray-600">
-								Diferente de modelos genéricos, o "cérebro" do Auto Defesa foi treinado
-								especificamente com as normas do CONTRAN, resoluções atualizadas e o Código de
-								Trânsito Brasileiro.
+								Diferente de modelos genéricos, o "cérebro" do Auto Defesa - Recursos de Trânsito
+								foi treinado especificamente com as normas do CONTRAN, resoluções atualizadas e o
+								Código de Trânsito Brasileiro.
 							</p>
 						</div>
 					</ScrollReveal>
@@ -188,7 +204,7 @@ const About = () => {
 										<div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-blue-700/50 border-4 border-blue-600/30 flex items-center justify-center mb-6 overflow-hidden shadow-2xl">
 											<img
 												src="/perfil.webp"
-												alt="Rodrigo Carvalho - Fundador Auto Defesa"
+												alt="Rodrigo Carvalho - Fundador Auto Defesa - Recursos de Trânsito"
 												className="w-full h-full object-cover"
 											/>
 										</div>

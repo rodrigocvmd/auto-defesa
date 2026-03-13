@@ -26,7 +26,7 @@ const Home = () => {
 	return (
 		<MainLayout>
 			<SEO
-				title="Recorra de Multas com IA | Recurso Pronto para protocolar em minutos | Apenas R$ 17,90"
+				title="Auto Defesa - Recursos de Trânsito com IA | Recurso Pronto para protocolar em minutos"
 				description="Gere seu Recurso de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e pronto para imprimir."
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, advogado transito online"
 				isHome={true}
@@ -222,7 +222,7 @@ const Home = () => {
 						<ScrollReveal>
 							<div className="text-center mb-16">
 								<h2 className="text-3xl md:text-4xl font-black mb-6">
-									Por que escolher o AutoDefesa?
+									Por que escolher o Auto Defesa - Recursos de Trânsito?
 								</h2>
 								<p className="text-gray-300 max-w-3xl mx-auto text-lg">
 									Democratizamos o acesso à defesa de trânsito de qualidade. Compare e veja a
@@ -262,7 +262,7 @@ const Home = () => {
 										MELHOR ESCOLHA
 									</div>
 									<h3 className="text-2xl font-black text-gray-900 mb-6 flex items-center gap-2">
-										<span className="text-blue-600">AutoDefesa</span> IA
+										<span className="text-blue-600">Auto Defesa</span> - Recursos de Trânsito IA
 									</h3>
 									<ul className="space-y-4">
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
@@ -374,7 +374,7 @@ const Home = () => {
 					<ScrollReveal>
 						<div className="text-center mb-16">
 							<span className="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-4 inline-block">
-								Por que confiar no Auto Defesa?
+								Por que confiar no Auto Defesa - Recursos de Trânsito?
 							</span>
 							<h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6">
 								Defesa Técnica com Inteligência Jurídica

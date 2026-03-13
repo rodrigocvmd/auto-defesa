@@ -46,13 +46,17 @@ const HowItWorks = () => {
 
 	return (
 		<MainLayout>
+			<SEO
+				title="Como Funciona | Auto Defesa - Recursos de Trânsito"
+				description="Entenda como nossa tecnologia de IA elabora recursos de multas de trânsito em minutos, garantindo seu direito de defesa."
+			/>
 			<div className="max-w-4xl mx-auto pt-10 pb-2 px-4">
 				<ScrollReveal>
 					<header className="text-center mb-16">
 						<h1 className="text-4xl font-black text-gray-900 mb-4">Como Funciona</h1>
 						<p className="text-xl text-gray-600 max-w-2xl mx-auto">
-							Entenda o passo a passo para anular sua multa de trânsito sem burocracia e sem gastar
-							com advogados.
+							Entenda o passo a passo para anular sua multa de trânsito com a Auto Defesa - Recursos
+							de Trânsito sem burocracia e sem gastar com advogados.
 						</p>
 					</header>
 				</ScrollReveal>

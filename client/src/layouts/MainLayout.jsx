@@ -43,8 +43,8 @@ const MainLayout = ({ children }) => {
 					id="infoWarning"
 					className="infoWarning bg-gray-100 py-2 border-b border-gray-100 animate-in fade-in slide-in-from-top duration-300">
 					<p className="text-[10px] md:text-xs text-gray-500 text-center px-4 leading-tight">
-						Auto Defesa é uma plataforma de tecnologia privada (SaaS) e não possui vínculo com o
-						DETRAN ou órgãos governamentais.
+						Auto Defesa - Recursos de Trânsito é uma plataforma de tecnologia privada (SaaS) e não
+						possui vínculo com o DETRAN ou órgãos governamentais.
 					</p>
 				</div>
 			)}
@@ -407,7 +407,7 @@ const MainLayout = ({ children }) => {
 					</p>
 
 					<p className="text-xs text-gray-600 mt-4">
-						&copy; {ano} AutoDefesa Software. Todos os direitos reservados.
+						&copy; {ano} Auto Defesa - Recursos de Trânsito. Todos os direitos reservados.
 					</p>
 				</footer>
 			</main>
