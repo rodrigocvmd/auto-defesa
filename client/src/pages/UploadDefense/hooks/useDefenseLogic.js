@@ -157,33 +157,15 @@ export const useDefenseLogic = (step) => {
 	const validateField = (name, value) => {
 		let error = null;
 		const requiredFields = [
-			"name",
-			"cpf",
-			"rg",
-			"rgIssuer",
-			"preferredTreatment",
-			"phone",
-			"email",
-			"zipCode",
-			"address",
-			"addressNumber",
-			"neighborhood",
-			"city",
-			"state",
-			"plate",
-			"plateUF",
-			"vehicleModel",
-			"aitNumber",
 			"infractionCode",
+			"aitNumber",
 			"issuingBody",
+			"location",
 			"date",
 			"time",
-			"location",
-			"description",
 			"equipmentNumber",
 			"lastCalibration",
-			"signCity",
-			"signDate",
+			"description",
 		];
 		if (requiredFields.includes(name) && !value.trim()) return "Campo obrigatório.";
 
