@@ -449,8 +449,56 @@ export const useDefenseLogic = (step) => {
 		}
 	};
 
+	const validateQualification = () => {
+		const qualificationFields = [
+			"name",
+			"cpf",
+			"rg",
+			"rgIssuer",
+			"preferredTreatment",
+			"phone",
+			"email",
+			"zipCode",
+			"address",
+			"addressNumber",
+			"neighborhood",
+			"city",
+			"state",
+			"plate",
+			"plateUF",
+			"vehicleModel",
+			"signCity",
+			"signDate",
+		];
+		const newErrors = {};
+		let isValid = true;
+
+		qualificationFields.forEach((key) => {
+			const value = formData[key] || "";
+			if (!value.trim()) {
+				newErrors[key] = "Campo obrigatório.";
+				isValid = false;
+			} else {
+				const error = validateField(key, value);
+				if (error) {
+					newErrors[key] = error;
+					isValid = false;
+				}
+			}
+		});
+
+		setErrors(newErrors);
+		return isValid;
+	};
+
 	const handleUnlockDefense = async () => {
 		if (isTestMode) return;
+
+		if (!validateQualification()) {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+			return;
+		}
+
 		setLoading(true);
 		try {
 			const payload = {
