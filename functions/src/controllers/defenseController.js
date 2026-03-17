@@ -13,7 +13,7 @@ const MODEL_FALLBACK = "gemini-flash-latest";
 
 // Testes / Lite:
 // const MODEL_FLASH = "gemini-2.5-flash-lite";
-// const MODEL_PRO = "gemini-2.5-flash-litee";
+// const MODEL_PRO = "gemini-2.5-flash-lite";
 // const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
