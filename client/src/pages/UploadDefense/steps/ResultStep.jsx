@@ -213,7 +213,7 @@ export const ResultStep = ({
 						className={`px-6 py-2 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${
 							isRefining
 								? "bg-gray-100 text-gray-600 border border-gray-300"
-								: "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-200 shadow-md animate-pulse"
+								: "bg-blue-500 text-white hover:bg-blue-600 shadow-blue-200 shadow-md"
 						}`}>
 						{refining ? <Loader2 className="animate-spin" size={18} /> : <PenTool size={18} />}
 						{isRefining ? "Fechar Painel de Correção" : "Solicitar Correção via IA"}
@@ -221,7 +221,7 @@ export const ResultStep = ({
 
 					<button
 						onClick={handleDownloadRequest}
-						className="bg-green-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-700 flex items-center justify-center gap-2 shadow-md">
+						className="bg-green-700 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-600 flex items-center justify-center gap-2 shadow-md">
 						<Download size={18} /> Baixar PDF Final
 					</button>
 				</div>
