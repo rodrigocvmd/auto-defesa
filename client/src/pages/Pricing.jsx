@@ -33,7 +33,8 @@ const Pricing = () => {
 				"Crédito vitalício / não expira",
 				"Recurso fica salvo no histórico",
 				"Recurso para qualquer fase da Defesa",
-				"Custo padrão por Recurso",
+				"Ótimo valor por Recurso",
+				"Valor por recurso no pacote: R$ 17,90",
 			],
 			recommended: false,
 			color: "gray",
@@ -53,6 +54,7 @@ const Pricing = () => {
 				"Todos os Recursos salvos no histórico",
 				"Garante as 3 fases da Defesa",
 				"Custo por Recurso reduzido",
+				"Valor por recurso no pacote: R$ 9,30",
 			],
 			recommended: true,
 			color: "blue",
@@ -71,6 +73,7 @@ const Pricing = () => {
 				"Todos os Recursos salvos no histórico",
 				"Garante 10 Defesas Completas",
 				"Melhor custo por crédito",
+				"Valor por recurso no pacote: R$ 4,79",
 			],
 			recommended: false,
 			color: "gray",
@@ -116,8 +119,7 @@ const Pricing = () => {
 							Escolha o melhor pacote de defesa para você
 						</h1>
 						<p className="text-xl text-gray-600 max-w-1xl mx-auto">
-							Não pague multas injustas. Utilize nossa tecnologia jurídica para proteger sua CNH e seu
-							bolso.
+							Não pague multas injustas. Utilize nossa tecnologia para proteger sua CNH e seu bolso.
 						</p>
 					</div>
 				</ScrollReveal>
