@@ -52,7 +52,7 @@ const Home = () => {
 					<div className="absolute top-20 left-[-5%] w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[8000ms]"></div>
 					<div className="absolute bottom-20 right-[-5%] w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[10000ms]"></div>
 
-					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 mt-3">
+					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 md:mt-3">
 						<div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-center md:mt-4 !pb-5 md:!pb-0">
 							{/* Texto Hero */}
 							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0">
@@ -67,12 +67,12 @@ const Home = () => {
 									</span>
 								</h1>
 
-								<p className="md:text-lg text-gray-600 mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
+								<p className="md:text-lg text-gray-600 mb-4 md:mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
 									Proteja seu direito de dirigir de forma técnica. Em <strong>2 minutos</strong>,
 									nossa IA identifica <strong>falhas formais</strong> e{" "}
 									<strong>vícios administrativos</strong> na sua autuação para fundamentar uma{" "}
-									<strong>Defesa Técnica Profissional</strong>. Aumente suas chances com
-									argumentos baseados na legislação atualizada.
+									<strong>Defesa Técnica Profissional</strong>. Aumente suas chances com argumentos
+									baseados na legislação atualizada.
 								</p>
 
 								<div className="flex flex-col items-center lg:items-center w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
@@ -89,12 +89,12 @@ const Home = () => {
 										<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
 									</Link>
 
-									<p className="text-[10px] md:text-xs text-gray-500 mt-2 text-center max-w-sm">
-										*A análise inicial de falhas é 100% gratuita. A emissão do documento final
-										em PDF tem um custo único a partir de R$ 4,79.
+									<p className="text-[10px] md:text-xs text-gray-500 md:mt-2 text-center max-w-sm">
+										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
+										documento final em PDF tem um custo único a partir de R$ 4,79.
 									</p>
 
-									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-4 !mx-20">
+									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-2 md:mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
 											<div className="flex items-center gap-0.5 text-yellow-400 mb-1">
 												<Star size={16} fill="currentColor" />
@@ -162,8 +162,8 @@ const Home = () => {
 								Como funciona?
 							</h2>
 							<p className="text-gray-600 max-w-3xl mx-auto text-lg lg:text-xl">
-								Simplificamos a burocracia. Em poucos minutos você terá em mãos a fundamentação técnica
-								para o seu caso.
+								Simplificamos a burocracia. Em poucos minutos você terá em mãos a fundamentação
+								técnica para o seu caso.
 							</p>
 						</div>
 					</ScrollReveal>
@@ -214,7 +214,7 @@ const Home = () => {
 				</section>
 
 				{/* VALOR / COMPARATIVO */}
-				<section className="bg-gray-900 rounded-[3rem] py-20 mx-4 sm:mx-8 text-white relative overflow-hidden mt-5 lg:mt-16">
+				<section className="bg-gray-900 rounded-[3rem] py-8 md:py-20 mx-4 sm:mx-8 text-white relative overflow-hidden mt-5 lg:mt-16">
 					<div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
 						<div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-500 rounded-full blur-[100px]"></div>
 						<div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-500 rounded-full blur-[100px]"></div>
@@ -224,7 +224,7 @@ const Home = () => {
 						<ScrollReveal>
 							<div className="text-center mb-16">
 								<h2 className="text-3xl md:text-4xl font-black mb-6">
-									Por que escolher o Auto Defesa - Recursos de Trânsito?
+									Por que escolher o Auto Defesa?
 								</h2>
 								<p className="text-gray-300 max-w-3xl mx-auto text-lg">
 									Democratizamos o acesso à defesa de trânsito de qualidade. Compare e veja a
@@ -236,9 +236,9 @@ const Home = () => {
 						<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 							{/* Card Lawyer */}
 							<ScrollReveal direction="left">
-								<div className="bg-white/5 backdrop-blur-sm rounded-3xl p-6 sm:p-8 border border-white/10">
-									<h3 className="text-xl font-bold text-gray-300 mb-6 flex items-center gap-2">
-										<Shield size={20} /> Defesa Tradicional (Advogado)
+								<div className="bg-white/5 backdrop-blur-sm rounded-3xl p-6 sm:p-8 border border-white/10 text-center">
+									<h3 className="text-xl font-bold text-gray-300 mb-6 flex items-center gap-2 justify-center">
+										<Shield size={20} /> Defesa Tradicional
 									</h3>
 									<ul className="space-y-4 text-gray-300">
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-1 sm:gap-0">
@@ -259,33 +259,35 @@ const Home = () => {
 
 							{/* Card AutoDefesa */}
 							<ScrollReveal direction="right">
-								<div className="bg-white text-gray-900 rounded-3xl p-6 sm:p-8 border-4 border-blue-500 shadow-2xl relative transform lg:scale-110">
+								<div className="bg-white text-gray-900 rounded-3xl p-6 sm:p-8 border-4 border-blue-500 shadow-2xl relative transform lg:scale-110 text-center">
 									<div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-xs sm:text-sm font-bold shadow-lg whitespace-nowrap">
 										MELHOR ESCOLHA
 									</div>
-									<h3 className="text-2xl font-black text-gray-900 mb-6 flex items-center gap-2">
-										<span className="text-blue-600">Auto Defesa</span> - Recursos de Trânsito IA
+									<h3 className="text-2xl font-black text-gray-900 mb-6 flex justify-center items-center  gap-2">
+										<span className="text-blue-600">Auto Defesa</span>
 									</h3>
 									<ul className="space-y-4">
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Custo</span>
-											<span className="font-black text-green-600 text-xl sm:text-2xl">
-												Apenas R$ 17,90 (emissão do PDF)
+											<span className="font-black text-green-600 text-lg mx-5 md:mx-0">
+												A partir de R$ 4,79 (no pacote)
 											</span>
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Tempo de Espera</span>
-											<span className="font-bold text-blue-600 flex items-center gap-1">
-												<Clock size={16} /> Imediato
-											</span>
+											<div className=" flex">
+												<span className="w-full items-center justify-center align-middle font-bold text-blue-600 flex gap-2">
+													<Clock size={16} /> <p className="!text-gray-800">Imediato</p>
+												</span>
+											</div>
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Qualidade</span>
-											<span className="font-bold text-gray-900">IA Especializada em Defesas</span>
+											<span className="font-bold text-gray-800">IA Especializada em Defesas</span>
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Resultado</span>
-											<span className="font-bold text-gray-900 flex items-center gap-1">
+											<span className="w-full items-center justify-center align-middle font-bold text-gray-800 flex gap-2">
 												<FileCheck size={18} className="text-blue-600" /> Pronto para Protocolar
 											</span>
 										</li>
@@ -327,8 +329,8 @@ const Home = () => {
 									Preciso contratar advogado depois?
 								</h3>
 								<p className="text-gray-600">
-									Não. O processo administrativo não exige advogado em nenhuma etapa. O documento que
-									geramos já vem com a fundamentação legal e técnica necessária. É só assinar e
+									Não. O processo administrativo não exige advogado em nenhuma etapa. O documento
+									que geramos já vem com a fundamentação legal e técnica necessária. É só assinar e
 									entregar.
 								</p>
 							</div>
@@ -375,8 +377,8 @@ const Home = () => {
 				<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 					<ScrollReveal>
 						<div className="text-center mb-16">
-							<span className="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-4 inline-block">
-								Por que confiar no Auto Defesa - Recursos de Trânsito?
+							<span className="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-lg font-bold mb-8 inline-block">
+								Por que confiar no Auto Defesa?
 							</span>
 							<h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6">
 								Defesa Técnica com Inteligência Jurídica
@@ -411,8 +413,8 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Foco em Nulidades</h3>
 								<p className="text-gray-600">
-									Buscamos erros de procedimento e vícios formais que, por lei, podem tornar o auto de
-									infração insubsistente por meio de defesa técnica.
+									Buscamos erros de procedimento e vícios formais que, por lei, podem tornar o auto
+									de infração insubsistente por meio de defesa técnica.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -545,9 +547,9 @@ const Home = () => {
 
 				{/* CTA FINAL */}
 				<ScrollReveal>
-					<div className="text-center px-4">
+					<div className="text-center px-4 pt-5">
 						<div className="inline-block p-1 rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 shadow-2xl">
-							<div className="bg-white rounded-[1.3rem] px-8 py-12 md:px-16 md:py-16 max-w-4xl">
+							<div className="bg-white rounded-[1.3rem] px-8 py-12 md:px-16 md:py-10 max-w-4xl">
 								<h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
 									Não deixe os pontos vencerem
 								</h2>
@@ -557,8 +559,8 @@ const Home = () => {
 								</p>
 								<Link
 									to="/upload"
-									className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-bold text-xl py-4 px-10 rounded-xl hover:bg-gray-800 transition-all hover:scale-105 shadow-lg">
-									Analisar Viabilidade (Grátis) <ArrowRight size={20} />
+									className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-bold text-xl py-4 px-2 md:px-10 rounded-xl hover:bg-gray-800 transition-all hover:scale-105 shadow-lg">
+									Analisar Viabilidade (Grátis) <ArrowRight size={20} className="hidden md:block"/>
 								</Link>
 							</div>
 						</div>

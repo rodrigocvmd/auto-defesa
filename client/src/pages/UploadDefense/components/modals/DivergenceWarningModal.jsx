@@ -28,7 +28,7 @@ export const DivergenceWarningModal = ({ onClose, analysisData }) => {
                         <p className="text-sm text-red-700 italic">"{analysisData?.divergence?.message}"</p>
                     </div>
 
-                    <p className="text-sm">
+                    <p className="text-sm text-center">
                         <strong>Atenção:</strong> Manter essas informações pode{" "}
                         <strong>não ser positivo</strong> para o recurso, proporcionando inconsistências
                         jurídicas e limitando significativamente os argumentos de defesa que a IA poderá
@@ -49,7 +49,7 @@ export const DivergenceWarningModal = ({ onClose, analysisData }) => {
                             navigate("/upload/analysis");
                         }}
                         className="w-full bg-white border border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors">
-                        Manter como está
+                        Manter como está...
                     </button>
                 </div>
             </div>

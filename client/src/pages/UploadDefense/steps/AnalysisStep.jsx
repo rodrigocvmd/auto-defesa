@@ -34,7 +34,7 @@ export const AnalysisStep = ({
 	const isPossibleViability = viability === "Possível";
 
 	return (
-		<div className="completeLoadingInfo max-w-2xl mx-auto py-12 px-4">
+		<div className="completeLoadingInfo max-w-2xl mx-auto pt-5 pb-12 px-4">
 			{loading && (
 				<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
 					<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
@@ -77,7 +77,7 @@ export const AnalysisStep = ({
 			)}
 			<div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 animate-in slide-in-from-bottom-4 duration-500">
 				<div
-					className={`p-8 text-center ${isHighViability ? "bg-green-50" : isPossibleViability ? "bg-green-50/50" : "bg-yellow-50"}`}>
+					className={`py-3 px-2 text-center ${isHighViability ? "bg-green-50" : isPossibleViability ? "bg-green-50/50" : "bg-yellow-50"}`}>
 					<div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white shadow-sm mb-4">
 						{isHighViability ? (
 							<CheckCircle size={40} className="text-green-600" />
@@ -89,14 +89,13 @@ export const AnalysisStep = ({
 					</div>
 					<h2 className="text-2xl font-black text-gray-900 mb-2">Viabilidade {viability}</h2>
 					<p className="text-gray-600 font-medium px-4">{summary}</p>
-					<div className="mt-4 inline-block bg-blue-50 border border-blue-100 rounded-lg px-3 py-1 text-xs text-blue-700 font-medium">
-						Análise preliminar realizada com IA Standard. O recurso final utilizará o Modelo Pro
-						(Advogado Virtual).
+					<div className="mt-4 mx-4 md:mb-3 inline-block bg-blue-50 border border-blue-100 rounded-lg px-3 py-1 text-sm text-blue-700 font-medium">
+						Análise preliminar realizada com IA Standard. O recurso final utilizará o Modelo Pro.
 					</div>
 				</div>
-				<div className="p-8">
-					<h3 className="text-sm font-bold text-gray-600 uppercase tracking-wider mb-4 flex items-center gap-2">
-						<Search size={16} /> Teses Identificadas pela IA
+				<div className="p-6">
+					<h3 className="text-sm font-bold text-gray-600 uppercase tracking-wider mb-4 flex items-center gap-2 justify-center">
+						<Search size={16} /> Teses Identificadas pela IA:
 					</h3>
 					<div className="space-y-4 mb-6">
 						{analysisData.arguments.slice(0, 3).map((arg, idx) => (
@@ -120,12 +119,12 @@ export const AnalysisStep = ({
 							</div>
 						))}
 					</div>
-					<div className="flex text-centeritems-center justify-center gap-2 mb-8 text-blue-600 font-bold bg-blue-50 p-3 rounded-lg border border-blue-100 border-dashed">
-						<Lock size={16} />
+					<div className="flex text-center items-center justify-center gap-2 md:gap-5 mb-8 text-blue-600 font-bold bg-blue-50 px-8 py-3 md:px-3 md:py-5 rounded-lg border border-blue-100 border-dashed">
+						<Lock size={22} />
 						<span>+ {exclusiveThesesCount} teses exclusivas identificadas</span>
 					</div>
 					<div
-						className={`${isTestMode ? "bg-gray-800" : "bg-blue-600"} rounded-2xl p-6 text-white text-center shadow-lg shadow-blue-200 transition-colors`}>
+						className={`${isTestMode ? "bg-gray-800" : "bg-blue-600"} rounded-2xl py-6 px-4 md:p-6 text-white text-center flex-col !items-center shadow-lg shadow-blue-200 transition-colors`}>
 						<div className="flex items-center justify-center gap-2 mb-2 opacity-90">
 							<Lock size={16} />
 							<span className="text-sm font-medium">Recurso Completo Bloqueado</span>
@@ -140,61 +139,72 @@ export const AnalysisStep = ({
 						</p>
 
 						{isTestMode ? (
-							<button
-								onClick={handleReturnToRealData}
-								className="w-full bg-white text-gray-900 font-black py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2 mb-3 px-1 md:px-0">
-								Preencher Meus Dados Reais <PenTool size={20} className="hidden sm:block" />
-							</button>
+							<div className="w-full flex justify-center px-4">
+								<button
+									onClick={handleReturnToRealData}
+									className="w-full md:w-2/3 bg-white text-gray-900 font-black py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2 mb-3 px-1 md:px-0">
+									Preencher Meus Dados Reais <PenTool size={20} className="hidden sm:block" />
+								</button>
+							</div>
 						) : !currentUser ? (
 							<div className="flex flex-col gap-3">
 								<p className="text-blue-100 text-md mb-2 font-medium">
 									Você precisa estar logado para gerar o documento final.
 								</p>
-								<button
-									onClick={() => {
-										localStorage.setItem(
-											"pendingDefenseData",
-											JSON.stringify({
-												formData,
-												analysisData,
-												source: "upload",
-											}),
-										);
-										navigate("/register?redirect=/upload");
-									}}
-									className="salvarECriarConta w-full bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2">
-									Salvar Análise e Criar Conta <User size={20} className="hidden sm:block" />
-								</button>
-								<button
-									onClick={() => {
-										localStorage.setItem(
-											"pendingDefenseData",
-											JSON.stringify({
-												formData,
-												analysisData,
-												source: "upload",
-											}),
-										);
-										navigate("/login?redirect=/upload");
-									}}
-									className="w-full bg-blue-700 text-white font-bold py-3 rounded-xl hover:bg-blue-800 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
-									Já tenho conta (Entrar)
-								</button>
+								<div className="w-full flex justify-center px-4">
+									<button
+										onClick={() => {
+											localStorage.setItem(
+												"pendingDefenseData",
+												JSON.stringify({
+													formData,
+													analysisData,
+													source: "upload",
+												}),
+											);
+											navigate("/register?redirect=/upload");
+										}}
+										className="salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2">
+										Salvar Análise e Criar Conta <User size={20} className="hidden sm:block" />
+									</button>
+								</div>
+
+								<div className="w-full flex justify-center px-4">
+									<button
+										onClick={() => {
+											localStorage.setItem(
+												"pendingDefenseData",
+												JSON.stringify({
+													formData,
+													analysisData,
+													source: "upload",
+												}),
+											);
+											navigate("/login?redirect=/upload");
+										}}
+										className="w-full md:w-2/3 bg-blue-700 text-white font-bold py-3 rounded-xl hover:bg-blue-800 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
+										Já tenho conta (Entrar)
+									</button>
+								</div>
 							</div>
 						) : (
-							<button
-								onClick={() => navigate("/upload/qualification")}
-								className={`salvarECriarConta w-full bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2`}>
-								Inserir dados complementares <FileText size={20} className="hidden sm:block" />
-							</button>
+							<div className="w-full flex justify-center px-4">
+								<button
+									onClick={() => navigate("/upload/qualification")}
+									className={`salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2`}>
+									Inserir dados complementares <FileText size={20} className="hidden sm:block" />
+								</button>
+							</div>
 						)}
 					</div>
-					<div className="w-full flex justify-center">
-						<button
-							onClick={() => navigate("/upload/form")}
-							className="w-full md:w-1/2 text-center text-gray-600 text-sm mt-8 hover:text-blue-600 hover:bg-blue-50/50 transition-all border border-gray-200 hover:border-blue-200 rounded-xl py-3 flex items-center justify-center gap-2 font-medium">
-							<ArrowLeft size={16} /> Voltar e editar dados da infração
-						</button>
+					<div className="w-full flex justify-center px-4">
+						<div className="w-full flex justify-center">
+							<button
+								onClick={() => navigate("/upload/form")}
+								className="w-full md:w-2/3 text-center text-gray-600 text-sm mt-8 hover:text-blue-600 hover:bg-blue-50/50 transition-all border border-gray-200 hover:border-blue-200 rounded-xl py-3 flex items-center justify-center gap-2 font-medium">
+								<ArrowLeft size={16} /> Voltar e editar dados da infração
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>

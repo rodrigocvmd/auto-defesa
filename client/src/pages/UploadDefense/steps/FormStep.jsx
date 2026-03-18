@@ -64,7 +64,7 @@ export const FormStep = ({
 	};
 
 	return (
-		<div className="md:max-w-5xl mx-3 md:mx-auto py-8">
+		<div className="md:max-w-5xl mx-3 md:mx-auto pt-8 py-6">
 			{showLoginPrompt && (
 				<LoginPromptModal
 					onClose={() => setShowLoginPrompt(false)}
@@ -95,7 +95,7 @@ export const FormStep = ({
 				<TestInfoModal onClose={() => setShowTestModal(false)} onConfirm={confirmTestMode} />
 			)}
 
-			<header className="mb-8 text-center flex flex-col items-center">
+			<header className="mb-2 text-center flex flex-col items-center">
 				<button
 					onClick={() => navigate("/upload")}
 					className="text-gray-600 hover:text-blue-600 flex items-center mb-4 transition-colors font-medium">
@@ -107,13 +107,11 @@ export const FormStep = ({
 				<p className="text-gray-600 max-w-2xl">
 					Nossa IA leu seu documento. Verifique e complete as informações abaixo.
 				</p>
-				<div className="flex items-center gap-2 mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800 max-w-2xl text-left">
+				<div className="flex items-center gap-2 mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800 max-w-5xl text-justify">
 					<Info size={18} className="shrink-0" />
-					<p>
-						Os dados solicitados abaixo são necessários para a análise técnica da sua infração.
-					</p>
+					<p>Os dados solicitados abaixo são necessários para a análise técnica da sua infração e <strong>não são armazenados ou compartilhados</strong>.</p>
 				</div>
-				<div className="flex flex-col md:flex-row justify-between items-center w-full mt-6 gap-4">
+				<div className="flex ml-6 md:flex-row justify-between items-center w-full mt-6 gap-4">
 					<div className="text-sm text-gray-500 font-medium">* Campos obrigatórios</div>
 					<div className="flex items-center gap-2">
 						{!isTestMode && !file && (
@@ -146,7 +144,7 @@ export const FormStep = ({
 
 			<form
 				onSubmit={handlePreAnalysis}
-				className="space-y-8 bg-white px-0 py-0 md:p-8 rounded-3xl shadow-sm border border-gray-100">
+				className="space-y-8 bg-white px-2 py-4 md:px-5 md:py-4 rounded-3xl shadow-sm border border-gray-100">
 				{loading && (
 					<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center">
 						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
@@ -323,7 +321,7 @@ export const FormStep = ({
 						</div>
 					</div>
 				</section>
-				<section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
+				<section className="bg-white py-6 px-3 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
 						<Gauge className="text-blue-600" />
 						<h3 className="text-xl font-bold text-gray-800">2. Argumentação</h3>
@@ -423,7 +421,7 @@ export const FormStep = ({
 				</section>
 				<div className="flex flex-col items-center gap-4 md:py-2">
 					<div className="w-full max-w-2xl mb-4">
-						<label className="flex items-center justify-center gap-3 cursor-pointer group">
+						<label className="flex items-center justify-center gap-1 mx-3 cursor-pointer group">
 							<input
 								type="checkbox"
 								required
@@ -431,7 +429,7 @@ export const FormStep = ({
 								onChange={(e) => setConsent(e.target.checked)}
 								className="cursor-pointer mr-2 w-4 h-4 shrink-0 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
 							/>
-							<span className="text-gray-600 leading-tight text-center sm:text-left">
+							<span className="text-gray-600 leading-tight text-justify mx-2">
 								Declaro que li e concordo com os{" "}
 								<Link target="_blank" to="/terms" className="text-blue-600 hover:underline">
 									Termos de Uso
@@ -448,23 +446,21 @@ export const FormStep = ({
 
 					<button
 						type="submit"
-						className="w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+						className="w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 px-2"
 						disabled={!consent}>
 						Analisar Viabilidade (Grátis)
 					</button>
 
-					<div className="flex items-center gap-2 text-gray-500 text-sm mt-2">
-						<Lock size={14} className="text-green-500" />
+					<div className="flex items-center justify-center text-center gap-4 text-gray-500 text-sm mt-2 px-4">
+						<Lock size={18} className="text-green-500" />
 						<span>Ambiente Seguro e Dados Criptografados de Ponta a Ponta</span>
 					</div>
 
 					<div className="max-w-xl text-center space-y-2 mt-4">
-						<p className="text-gray-600 text-sm">
-							Nenhum crédito será cobrado nesta etapa.
-						</p>
+						<p className="text-gray-600 text-sm">Nenhum crédito será cobrado nesta etapa.</p>
 						<p className="text-[10px] md:text-xs text-gray-500 leading-relaxed">
-							Seus dados são utilizados exclusivamente para a redação da sua defesa
-							administrativa e não são compartilhados com terceiros.
+							Seus dados são utilizados exclusivamente para a redação da sua defesa administrativa e
+							não são compartilhados com terceiros.
 						</p>
 					</div>
 				</div>

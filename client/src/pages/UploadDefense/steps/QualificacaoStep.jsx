@@ -9,6 +9,7 @@ import {
 	Lock,
 	AlertTriangle,
 	Coins,
+	Info,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -26,8 +27,8 @@ export const QualificacaoStep = ({
 	const { userData } = useAuth();
 
 	return (
-		<div className="max-w-5xl mx-5 md:mx-auto py-8">
-			<header className="mb-8 text-center flex flex-col items-center">
+		<div className="max-w-5xl mx-5 md:mx-auto pt-8 pb-5">
+			<header className="mb-5 text-center flex flex-col items-center">
 				<button
 					onClick={() => navigate("/upload/analysis")}
 					className="text-gray-600 hover:text-blue-600 flex items-center mb-4 transition-colors font-medium">
@@ -36,10 +37,17 @@ export const QualificacaoStep = ({
 				<h1 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 mb-2">
 					Qualificação do Recorrente
 				</h1>
-				<p className="text-gray-600 max-w-2xl">
-					Estes dados são obrigatórios por lei para a validade jurídica do documento e não são
-					compartilhados.
+				<p className="text-gray-500 max-w-6xl md:max-w-3xl mt-2">
+					Os dados abaixo, se preenchidos, foram extraídos do arquivo juntado. <strong>Caso os
+					dados do recorrente sejam diversos, altere conforme necessário</strong>.
 				</p>
+				<div className="flex items-center gap-4 mt-4 py-3 px-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800 max-w-5xl md:max-w-5xl text-justify md:text-center">
+					<Info size={18} className="shrink-0" />
+					<p>
+						Os dados solicitados abaixo são necessários para o a validade do seu recurso nos termos
+						da <strong>Resolução CONTRAN nº 900/2022</strong> e não são armazenados.
+					</p>
+				</div>
 			</header>
 
 			<form
@@ -47,7 +55,7 @@ export const QualificacaoStep = ({
 					e.preventDefault();
 					handleUnlockDefense();
 				}}
-				className="space-y-8 bg-white p-8 pb-5 rounded-3xl shadow-sm border border-gray-100">
+				className="space-y-8 bg-white px-3 pt-8 pb-5 md:px-8 rounded-3xl shadow-sm border border-gray-100">
 				{/* Seção 1: Dados Pessoais */}
 				<section className="space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
@@ -562,7 +570,7 @@ export const QualificacaoStep = ({
 					)}
 
 					<div className="flex items-center gap-2 text-gray-500 text-sm mt-2">
-						<Lock size={26} className="text-green-500" />
+						<Lock size={18} className="text-green-500" />
 						<span className="text-center">
 							Ambiente Seguro e Dados Criptografados de Ponta a Ponta
 						</span>
