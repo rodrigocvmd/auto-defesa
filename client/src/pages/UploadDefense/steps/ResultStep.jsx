@@ -404,7 +404,7 @@ export const ResultStep = ({
 
 				{isRefining && (
 					<div className="lg:col-span-4 space-y-6 order-1 lg:order-2 animate-in slide-in-from-right-4 duration-300">
-						<div className="bg-white border border-blue-100 p-6 rounded-2xl shadow-xl sticky top-40">
+						<div id="aiFixesContainer" className="bg-white border border-blue-100 p-6 rounded-2xl shadow-xl sticky top-40">
 							<div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
 								<div className="bg-blue-100 p-2 rounded-lg text-blue-600">
 									<PenTool size={24} />
@@ -439,12 +439,13 @@ export const ResultStep = ({
 									value={refinementText}
 									onChange={(e) => setRefinementText(e.target.value)}
 									rows={6}
+									maxLength={500}
 									className="w-full p-4 rounded-xl border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
 									placeholder="Ex: Corrigir a data da infração para 12/05/2024. Remover parte que menciona a velocidade da via. Adicionar parágrafo alegando falta de visibilidade da placa."
 								/>
 								<div className="flex justify-between items-center text-xs text-gray-600 px-1">
 									<span>Seja específico nas instruções.</span>
-									<span>{refinementText.length} caracteres</span>
+									<span>{refinementText.length}/500 caracteres</span>
 								</div>
 
 								<button
