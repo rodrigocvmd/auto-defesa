@@ -59,6 +59,36 @@ export const QualificacaoStep = ({
 					handleUnlockDefense();
 				}}
 				className="space-y-8 bg-white px-3 pt-8 pb-5 md:px-8 rounded-3xl shadow-sm border border-gray-100">
+				{loading && (
+					<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
+						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
+						<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
+						<div className="flex flex-col items-center justify-center gap-2 text-gray-700">
+							<p className="text-gray-600 max-w-md font-bold leading-relaxed">
+								A IA Pro está gerando o recurso com as melhores teses aplicáveis.
+							</p>
+							<p className="text-gray-600 max-w-md font-bold leading-relaxed">
+								A geração pode levar até 1 minuto.
+							</p>
+						</div>
+						<div className="mt-8 flex gap-2">
+							<div className="h-1.5 w-24 bg-blue-100 rounded-full overflow-hidden">
+								<div className="h-full bg-blue-600 animate-progress"></div>
+							</div>
+						</div>
+						<style dangerouslySetInnerHTML={{
+							__html: `
+								@keyframes progress {
+									0% { width: 0%; }
+									100% { width: 100%; }
+								}
+								.animate-progress {
+									animation: progress 2s ease-in-out infinite;
+								}
+							`
+						}} />
+					</div>
+				)}
 				{/* Seção 1: Dados Pessoais */}
 				<section className="space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">

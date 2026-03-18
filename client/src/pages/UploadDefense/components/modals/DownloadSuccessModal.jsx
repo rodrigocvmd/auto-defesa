@@ -26,7 +26,7 @@ export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick }) => {
                 <p className="text-gray-600 text-center mb-8 leading-relaxed">
                     O arquivo PDF está sendo gerado.
                     <br/><br/>
-                    Uma cópia segura também foi salva em <strong>"Minhas Defesas"</strong> no seu perfil, para que você possa baixar novamente quando precisar.
+                    Uma cópia do arquivo também foi salva em <strong>"Minhas Defesas"</strong> no seu perfil, para que você possa baixar novamente quando precisar.
                 </p>
                 <button
                     onClick={handleClick}
