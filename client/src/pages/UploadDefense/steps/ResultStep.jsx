@@ -142,7 +142,7 @@ export const ResultStep = ({
 	};
 
 	return (
-		<div className="max-w-6xl mx-auto py-8">
+		<div className="max-w-6xl mx-auto pt-8 pb-4">
 			{showEditWarning && (
 				<EditWarningModal
 					onClose={() => setShowEditWarning(false)}
@@ -194,7 +194,9 @@ export const ResultStep = ({
 				</div>
 			)}
 
-			<div className="sticky top-20 z-40 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4 mx-2 md:mx-0">
+			<div
+				id="topReviewPanel"
+				className="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4 mx-2 md:mx-4">
 				<div>
 					<h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
 						<CheckCircle className="text-green-500" /> Revisão Final
@@ -228,31 +230,34 @@ export const ResultStep = ({
 			<div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 				<div
 					className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
-					<div id="avisoPreview" className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 mx-2 md:mx-0 !rounded-md flex flex-col gap-3">
+					<div
+						id="avisoPreview"
+						className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 mx-2 md:mx-4 !rounded-md flex flex-col gap-3">
 						<div className="flex gap-3 items-start">
 							<AlertCircle className="text-yellow-600 shrink-0 mt-0.5" size={20} />
 							<div>
 								<h4 className="font-bold text-yellow-800 text-sm">Modo de Conferência e Edição</h4>
-								<p className="text-yellow-700 text-sm mt-1">
+								<p className="text-yellow-700 text-sm mt-1 text-justify">
 									Leia todo o conteúdo. Se, porventura, encontrar nomes errados, datas incorretas ou
 									argumentos indesejados, use o botão <strong>"Solicitar Correção via IA"</strong>.
 								</p>
 							</div>
 						</div>
-						
+
 						{/* Aviso apenas para Mobile */}
 						<div className="md:hidden bg-yellow-100/50 p-3 rounded-lg border border-yellow-200 flex gap-2 items-start mt-1">
 							<Info className="text-yellow-700 shrink-0 mt-0.5" size={16} />
-							<p className="text-yellow-800 text-xs leading-relaxed">
-								<strong>Nota sobre a visualização:</strong> A formatação nesta tela pequena pode parecer 
-								estreita ou desalinhada. A <strong>formatação final oficial</strong> (margens, fontes e espaçamentos) 
-								será aplicada corretamente no arquivo PDF após o download.
+							<p className="text-yellow-800 text-sm text-justify leading-relaxed">
+								<strong>Nota sobre a visualização:</strong> A formatação nesta tela pequena pode
+								parecer estreita ou desalinhada. A <strong>formatação final oficial</strong>{" "}
+								(margens, fontes e espaçamentos) será aplicada corretamente no arquivo PDF após o
+								download.
 							</p>
 						</div>
 					</div>
 
-					<div className="flex justify-center bg-gray-200/80 py-8 rounded-xl mx-2 md:mx-0 border border-gray-200 overflow-hidden relative min-h-screen">
-						<div id="defense-preview-content" className="print-content w-full flex justify-center">
+					<div className="flex justify-center bg-gray-200/80  rounded-xl mx-2 md:mx-4 border border-gray-200 overflow-hidden relative min-h-screen md:py-7">
+						<div id="defense-preview-content" className="print-content flex justify-center !w-full">
 							<style>{`
                                 /* Estilos do Documento A4 na Tela */
                                 .ql-container.ql-snow { border: none !important; }
@@ -404,7 +409,9 @@ export const ResultStep = ({
 
 				{isRefining && (
 					<div className="lg:col-span-4 space-y-6 order-1 lg:order-2 animate-in slide-in-from-right-4 duration-300">
-						<div id="aiFixesContainer" className="bg-white border border-blue-100 p-6 rounded-2xl shadow-xl sticky top-40">
+						<div
+							id="aiFixesContainer"
+							className="bg-white border border-blue-100 p-6 rounded-2xl shadow-xl sticky top-40">
 							<div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
 								<div className="bg-blue-100 p-2 rounded-lg text-blue-600">
 									<PenTool size={24} />
