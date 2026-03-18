@@ -37,9 +37,12 @@ export const QualificacaoStep = ({
 				<h1 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 mb-2">
 					Qualificação do Recorrente
 				</h1>
+				<p className="text-gray-500 !w-full md:max-w-3xl mt-2">
+					Dados já preenchidos foram extraídos do arquivo juntado. Antes de prosseguir,{" "}
+					<strong>revise!</strong>
+				</p>
 				<p className="text-gray-500 max-w-6xl md:max-w-3xl mt-2">
-					Os dados abaixo, se preenchidos, foram extraídos do arquivo juntado. <strong>Caso os
-					dados do recorrente sejam diversos, altere conforme necessário</strong>.
+					<strong>Caso os dados do recorrente sejam diversos</strong>, altere conforme necessário.
 				</p>
 				<div className="flex items-center gap-4 mt-4 py-3 px-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800 max-w-5xl md:max-w-5xl text-justify md:text-center">
 					<Info size={18} className="shrink-0" />

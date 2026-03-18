@@ -7,14 +7,14 @@ const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Produção:
-// const MODEL_FLASH = "gemini-3.1-pro-preview";
-// const MODEL_PRO = "gemini-3-flash-preview";
-// const MODEL_FALLBACK = "gemini-flash-latest";
+const MODEL_FLASH = "gemini-3.1-pro-preview";
+const MODEL_PRO = "gemini-3-flash-preview";
+const MODEL_FALLBACK = "gemini-flash-latest";
 
 // Testes / Lite:
-const MODEL_FLASH = "gemini-2.5-flash-lite";
-const MODEL_PRO = "gemini-2.5-flash-lite";
-const MODEL_FALLBACK = "gemini-2.5-flash-lite";
+// const MODEL_FLASH = "gemini-2.5-flash-lite";
+// const MODEL_PRO = "gemini-2.5-flash-lite";
+// const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
  * Tenta gerar conteúdo com o modelo principal. Se falhar,
@@ -302,6 +302,7 @@ exports.extractDataFromImage = (req, res) => {
 		}
 
 		const { image, mimeType } = req.body || {};
+		const currentDate = new Date().toLocaleDateString("pt-BR");
 
 		try {
 			const genAI = new GoogleGenerativeAI(apiKey);
@@ -320,9 +321,25 @@ exports.extractDataFromImage = (req, res) => {
         3. Se for uma DECISÃO ou NOTIFICAÇÃO comunicando o INDEFERIMENTO (negação) da Defesa Prévia: Retorne "jari" (pois o próximo passo é o Recurso à Jari).
         4. Se for uma DECISÃO ou NOTIFICAÇÃO comunicando o INDEFERIMENTO (negação) do Recurso à Jari: Retorne "cetran" (pois o próximo passo é o Recurso ao Cetran).
 
+        IMPORTANTE SOBRE DATA DE ASSINATURA ("signDate"):
+        O campo "signDate" deve ser OBRIGATORIAMENTE a data de hoje: ${currentDate}.
+
         Campos requeridos no JSON:
         {
           "name": "Nome do condutor, proprietário ou infrator",
+          "cpf": "CPF",
+          "rg": "RG",
+          "rgIssuer": "UF do RG (ex: SP)",
+          "cnh": "Nº da CNH",
+          "phone": "Telefone de contato",
+          "email": "E-mail de contato",
+          "zipCode": "CEP do endereço",
+          "address": "Logradouro (Rua, Av, etc)",
+          "addressNumber": "Número do endereço",
+          "addressComplement": "Complemento do endereço",
+          "neighborhood": "Bairro do endereço",
+          "city": "Cidade do endereço",
+          "state": "UF do endereço (ex: SP)",
           "plate": "Placa do veículo (ABC-1234)",
           "plateUF": "UF da placa (ex: SP)",
           "vehicleModel": "Marca/Modelo",
@@ -337,7 +354,9 @@ exports.extractDataFromImage = (req, res) => {
           "description": "Descrição da infração",
           "equipmentNumber": "Nº do Equipamento/Radar",
           "lastCalibration": "Data verificação/aferição",
-          "defensePhase": "previa, jari, ou cetran"
+          "defensePhase": "previa, jari, ou cetran",
+          "signCity": "Cidade onde o recurso está sendo assinado (geralmente a mesma cidade do endereço do recorrente ou do órgão)",
+          "signDate": "Data de assinatura (DD/MM/AAAA)"
         }
       `;
 

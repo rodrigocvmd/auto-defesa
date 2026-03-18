@@ -105,11 +105,14 @@ export const FormStep = ({
 					Revise os Dados
 				</h1>
 				<p className="text-gray-600 max-w-2xl">
-					Nossa IA leu seu documento. Verifique e complete as informações abaixo.
+					Nossa IA leu seu documento. <strong>Verifique e complete as informações abaixo</strong>.
 				</p>
 				<div className="flex items-center gap-2 mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800 max-w-5xl text-justify">
 					<Info size={18} className="shrink-0" />
-					<p>Os dados solicitados abaixo são necessários para a análise técnica da sua infração e <strong>não são armazenados ou compartilhados</strong>.</p>
+					<p>
+						Os dados solicitados abaixo são necessários para a análise técnica da sua infração e{" "}
+						<strong>não são armazenados ou compartilhados</strong>.
+					</p>
 				</div>
 				<div className="flex ml-6 md:flex-row justify-between items-center w-full mt-6 gap-4">
 					<div className="text-sm text-gray-500 font-medium">* Campos obrigatórios</div>
