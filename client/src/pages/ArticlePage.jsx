@@ -39,14 +39,15 @@ const ArticlePage = ({ customSlug }) => {
 	const articleSchema = article ? {
 		"@context": "https://schema.org",
 		"@type": "Article",
-		headline: article.title,
-		description: article.description,
+		headline: article.seoTitle || article.title,
+		description: article.seoDescription || article.description,
 		author: {
 			"@type": "Person",
 			name: "Rodrigo Carvalho",
 			jobTitle: "Especialista em Direito de Trânsito"
 		},
-		datePublished: article.publishDate, // Idealmente em formato ISO 8601, mas usaremos o que temos
+		datePublished: article.publishDate,
+		image: "https://meuautodefesa.com.br/og-image.png",
 		publisher: {
 			"@type": "Organization",
 			name: "Auto Defesa",
@@ -63,10 +64,10 @@ const ArticlePage = ({ customSlug }) => {
 
 	const structuredData = [faqSchema, articleSchema].filter(Boolean);
 
-	// Fallback se artigo não encontrado (poderia redirecionar para 404)
 	if (!article) {
 		return (
 			<MainLayout>
+				<SEO title="Artigo não encontrado" description="O artigo que você procura não existe ou foi movido." />
 				<div className="max-w-7xl mx-auto px-4 py-32 text-center">
 					<h1 className="text-3xl font-bold text-gray-900 mb-4">Artigo não encontrado</h1>
 					<Link to="/guia" className="text-blue-600 hover:underline">
@@ -77,12 +78,17 @@ const ArticlePage = ({ customSlug }) => {
 		);
 	}
 
+	// Dynamic SEO focusing on long-tail pain points
+	const pageTitle = article.seoTitle || `Recurso de Multa: ${article.title} | Guia Auto Defesa`;
+	const pageDescription = article.seoDescription || `Saiba como anular a multa de ${article.title}. Veja teses de defesa técnica, valores e como evitar pontos na CNH.`;
+
 	return (
 		<MainLayout>
 			<SEO
-				title={`${article.title} | Guia Auto Defesa`}
-				description={article.description}
+				title={pageTitle}
+				description={pageDescription}
 				structuredData={structuredData}
+				canonical={`/artigo/${article.slug}`}
 			/>
 
 			{/* Progress Bar (Visual) */}

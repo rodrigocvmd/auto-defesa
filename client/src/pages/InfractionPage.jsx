@@ -38,13 +38,14 @@ const InfractionPage = () => {
 	const articleSchema = data ? {
 		"@context": "https://schema.org",
 		"@type": "Article",
-		headline: data.title,
-		description: data.description,
+		headline: data.seoTitle || data.title,
+		description: data.seoDescription || data.description,
 		author: {
 			"@type": "Person",
 			name: "Rodrigo Carvalho",
 			jobTitle: "Especialista em Direito de Trânsito"
 		},
+		image: "https://meuautodefesa.com.br/og-image.png",
 		publisher: {
 			"@type": "Organization",
 			name: "Auto Defesa",
@@ -55,11 +56,15 @@ const InfractionPage = () => {
 		},
 		mainEntityOfPage: {
 			"@type": "WebPage",
-			"@id": `https://meuautodefesa.com.br/artigo/${data.slug}`
+			"@id": `https://meuautodefesa.com.br/infracao/${data.slug}`
 		}
 	} : null;
 
 	const structuredData = [faqSchema, articleSchema].filter(Boolean);
+
+	// Dynamic SEO strings focusing on the specific infraction pain points
+	const pageTitle = data?.seoTitle || `Recurso de Multa ${data?.title} | Auto Defesa`;
+	const pageDescription = data?.seoDescription || `Multa de ${data?.title}? Inicie seu recurso agora. IA jurídica para anular pontos e multas do CTB com alta taxa de sucesso.`;
 
 	// Estado para slug não encontrado (fallback genérico)
 	if (!data) {
@@ -67,7 +72,7 @@ const InfractionPage = () => {
 			<MainLayout>
 				<SEO
 					title="Recorra de Qualquer Multa de Trânsito | Auto Defesa"
-					description="Recursos para todas as infrações do CTB. Inicie sua defesa com IA."
+					description="Recursos para todas as infrações do CTB. Inicie sua defesa com IA e proteja sua CNH hoje."
 				/>
 				<div className="bg-blue-50 py-20 px-4 text-center">
 					<h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-6">
@@ -89,9 +94,10 @@ const InfractionPage = () => {
 	return (
 		<MainLayout>
 			<SEO 
-				title={data.title} 
-				description={data.description} 
+				title={pageTitle} 
+				description={pageDescription} 
 				structuredData={structuredData}
+				canonical={`/infracao/${data.slug}`}
 			/>
 			
 			{/* Hero Section */}

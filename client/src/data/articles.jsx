@@ -6,6 +6,8 @@ export const articles = [
 	{
 		slug: "lei-seca",
 		title: "Multa por Lei Seca e Recusa (Art. 165 e 165-A)",
+		seoTitle: "Defesa Multa Lei Seca Art. 165 CTB: Evite Suspensão da CNH",
+		seoDescription: "Levou multa da Lei Seca ou Recusa (Art. 165-A)? Veja como anular a suspensão de 12 meses e a multa de R$ 2.934,70 com recurso técnico especializado.",
 		description:
 			"Seja por teste positivo ou por recusa ao bafômetro, a multa da Lei Seca prevê suspensão da CNH por 12 meses. Descubra as teses jurídicas para anular essa penalidade.",
 		category: "Lei Seca",
@@ -153,6 +155,8 @@ export const articles = [
 	{
 		slug: "excesso-velocidade",
 		title: "Recurso de Multa por Excesso de Velocidade (Art. 218)",
+		seoTitle: "Recurso Multa Excesso de Velocidade Art. 218 CTB | Anular Pontos",
+		seoDescription: "Sua multa de radar do Art. 218 CTB pode ser anulada. Verifique erros técnicos no radar e evite a suspensão da CNH por excesso de velocidade.",
 		description:
 			"Multas de radar são as campeãs de emissão no Brasil. Entenda quando o equipamento falha e como evitar pontos na carteira ou até a suspensão direta.",
 		category: "Excesso de Velocidade",
