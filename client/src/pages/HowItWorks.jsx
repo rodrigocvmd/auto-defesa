@@ -3,6 +3,7 @@ import MainLayout from "../layouts/MainLayout";
 import { FileText, Search, Download, Send, CheckCircle, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ScrollReveal from "../components/ScrollReveal";
+import SEO from "../components/SEO";
 
 const HowItWorks = () => {
 	const steps = [
