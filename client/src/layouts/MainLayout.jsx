@@ -66,9 +66,7 @@ const MainLayout = ({ children }) => {
 							</button>
 
 							<Link to="/" className="flex items-center gap-2 group">
-								<div className="bg-blue-600 p-2 rounded-lg group-hover:bg-blue-700 transition-colors">
-									<Shield size={24} className="text-white" />
-								</div>
+								<img src="/logoLeve.jpeg" alt="Auto Defesa Logo" className="h-10 w-auto object-contain rounded-lg group-hover:opacity-90 transition-opacity" />
 								<span className="font-bold text-xl text-gray-900 tracking-tight">
 									Auto<span className="text-blue-600">Defesa</span>
 								</span>
