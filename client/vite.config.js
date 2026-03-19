@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import Sitemap from 'vite-plugin-sitemap'
+import prerender from 'vite-plugin-prerender'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -20,6 +21,7 @@ const getArticleRoutes = () => {
 }
 
 const dynamicRoutes = [
+  '/',
   '/motorista-app',
   '/caminhoneiro',
   '/motoqueiro',
@@ -44,6 +46,21 @@ export default defineConfig({
     Sitemap({
       hostname: 'https://meuautodefesa.com.br',
       dynamicRoutes
+    }),
+    prerender({
+      // O diretório de build final (onde o Vite coloca os arquivos)
+      staticDir: path.join(__dirname, 'dist'),
+      // Lista de rotas para pré-renderizar
+      routes: dynamicRoutes,
+      // Configurações do renderizador (usa Puppeteer por padrão)
+      rendererConfig: {
+        // Aguarda até que o elemento #root esteja presente no DOM
+        renderAfterElementExists: '#root',
+        // Opcional: silencia logs do console durante o processo
+        headless: true,
+        // Limita o número de páginas renderizadas simultaneamente para evitar sobrecarga
+        maxConcurrentRoutes: 5
+      }
     })
   ],
   build: {
