@@ -53,7 +53,7 @@ const ArticlePage = ({ customSlug }) => {
 			name: "Auto Defesa",
 			logo: {
 				"@type": "ImageObject",
-				url: "https://meuautodefesa.com.br/favicon.svg"
+				url: "https://meuautodefesa.com.br/logoLeve.jpeg"
 			}
 		},
 		mainEntityOfPage: {

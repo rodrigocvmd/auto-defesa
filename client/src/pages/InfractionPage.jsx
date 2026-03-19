@@ -8,9 +8,9 @@ import { infractionData } from "../utils/infractionData";
 
 const InfractionPage = () => {
 	const { slug } = useParams();
-	
+
 	// Try to find in infractionData first, then in articles
-	const rawData = infractionData[slug] || articles.find(article => article.slug === slug);
+	const rawData = infractionData[slug] || articles.find((article) => article.slug === slug);
 	const data = rawData;
 	const [copied, setCopied] = useState(false);
 
@@ -39,36 +39,40 @@ const InfractionPage = () => {
 
 	const faqSchema = generateFaqSchema(data?.faq);
 
-	const articleSchema = data ? {
-		"@context": "https://schema.org",
-		"@type": "Article",
-		headline: data.seoTitle || data.title,
-		description: data.seoDescription || data.description,
-		author: {
-			"@type": "Person",
-			name: "Rodrigo Carvalho",
-			jobTitle: "Especialista em Direito de Trânsito"
-		},
-		image: "https://meuautodefesa.com.br/og-image.png",
-		publisher: {
-			"@type": "Organization",
-			name: "Auto Defesa",
-			logo: {
-				"@type": "ImageObject",
-				url: "https://meuautodefesa.com.br/favicon.svg"
+	const articleSchema = data
+		? {
+				"@context": "https://schema.org",
+				"@type": "Article",
+				headline: data.seoTitle || data.title,
+				description: data.seoDescription || data.description,
+				author: {
+					"@type": "Person",
+					name: "Rodrigo Carvalho",
+					jobTitle: "Especialista em Direito de Trânsito",
+				},
+				image: "https://meuautodefesa.com.br/og-image.png",
+				publisher: {
+					"@type": "Organization",
+					name: "Auto Defesa",
+					logo: {
+						"@type": "ImageObject",
+						url: "https://meuautodefesa.com.br/logoLeve.jpeg",
+					},
+				},
+				mainEntityOfPage: {
+					"@type": "WebPage",
+					"@id": `https://meuautodefesa.com.br/infracao/${data.slug}`,
+				},
 			}
-		},
-		mainEntityOfPage: {
-			"@type": "WebPage",
-			"@id": `https://meuautodefesa.com.br/infracao/${data.slug}`
-		}
-	} : null;
+		: null;
 
 	const structuredData = [faqSchema, articleSchema].filter(Boolean);
 
 	// Dynamic SEO strings focusing on the specific infraction pain points
 	const pageTitle = data?.seoTitle || `Recurso de Multa ${data?.title} | Auto Defesa`;
-	const pageDescription = data?.seoDescription || `Multa de ${data?.title}? Inicie seu recurso agora. IA jurídica para anular pontos e multas do CTB com alta taxa de sucesso.`;
+	const pageDescription =
+		data?.seoDescription ||
+		`Multa de ${data?.title}? Inicie seu recurso agora. IA jurídica para anular pontos e multas do CTB com alta taxa de sucesso.`;
 
 	// Estado para slug não encontrado (fallback genérico)
 	if (!data) {
@@ -79,11 +83,10 @@ const InfractionPage = () => {
 					description="Recursos para todas as infrações do CTB. Inicie sua defesa com IA e proteja sua CNH hoje."
 				/>
 				<div className="bg-blue-50 py-20 px-4 text-center">
-					<h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-6">
-						Multa de Trânsito?
-					</h1>
+					<h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-6">Multa de Trânsito?</h1>
 					<p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-						Não encontrou a infração específica? Não se preocupe. O Auto Defesa cobre todas as infrações do Código de Trânsito Brasileiro.
+						Não encontrou a infração específica? Não se preocupe. O Auto Defesa cobre todas as
+						infrações do Código de Trânsito Brasileiro.
 					</p>
 					<Link
 						to="/upload"
@@ -97,13 +100,13 @@ const InfractionPage = () => {
 
 	return (
 		<MainLayout>
-			<SEO 
-				title={pageTitle} 
-				description={pageDescription} 
+			<SEO
+				title={pageTitle}
+				description={pageDescription}
 				structuredData={structuredData}
 				canonical={`/infracao/${data.slug}`}
 			/>
-			
+
 			{/* Hero Section */}
 			<div className="bg-blue-50 border-b border-blue-100">
 				<div className="max-w-7xl mx-auto px-4 py-16 md:py-20">
@@ -119,10 +122,9 @@ const InfractionPage = () => {
 								{data.description}
 							</p>
 							<div className="relative inline-block">
-								<button 
+								<button
 									onClick={handleShare}
-									className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors font-bold text-sm bg-white border border-blue-200 px-4 py-2 rounded-xl shadow-sm hover:shadow-md"
-								>
+									className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors font-bold text-sm bg-white border border-blue-200 px-4 py-2 rounded-xl shadow-sm hover:shadow-md">
 									<Share2 size={18} /> Compartilhar esta página
 								</button>
 								{copied && (
@@ -138,7 +140,6 @@ const InfractionPage = () => {
 
 			<div className="max-w-7xl mx-auto px-4 pt-10 pb-2">
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-					
 					{/* Coluna Principal */}
 					<div className="lg:col-span-2 space-y-12">
 						{/* Seção FAQ */}
@@ -147,16 +148,15 @@ const InfractionPage = () => {
 								<HelpCircle className="text-blue-600" /> Perguntas Frequentes
 							</h2>
 							<div className="space-y-6">
-								{data.faq && data.faq.map((item, index) => (
-									<div key={index} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-										<h3 className="text-lg font-bold text-gray-900 mb-3">
-											{item.q}
-										</h3>
-										<p className="text-gray-600 leading-relaxed">
-											{item.a}
-										</p>
-									</div>
-								))}
+								{data.faq &&
+									data.faq.map((item, index) => (
+										<div
+											key={index}
+											className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+											<h3 className="text-lg font-bold text-gray-900 mb-3">{item.q}</h3>
+											<p className="text-gray-600 leading-relaxed">{item.a}</p>
+										</div>
+									))}
 							</div>
 						</section>
 
@@ -186,26 +186,22 @@ const InfractionPage = () => {
 							<div className="mb-6 inline-flex justify-center bg-blue-100 p-4 rounded-full text-blue-600">
 								<Shield size={40} />
 							</div>
-							<h3 className="text-2xl font-bold text-gray-900 mb-2">
-								Não Pague Indevidamente
-							</h3>
+							<h3 className="text-2xl font-bold text-gray-900 mb-2">Não Pague Indevidamente</h3>
 							<p className="text-gray-600 mb-8">
 								Gere sua defesa técnica agora mesmo em poucos minutos.
 							</p>
-							
+
 							<Link
 								to="/upload"
-								className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:-translate-y-1 mb-4"
-							>
+								className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:-translate-y-1 mb-4">
 								Gerar Minha Defesa Técnica
 							</Link>
-							
+
 							<p className="text-xs text-gray-600">
 								Satisfação garantida ou revisão gratuita do recurso.
 							</p>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</MainLayout>
