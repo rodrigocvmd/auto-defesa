@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import Sitemap from 'vite-plugin-sitemap'
-import prerender from 'vite-plugin-prerender'
+import { createRequire } from 'module'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+const require = createRequire(import.meta.url)
+const prerender = require('vite-plugin-prerender')
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // Extração segura dos slugs para evitar execução de JSX/CJS durante o build

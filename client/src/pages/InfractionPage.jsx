@@ -4,10 +4,14 @@ import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
 import { Shield, HelpCircle, CheckCircle, ArrowRight, Share2, Check } from "lucide-react";
 import { articles } from "../data/articles";
+import { infractionData } from "../utils/infractionData";
 
 const InfractionPage = () => {
 	const { slug } = useParams();
-	const data = articles.find(article => article.slug === slug);
+	
+	// Try to find in infractionData first, then in articles
+	const rawData = infractionData[slug] || articles.find(article => article.slug === slug);
+	const data = rawData;
 	const [copied, setCopied] = useState(false);
 
 	const handleShare = () => {
