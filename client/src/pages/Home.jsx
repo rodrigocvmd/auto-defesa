@@ -16,6 +16,7 @@ import {
 	Scale,
 	AlertTriangle,
 	Zap,
+	BrainCircuit,
 } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
@@ -247,7 +248,7 @@ const Home = () => {
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-1 sm:gap-0">
 											<span>Tempo de Espera</span>
-											<span className="font-bold text-white">3 a 5 dias úteis</span>
+											<span className="font-bold text-white">&gt; 7 dias úteis</span>
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
 											<span>Processo</span>
@@ -264,7 +265,9 @@ const Home = () => {
 										MELHOR ESCOLHA
 									</div>
 									<h3 className="text-2xl font-black text-gray-900 mb-6 flex justify-center items-center  gap-2">
-										<span className="text-blue-600">Auto Defesa</span>
+										<span className="text-blue-600">
+											<span className="text-gray-900">Auto</span>Defesa
+										</span>
 									</h3>
 									<ul className="space-y-4">
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
@@ -277,17 +280,22 @@ const Home = () => {
 											<span className="font-medium text-gray-600">Tempo de Espera</span>
 											<div className=" flex">
 												<span className="w-full items-center justify-center align-middle font-bold text-blue-600 flex gap-2">
-													<Clock size={16} /> <p className="!text-gray-800">Imediato</p>
+													<Clock size={16} /> <p className="!text-gray-800">Pronto em 2 minutos</p>
 												</span>
 											</div>
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Qualidade</span>
-											<span className="font-bold text-gray-800">IA Especializada em Defesas</span>
+											<div className=" flex">
+												<span className="w-full items-center justify-center align-middle font-bold text-blue-600 flex gap-2">
+													<BrainCircuit size={16} />{" "}
+													<p className="!text-gray-800">IA Especializada em Trânsito</p>
+												</span>
+											</div>
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Resultado</span>
-											<span className="w-full items-center justify-center align-middle font-bold text-gray-800 flex gap-2">
+											<span className="w-full items-center justify-center md:justify-end align-middle font-bold text-gray-800 flex gap-2">
 												<FileCheck size={18} className="text-blue-600" /> Pronto para Protocolar
 											</span>
 										</li>
@@ -560,7 +568,7 @@ const Home = () => {
 								<Link
 									to="/upload"
 									className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-bold text-xl py-4 px-2 md:px-10 rounded-xl hover:bg-gray-800 transition-all hover:scale-105 shadow-lg">
-									Analisar Viabilidade (Grátis) <ArrowRight size={20} className="hidden md:block"/>
+									Analisar Viabilidade (Grátis) <ArrowRight size={20} className="hidden md:block" />
 								</Link>
 							</div>
 						</div>

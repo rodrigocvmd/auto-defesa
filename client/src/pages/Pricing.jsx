@@ -198,10 +198,13 @@ const Pricing = () => {
 							<p className="text-gray-600 max-w-5xl mx-auto text-sm leading-relaxed">
 								Acreditamos na transparência. Nossos testes gratuitos e demonstrações utilizam um
 								modelo de IA Standard para análise rápida de viabilidade. Ao adquirir um crédito, o
-								recurso final é gerado exclusivamente pelo nosso{" "}
-								<strong>Modelo Pro (Advogado Virtual)</strong>, treinado especificamente com
-								jurisprudências, resoluções do CONTRAN e o Código de Trânsito Brasileiro para máxima
-								assertividade.
+								recurso final é gerado exclusivamente pelo nosso <strong>Modelo Pro</strong>,
+								treinado especificamente com{" "}
+								<strong>
+									jurisprudência atual de trânsito, tendências de julgamento de recursos, últimas
+									resoluções do CONTRAN e do Código de Trânsito Brasileiro
+								</strong>{" "}
+								para máxima assertividade.
 							</p>
 						</div>
 					</div>
