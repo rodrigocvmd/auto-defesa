@@ -138,7 +138,10 @@ const Home = () => {
 								{/* Soft backdrop for blending */}
 								<div className="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full opacity-20 blur-[80px] -z-10 transform scale-110"></div>
 
-								<div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500 hidden lg:block">
+								<div className="group relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500 hidden lg:block">
+									{/* Shimmer Effect on Image - Slower and different angle */}
+									<div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-white/10 to-transparent w-full h-full animate-shimmer-slow pointer-events-none"></div>
+
 									<img
 										src="/imagemLanding.webp"
 										srcSet="/imagemLanding-SM.webp 600w, /imagemLanding.webp 1200w"

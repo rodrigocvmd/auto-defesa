@@ -34,7 +34,7 @@ const SEO = ({
 		name: "Auto Defesa - Recursos de Trânsito",
 		applicationCategory: "LegalApplication",
 		operatingSystem: "Windows, macOS, Android, iOS, Web",
-		image: "https://meuautodefesa.com.br/favicon.jpeg",
+		image: "https://meuautodefesa.com.br/fullIcon.png",
 		description: fullDescription,
 		offers: {
 			"@type": "Offer",

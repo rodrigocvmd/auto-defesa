@@ -66,7 +66,7 @@ const MainLayout = ({ children }) => {
 							</button>
 
 							<Link to="/" className="flex items-center gap-2 group">
-								<img src="/favicon.jpeg" alt="Auto Defesa Logo" className="h-10 w-auto object-contain rounded-lg group-hover:opacity-90 transition-opacity" />
+								<img src="/fullIcon.png" alt="Auto Defesa Logo" className="h-8 w-8 object-contain rounded-lg group-hover:opacity-90 transition-opacity" />
 								<span className="font-bold text-xl text-gray-900 tracking-tight">
 									Auto<span className="text-blue-600">Defesa</span>
 								</span>

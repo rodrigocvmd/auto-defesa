@@ -56,7 +56,7 @@ const InfractionPage = () => {
 					name: "Auto Defesa",
 					logo: {
 						"@type": "ImageObject",
-						url: "https://meuautodefesa.com.br/favicon.jpeg",
+						url: "https://meuautodefesa.com.br/fullIcon.png",
 					},
 				},
 				mainEntityOfPage: {
