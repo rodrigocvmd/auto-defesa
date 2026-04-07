@@ -74,7 +74,7 @@ const Privacy = () => {
 								<li className="flex flex-col md:flex-row md:gap-2">
 									<strong className="text-gray-900 md:shrink-0">• Dados de Identificação:</strong>
 									<span>
-										Nome completo, CPF, RG, E-mail e Telefone (para criação de conta e qualificação
+										Nome completo, CPF, RG, Email e Telefone (para criação de conta e qualificação
 										na peça jurídica).
 									</span>
 								</li>
@@ -264,7 +264,7 @@ const Privacy = () => {
 							</h3>
 							<p className="leading-relaxed">
 								Para exercer seus direitos de titular ou esclarecer dúvidas, entre em contato com
-								nosso Encarregado de Proteção de Dados através do e-mail:{" "}
+								nosso Encarregado de Proteção de Dados através do email:{" "}
 								<a
 									className="text-blue-600 font-bold hover:underline"
 									href="mailto:suporte@meuautodefesa.com.br">

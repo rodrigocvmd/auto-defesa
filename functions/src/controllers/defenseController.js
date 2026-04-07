@@ -333,7 +333,7 @@ exports.extractDataFromImage = (req, res) => {
           "rgIssuer": "UF do RG (ex: SP)",
           "cnh": "Nº da CNH",
           "phone": "Telefone de contato",
-          "email": "E-mail de contato",
+          "email": "Email de contato",
           "zipCode": "CEP do endereço",
           "address": "Logradouro (Rua, Av, etc)",
           "addressNumber": "Número do endereço",
@@ -680,7 +680,7 @@ exports.sendDefensePdfEmail = (req, res) => {
 			const { data, error } = await resend.emails.send({
 				from: "AutoDefesa <suporte@meuautodefesa.com.br>",
 				to: [toEmail],
-				subject: "Sua Defesa em PDF - AutoDefesa",
+				subject: "Seu Recurso em PDF - AutoDefesa",
 				html: `
 					<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
 						<h2 style="color: #2563eb; text-align: center;">Aqui está o seu recurso!</h2>

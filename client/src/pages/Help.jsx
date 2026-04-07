@@ -114,7 +114,7 @@ const Help = () => {
 							<div>
 								<h2 className="text-2xl font-bold text-gray-900">Envie uma mensagem</h2>
 								<p className="text-gray-600 text-sm">
-									Responderemos para o seu e-mail o mais breve possível.
+									Responderemos para o seu email o mais breve possível.
 								</p>
 							</div>
 						</div>
@@ -134,7 +134,7 @@ const Help = () => {
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-medium text-gray-700 mb-1">Seu E-mail</label>
+									<label className="block text-sm font-medium text-gray-700 mb-1">Seu Email</label>
 									<input
 										type="email"
 										name="email"
@@ -187,15 +187,15 @@ const Help = () => {
 							<div className="bg-blue-100 p-4 rounded-full text-blue-600 mb-4">
 								<Mail size={32} />
 							</div>
-							<h3 className="font-bold text-xl text-gray-900 mb-2">E-mail</h3>
+							<h3 className="font-bold text-xl text-gray-900 mb-2">Email</h3>
 							<p className="text-gray-600 mb-6 text-sm">
-								Suporte técnico e comercial por e-mail com resposta em até 24h.
+								Suporte técnico e comercial por email com resposta em até 24h.
 							</p>
 							<a
 								href="mailto:suporte@meuautodefesa.com.br"
 								className="bg-gray-900 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
 								<Mail size={20} />
-								Enviar E-mail
+								Enviar Email
 							</a>
 						</div>
 

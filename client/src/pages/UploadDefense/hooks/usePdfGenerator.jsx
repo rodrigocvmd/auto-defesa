@@ -68,7 +68,7 @@ export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) =
 
         try {
             setLoading(true);
-            setLoadingText("Preparando PDF e enviando para seu e-mail...");
+            setLoadingText("Preparando PDF e enviando para seu email...");
             
             const blob = await pdf(React.createElement(DefenseDocument, { content: finalHtml })).toBlob();
             
@@ -85,8 +85,8 @@ export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) =
             setEmailSuccess(true);
             return true;
         } catch (err) {
-            console.error("Erro ao enviar PDF por e-mail:", err);
-            alert("Ocorreu um erro ao enviar o e-mail. Tente novamente.");
+            console.error("Erro ao enviar PDF por email:", err);
+            alert("Ocorreu um erro ao enviar o email. Tente novamente.");
             return false;
         } finally {
             setLoading(false);

@@ -233,7 +233,7 @@ export const QualificacaoStep = ({
 						</div>
 						<div className="md:col-span-5">
 							<label className="label-form">
-								E-mail <span className="text-red-500">*</span>
+								Email <span className="text-red-500">*</span>
 							</label>
 							<input
 								name="email"

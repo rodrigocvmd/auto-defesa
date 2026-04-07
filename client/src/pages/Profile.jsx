@@ -326,7 +326,7 @@ export default function Profile() {
 	const emailPDF = async (defense) => {
 		if (!defense || !defense.defenseText) {
 			alert("Texto da defesa não encontrado.");
-			return;
+			return false;
 		}
 
 		setLoading(true);
@@ -353,11 +353,12 @@ export default function Profile() {
             const base64data = await base64Promise;
 
             await api.sendDefensePdfEmail(base64data, fileName);
-            alert("PDF enviado com sucesso para o seu e-mail!");
-
+            alert("PDF enviado com sucesso para o seu email!");
+			return true;
 		} catch (err) {
-			console.error("Erro ao enviar PDF por e-mail:", err);
+			console.error("Erro ao enviar PDF por email:", err);
 			alert(`Erro ao enviar o PDF: ${err.message}`);
+			return false;
 		} finally {
 			setLoading(false);
 		}
@@ -529,7 +530,7 @@ export default function Profile() {
 												<button
 													onClick={() => emailPDF(defense)}
 													className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
-													title="Enviar PDF por E-mail">
+													title="Enviar PDF por Email">
 													<Mail size={20} />
 												</button>
 												<button
@@ -746,13 +747,27 @@ export default function Profile() {
 			)}
 
             {showSuccessModal && (
-                <DownloadSuccessModal 
-                    onClose={() => setShowSuccessModal(false)} 
+                <DownloadSuccessModal
+                    onClose={() => {
+                        setShowSuccessModal(false);
+                        setSelectedDefense(null);
+                    }}
                     btnText="Fechar"
-                    onBtnClick={() => setShowSuccessModal(false)}
+                    onBtnClick={() => {
+                        setShowSuccessModal(false);
+                        setSelectedDefense(null);
+                    }}
+                    handleSendEmail={async () => {
+                        const targetDefense = selectedDefense || defenses[0];
+                        if (targetDefense) {
+                            return await emailPDF(targetDefense);
+                        } else {
+                            alert("Aguarde um instante para carregar seus dados. Tente novamente em alguns segundos.");
+                            return false;
+                        }
+                    }}
                 />
             )}
-
             {showFeedbackModal && (
                 <FeedbackModal onClose={() => setShowFeedbackModal(false)} />
             )}

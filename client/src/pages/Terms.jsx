@@ -273,7 +273,7 @@ const Terms = () => {
 								contato com nossa equipe:
 							</p>
 							<p className="mb-2">
-								<strong>E-mail:</strong>{" "}
+								<strong>Email:</strong>{" "}
 								<a
 									className="text-blue-600 font-bold hover:underline"
 									href="mailto:suporte@meuautodefesa.com.br">

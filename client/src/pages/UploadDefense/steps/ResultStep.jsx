@@ -45,7 +45,7 @@ export const ResultStep = ({
 	const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
 	const [showProfileButton, setShowProfileButton] = useState(false);
 
-	const { handleGeneratePDF, loading: pdfLoading } = usePdfGenerator(
+	const { handleGeneratePDF, handleSendEmail, loading: pdfLoading, emailSuccess } = usePdfGenerator(
 		result,
 		formData,
 		null, // Não mostramos o modal aqui, redirecionamos para o perfil

@@ -30,7 +30,7 @@ export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick, handleSendE
 
     return (
         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8">
+            <div id='successDownloadModal' className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8">
                 <div className="text-center mb-6">
                     <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
                         <Download size={32} />
@@ -46,7 +46,7 @@ export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick, handleSendE
                 {sent ? (
                     <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl mb-6 flex items-center gap-3">
                         <CheckCircle2 className="flex-shrink-0" />
-                        <span className="text-sm font-medium">PDF enviado com sucesso para o seu e-mail de cadastro!</span>
+                        <span className="text-sm font-medium">PDF enviado com sucesso para o seu email de cadastro!</span>
                     </div>
                 ) : (
                     handleSendEmail && (
@@ -55,7 +55,7 @@ export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick, handleSendE
                             disabled={sending}
                             className="w-full mb-3 flex items-center justify-center gap-2 bg-white border-2 border-blue-600 text-blue-600 font-bold py-3.5 rounded-xl hover:bg-blue-50 transition-colors shadow-sm disabled:opacity-50">
                             <Mail size={20} />
-                            {sending ? "Enviando..." : "Enviar cópia por E-mail"}
+                            {sending ? "Enviando..." : "Enviar cópia por Email"}
                         </button>
                     )
                 )}

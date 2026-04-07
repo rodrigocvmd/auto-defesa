@@ -190,7 +190,7 @@ export const useDefenseLogic = (step) => {
 					if (!rgRegex.test(value)) error = "RG inválido.";
 					break;
 				case "email":
-					if (!value.includes("@") || !value.includes(".")) error = "E-mail inválido.";
+					if (!value.includes("@") || !value.includes(".")) error = "Email inválido.";
 					break;
 				case "zipCode":
 					if (value.length < 9) error = "CEP incompleto (XXXXX-XXX).";
