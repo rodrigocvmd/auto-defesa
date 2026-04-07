@@ -159,7 +159,11 @@ export const ResultStep = ({
 				/>
 			)}
 			{showDownloadSuccess && (
-				<DownloadSuccessModal onClose={() => setShowDownloadSuccess(false)} />
+				<DownloadSuccessModal 
+					onClose={() => setShowDownloadSuccess(false)} 
+					handleSendEmail={handleSendEmail}
+					emailSuccess={emailSuccess}
+				/>
 			)}
 			{showPrintInstructionModal && (
 				<PrintInstructionModal

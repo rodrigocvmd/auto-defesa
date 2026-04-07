@@ -2,21 +2,14 @@ import React, { useState } from 'react';
 import { pdf } from '@react-pdf/renderer';
 import DefenseDocument from '../../../components/DefensePDF';
 import { formatDefenseToHtml } from '../../../utils/textToHtml';
+import { api } from '../../../services/api';
 
 export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) => {
     const [loading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState("");
+    const [emailSuccess, setEmailSuccess] = useState(false);
 
-    const handleGeneratePDF = async () => {
-        if (!htmlContent) {
-            alert("Erro: Conteúdo não encontrado para gerar PDF.");
-            return false;
-        }
-
-        // Sempre formatamos para garantir que o wrapper HTML/CSS completo seja aplicado,
-        // igual ao que é feito na página de perfil (histórico).
-        const finalHtml = formatDefenseToHtml(htmlContent);
-        
+    const getFileInfo = () => {
         const defenseType = (formData.defenseType || "").toLowerCase();
         let typeStr = "Defesa_Previa";
         if (defenseType.includes("jari")) typeStr = "Recurso_JARI";
@@ -25,16 +18,24 @@ export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) =
         const firstName = (formData.name || "Usuario").trim().split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         const cleanPlate = (formData.plate || "Placa").replace(/[^a-zA-Z0-9]/g, "");
 
-        const fileName = `${typeStr}_${firstName}_${cleanPlate}.pdf`;
+        return `${typeStr}_${firstName}_${cleanPlate}.pdf`;
+    };
+
+    const handleGeneratePDF = async () => {
+        if (!htmlContent) {
+            alert("Erro: Conteúdo não encontrado para gerar PDF.");
+            return false;
+        }
+
+        const finalHtml = formatDefenseToHtml(htmlContent);
+        const fileName = getFileInfo();
 
         try {
             setLoading(true);
             setLoadingText("Gerando seu PDF profissional instantaneamente...");
             
-            // Gera o PDF no cliente usando @react-pdf/renderer
             const blob = await pdf(React.createElement(DefenseDocument, { content: finalHtml })).toBlob();
             
-            // Cria um link temporário para download do Blob
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
@@ -42,7 +43,6 @@ export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) =
             document.body.appendChild(link);
             link.click();
             
-            // Limpeza
             link.parentNode.removeChild(link);
             window.URL.revokeObjectURL(url);
             
@@ -57,5 +57,41 @@ export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) =
         }
     };
 
-    return { handleGeneratePDF, loading, loadingText };
+    const handleSendEmail = async () => {
+        if (!htmlContent) {
+            alert("Erro: Conteúdo não encontrado para gerar PDF.");
+            return false;
+        }
+
+        const finalHtml = formatDefenseToHtml(htmlContent);
+        const fileName = getFileInfo();
+
+        try {
+            setLoading(true);
+            setLoadingText("Preparando PDF e enviando para seu e-mail...");
+            
+            const blob = await pdf(React.createElement(DefenseDocument, { content: finalHtml })).toBlob();
+            
+            // Convert Blob to Base64
+            const reader = new FileReader();
+            const base64Promise = new Promise((resolve, reject) => {
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+            });
+            reader.readAsDataURL(blob);
+            const base64data = await base64Promise;
+
+            await api.sendDefensePdfEmail(base64data, fileName);
+            setEmailSuccess(true);
+            return true;
+        } catch (err) {
+            console.error("Erro ao enviar PDF por e-mail:", err);
+            alert("Ocorreu um erro ao enviar o e-mail. Tente novamente.");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { handleGeneratePDF, handleSendEmail, loading, loadingText, emailSuccess };
 };

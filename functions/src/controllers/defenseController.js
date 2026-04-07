@@ -2,19 +2,20 @@ const cors = require("../middleware/cors");
 const { verifyAuth } = require("../middleware/auth");
 const { checkIpRateLimit, checkUserRateLimit } = require("../middleware/rateLimit");
 const { checkCredits, deductCredits } = require("../services/userService");
-const { db } = require("../services/firebase");
+const { db, admin } = require("../services/firebase");
 const { FieldValue } = require("firebase-admin/firestore");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { Resend } = require("resend");
 
 // Produção:
-const MODEL_FLASH = "gemini-3.1-pro-preview";
-const MODEL_PRO = "gemini-3-flash-preview";
-const MODEL_FALLBACK = "gemini-flash-latest";
+// const MODEL_FLASH = "gemini-3.1-pro-preview";
+// const MODEL_PRO = "gemini-3-flash-preview";
+// const MODEL_FALLBACK = "gemini-flash-latest";
 
 // Testes / Lite:
-// const MODEL_FLASH = "gemini-2.5-flash-lite";
-// const MODEL_PRO = "gemini-2.5-flash-lite";
-// const MODEL_FALLBACK = "gemini-2.5-flash-lite";
+const MODEL_FLASH = "gemini-2.5-flash-lite";
+const MODEL_PRO = "gemini-2.5-flash-lite";
+const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
  * Tenta gerar conteúdo com o modelo principal. Se falhar,
@@ -657,6 +658,59 @@ exports.analyzeDocument = (req, res) => {
 				console.error("Erro na análise completa:", error);
 				res.status(500).json({ error: error.message || "Erro na geração do recurso." });
 			}
+		}
+	});
+};
+
+exports.sendDefensePdfEmail = (req, res) => {
+	cors(req, res, async () => {
+		try {
+			const userId = await verifyAuth(req);
+			const userRecord = await admin.auth().getUser(userId);
+			const toEmail = userRecord.email;
+
+			const { pdfBase64, fileName } = req.body;
+
+			if (!pdfBase64 || !fileName) {
+				return res.status(400).json({ error: "PDF e nome do arquivo são obrigatórios." });
+			}
+
+			const resend = new Resend(process.env.RESEND_API_KEY);
+
+			const { data, error } = await resend.emails.send({
+				from: "AutoDefesa <suporte@meuautodefesa.com.br>",
+				to: [toEmail],
+				subject: "Sua Defesa em PDF - AutoDefesa",
+				html: `
+					<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
+						<h2 style="color: #2563eb; text-align: center;">Aqui está o seu recurso!</h2>
+						<p>Olá,</p>
+						<p>Conforme solicitado, enviamos em anexo o arquivo PDF do seu recurso gerado no <strong>AutoDefesa</strong>.</p>
+						<p>Você pode baixar ou imprimir e protocolar no órgão responsável.</p>
+						<hr style="margin-top: 40px; border: 0; border-top: 1px solid #e5e7eb;" />
+						<p style="font-size: 0.875rem; color: #6b7280; text-align: center;">
+							Equipe AutoDefesa <br>
+							Precisa de ajuda? Acesse nossa <a href="https://meuautodefesa.com.br/help" target="_blank" style="color: #2563eb; text-decoration: underline;">página de ajuda</a>.
+						</p>
+					</div>
+				`,
+				attachments: [
+					{
+						filename: fileName,
+						content: pdfBase64.split("base64,")[1] || pdfBase64,
+					},
+				],
+			});
+
+			if (error) {
+				console.error("Erro no Resend ao enviar PDF:", error);
+				return res.status(500).json({ error: "Erro ao enviar o email." });
+			}
+
+			return res.status(200).json({ success: true, message: "Email enviado com sucesso!" });
+		} catch (error) {
+			console.error("Erro ao enviar email com PDF:", error);
+			return res.status(500).json({ error: "Erro interno ao processar envio de email." });
 		}
 	});
 };

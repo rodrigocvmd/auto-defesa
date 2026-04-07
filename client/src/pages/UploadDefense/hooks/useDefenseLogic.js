@@ -174,7 +174,7 @@ export const useDefenseLogic = (step) => {
 				case "name":
 					const nameParts = value.trim().split(/\s+/);
 					if (nameParts.length < 2 || nameParts.some((part) => part.length < 2))
-						error = "Nome completo deve ter pelo menos 2 palavras com 2 caracteres cada.";
+						error = "Insira seu nome completo.";
 					break;
 				case "cpf":
 					if (!isValidCPF(value)) error = "CPF inválido.";

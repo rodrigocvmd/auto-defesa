@@ -35,6 +35,9 @@ exports.preAnalyze = onRequest(defenseController.preAnalyze);
 // --- FUNÇÃO 6: ANÁLISE COMPLETA (UPLOAD) ---
 exports.analyzeDocument = onRequest({ timeoutSeconds: 120 }, defenseController.analyzeDocument);
 
+// --- FUNÇÃO 7: ENVIAR PDF POR EMAIL ---
+exports.sendDefensePdfEmail = onRequest({ timeoutSeconds: 60 }, defenseController.sendDefensePdfEmail);
+
 // --- WEBHOOK STRIPE ---
 exports.stripeWebhook = onRequest(paymentController.stripeWebhook);
 

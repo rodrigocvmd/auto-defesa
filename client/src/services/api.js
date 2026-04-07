@@ -211,5 +211,26 @@ export const api = {
       console.error("Support Email Error:", error);
       throw error;
     }
+  },
+
+  // 10. Enviar PDF da Defesa por Email
+  sendDefensePdfEmail: async (pdfBase64, fileName) => {
+    try {
+      const headers = await getAuthHeaders();
+      const response = await fetch(`${BASE_URL}/sendDefensePdfEmail`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ pdfBase64, fileName }),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || 'Erro ao enviar email com o PDF');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Send PDF Email Error:", error);
+      throw error;
+    }
   }
 };

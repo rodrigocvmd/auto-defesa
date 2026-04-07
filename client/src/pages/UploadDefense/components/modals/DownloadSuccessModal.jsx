@@ -1,9 +1,12 @@
-import React from 'react';
-import { Download } from 'lucide-react';
+import React, { useState } from 'react';
+import { Download, Mail, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../../../services/api';
 
-export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick }) => {
+export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick, handleSendEmail, emailSuccess }) => {
     const navigate = useNavigate();
+    const [sending, setSending] = useState(false);
+    const [sent, setSent] = useState(emailSuccess || false);
 
     const handleClick = () => {
         if (onBtnClick) {
@@ -11,6 +14,17 @@ export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick }) => {
         } else {
             onClose();
             navigate("/profile");
+        }
+    };
+
+    const onSendMailClick = async () => {
+        if (handleSendEmail) {
+            setSending(true);
+            const success = await handleSendEmail();
+            if (success) {
+                setSent(true);
+            }
+            setSending(false);
         }
     };
 
@@ -28,6 +42,24 @@ export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick }) => {
                     <br/><br/>
                     Uma cópia do arquivo também foi salva em <strong>"Minhas Defesas"</strong> no seu perfil, para que você possa baixar novamente quando precisar.
                 </p>
+
+                {sent ? (
+                    <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl mb-6 flex items-center gap-3">
+                        <CheckCircle2 className="flex-shrink-0" />
+                        <span className="text-sm font-medium">PDF enviado com sucesso para o seu e-mail de cadastro!</span>
+                    </div>
+                ) : (
+                    handleSendEmail && (
+                        <button
+                            onClick={onSendMailClick}
+                            disabled={sending}
+                            className="w-full mb-3 flex items-center justify-center gap-2 bg-white border-2 border-blue-600 text-blue-600 font-bold py-3.5 rounded-xl hover:bg-blue-50 transition-colors shadow-sm disabled:opacity-50">
+                            <Mail size={20} />
+                            {sending ? "Enviando..." : "Enviar cópia por E-mail"}
+                        </button>
+                    )
+                )}
+
                 <button
                     onClick={handleClick}
                     className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors shadow-lg">

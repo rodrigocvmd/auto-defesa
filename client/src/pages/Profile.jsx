@@ -23,7 +23,8 @@ import {
     Check,
     X,
     Star,
-    MessageSquare
+    MessageSquare,
+    Mail
 } from "lucide-react";
 import { updateProfile, updatePassword } from "firebase/auth";
 import {
@@ -156,7 +157,7 @@ export default function Profile() {
 		if (nameParts.length < 2 || nameParts.some((part) => part.length < 2)) {
 			setMessage({
 				type: "error",
-				content: "Nome completo deve ter pelo menos 2 palavras com 2 caracteres cada.",
+				content: "Insira seu nome completo.",
 			});
 			return;
 		}
@@ -317,6 +318,46 @@ export default function Profile() {
 		} catch (err) {
 			console.error("Erro ao gerar PDF:", err);
 			alert(`Erro ao baixar o PDF: ${err.message}`);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const emailPDF = async (defense) => {
+		if (!defense || !defense.defenseText) {
+			alert("Texto da defesa não encontrado.");
+			return;
+		}
+
+		setLoading(true);
+
+		let contentHtml = formatDefenseToHtml(defense.defenseText);
+        
+        let fileName = defense.fileName;
+        if (!fileName) {
+             fileName = `Recurso_${defense.licensePlate || "Final"}`;
+        }
+        if (!fileName.toLowerCase().endsWith(".pdf")) {
+            fileName += ".pdf";
+        }
+
+		try {
+			const blob = await pdf(<DefenseDocument content={contentHtml} />).toBlob();
+            
+            const reader = new FileReader();
+            const base64Promise = new Promise((resolve, reject) => {
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+            });
+            reader.readAsDataURL(blob);
+            const base64data = await base64Promise;
+
+            await api.sendDefensePdfEmail(base64data, fileName);
+            alert("PDF enviado com sucesso para o seu e-mail!");
+
+		} catch (err) {
+			console.error("Erro ao enviar PDF por e-mail:", err);
+			alert(`Erro ao enviar o PDF: ${err.message}`);
 		} finally {
 			setLoading(false);
 		}
@@ -485,6 +526,12 @@ export default function Profile() {
 													}`}>
 													{defense.status === "completed" ? "Pronto" : "Processando"}
 												</span>
+												<button
+													onClick={() => emailPDF(defense)}
+													className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+													title="Enviar PDF por E-mail">
+													<Mail size={20} />
+												</button>
 												<button
 													onClick={() => downloadPDF(defense)}
 													className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
