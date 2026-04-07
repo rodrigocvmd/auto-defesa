@@ -24,7 +24,8 @@ import {
     X,
     Star,
     MessageSquare,
-    Mail
+    Mail,
+    Loader2
 } from "lucide-react";
 import { updateProfile, updatePassword } from "firebase/auth";
 import {
@@ -55,6 +56,7 @@ export default function Profile() {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+    const [emailStatus, setEmailStatus] = useState({});
 	const [selectedDefense, setSelectedDefense] = useState(null);
 
 	// Estados do Formulário de Perfil
@@ -329,7 +331,7 @@ export default function Profile() {
 			return false;
 		}
 
-		setLoading(true);
+		setEmailStatus((prev) => ({ ...prev, [defense.id]: "sending" }));
 
 		let contentHtml = formatDefenseToHtml(defense.defenseText);
         
@@ -353,14 +355,18 @@ export default function Profile() {
             const base64data = await base64Promise;
 
             await api.sendDefensePdfEmail(base64data, fileName);
-            alert("PDF enviado com sucesso para o seu email!");
+			setEmailStatus((prev) => ({ ...prev, [defense.id]: "success" }));
+			
+			setTimeout(() => {
+				setEmailStatus((prev) => ({ ...prev, [defense.id]: "idle" }));
+			}, 3000);
+
 			return true;
 		} catch (err) {
 			console.error("Erro ao enviar PDF por email:", err);
 			alert(`Erro ao enviar o PDF: ${err.message}`);
+			setEmailStatus((prev) => ({ ...prev, [defense.id]: "idle" }));
 			return false;
-		} finally {
-			setLoading(false);
 		}
 	};
 
@@ -401,7 +407,7 @@ export default function Profile() {
 						<Link
 							to="/pricing"
 							className="text-xs bg-blue-600 text-white px-4 py-1.5 rounded-full font-bold hover:bg-blue-700 transition-colors shadow-sm">
-							Adquirir mais
+							Adquirir novos
 						</Link>
 					</div>
 				</div>
@@ -528,10 +534,27 @@ export default function Profile() {
 													{defense.status === "completed" ? "Pronto" : "Processando"}
 												</span>
 												<button
-													onClick={() => emailPDF(defense)}
-													className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+													onClick={() => {
+														if (emailStatus[defense.id] !== "sending" && emailStatus[defense.id] !== "success") {
+															emailPDF(defense);
+														}
+													}}
+													disabled={emailStatus[defense.id] === "sending" || emailStatus[defense.id] === "success"}
+													className={`p-2 transition-colors ${
+														emailStatus[defense.id] === "success" 
+															? "text-green-600 bg-green-50 rounded-full" 
+															: emailStatus[defense.id] === "sending"
+															? "text-blue-400"
+															: "text-gray-600 hover:text-blue-600"
+													}`}
 													title="Enviar PDF por Email">
-													<Mail size={20} />
+													{emailStatus[defense.id] === "success" ? (
+														<CheckCircle size={20} />
+													) : emailStatus[defense.id] === "sending" ? (
+														<Loader2 size={20} className="animate-spin" />
+													) : (
+														<Mail size={20} />
+													)}
 												</button>
 												<button
 													onClick={() => downloadPDF(defense)}
