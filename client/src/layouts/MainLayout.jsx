@@ -66,7 +66,11 @@ const MainLayout = ({ children }) => {
 							</button>
 
 							<Link to="/" className="flex items-center gap-2 group">
-								<img src="/fullIcon.png" alt="Auto Defesa Logo" className="h-8 w-8 object-contain rounded-lg group-hover:opacity-90 transition-opacity" />
+								<img
+									src="/fullIcon.png"
+									alt="Auto Defesa Logo"
+									className="h-8 w-8 object-contain rounded-lg group-hover:opacity-90 transition-opacity"
+								/>
 								<span className="font-bold text-xl text-gray-900 tracking-tight">
 									Auto<span className="text-blue-600">Defesa</span>
 								</span>
@@ -398,26 +402,17 @@ const MainLayout = ({ children }) => {
 						acordo com a LGPD e nossa Política de Privacidade.
 					</p>
 
-					<div className="text-center space-y-1 mt-4 mx-4">
-						<p className="!text-xs font-bold text-gray-500">RC SOFTWARE E TECNOLOGIA LTDA</p>
-						<p className="!text-xs font-bold text-gray-500 !mb-3">CNPJ: 26.560.542/0001-02</p>
-						<p className="text-xs text-gray-600">
-							Endereço: QD SBS QD 2 12 BL E, SL - Brasília/DF, CEP: 70070-120
-						</p>
-						<p className="text-xs text-gray-600">
-							Contato:{" "}
-							<a
-								href="mailto:suporte@meuautodefesa.com.br"
-								className="hover:text-blue-600 underline">
-								suporte@meuautodefesa.com.br
-							</a>
-						</p>
-					</div>
-
 					<p className="text-sm text-gray-400 mt-4 text-center">
-						&copy; {ano} Auto Defesa - Recursos de Trânsito.
+						Desenvolvido por RCM Software Studio | Contato:{" "}
+						<a href="mailto:suporte@meuautodefesa.com.br" className="hover:text-blue-600 underline">
+							suporte@meuautodefesa.com.br
+						</a>
 					</p>
-					<p className="text-sm text-gray-400">Todos os direitos reservados.</p>
+
+					<p className="text-sm text-gray-400 mt-1 text-center">
+						&copy; {ano} Auto Defesa Recursos. Todos os direitos reservados.
+					</p>
+					<p className="text-sm text-gray-400"></p>
 				</footer>
 			</main>
 			<CookieBanner />

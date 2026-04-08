@@ -45,6 +45,11 @@ const Privacy = () => {
 								Introdução
 							</h3>
 							<p className="leading-relaxed">
+								Estes Termos regulam o uso do software Auto Defesa, operado e mantido por Rodrigo
+								Carvalho, inscrito no CPF sob o nº ***-276.251-31, residente e domiciliado em
+								Brasília-DF.
+							</p>
+							<p className="mt-4 leading-relaxed">
 								O <strong>Auto Defesa</strong> ("nós", "nosso" ou "Plataforma") está comprometido em
 								proteger a privacidade e a segurança dos dados de seus usuários. Esta Política de
 								Privacidade descreve, de forma transparente, como coletamos, usamos, armazenamos e
