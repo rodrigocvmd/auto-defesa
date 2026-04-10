@@ -54,6 +54,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/credit-success" element={<CreditSuccess />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/pricing/discount" element={<Pricing />} />
               <Route path="/email-confirmation" element={<EmailConfirmation />} />
               
               {/* Rotas com parâmetro opcional para o fluxo de passos */}

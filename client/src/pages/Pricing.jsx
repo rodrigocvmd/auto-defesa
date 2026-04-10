@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { Check, Shield, Zap, Star, Briefcase, FileText, Scale } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { api } from "../services/api";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import SEO from "../components/SEO";
 import ScrollReveal from "../components/ScrollReveal";
 
 const Pricing = () => {
 	const { currentUser } = useAuth();
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [searchParams] = useSearchParams();
 	const [loadingId, setLoadingId] = useState(null);
 
@@ -18,18 +19,54 @@ const Pricing = () => {
 	const [guestEmail, setGuestEmail] = useState("");
 	const [guestEmailError, setGuestEmailError] = useState("");
 
+	const [timeLeft, setTimeLeft] = useState(null);
+	const [promoEnded, setPromoEnded] = useState(false);
+
+	const isDiscountRoute = location.pathname === "/pricing/discount";
 	const redirect = searchParams.get("redirect");
+
+	useEffect(() => {
+		const endTimeStr = localStorage.getItem("discountEndTime");
+		let endTime;
+		if (!endTimeStr) {
+			endTime = Date.now() + 2 * 60 * 60 * 1000;
+			localStorage.setItem("discountEndTime", endTime.toString());
+		} else {
+			endTime = parseInt(endTimeStr, 10);
+		}
+
+		const updateTimer = () => {
+			const now = Date.now();
+			const diff = endTime - now;
+			if (diff <= 0) {
+				setTimeLeft({ h: "00", m: "00", s: "00" });
+				setPromoEnded(true);
+			} else {
+				const h = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, "0");
+				const m = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
+				const s = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, "0");
+				setTimeLeft({ h, m, s });
+				setPromoEnded(false);
+			}
+		};
+
+		updateTimer();
+		const interval = setInterval(updateTimer, 1000);
+		return () => clearInterval(interval);
+	}, []);
 
 	// IMPORTANTE:
 	// O erro "No such price: 'prod_...'" ocorre porque você copiou o ID do PRODUTO (começa com prod_)
 	// ao invés do ID do PREÇO (começa com price_).
 	// No Dashboard da Stripe, vá em Produtos > Clique no produto > Role até "Preços" > Copie o ID que começa com 'price_'.
-	const PLANS = [
+	const BASE_PLANS = [
 		{
 			id: "price_1SxBbqRTHGPeccd9D66pZoXs", // Substitua pelo ID real price_...
+			discountId: "price_discount_expresso",
 			name: "Recurso Expresso",
 			price: "R$ 17,90",
 			originalPrice: "R$ 29,90",
+			discountPrice: "R$ 8,95",
 			credits: 1,
 			mode: "payment", // Pagamento Único
 			icon: <FileText size={24} />,
@@ -41,16 +78,18 @@ const Pricing = () => {
 				"Recurso para qualquer fase da Defesa",
 				"Ótimo valor por Recurso",
 				"Pagamento via Cartão, Boleto ou PIX",
-				"Valor por recurso no pacote: R$ 17,90"
+				"Valor por recurso no pacote: R$ 17,90",
 			],
 			recommended: false,
 			color: "gray",
 		},
 		{
 			id: "price_1SuFi7RTHGPeccd987NViaZP", // Substitua pelo ID real price_...
+			discountId: "price_discount_completa",
 			name: "Proteção Completa",
 			price: "R$ 27,90",
 			originalPrice: "R$ 49,90",
+			discountPrice: "R$ 13,95",
 			credits: 3,
 			mode: "payment", // Pagamento Único
 			icon: <Shield size={24} />,
@@ -63,16 +102,18 @@ const Pricing = () => {
 				"Garante as 3 fases da Defesa",
 				"Custo por Recurso reduzido",
 				"Pagamento via Cartão, Boleto ou PIX",
-				"Valor por recurso no pacote: R$ 9,30"
+				"Valor por recurso no pacote: R$ 9,30",
 			],
 			recommended: true,
 			color: "blue",
 		},
 		{
 			id: "price_1SuFiORTHGPeccd9HKTxjPO7", // Substitua pelo ID real price_...
+			discountId: "price_discount_profissional",
 			name: "Pacote Profissional",
 			price: "R$ 47,90",
 			originalPrice: "R$ 99,90",
+			discountPrice: "R$ 23,95",
 			credits: 10,
 			mode: "payment", // Pagamento Único
 			icon: <Briefcase size={24} />,
@@ -84,12 +125,24 @@ const Pricing = () => {
 				"Garante 10 Defesas Completas",
 				"Melhor custo por crédito",
 				"Pagamento via Cartão, Boleto ou PIX",
-				"Valor por recurso no pacote: R$ 4,79"
+				"Valor por recurso no pacote: R$ 4,79",
 			],
 			recommended: false,
 			color: "gray",
 		},
 	];
+
+	const PLANS = BASE_PLANS.map(plan => {
+		if (isDiscountRoute && !promoEnded) {
+			return {
+				...plan,
+				id: plan.discountId,
+				price: plan.discountPrice,
+				originalPrice: plan.price
+			};
+		}
+		return plan;
+	});
 
 	const handleSubscribe = async (plan) => {
 		if (!currentUser) {
@@ -224,18 +277,72 @@ const Pricing = () => {
 
 								<button
 									onClick={() => handleSubscribe(plan)}
-									disabled={!!loadingId}
+									disabled={!!loadingId || (isDiscountRoute && promoEnded)}
 									className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 ${
 										plan.recommended
 											? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-indigo-300"
 											: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-50"
-									} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""}`}>
-									{loadingId === plan.id ? "Processando..." : "Selecionar Produto"}
+									} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""} ${(isDiscountRoute && promoEnded) ? "bg-gray-400 !text-gray-200 opacity-100 !shadow-none cursor-not-allowed" : ""}`}>
+									{loadingId === plan.id ? "Processando..." : ((isDiscountRoute && promoEnded) ? "Fim da promoção" : "Selecionar Produto")}
 								</button>
 							</div>
 						</ScrollReveal>
 					))}
 				</div>
+
+				{!isDiscountRoute && timeLeft && (
+					<ScrollReveal>
+						<div className="mt-16 bg-gradient-to-br from-indigo-900 via-blue-900 to-indigo-800 rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden border border-indigo-700">
+							{/* Decorative background elements */}
+							<div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-blue-500 rounded-full blur-[80px] opacity-30"></div>
+							<div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-purple-500 rounded-full blur-[80px] opacity-30"></div>
+							
+							<div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+								<div className="text-center lg:text-left max-w-2xl">
+									<h3 className="text-3xl font-black text-white mb-4">
+										Ainda não está convencido?
+									</h3>
+									<p className="text-blue-100 text-xl leading-relaxed">
+										Adquira seu Recurso nas próximas horas e ganhe <strong>50% de desconto</strong> em qualquer pacote para testar e aprovar a qualidade dos nossos recursos!
+									</p>
+								</div>
+								
+								<div className="flex flex-col items-center gap-6 shrink-0 w-full lg:w-auto">
+									<div className="flex gap-4">
+										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
+											<div className="text-3xl font-black text-white">{timeLeft.h}</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Horas</div>
+										</div>
+										<div className="text-white text-3xl font-black flex items-center mb-5">:</div>
+										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
+											<div className="text-3xl font-black text-white">{timeLeft.m}</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Min</div>
+										</div>
+										<div className="text-white text-3xl font-black flex items-center mb-5">:</div>
+										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl relative overflow-hidden">
+											<div className="text-3xl font-black text-white">{timeLeft.s}</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Seg</div>
+											{/* Subtle pulse animation for seconds */}
+											<div className="absolute inset-0 bg-white/5 animate-pulse"></div>
+										</div>
+									</div>
+
+									<button 
+										onClick={() => navigate("/pricing/discount")}
+										disabled={promoEnded}
+										className={`w-full py-4 px-8 rounded-2xl font-black text-lg transition-all shadow-xl active:scale-95 flex justify-center items-center gap-2 ${promoEnded ? 'bg-gray-500 text-gray-300 cursor-not-allowed border border-gray-400' : 'bg-gradient-to-r from-yellow-400 to-yellow-300 text-yellow-900 hover:from-yellow-300 hover:to-yellow-200 border border-yellow-200 shadow-yellow-500/30 hover:shadow-yellow-500/50 hover:-translate-y-1'}`}
+									>
+										{promoEnded ? "Fim da promoção" : (
+											<>
+												Acessar 50% de Desconto <Zap size={20} className="text-yellow-700" fill="currentColor" />
+											</>
+										)}
+									</button>
+								</div>
+							</div>
+						</div>
+					</ScrollReveal>
+				)}
 
 				<ScrollReveal>
 					<div className="mt-10 md:mt-14 bg-gray-50 p-8 md:py-8 rounded-3xl border border-gray-200">

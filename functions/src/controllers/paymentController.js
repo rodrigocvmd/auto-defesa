@@ -24,6 +24,10 @@ exports.createCheckoutSession = (req, res) => {
 			price_1SxBbqRTHGPeccd9D66pZoXs: { credits: 1, name: "Recurso Expresso" },
 			price_1SuFi7RTHGPeccd987NViaZP: { credits: 3, name: "Proteção Completa" },
 			price_1SuFiORTHGPeccd9HKTxjPO7: { credits: 10, name: "Pacote Profissional" },
+			// Discount prices
+			price_discount_expresso: { credits: 1, name: "Recurso Expresso (50% OFF)" },
+			price_discount_completa: { credits: 3, name: "Proteção Completa (50% OFF)" },
+			price_discount_profissional: { credits: 10, name: "Pacote Profissional (50% OFF)" },
 			// Fallback default for testing if needed
 			price_H5ggYwtDq4fbrJ: { credits: 1, name: "Plano Teste" },
 		};
