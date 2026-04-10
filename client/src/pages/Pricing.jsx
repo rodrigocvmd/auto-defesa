@@ -67,6 +67,7 @@ const Pricing = () => {
 			price: "R$ 17,90",
 			originalPrice: "R$ 29,90",
 			discountPrice: "R$ 8,95",
+			discountFeatureText: "Valor por recurso no pacote: R$ 8,95",
 			credits: 1,
 			mode: "payment", // Pagamento Único
 			icon: <FileText size={24} />,
@@ -90,6 +91,7 @@ const Pricing = () => {
 			price: "R$ 27,90",
 			originalPrice: "R$ 49,90",
 			discountPrice: "R$ 13,95",
+			discountFeatureText: "Valor por recurso no pacote: R$ 4,65",
 			credits: 3,
 			mode: "payment", // Pagamento Único
 			icon: <Shield size={24} />,
@@ -114,6 +116,7 @@ const Pricing = () => {
 			price: "R$ 47,90",
 			originalPrice: "R$ 99,90",
 			discountPrice: "R$ 23,95",
+			discountFeatureText: "Valor por recurso no pacote: R$ 2,40",
 			credits: 10,
 			mode: "payment", // Pagamento Único
 			icon: <Briefcase size={24} />,
@@ -134,11 +137,15 @@ const Pricing = () => {
 
 	const PLANS = BASE_PLANS.map(plan => {
 		if (isDiscountRoute && !promoEnded) {
+			const updatedFeatures = [...plan.features];
+			updatedFeatures[updatedFeatures.length - 1] = plan.discountFeatureText;
+			
 			return {
 				...plan,
 				id: plan.discountId,
 				price: plan.discountPrice,
-				originalPrice: plan.price
+				originalPrice: plan.price,
+				features: updatedFeatures
 			};
 		}
 		return plan;
@@ -209,7 +216,7 @@ const Pricing = () => {
 			/>
 			<div className="max-w-6xl mx-auto pt-12 pb-2 px-4">
 				<ScrollReveal>
-					<div className="text-center mb-16">
+					<div className="text-center mb-10">
 						<h1 className="text-4xl font-black text-gray-900 mb-4">
 							Escolha o melhor pacote de defesa para você
 						</h1>
@@ -218,6 +225,48 @@ const Pricing = () => {
 						</p>
 					</div>
 				</ScrollReveal>
+
+				{isDiscountRoute && timeLeft && (
+					<ScrollReveal>
+						<div className="mb-12 bg-gradient-to-br from-indigo-900 via-blue-900 to-indigo-800 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden border border-indigo-700">
+							{/* Decorative background elements */}
+							<div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-blue-500 rounded-full blur-[80px] opacity-30"></div>
+							<div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-purple-500 rounded-full blur-[80px] opacity-30"></div>
+							
+							<div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+								<div className="text-center lg:text-left max-w-2xl">
+									<h3 className="text-2xl font-black text-white mb-2">
+										Tempo restante para aproveitar o desconto de 50%
+									</h3>
+									<p className="text-blue-100 text-lg leading-relaxed">
+										As ofertas abaixo estão com <strong>metade do preço</strong> por tempo limitado.
+									</p>
+								</div>
+								
+								<div className="flex flex-col items-center gap-6 shrink-0 w-full lg:w-auto">
+									<div className="flex gap-4">
+										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
+											<div className="text-3xl font-black text-white">{timeLeft.h}</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Hora</div>
+										</div>
+										<div className="text-white text-3xl font-black flex items-center mb-5">:</div>
+										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
+											<div className="text-3xl font-black text-white">{timeLeft.m}</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Min</div>
+										</div>
+										<div className="text-white text-3xl font-black flex items-center mb-5">:</div>
+										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl relative overflow-hidden">
+											<div className="text-3xl font-black text-white">{timeLeft.s}</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Seg</div>
+											{/* Subtle pulse animation for seconds */}
+											<div className="absolute inset-0 bg-white/5 animate-pulse"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ScrollReveal>
+				)}
 
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 					{PLANS.map((plan, idx) => (
@@ -254,7 +303,7 @@ const Pricing = () => {
 												{plan.originalPrice}
 											</span>
 										)}
-										<div className="text-4xl font-black text-green-500">{plan.price}</div>
+										<div className={`text-4xl font-black ${isDiscountRoute && !promoEnded ? "text-green-500" : "text-blue-600"}`}>{plan.price}</div>
 									</div>
 									{plan.credits >= 1 && (
 										<div className="text-sm font-bold text-green-600 bg-green-50 inline-block px-2 py-1 rounded mt-5">
