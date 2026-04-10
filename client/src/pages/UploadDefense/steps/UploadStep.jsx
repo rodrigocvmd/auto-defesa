@@ -70,20 +70,11 @@ export const UploadStep = ({
 				</p>
 				<p className="text-gray-600 mt-2 mb-4 mx-10">Não tem o arquivo ou imagem da infração?</p>
 				<div className="text-center">
-					{currentUser && !currentUser.emailVerified ? (
-						<button
-							disabled
-							className="text-gray-600 font-bold flex text-sm items-center justify-center gap-1 mx-auto cursor-not-allowed"
-							title="Confirme seu email para utilizar">
-							<FileText size={14} /> Inserir dados manualmente
-						</button>
-					) : (
-						<button
-							onClick={handleManualEntry}
-							className="text-blue-600 font-bold hover:text-blue-700 transition-colors flex items-center justify-center gap-1 mx-auto bg-blue-50 px-4 py-2 rounded-lg border border-blue-100">
-							<FileText size={16} /> Inserir dados manualmente
-						</button>
-					)}
+					<button
+						onClick={handleManualEntry}
+						className="text-blue-600 font-bold hover:text-blue-700 transition-colors flex items-center justify-center gap-1 mx-auto bg-blue-50 px-4 py-2 rounded-lg border border-blue-100">
+						<FileText size={16} /> Inserir dados manualmente
+					</button>
 				</div>
 			</div>
 			<div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
@@ -140,13 +131,8 @@ export const UploadStep = ({
 						<div className="flex flex-col items-center gap-6 pt-4 border-t border-gray-100">
 							<button
 								type="submit"
-								disabled={!file || loading || (currentUser && !currentUser.emailVerified)}
-								title={
-									currentUser && !currentUser.emailVerified
-										? "Confirme seu email para utilizar"
-										: ""
-								}
-								className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && !loading && (!currentUser || currentUser.emailVerified) ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"}`}>
+								disabled={!file || loading}
+								className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && !loading ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"}`}>
 								{loading ? (
 									<>
 										<Loader2 className="animate-spin inline mr-2" /> Lendo Documento...

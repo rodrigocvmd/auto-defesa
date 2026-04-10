@@ -96,7 +96,7 @@ export default function Login() {
     return (
         <MainLayout>
             <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mx-3 my-3">
                     <div className="text-center mb-8">
                         <div className="bg-blue-100 p-3 rounded-full w-fit mx-auto mb-4 text-blue-600">
                             {isResetMode ? <KeyRound size={24} /> : <LogIn size={24} />}

@@ -78,7 +78,7 @@ const MainLayout = ({ children }) => {
 						</div>
 
 						{/* Desktop Navigation */}
-						<nav className="hidden min-[900px]:flex items-center gap-6">
+						<nav className="hidden min-[1000px]:flex items-center gap-6">
 							{!isHome && (
 								<Link
 									to="/"
@@ -248,7 +248,7 @@ const MainLayout = ({ children }) => {
 						</nav>
 
 						{/* Mobile Menu Button */}
-						<div className="min-[900px]:hidden flex items-center">
+						<div className="min-[1000px]:hidden flex items-center">
 							<button
 								onClick={() => setIsMenuOpen(!isMenuOpen)}
 								className="text-gray-600 hover:text-blue-600 p-2"
@@ -261,7 +261,7 @@ const MainLayout = ({ children }) => {
 
 				{/* Mobile Menu Overlay */}
 				{isMenuOpen && (
-					<div className="min-[900px]:hidden bg-white border-b border-gray-200 absolute w-full left-0 top-16 z-40 shadow-lg animate-in slide-in-from-top-2">
+					<div className="min-[1000px]:hidden bg-white border-b border-gray-200 absolute w-full left-0 top-16 z-40 shadow-lg animate-in slide-in-from-top-2">
 						<div className="px-4 py-4 space-y-2 text-center">
 							{!isHome && (
 								<Link
@@ -354,17 +354,17 @@ const MainLayout = ({ children }) => {
 									</Link>
 								</>
 							) : (
-								<div className="flex flex-col gap-3 pt-2">
+								<div className="flex flex-col items-center gap-3 pt-2">
 									<Link
 										to="/login"
 										onClick={() => setIsMenuOpen(false)}
-										className="w-full text-center text-gray-600 border border-gray-300 font-bold py-3 rounded-xl hover:bg-gray-50">
+										className="w-8/12 text-center text-gray-600 border border-gray-300 font-bold py-3 rounded-xl hover:bg-gray-50">
 										Entrar
 									</Link>
 									<Link
 										to="/register"
 										onClick={() => setIsMenuOpen(false)}
-										className="w-full text-center bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
+										className="w-8/12 text-center bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
 										Criar Conta
 									</Link>
 								</div>

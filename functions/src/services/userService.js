@@ -56,6 +56,12 @@ async function deleteUnverifiedUsers() {
 
     for (const doc of snapshot.docs) {
         const userData = doc.data();
+
+        // NUNCA deletar usuários não-verificados se eles possuírem créditos pagos.
+        if (userData.credits && userData.credits > 0) {
+            continue;
+        }
+
         // Check if createdAt exists and is older than cutoff
         // createdAt can be a Firestore Timestamp or a Date string depending on how it was saved.
         // AuthContext saves as "new Date()", which Firestore converts to Timestamp.

@@ -39,7 +39,7 @@ export default function VerificationBanner() {
                     <AlertTriangle size={18} className="shrink-0" />
                     <span>
                         <strong>Atenção:</strong> Seu email ({currentUser.email}) ainda não foi confirmado. 
-                        Confirme para liberar todas as funcionalidades.
+                        Confirme-o para garantir o recebimento de cópias em PDF dos seus recursos e melhor suporte.
                     </span>
                 </div>
                 

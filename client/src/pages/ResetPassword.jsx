@@ -95,7 +95,7 @@ export default function ResetPassword() {
         return (
             <MainLayout>
                 <div className="min-h-[60vh] flex items-center justify-center p-4">
-                    <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
+                    <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center mx-3 my-3">
                         <div className="bg-green-100 p-3 rounded-full w-fit mx-auto mb-4 text-green-600">
                             <CheckCircle size={32} />
                         </div>
@@ -118,7 +118,7 @@ export default function ResetPassword() {
     return (
         <MainLayout>
             <div className="flex items-center justify-center min-h-[60vh] p-4">
-                <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mx-3 my-3">
                     <div className="text-center mb-8">
                         <div className="bg-blue-100 p-3 rounded-full w-fit mx-auto mb-4 text-blue-600">
                             <KeyRound size={24} />
