@@ -43,6 +43,11 @@ exports.sendDefensePdfEmail = onRequest({ timeoutSeconds: 60 }, defenseControlle
 exports.stripeWebhook = onRequest(paymentController.stripeWebhook);
 
 // --- CRON JOB: LIMPEZA DE USUÁRIOS ---
+/* 
+A rotina de limpeza de usuários não verificados foi temporariamente inativada, 
+pois a verificação de e-mail não é mais obrigatória para gerar recursos, 
+e manter esses dados é útil para análise de funil e conversão.
+
 exports.cleanupUnverifiedUsers = onSchedule("every 24 hours", async (event) => {
     logger.info("Starting cleanup of unverified users...");
     try {
@@ -52,3 +57,4 @@ exports.cleanupUnverifiedUsers = onSchedule("every 24 hours", async (event) => {
         logger.error("Error cleaning up users:", error);
     }
 });
+*/
