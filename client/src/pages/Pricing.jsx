@@ -311,7 +311,7 @@ const Pricing = () => {
 									<div className="flex gap-4">
 										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
 											<div className="text-3xl font-black text-white">{timeLeft.h}</div>
-											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Horas</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Hora</div>
 										</div>
 										<div className="text-white text-3xl font-black flex items-center mb-5">:</div>
 										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
