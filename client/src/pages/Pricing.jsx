@@ -29,6 +29,7 @@ const Pricing = () => {
 			id: "price_1SxBbqRTHGPeccd9D66pZoXs", // Substitua pelo ID real price_...
 			name: "Recurso Expresso",
 			price: "R$ 17,90",
+			originalPrice: "R$ 29,90",
 			credits: 1,
 			mode: "payment", // Pagamento Único
 			icon: <FileText size={24} />,
@@ -39,7 +40,8 @@ const Pricing = () => {
 				"Recurso fica salvo no histórico",
 				"Recurso para qualquer fase da Defesa",
 				"Ótimo valor por Recurso",
-				"Valor por recurso no pacote: R$ 17,90",
+				"Pagamento via Cartão, Boleto ou PIX",
+				"Valor por recurso no pacote: R$ 17,90"
 			],
 			recommended: false,
 			color: "gray",
@@ -48,6 +50,7 @@ const Pricing = () => {
 			id: "price_1SuFi7RTHGPeccd987NViaZP", // Substitua pelo ID real price_...
 			name: "Proteção Completa",
 			price: "R$ 27,90",
+			originalPrice: "R$ 49,90",
 			credits: 3,
 			mode: "payment", // Pagamento Único
 			icon: <Shield size={24} />,
@@ -59,7 +62,8 @@ const Pricing = () => {
 				"Todos os Recursos salvos no histórico",
 				"Garante as 3 fases da Defesa",
 				"Custo por Recurso reduzido",
-				"Valor por recurso no pacote: R$ 9,30",
+				"Pagamento via Cartão, Boleto ou PIX",
+				"Valor por recurso no pacote: R$ 9,30"
 			],
 			recommended: true,
 			color: "blue",
@@ -68,6 +72,7 @@ const Pricing = () => {
 			id: "price_1SuFiORTHGPeccd9HKTxjPO7", // Substitua pelo ID real price_...
 			name: "Pacote Profissional",
 			price: "R$ 47,90",
+			originalPrice: "R$ 99,90",
 			credits: 10,
 			mode: "payment", // Pagamento Único
 			icon: <Briefcase size={24} />,
@@ -78,7 +83,8 @@ const Pricing = () => {
 				"Todos os Recursos salvos no histórico",
 				"Garante 10 Defesas Completas",
 				"Melhor custo por crédito",
-				"Valor por recurso no pacote: R$ 4,79",
+				"Pagamento via Cartão, Boleto ou PIX",
+				"Valor por recurso no pacote: R$ 4,79"
 			],
 			recommended: false,
 			color: "gray",
@@ -189,7 +195,14 @@ const Pricing = () => {
 								<p className="text-gray-600 text-sm mb-6 min-h-[40px]">{plan.description}</p>
 
 								<div className="mb-6 text-center">
-									<div className="text-4xl font-black text-gray-900">{plan.price}</div>
+									<div className="flex flex-col items-center justify-center">
+										{plan.originalPrice && (
+											<span className="text-3xl font-bold text-gray-400 line-through mb-1">
+												{plan.originalPrice}
+											</span>
+										)}
+										<div className="text-4xl font-black text-green-500">{plan.price}</div>
+									</div>
 									{plan.credits >= 1 && (
 										<div className="text-sm font-bold text-green-600 bg-green-50 inline-block px-2 py-1 rounded mt-5">
 											{plan.credits} {plan.credits === 1 ? "crédito incluso" : "créditos inclusos"}

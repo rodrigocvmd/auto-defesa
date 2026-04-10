@@ -33,24 +33,24 @@ export default function VerificationBanner() {
     };
 
     return (
-        <div className="bg-amber-50 border-b border-amber-200 px-4 py-3">
+        <div className="bg-amber-50 border-b border-amber-200 px-4 py-2">
             <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
-                <div className="flex items-center gap-2 text-amber-800">
+                <div className="flex items-center gap-2 text-amber-800 text-center">
                     <AlertTriangle size={18} className="shrink-0" />
                     <span>
-                        <strong>Atenção:</strong> Seu email ({currentUser.email}) ainda não foi confirmado. 
+                        Seu email ainda não foi confirmado. 
                         Confirme-o para garantir o recebimento de cópias em PDF dos seus recursos e melhor suporte.
                     </span>
                 </div>
                 
-                <div className="flex items-center gap-3 shrink-0">
+                <div className="flex items-center gap-1 shrink-0">
                     {sent ? (
                         <span className="text-green-600 font-bold flex items-center gap-1">
                             Email enviado! Verifique o Spam.
                         </span>
                     ) : (
                         <>
-                            <span className="hidden sm:inline text-amber-800 text-xs">
+                            <span className="inline text-amber-800 text-sm text-center md:border-l-2 pl-4">
                                 Não recebeu? Verifique o Spam ou
                             </span>
                             <button
@@ -60,7 +60,7 @@ export default function VerificationBanner() {
                             >
                                 {sending ? 'Enviando...' : (
                                     <>
-                                        Enviar novo email <Send size={12} />
+                                        Envie novo email <Send size={12} />
                                     </>
                                 )}
                             </button>
