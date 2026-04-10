@@ -8,15 +8,17 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 exports.createCheckoutSession = (req, res) => {
 	cors(req, res, async () => {
-		let userId;
+		const { priceId, successUrl, cancelUrl, mode, guestEmail } = req.body;
+
+		let userId = null;
 		try {
 			userId = await verifyAuth(req);
 		} catch (e) {
-			res.status(401).json({ error: "Usuário não autenticado." });
-			return;
+			if (!guestEmail) {
+				res.status(401).json({ error: "Usuário não autenticado e email de convidado não fornecido." });
+				return;
+			}
 		}
-
-		const { priceId, successUrl, cancelUrl, mode } = req.body;
 
 		const PRICE_CREDITS_MAP = {
 			price_1SxBbqRTHGPeccd9D66pZoXs: { credits: 1, name: "Recurso Expresso" },
@@ -48,9 +50,11 @@ exports.createCheckoutSession = (req, res) => {
 				mode: mode || "payment",
 				success_url: successUrl || "http://localhost:5173/credit-success?success=true",
 				cancel_url: cancelUrl || "http://localhost:5173/pricing?canceled=true",
-				client_reference_id: userId,
+				client_reference_id: userId || guestEmail,
+				customer_email: userId ? undefined : guestEmail,
 				metadata: {
-					userId: userId,
+					userId: userId || "",
+					guestEmail: guestEmail || "",
 					credits: planInfo.credits,
 					planName: planInfo.name,
 				},
@@ -93,6 +97,7 @@ exports.stripeWebhook = async (req, res) => {
 	if (event.type === "checkout.session.completed") {
 		const session = event.data.object;
 		const userId = session.metadata.userId;
+		const guestEmail = session.metadata.guestEmail;
 		const creditsToAdd = parseInt(session.metadata.credits || "1", 10);
 		const planName = session.metadata.planName || "Plano Adquirido";
 
@@ -127,8 +132,32 @@ exports.stripeWebhook = async (req, res) => {
 				console.error("❌ ERRO ao atualizar créditos no Firestore:", error);
 				return res.status(500).send("Erro interno ao atualizar créditos");
 			}
+		} else if (guestEmail) {
+			try {
+				const guestRef = db.collection("guest_credits").doc(guestEmail);
+
+				await db.runTransaction(async (t) => {
+					const doc = await t.get(guestRef);
+					if (doc.exists) {
+						const guestData = doc.data();
+						const currentCredits = guestData.credits || 0;
+						const newCredits = currentCredits + creditsToAdd;
+						t.set(guestRef, { credits: newCredits, updatedAt: new Date().toISOString() }, { merge: true });
+					} else {
+						t.set(guestRef, { credits: creditsToAdd, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }, { merge: true });
+					}
+				});
+
+				console.log(`🎉 Créditos de convidado adicionados para ${guestEmail}: +${creditsToAdd}`);
+
+				// Enviar email de confirmação para o convidado
+				await sendPurchaseConfirmation(guestEmail, creditsToAdd, planName);
+			} catch (error) {
+				console.error("❌ ERRO ao atualizar créditos de convidado no Firestore:", error);
+				return res.status(500).send("Erro interno ao atualizar créditos de convidado");
+			}
 		} else {
-			console.error("❌ ERRO: UserId não encontrado nos metadados.");
+			console.error("❌ ERRO: Nem UserId nem guestEmail encontrados nos metadados.");
 		}
 	}
 

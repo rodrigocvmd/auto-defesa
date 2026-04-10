@@ -3,8 +3,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle, Upload, User, ArrowRight } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
+import { useAuth } from "../contexts/AuthContext";
 
 const CreditSuccess = () => {
+	const { currentUser } = useAuth();
 	const [searchParams] = useSearchParams();
 	const sessionId = searchParams.get("session_id");
 	const amount = searchParams.get("amount");
@@ -49,11 +51,12 @@ const CreditSuccess = () => {
 				</h1>
 
 				<p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-					Seus créditos já foram adicionados à sua conta. Agora você já pode gerar seu recurso
-					personalizado com a nossa Inteligência Artificial.
+					{currentUser
+						? "Seus créditos já foram adicionados à sua conta. Agora você já pode gerar seu recurso personalizado com a nossa Inteligência Artificial."
+						: "Seus créditos foram vinculados ao email informado na compra. Agora você já pode prosseguir para gerar seu recurso personalizado."}
 				</p>
 
-				<div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+				<div className={`grid grid-cols-1 ${currentUser ? 'sm:grid-cols-2' : ''} gap-6 max-w-2xl mx-auto`}>
 					<Link
 						to="/upload"
 						className="flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-2xl shadow-xl shadow-blue-200 transition-all active:scale-95 group order-1 sm:order-1">
@@ -62,12 +65,14 @@ const CreditSuccess = () => {
 						<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
 					</Link>
 
-					<Link
-						to="/profile"
-						className="flex items-center justify-center gap-3 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-bold py-4 px-8 rounded-2xl transition-all active:scale-95 order-2 sm:order-2">
-						<User className="w-6 h-6" />
-						<span>Ver Meu Perfil</span>
-					</Link>
+					{currentUser && (
+						<Link
+							to="/profile"
+							className="flex items-center justify-center gap-3 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-bold py-4 px-8 rounded-2xl transition-all active:scale-95 order-2 sm:order-2">
+							<User className="w-6 h-6" />
+							<span>Ver Meu Perfil</span>
+						</Link>
+					)}
 				</div>
 
 				<div className="mt-16 pt-8 border-t border-gray-100">

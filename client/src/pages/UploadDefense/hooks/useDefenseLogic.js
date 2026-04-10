@@ -505,6 +505,7 @@ export const useDefenseLogic = (step) => {
 				...formData,
 				userId: currentUser?.uid,
 				fileName: file ? file.name : "upload",
+				guestEmail: localStorage.getItem("guestEmail"),
 			};
 			const response = await api.generateDefense(payload);
 			if (response.success) {
@@ -567,6 +568,7 @@ export const useDefenseLogic = (step) => {
 				previousDefense: result,
 				refinementInstructions: refinementText,
 				userId: currentUser?.uid,
+				guestEmail: localStorage.getItem("guestEmail"),
 			});
 			if (response.success) {
 				const newText = formatDefenseToHtml(response.data.defenseText);

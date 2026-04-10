@@ -16,6 +16,7 @@ exports.getInfraction = onRequest(infractionController.getInfraction);
 // --- FUNÇÃO PARA VERIFICAR EMAIL ---
 // CORS configurado manualmente no controller para garantir acesso
 exports.checkEmail = onRequest(userController.checkEmail);
+exports.getGuestCredits = onRequest(userController.getGuestCredits);
 
 // --- FUNÇÃO DE SUPORTE ---
 exports.sendSupportEmail = onRequest(supportController.sendSupportEmail);

@@ -1,11 +1,12 @@
 const { db, admin } = require("./firebase");
 
-async function checkCredits(userId) {
-	const userRef = db.collection("users").doc(userId);
+async function checkCredits(userId, isGuest = false) {
+	const collection = isGuest ? "guest_credits" : "users";
+	const userRef = db.collection(collection).doc(userId);
 	const doc = await userRef.get();
 	
 	if (!doc.exists) {
-		throw new Error("Usuário não encontrado.");
+		throw new Error(isGuest ? "Email não possui créditos ou não foi encontrado." : "Usuário não encontrado.");
 	}
 	
 	const data = doc.data();
@@ -14,16 +15,17 @@ async function checkCredits(userId) {
 	if (credits <= 0) {
 		throw new Error("Créditos insuficientes.");
 	}
-	return true;
+	return credits;
 }
 
-async function deductCredits(userId) {
-	const userRef = db.collection("users").doc(userId);
+async function deductCredits(userId, isGuest = false) {
+	const collection = isGuest ? "guest_credits" : "users";
+	const userRef = db.collection(collection).doc(userId);
 
 	await db.runTransaction(async (t) => {
 		const doc = await t.get(userRef);
 		if (!doc.exists) {
-			throw new Error("Usuário não encontrado.");
+			throw new Error(isGuest ? "Email não possui créditos ou não foi encontrado." : "Usuário não encontrado.");
 		}
 
 		const data = doc.data();

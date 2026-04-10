@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
 import SEO from '../../components/SEO';
@@ -6,17 +6,19 @@ import { NavigationBlocker } from '../../components/NavigationBlocker';
 import { useDefenseLogic } from './hooks/useDefenseLogic';
 
 import { UploadStep } from './steps/UploadStep';
-import { FormStep } from './steps/FormStep';
 import { PhaseConfirmationStep } from './steps/PhaseConfirmationStep';
 import { PhaseSelectionStep } from './steps/PhaseSelectionStep';
 import { AnalysisStep } from './steps/AnalysisStep';
-import { QualificacaoStep } from './steps/QualificacaoStep';
 import { ResultStep } from './steps/ResultStep';
 import { HelpModal } from './components/modals/HelpModal';
 import { HardBlockModal } from './components/modals/HardBlockModal';
 import { LimitExceededModal } from './components/modals/LimitExceededModal';
 import { LoginPromptModal } from './components/modals/LoginPromptModal';
 import { DivergenceWarningModal } from './components/modals/DivergenceWarningModal';
+import { Loader2 } from 'lucide-react';
+
+const FormStep = React.lazy(() => import('./steps/FormStep').then(m => ({ default: m.FormStep })));
+const QualificacaoStep = React.lazy(() => import('./steps/QualificacaoStep').then(m => ({ default: m.QualificacaoStep })));
 
 const UploadDefense = () => {
     const { step: routeStep } = useParams();
@@ -45,12 +47,22 @@ const UploadDefense = () => {
         formData
     } = logic;
 
+    const FallbackLoader = () => (
+        <div className="flex justify-center items-center min-h-[50vh]">
+            <Loader2 className="animate-spin text-blue-600" size={40} />
+        </div>
+    );
+
     const renderStep = () => {
         switch (step) {
             case "upload":
                 return <UploadStep {...logic} resetDefense={logic.resetDefense} />;
             case "form":
-                return <FormStep {...logic} />;
+                return (
+                    <Suspense fallback={<FallbackLoader />}>
+                        <FormStep {...logic} />
+                    </Suspense>
+                );
             case "phaseConfirmation":
                 return <PhaseConfirmationStep formData={logic.formData} />;
             case "phaseSelection":
@@ -58,7 +70,11 @@ const UploadDefense = () => {
             case "analysis":
                 return <AnalysisStep {...logic} />;
             case "qualification":
-                return <QualificacaoStep {...logic} />;
+                return (
+                    <Suspense fallback={<FallbackLoader />}>
+                        <QualificacaoStep {...logic} />
+                    </Suspense>
+                );
             case "result":
                 return <ResultStep {...logic} />;
             default:

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	ArrowLeft,
 	User,
@@ -10,9 +10,11 @@ import {
 	AlertTriangle,
 	Coins,
 	Info,
+	Mail,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
+import { api } from "../../../services/api";
 
 export const QualificacaoStep = ({
 	formData,
@@ -24,7 +26,146 @@ export const QualificacaoStep = ({
 	analysisData,
 }) => {
 	const navigate = useNavigate();
-	const { userData } = useAuth();
+	const { userData, currentUser } = useAuth();
+	
+	const [isVerifying, setIsVerifying] = useState(true);
+	const [guestCredits, setGuestCredits] = useState(null);
+	const [guestEmailCheck, setGuestEmailCheck] = useState("");
+	const [checkError, setCheckError] = useState("");
+
+	useEffect(() => {
+		const checkAccess = async () => {
+			if (currentUser && userData) {
+				setIsVerifying(false);
+				return;
+			}
+			
+			if (currentUser && !userData) {
+			    // Still loading user data
+			    return;
+			}
+
+			// Guest mode check
+			const savedEmail = localStorage.getItem("guestEmail");
+			if (savedEmail) {
+				try {
+					const credits = await api.getGuestCredits(savedEmail);
+					setGuestCredits(credits);
+					setGuestEmailCheck(savedEmail);
+				} catch (e) {
+					console.error(e);
+				}
+			}
+			setIsVerifying(false);
+		};
+		checkAccess();
+	}, [currentUser, userData]);
+
+	const handleVerifyGuest = async (e) => {
+		e.preventDefault();
+		if (!guestEmailCheck || !/^\S+@\S+\.\S+$/.test(guestEmailCheck)) {
+			setCheckError("Email inválido.");
+			return;
+		}
+		setCheckError("");
+		setIsVerifying(true);
+		try {
+			const credits = await api.getGuestCredits(guestEmailCheck);
+			setGuestCredits(credits);
+			if (credits > 0) {
+				localStorage.setItem("guestEmail", guestEmailCheck);
+			} else {
+				setCheckError("Nenhum crédito encontrado para este email.");
+			}
+		} catch (e) {
+			setCheckError("Erro ao verificar email.");
+		}
+		setIsVerifying(false);
+	};
+
+	const hasAccess = (userData && userData.credits > 0) || (guestCredits !== null && guestCredits > 0);
+	const availableCredits = userData ? userData.credits : (guestCredits || 0);
+
+	if (isVerifying && !hasAccess) {
+		return (
+			<div className="flex justify-center items-center p-20 min-h-[50vh]">
+				<Loader2 className="animate-spin text-blue-600" size={40} />
+			</div>
+		);
+	}
+
+	if (!hasAccess) {
+		return (
+			<div className="max-w-2xl mx-auto pt-16 pb-10 px-5">
+				<div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100 text-center relative overflow-hidden">
+					<div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+					<Lock size={56} className="mx-auto text-blue-600 mb-6" />
+					<h2 className="text-3xl font-black text-gray-900 mb-4">Acesso Protegido</h2>
+					<p className="text-gray-600 mb-8 text-lg leading-relaxed">
+						Para preencher os dados de qualificação e gerar seu recurso, você precisa ter <strong>créditos disponíveis</strong>.
+					</p>
+
+					{!currentUser && (guestCredits === 0 || guestCredits === null) && (
+						<div className="bg-blue-50 rounded-2xl p-6 mb-8 text-left border border-blue-100">
+							<div className="flex items-start gap-3">
+								<Mail className="text-blue-600 shrink-0 mt-1" size={24} />
+								<div className="w-full">
+									<h4 className="font-bold text-gray-900 mb-1">Comprou como convidado?</h4>
+									<p className="text-sm text-gray-600 mb-4">
+										Informe o email que você utilizou na hora do pagamento para vincular e usar seus créditos.
+									</p>
+									<form onSubmit={handleVerifyGuest} className="flex flex-col sm:flex-row gap-3">
+										<div className="flex-1 relative">
+											<input
+												type="email"
+												placeholder="Seu email de compra"
+												className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+												value={guestEmailCheck}
+												onChange={(e) => setGuestEmailCheck(e.target.value)}
+												required
+											/>
+										</div>
+										<button
+											type="submit"
+											disabled={isVerifying}
+											className="bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition-all active:scale-95 shrink-0 disabled:opacity-50"
+										>
+											{isVerifying ? <Loader2 className="animate-spin" size={20} /> : "Verificar"}
+										</button>
+									</form>
+									{checkError && <p className="text-red-500 text-sm mt-2 font-medium">{checkError}</p>}
+								</div>
+							</div>
+						</div>
+					)}
+
+					<div className="flex flex-col sm:flex-row gap-4 justify-center">
+						<button
+							onClick={() => navigate("/pricing")}
+							className="bg-gray-900 text-white font-bold py-4 px-8 rounded-xl hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 flex items-center justify-center gap-2"
+						>
+							<Coins size={20} />
+							Ver Planos e Preços
+						</button>
+						{!currentUser && (
+							<button
+								onClick={() => navigate("/login")}
+								className="bg-white text-gray-700 font-bold py-4 px-8 rounded-xl border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+							>
+								<User size={20} />
+								Fazer Login
+							</button>
+						)}
+					</div>
+					
+					<div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-center gap-2 text-sm text-gray-500">
+						<Info size={16} />
+						Seus dados estarão seguros após a validação.
+					</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="max-w-5xl mx-5 md:mx-auto pt-8 pb-5">
@@ -518,89 +659,32 @@ export const QualificacaoStep = ({
 				</section>
 
 				<div className="flex flex-col items-center gap-4 py-5">
-					{!userData ? (
-						<div className="flex justify-center p-8">
-							<Loader2 className="animate-spin text-blue-600" size={32} />
+					<button
+						type="submit"
+						disabled={loading}
+						className="creditUse w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-5 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 sm:gap-3">
+						{loading ? (
+							<>
+								<Loader2 className="animate-spin" size={24} /> Gerando Defesa...
+							</>
+						) : (
+							<div className="flex flex-col sm:flex-row items-center sm:gap-2">
+								<span className="text-xl">Gerar Recurso Oficial</span>
+								<span className="text-xl font-bold sm:font-black">(Utiliza 1 Crédito)</span>
+							</div>
+						)}
+					</button>
+					<div className="creditAmountInfo mt-4 flex flex-col items-center">
+						<span className="text-gray-400 text-sm uppercase font-bold tracking-widest mb-2">
+							Seu Saldo Atual
+						</span>
+						<div className="bg-gray-100 px-4 py-1 rounded-full text-gray-600 font-black text-lg flex items-center gap-2">
+							{availableCredits}{" "}
+							<span className="text-md font-normal opacity-80">
+								{availableCredits <= 1 ? "crédito" : "créditos"}
+							</span>
 						</div>
-					) : userData.credits > 0 ? (
-						<>
-							<button
-								type="submit"
-								disabled={loading}
-								className="creditUse w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-5 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 sm:gap-3">
-								{loading ? (
-									<>
-										<Loader2 className="animate-spin" size={24} /> Gerando Defesa...
-									</>
-								) : (
-									<div className="flex flex-col sm:flex-row items-center sm:gap-2">
-										<span className="text-xl">Gerar Recurso Oficial</span>
-										<span className="text-xl font-bold sm:font-black">(Utiliza 1 Crédito)</span>
-									</div>
-								)}
-							</button>
-							<div className="creditAmountInfo mt-4 flex flex-col items-center">
-								<span className="text-gray-400 text-sm uppercase font-bold tracking-widest mb-2">
-									Seu Saldo Atual
-								</span>
-								<div className="bg-gray-100 px-4 py-1 rounded-full text-gray-600 font-black text-lg flex items-center gap-2">
-									{userData.credits}{" "}
-									<span className="text-md font-normal opacity-80">
-										{userData.credits <= 1 ? "crédito" : "créditos"}
-									</span>
-								</div>
-							</div>
-						</>
-					) : (
-						<div className="w-full max-w-xl flex flex-col gap-4">
-							<div className="noCreditsInfo bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
-								<div className="flex flex-col items-center gap-2">
-									<AlertTriangle size={32} className="text-red-500 mb-2" />
-									<p className="font-bold text-red-900 text-lg">Saldo Insuficiente</p>
-									<p className="text-red-700">
-										Você não possui créditos para gerar este documento. Adquira créditos agora para
-										finalizar sua defesa oficial.
-									</p>
-								</div>
-							</div>
-
-							<button
-								type="button"
-								onClick={() => {
-									localStorage.setItem(
-										"pendingDefenseData",
-										JSON.stringify({
-											formData,
-											analysisData,
-											source: "upload",
-										}),
-									);
-									navigate("/pricing?redirect=/upload/qualification");
-								}}
-								className="aquireCredit relative overflow-hidden w-full bg-blue-600 text-white font-black py-5 rounded-2xl hover:bg-blue-700 transition-all shadow-lg flex items-center justify-center gap-2 text-xl group">
-								{/* Shimmer Effect */}
-								<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/30 to-transparent w-full h-full animate-shimmer"></div>
-								<span className="relative z-10 flex items-center gap-2">
-									Adquirir Créditos <Coins size={24} />
-								</span>
-							</button>
-
-							<button
-								disabled
-								className="w-full bg-gray-100 text-gray-400 font-bold py-4 rounded-2xl cursor-not-allowed flex items-center justify-center gap-2">
-								Gerar Recurso Oficial
-							</button>
-
-							<div className="creditAmountInfo mt-2 flex flex-col items-center">
-								<span className="text-gray-400 text-xs uppercase font-bold tracking-widest mb-1">
-									Seu Saldo Atual
-								</span>
-								<div className="bg-gray-100 px-4 py-1 rounded-full text-gray-600 font-black text-lg flex items-center gap-2">
-									0 <span className="!text-md font-normal opacity-80">créditos</span>
-								</div>
-							</div>
-						</div>
-					)}
+					</div>
 
 					<div className="flex items-center gap-2 text-gray-500 text-sm mt-2">
 						<Lock size={18} className="text-green-500" />

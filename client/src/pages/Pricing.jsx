@@ -13,6 +13,11 @@ const Pricing = () => {
 	const [searchParams] = useSearchParams();
 	const [loadingId, setLoadingId] = useState(null);
 
+	const [guestModalOpen, setGuestModalOpen] = useState(false);
+	const [selectedPlan, setSelectedPlan] = useState(null);
+	const [guestEmail, setGuestEmail] = useState("");
+	const [guestEmailError, setGuestEmailError] = useState("");
+
 	const redirect = searchParams.get("redirect");
 
 	// IMPORTANTE:
@@ -82,7 +87,8 @@ const Pricing = () => {
 
 	const handleSubscribe = async (plan) => {
 		if (!currentUser) {
-			navigate("/register");
+			setSelectedPlan(plan);
+			setGuestModalOpen(true);
 			return;
 		}
 
@@ -101,6 +107,36 @@ const Pricing = () => {
 			}
 		} catch (error) {
 			alert("Erro ao iniciar pagamento: " + error.message);
+			setLoadingId(null);
+		}
+	};
+
+	const handleGuestCheckout = async (e) => {
+		e.preventDefault();
+		if (!guestEmail || !/^\\S+@\\S+\\.\\S+$/.test(guestEmail)) {
+			setGuestEmailError("Por favor, insira um email válido.");
+			return;
+		}
+
+		setGuestEmailError("");
+		setGuestModalOpen(false);
+		setLoadingId(selectedPlan.id);
+
+		try {
+			const response = await api.createCheckoutSession({
+				priceId: selectedPlan.id,
+				credits: selectedPlan.credits,
+				mode: selectedPlan.mode,
+				guestEmail: guestEmail,
+				successUrl: `${window.location.origin}/credit-success?session_id={CHECKOUT_SESSION_ID}&amount=${selectedPlan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(selectedPlan.name)}`,
+			});
+
+			if (response.url) {
+				localStorage.setItem("guestEmail", guestEmail);
+				window.location.href = response.url;
+			}
+		} catch (error) {
+			alert("Erro ao iniciar pagamento como convidado: " + error.message);
 			setLoadingId(null);
 		}
 	};
@@ -209,6 +245,60 @@ const Pricing = () => {
 						</div>
 					</div>
 				</ScrollReveal>
+
+				{guestModalOpen && (
+					<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+						<div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl relative animate-in fade-in zoom-in duration-200">
+							<h3 className="text-2xl font-black text-gray-900 mb-4">Continuar sem login</h3>
+							<p className="text-gray-600 mb-6 text-sm">
+								Recomendamos criar uma conta para ter um histórico salvo dos seus recursos e melhor suporte.
+								No entanto, você pode prosseguir apenas informando um email, no qual seus créditos ficarão vinculados.
+							</p>
+							
+							<form onSubmit={handleGuestCheckout} className="space-y-4">
+								<div>
+									<label htmlFor="guestEmail" className="block text-sm font-bold text-gray-700 mb-1">
+										Seu Melhor Email
+									</label>
+									<input
+										type="email"
+										id="guestEmail"
+										className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+										placeholder="exemplo@email.com"
+										value={guestEmail}
+										onChange={(e) => setGuestEmail(e.target.value)}
+										required
+									/>
+									{guestEmailError && <p className="text-red-500 text-xs mt-1">{guestEmailError}</p>}
+								</div>
+
+								<div className="flex flex-col gap-3 mt-6">
+									<button
+										type="submit"
+										disabled={!!loadingId}
+										className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-all shadow-md active:scale-95 disabled:opacity-50"
+									>
+										{loadingId ? "Processando..." : "Continuar para o Pagamento"}
+									</button>
+									<button
+										type="button"
+										onClick={() => navigate("/register")}
+										className="w-full bg-indigo-50 text-indigo-700 font-bold py-3 rounded-xl hover:bg-indigo-100 transition-all border border-indigo-200"
+									>
+										Criar uma conta primeiro
+									</button>
+									<button
+										type="button"
+										onClick={() => setGuestModalOpen(false)}
+										className="w-full text-gray-500 hover:text-gray-700 text-sm py-2 font-medium underline"
+									>
+										Cancelar
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				)}
 			</div>
 		</MainLayout>
 	);

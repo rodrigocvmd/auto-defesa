@@ -123,34 +123,52 @@ export const api = {
       throw error;
     }
   },
+// 4. Criar Sessão de Checkout (Pagamento)
+createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl, guestEmail }) => {
+  try {
+    const headers = await getAuthHeaders();
+    const response = await fetch(`${BASE_URL}/createCheckoutSession`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+          priceId,
+          userId,
+          credits,
+          mode, // Envia o modo (payment ou subscription)
+          guestEmail, // Email caso não esteja logado
+          successUrl: successUrl || window.location.origin + '/credit-success?success=true',
+          cancelUrl: window.location.origin + '/pricing?canceled=true'
+      }),
+    });
 
-  // 4. Criar Sessão de Checkout (Pagamento)
-  createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl }) => {
-    try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${BASE_URL}/createCheckoutSession`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ 
-            priceId, 
-            userId,
-            credits,
-            mode, // Envia o modo (payment ou subscription)
-            successUrl: successUrl || window.location.origin + '/credit-success?success=true',
-            cancelUrl: window.location.origin + '/pricing?canceled=true'
-        }),
-      });
-
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.error || 'Erro ao iniciar pagamento');
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("Stripe API Error:", error);
-      throw error;
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Erro ao iniciar pagamento');
     }
-  },
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro em createCheckoutSession:", error);
+    throw error;
+  }
+},
+
+// 5. Consultar Créditos de Convidado
+getGuestCredits: async (email) => {
+  try {
+    const response = await fetch(`${BASE_URL}/getGuestCredits`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    if (!response.ok) throw new Error('Erro ao consultar créditos.');
+    const data = await response.json();
+    return data.credits || 0;
+  } catch (error) {
+    console.error("Erro em getGuestCredits:", error);
+    return 0;
+  }
+},
 
   // 3. Consultar Dados da Infração (Firestore)
   getInfraction: async ({ code, desdobramento }) => {

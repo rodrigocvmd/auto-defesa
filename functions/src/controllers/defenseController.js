@@ -8,14 +8,14 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { Resend } = require("resend");
 
 // Produção:
-const MODEL_PRO = "gemini-3.1-pro-preview";
-const MODEL_FLASH = "gemini-3-flash-preview";
-const MODEL_FALLBACK = "gemini-flash-latest";
+// const MODEL_PRO = "gemini-3.1-pro-preview";
+// const MODEL_FLASH = "gemini-3-flash-preview";
+// const MODEL_FALLBACK = "gemini-flash-latest";
 
 // Testes / Lite:
-// const MODEL_PRO = "gemini-2.5-flash-lite";
-// const MODEL_FLASH = "gemini-2.5-flash-lite";
-// const MODEL_FALLBACK = "gemini-2.5-flash-lite";
+const MODEL_PRO = "gemini-2.5-flash-lite";
+const MODEL_FLASH = "gemini-2.5-flash-lite";
+const MODEL_FALLBACK = "gemini-2.5-flash-lite";
 
 /**
  * Tenta gerar conteúdo com o modelo principal. Se falhar,
@@ -42,20 +42,29 @@ exports.generateDefense = (req, res) => {
 			return;
 		}
 
-		let userId;
+		let data = req.body || {};
+		const isRefinement = !!data.refinementInstructions;
+		const guestEmail = data.guestEmail;
+		const clientIsGuest = !!guestEmail;
+
+		let userId = null;
+		let isGuest = false;
+
 		try {
 			userId = await verifyAuth(req);
 		} catch (e) {
-			res.status(401).json({ error: "Usuário não autenticado." });
-			return;
+			if (clientIsGuest && !isRefinement) {
+				isGuest = true;
+				userId = guestEmail;
+			} else {
+				res.status(401).json({ error: "Usuário não autenticado." });
+				return;
+			}
 		}
-
-		let data = req.body || {};
-		const isRefinement = !!data.refinementInstructions;
 
 		try {
 			if (!isRefinement) {
-				await checkCredits(userId);
+				await checkCredits(userId, isGuest);
 			}
 
 			const genAI = new GoogleGenerativeAI(apiKey);
@@ -473,18 +482,27 @@ exports.analyzeDocument = (req, res) => {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
 
-		let userId;
+		const { image, mimeType, ...userData } = req.body || {};
+		const guestEmail = userData.guestEmail;
+		const clientIsGuest = !!guestEmail;
+
+		let userId = null;
+		let isGuest = false;
+
 		try {
 			userId = await verifyAuth(req);
 		} catch (e) {
-			res.status(401).json({ error: "Usuário não autenticado." });
-			return;
+			if (clientIsGuest) {
+				isGuest = true;
+				userId = guestEmail;
+			} else {
+				res.status(401).json({ error: "Usuário não autenticado." });
+				return;
+			}
 		}
 
-		const { image, mimeType, ...userData } = req.body || {};
-
 		try {
-			await checkCredits(userId);
+			await checkCredits(userId, isGuest);
 
 			const genAI = new GoogleGenerativeAI(apiKey);
 			const modelName = MODEL_PRO;
@@ -642,7 +660,7 @@ exports.analyzeDocument = (req, res) => {
 			const docRef = await db.collection("defenses").add(defenseData);
 			const defenseId = docRef.id;
 
-			await deductCredits(userId);
+			await deductCredits(userId, isGuest);
 
 			res.status(200).json({
 				success: true,
@@ -665,14 +683,23 @@ exports.analyzeDocument = (req, res) => {
 exports.sendDefensePdfEmail = (req, res) => {
 	cors(req, res, async () => {
 		try {
-			const userId = await verifyAuth(req);
-			const userRecord = await admin.auth().getUser(userId);
-			const toEmail = userRecord.email;
+			const { pdfBase64, fileName, guestEmail } = req.body;
+			let toEmail = null;
 
-			const { pdfBase64, fileName } = req.body;
+			try {
+				const userId = await verifyAuth(req);
+				const userRecord = await admin.auth().getUser(userId);
+				toEmail = userRecord.email;
+			} catch (e) {
+				if (guestEmail) {
+					toEmail = guestEmail;
+				} else {
+					return res.status(401).json({ error: "Usuário não autenticado." });
+				}
+			}
 
-			if (!pdfBase64 || !fileName) {
-				return res.status(400).json({ error: "PDF e nome do arquivo são obrigatórios." });
+			if (!pdfBase64 || !fileName || !toEmail) {
+				return res.status(400).json({ error: "PDF, nome do arquivo e email são obrigatórios." });
 			}
 
 			const resend = new Resend(process.env.RESEND_API_KEY);
