@@ -149,9 +149,26 @@ export const AnalysisStep = ({
 						) : !currentUser ? (
 							<div className="flex flex-col gap-3">
 								<p className="text-blue-100 text-md mb-2 font-medium">
-									Você precisa estar logado para gerar o documento final.
+									Para gerar o documento final, crie uma conta ou adquira um crédito sem cadastro.
 								</p>
-								<div className="w-full flex justify-center px-4">
+									<div className="w-full flex justify-center px-1">
+									<button
+										onClick={() => {
+											localStorage.setItem(
+												"pendingDefenseData",
+												JSON.stringify({
+													formData,
+													analysisData,
+													source: "upload",
+												}),
+											);
+											navigate("/pricing?redirect=/upload/qualification");
+										}}
+										className="w-full md:w-2/3 bg-white text-blue-600  font-bold py-3 rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
+										Adquirir crédito avulso
+									</button>
+								</div>
+								<div className="w-full flex justify-center px-1">
 									<button
 										onClick={() => {
 											localStorage.setItem(
@@ -164,10 +181,12 @@ export const AnalysisStep = ({
 											);
 											navigate("/register?redirect=/upload");
 										}}
-										className="salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2">
+										className="salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-bold py-4 px- rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2">
 										Salvar Análise e Criar Conta <User size={20} className="hidden sm:block" />
 									</button>
 								</div>
+
+							
 
 								<div className="w-full flex justify-center px-4">
 									<button
@@ -182,7 +201,7 @@ export const AnalysisStep = ({
 											);
 											navigate("/login?redirect=/upload");
 										}}
-										className="w-full md:w-2/3 bg-blue-700 text-white font-bold py-3 rounded-xl hover:bg-blue-800 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
+										className="w-full md:w-2/3 bg-blue-500 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
 										Já tenho conta (Entrar)
 									</button>
 								</div>

@@ -113,7 +113,7 @@ const Pricing = () => {
 
 	const handleGuestCheckout = async (e) => {
 		e.preventDefault();
-		if (!guestEmail || !/^\\S+@\\S+\\.\\S+$/.test(guestEmail)) {
+		if (!guestEmail || !/^\S+@\S+\.\S+$/.test(guestEmail)) {
 			setGuestEmailError("Por favor, insira um email válido.");
 			return;
 		}
@@ -249,16 +249,21 @@ const Pricing = () => {
 				{guestModalOpen && (
 					<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
 						<div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl relative animate-in fade-in zoom-in duration-200">
-							<h3 className="text-2xl font-black text-gray-900 mb-4">Continuar sem login</h3>
+							<h3 className="text-2xl font-black text-gray-900 mb-4 flex !justify-center">
+								Continuar sem login
+							</h3>
 							<p className="text-gray-600 mb-6 text-sm">
-								Recomendamos criar uma conta para ter um histórico salvo dos seus recursos e melhor suporte.
-								No entanto, você pode prosseguir apenas informando um email, no qual seus créditos ficarão vinculados.
+								<strong>Recomendamos criar uma conta</strong> para ter um histórico salvo dos seus recursos e melhor
+								suporte. No entanto, você pode prosseguir apenas informando um email ao qual seus
+								créditos ficarão vinculados.
 							</p>
-							
+
 							<form onSubmit={handleGuestCheckout} className="space-y-4">
 								<div>
-									<label htmlFor="guestEmail" className="block text-sm font-bold text-gray-700 mb-1">
-										Seu Melhor Email
+									<label
+										htmlFor="guestEmail"
+										className="text-md font-bold text-gray-700 mb-3 flex justify-center">
+										Email de vinculação:
 									</label>
 									<input
 										type="email"
@@ -269,29 +274,28 @@ const Pricing = () => {
 										onChange={(e) => setGuestEmail(e.target.value)}
 										required
 									/>
-									{guestEmailError && <p className="text-red-500 text-xs mt-1">{guestEmailError}</p>}
+									{guestEmailError && (
+										<p className="text-red-500 text-xs mt-1">{guestEmailError}</p>
+									)}
 								</div>
 
 								<div className="flex flex-col gap-3 mt-6">
 									<button
 										type="submit"
 										disabled={!!loadingId}
-										className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-all shadow-md active:scale-95 disabled:opacity-50"
-									>
+										className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-all shadow-md active:scale-95 disabled:opacity-50">
 										{loadingId ? "Processando..." : "Continuar para o Pagamento"}
 									</button>
 									<button
 										type="button"
 										onClick={() => navigate("/register")}
-										className="w-full bg-indigo-50 text-indigo-700 font-bold py-3 rounded-xl hover:bg-indigo-100 transition-all border border-indigo-200"
-									>
+										className="w-full bg-indigo-50 text-indigo-700 font-bold py-3 rounded-xl hover:bg-indigo-100 transition-all border border-indigo-200">
 										Criar uma conta primeiro
 									</button>
 									<button
 										type="button"
 										onClick={() => setGuestModalOpen(false)}
-										className="w-full text-gray-500 hover:text-gray-700 text-sm py-2 font-medium underline"
-									>
+										className="w-full text-gray-500 hover:text-gray-700 text-sm py-2 font-medium underline">
 										Cancelar
 									</button>
 								</div>
