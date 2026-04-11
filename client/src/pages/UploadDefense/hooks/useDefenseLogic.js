@@ -443,7 +443,7 @@ export const useDefenseLogic = (step) => {
 				}
 			}
 		} catch (err) {
-			alert("Erro na análise preliminar. Tente novamente.");
+			alert(err.message || "Erro na análise preliminar. Tente novamente.");
 		} finally {
 			setLoading(false);
 		}

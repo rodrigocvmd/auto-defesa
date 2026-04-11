@@ -76,7 +76,10 @@ export const api = {
         body: JSON.stringify(body),
       });
 
-      if (!response.ok) throw new Error('Erro na pré-análise');
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || 'Erro na pré-análise');
+      }
       return await response.json();
     } catch (error) {
       console.error("Pre-Analyze API Error:", error);

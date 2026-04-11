@@ -6,9 +6,9 @@ const { admin, db } = require("../services/firebase");
  */
 async function checkIpRateLimit(req, limitCount = 3, windowHours = 1) {
 	// Tenta pegar o IP de forma mais robusta
-	let ip = req.ip || req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+	let ip = req.headers["x-forwarded-for"] || req.headers["fastly-client-ip"] || req.ip || req.socket.remoteAddress;
 
-	if (ip && ip.indexOf(",") !== -1) {
+	if (ip && typeof ip === 'string' && ip.indexOf(",") !== -1) {
 		ip = ip.split(",")[0].trim();
 	}
 
