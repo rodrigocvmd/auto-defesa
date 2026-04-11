@@ -62,7 +62,7 @@ const Pricing = () => {
 	const BASE_PLANS = [
 		{
 			id: "price_1SxBbqRTHGPeccd9D66pZoXs", // Substitua pelo ID real price_...
-			discountId: "price_discount_expresso",
+			discountId: "price_1TL2dLRTHGPeccd9tAHX77rE",
 			name: "Recurso Expresso",
 			price: "R$ 17,90",
 			originalPrice: "R$ 29,90",
@@ -86,7 +86,7 @@ const Pricing = () => {
 		},
 		{
 			id: "price_1SuFi7RTHGPeccd987NViaZP", // Substitua pelo ID real price_...
-			discountId: "price_discount_completa",
+			discountId: "price_1TL2dqRTHGPeccd9IvRUpANK",
 			name: "Proteção Completa",
 			price: "R$ 27,90",
 			originalPrice: "R$ 49,90",
@@ -111,7 +111,7 @@ const Pricing = () => {
 		},
 		{
 			id: "price_1SuFiORTHGPeccd9HKTxjPO7", // Substitua pelo ID real price_...
-			discountId: "price_discount_profissional",
+			discountId: "price_1TL2eARTHGPeccd9ub7jSux7",
 			name: "Pacote Profissional",
 			price: "R$ 47,90",
 			originalPrice: "R$ 99,90",
@@ -135,17 +135,17 @@ const Pricing = () => {
 		},
 	];
 
-	const PLANS = BASE_PLANS.map(plan => {
+	const PLANS = BASE_PLANS.map((plan) => {
 		if (isDiscountRoute && !promoEnded) {
 			const updatedFeatures = [...plan.features];
 			updatedFeatures[updatedFeatures.length - 1] = plan.discountFeatureText;
-			
+
 			return {
 				...plan,
 				id: plan.discountId,
 				price: plan.discountPrice,
 				originalPrice: plan.price,
-				features: updatedFeatures
+				features: updatedFeatures,
 			};
 		}
 		return plan;
@@ -232,7 +232,7 @@ const Pricing = () => {
 							{/* Decorative background elements */}
 							<div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-blue-500 rounded-full blur-[80px] opacity-30"></div>
 							<div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-purple-500 rounded-full blur-[80px] opacity-30"></div>
-							
+
 							<div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
 								<div className="text-center lg:text-left max-w-2xl">
 									<h3 className="text-2xl font-black text-white mb-2">
@@ -242,22 +242,28 @@ const Pricing = () => {
 										As ofertas abaixo estão com <strong>metade do preço</strong> por tempo limitado.
 									</p>
 								</div>
-								
+
 								<div className="flex flex-col items-center gap-6 shrink-0 w-full lg:w-auto">
 									<div className="flex gap-4">
 										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
 											<div className="text-3xl font-black text-white">{timeLeft.h}</div>
-											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Hora</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">
+												Hora
+											</div>
 										</div>
 										<div className="text-white text-3xl font-black flex items-center mb-5">:</div>
 										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
 											<div className="text-3xl font-black text-white">{timeLeft.m}</div>
-											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Min</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">
+												Min
+											</div>
 										</div>
 										<div className="text-white text-3xl font-black flex items-center mb-5">:</div>
 										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl relative overflow-hidden">
 											<div className="text-3xl font-black text-white">{timeLeft.s}</div>
-											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Seg</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">
+												Seg
+											</div>
 											{/* Subtle pulse animation for seconds */}
 											<div className="absolute inset-0 bg-white/5 animate-pulse"></div>
 										</div>
@@ -303,7 +309,10 @@ const Pricing = () => {
 												{plan.originalPrice}
 											</span>
 										)}
-										<div className={`text-4xl font-black ${isDiscountRoute && !promoEnded ? "text-green-500" : "text-blue-600"}`}>{plan.price}</div>
+										<div
+											className={`text-4xl font-black ${isDiscountRoute && !promoEnded ? "text-green-500" : "text-blue-600"}`}>
+											{plan.price}
+										</div>
 									</div>
 									{plan.credits >= 1 && (
 										<div className="text-sm font-bold text-green-600 bg-green-50 inline-block px-2 py-1 rounded mt-5">
@@ -331,8 +340,12 @@ const Pricing = () => {
 										plan.recommended
 											? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-indigo-300"
 											: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-50"
-									} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""} ${(isDiscountRoute && promoEnded) ? "bg-gray-400 !text-gray-200 opacity-100 !shadow-none cursor-not-allowed" : ""}`}>
-									{loadingId === plan.id ? "Processando..." : ((isDiscountRoute && promoEnded) ? "Fim da promoção" : "Selecionar Produto")}
+									} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""} ${isDiscountRoute && promoEnded ? "bg-gray-400 !text-gray-200 opacity-100 !shadow-none cursor-not-allowed" : ""}`}>
+									{loadingId === plan.id
+										? "Processando..."
+										: isDiscountRoute && promoEnded
+											? "Fim da promoção"
+											: "Selecionar Produto"}
 								</button>
 							</div>
 						</ScrollReveal>
@@ -345,45 +358,54 @@ const Pricing = () => {
 							{/* Decorative background elements */}
 							<div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-blue-500 rounded-full blur-[80px] opacity-30"></div>
 							<div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-purple-500 rounded-full blur-[80px] opacity-30"></div>
-							
+
 							<div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
 								<div className="text-center lg:text-left max-w-2xl">
 									<h3 className="text-3xl font-black text-white mb-4">
 										Ainda não está convencido?
 									</h3>
 									<p className="text-blue-100 text-xl leading-relaxed">
-										Adquira seu Recurso nas próximas horas e ganhe <strong>50% de desconto</strong> em qualquer pacote para testar e aprovar a qualidade dos nossos recursos!
+										Adquira seu Recurso nas próximas horas e ganhe <strong>50% de desconto</strong>{" "}
+										em qualquer pacote para testar e aprovar a qualidade dos nossos recursos!
 									</p>
 								</div>
-								
+
 								<div className="flex flex-col items-center gap-6 shrink-0 w-full lg:w-auto">
 									<div className="flex gap-4">
 										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
 											<div className="text-3xl font-black text-white">{timeLeft.h}</div>
-											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Hora</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">
+												Hora
+											</div>
 										</div>
 										<div className="text-white text-3xl font-black flex items-center mb-5">:</div>
 										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl">
 											<div className="text-3xl font-black text-white">{timeLeft.m}</div>
-											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Min</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">
+												Min
+											</div>
 										</div>
 										<div className="text-white text-3xl font-black flex items-center mb-5">:</div>
 										<div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 w-20 text-center border border-white/20 shadow-xl relative overflow-hidden">
 											<div className="text-3xl font-black text-white">{timeLeft.s}</div>
-											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">Seg</div>
+											<div className="text-[11px] text-blue-200 uppercase font-bold tracking-widest mt-1">
+												Seg
+											</div>
 											{/* Subtle pulse animation for seconds */}
 											<div className="absolute inset-0 bg-white/5 animate-pulse"></div>
 										</div>
 									</div>
 
-									<button 
+									<button
 										onClick={() => navigate("/pricing/discount")}
 										disabled={promoEnded}
-										className={`w-full py-4 px-8 rounded-2xl font-black text-lg transition-all shadow-xl active:scale-95 flex justify-center items-center gap-2 ${promoEnded ? 'bg-gray-500 text-gray-300 cursor-not-allowed border border-gray-400' : 'bg-gradient-to-r from-yellow-400 to-yellow-300 text-yellow-900 hover:from-yellow-300 hover:to-yellow-200 border border-yellow-200 shadow-yellow-500/30 hover:shadow-yellow-500/50 hover:-translate-y-1'}`}
-									>
-										{promoEnded ? "Fim da promoção" : (
+										className={`w-full py-4 px-8 rounded-2xl font-black text-lg transition-all shadow-xl active:scale-95 flex justify-center items-center gap-2 ${promoEnded ? "bg-gray-500 text-gray-300 cursor-not-allowed border border-gray-400" : "bg-gradient-to-r from-yellow-400 to-yellow-300 text-yellow-900 hover:from-yellow-300 hover:to-yellow-200 border border-yellow-200 shadow-yellow-500/30 hover:shadow-yellow-500/50 hover:-translate-y-1"}`}>
+										{promoEnded ? (
+											"Fim da promoção"
+										) : (
 											<>
-												Acessar 50% de Desconto <Zap size={20} className="text-yellow-700" fill="currentColor" />
+												Acessar 50% de Desconto{" "}
+												<Zap size={20} className="text-yellow-700" fill="currentColor" />
 											</>
 										)}
 									</button>
@@ -422,9 +444,9 @@ const Pricing = () => {
 								Continuar sem login
 							</h3>
 							<p className="text-gray-600 mb-6 text-sm">
-								<strong>Recomendamos criar uma conta</strong> para ter um histórico salvo dos seus recursos e melhor
-								suporte. No entanto, você pode prosseguir apenas informando um email ao qual seus
-								créditos ficarão vinculados.
+								<strong>Recomendamos criar uma conta</strong> para ter um histórico salvo dos seus
+								recursos e melhor suporte. No entanto, você pode prosseguir apenas informando um
+								email ao qual seus créditos ficarão vinculados.
 							</p>
 
 							<form onSubmit={handleGuestCheckout} className="space-y-4">

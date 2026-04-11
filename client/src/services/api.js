@@ -3,17 +3,18 @@
 import { auth } from '../firebaseConfig';
 
 const IS_DEV = import.meta.env.DEV;
+const USE_EMULATOR = import.meta.env.VITE_USE_EMULATOR === 'true';
 const PROJECT_ID = "auto-defesa"; // Corrigido para bater com o emulador
 const REGION = "us-central1";
 
 // URL Automática:
 // Se houver uma variável VITE_API_URL, usa ela.
-// Se não, e estiver em DEV, usa o emulador.
+// Se não, e VITE_USE_EMULATOR for true, usa o emulador.
 // Fallback final para a URL de produção padrão do Firebase.
 const EMULATOR_URL = `http://127.0.0.1:5001/${PROJECT_ID}/${REGION}`;
 const PROD_URL = `https://${REGION}-${PROJECT_ID}.cloudfunctions.net`;
 
-const BASE_URL = import.meta.env.VITE_API_URL || (IS_DEV ? EMULATOR_URL : PROD_URL);
+const BASE_URL = import.meta.env.VITE_API_URL || (USE_EMULATOR ? EMULATOR_URL : PROD_URL);
 
 // Helper para obter headers com token
 const getAuthHeaders = async () => {

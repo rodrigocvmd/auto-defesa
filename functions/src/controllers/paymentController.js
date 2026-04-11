@@ -15,7 +15,9 @@ exports.createCheckoutSession = (req, res) => {
 			userId = await verifyAuth(req);
 		} catch (e) {
 			if (!guestEmail) {
-				res.status(401).json({ error: "Usuário não autenticado e email de convidado não fornecido." });
+				res
+					.status(401)
+					.json({ error: "Usuário não autenticado e email de convidado não fornecido." });
 				return;
 			}
 		}
@@ -25,9 +27,12 @@ exports.createCheckoutSession = (req, res) => {
 			price_1SuFi7RTHGPeccd987NViaZP: { credits: 3, name: "Proteção Completa" },
 			price_1SuFiORTHGPeccd9HKTxjPO7: { credits: 10, name: "Pacote Profissional" },
 			// Discount prices
-			price_discount_expresso: { credits: 1, name: "Recurso Expresso (50% OFF)" },
-			price_discount_completa: { credits: 3, name: "Proteção Completa (50% OFF)" },
-			price_discount_profissional: { credits: 10, name: "Pacote Profissional (50% OFF)" },
+			price_1TL2dLRTHGPeccd9tAHX77rE: { credits: 1, name: "Recurso Expresso (50% de desconto)" },
+			price_1TL2dqRTHGPeccd9IvRUpANK: { credits: 3, name: "Proteção Completa (50% de desconto)" },
+			price_1TL2eARTHGPeccd9ub7jSux7: {
+				credits: 10,
+				name: "Pacote Profissional (50% de desconto)",
+			},
 			// Fallback default for testing if needed
 			price_H5ggYwtDq4fbrJ: { credits: 1, name: "Plano Teste" },
 		};
@@ -130,7 +135,9 @@ exports.stripeWebhook = async (req, res) => {
 				if (userEmail) {
 					await sendPurchaseConfirmation(userEmail, creditsToAdd, planName);
 				} else {
-					console.warn(`⚠️ Email não encontrado para o usuário ${userId}. Não foi possível enviar confirmação.`);
+					console.warn(
+						`⚠️ Email não encontrado para o usuário ${userId}. Não foi possível enviar confirmação.`,
+					);
 				}
 			} catch (error) {
 				console.error("❌ ERRO ao atualizar créditos no Firestore:", error);
@@ -146,9 +153,21 @@ exports.stripeWebhook = async (req, res) => {
 						const guestData = doc.data();
 						const currentCredits = guestData.credits || 0;
 						const newCredits = currentCredits + creditsToAdd;
-						t.set(guestRef, { credits: newCredits, updatedAt: new Date().toISOString() }, { merge: true });
+						t.set(
+							guestRef,
+							{ credits: newCredits, updatedAt: new Date().toISOString() },
+							{ merge: true },
+						);
 					} else {
-						t.set(guestRef, { credits: creditsToAdd, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }, { merge: true });
+						t.set(
+							guestRef,
+							{
+								credits: creditsToAdd,
+								createdAt: new Date().toISOString(),
+								updatedAt: new Date().toISOString(),
+							},
+							{ merge: true },
+						);
 					}
 				});
 
@@ -167,4 +186,3 @@ exports.stripeWebhook = async (req, res) => {
 
 	res.send();
 };
-
