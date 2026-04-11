@@ -11,15 +11,20 @@ exports.createCheckoutSession = (req, res) => {
 		const { priceId, successUrl, cancelUrl, mode, guestEmail } = req.body;
 
 		let userId = null;
-		try {
-			userId = await verifyAuth(req);
-		} catch (e) {
-			if (!guestEmail) {
-				res
-					.status(401)
-					.json({ error: "Usuário não autenticado e email de convidado não fornecido." });
-				return;
+		const authHeader = req.headers.authorization;
+
+		// Só tenta verificar se houver um header de autorização
+		if (authHeader && authHeader.startsWith("Bearer ")) {
+			try {
+				userId = await verifyAuth(req);
+			} catch (e) {
+				console.log("Token de autenticação inválido, prosseguindo como convidado se houver email.");
 			}
+		}
+
+		if (!userId && !guestEmail) {
+			res.status(401).json({ error: "Usuário não autenticado e email de convidado não fornecido." });
+			return;
 		}
 
 		const PRICE_CREDITS_MAP = {

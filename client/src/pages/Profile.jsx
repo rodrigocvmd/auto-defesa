@@ -25,7 +25,8 @@ import {
     Star,
     MessageSquare,
     Mail,
-    Loader2
+    Loader2,
+    Send
 } from "lucide-react";
 import { updateProfile, updatePassword } from "firebase/auth";
 import {
@@ -46,7 +47,7 @@ import DefenseDocument from "../components/DefensePDF";
 import { FeedbackModal } from "../components/FeedbackModal";
 
 export default function Profile() {
-	const { currentUser, userData, updateUserEmail, deleteUserAccount, checkEmailExists, logout } = useAuth();
+	const { currentUser, userData, updateUserEmail, deleteUserAccount, checkEmailExists, logout, resendVerificationEmail } = useAuth();
 	const navigate = useNavigate();
     const location = useLocation();
 	const [activeTab, setActiveTab] = useState("defenses");
@@ -56,6 +57,9 @@ export default function Profile() {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+    const [showEmailVerificationModal, setShowEmailVerificationModal] = useState(false);
+    const [resendingVerification, setResendingVerification] = useState(false);
+    const [verificationSent, setVerificationSent] = useState(false);
     const [emailStatus, setEmailStatus] = useState({});
 	const [selectedDefense, setSelectedDefense] = useState(null);
 
@@ -370,6 +374,19 @@ export default function Profile() {
 		}
 	};
 
+	const handleResendVerification = async () => {
+		setResendingVerification(true);
+		try {
+			await resendVerificationEmail();
+			setVerificationSent(true);
+		} catch (error) {
+			console.error("Erro ao reenviar email de verificação:", error);
+			alert("Erro ao reenviar email. Tente novamente mais tarde.");
+		} finally {
+			setResendingVerification(false);
+		}
+	};
+
 	return (
 		<MainLayout>
 			<div className="max-w-4xl mx-auto">
@@ -535,19 +552,25 @@ export default function Profile() {
 												</span>
 												<button
 													onClick={() => {
+														if (!currentUser?.emailVerified) {
+															setShowEmailVerificationModal(true);
+															return;
+														}
 														if (emailStatus[defense.id] !== "sending" && emailStatus[defense.id] !== "success") {
 															emailPDF(defense);
 														}
 													}}
 													disabled={emailStatus[defense.id] === "sending" || emailStatus[defense.id] === "success"}
 													className={`p-2 transition-colors ${
-														emailStatus[defense.id] === "success" 
+														!currentUser?.emailVerified 
+															? "text-gray-400 cursor-pointer hover:text-gray-500" 
+															: emailStatus[defense.id] === "success" 
 															? "text-green-600 bg-green-50 rounded-full" 
 															: emailStatus[defense.id] === "sending"
 															? "text-blue-400"
 															: "text-gray-600 hover:text-blue-600"
 													}`}
-													title="Enviar PDF por Email">
+													title={!currentUser?.emailVerified ? "Email não verificado" : "Enviar PDF por Email"}>
 													{emailStatus[defense.id] === "success" ? (
 														<CheckCircle size={20} />
 													) : emailStatus[defense.id] === "sending" ? (
@@ -794,6 +817,57 @@ export default function Profile() {
             {showFeedbackModal && (
                 <FeedbackModal onClose={() => setShowFeedbackModal(false)} />
             )}
+
+			{showEmailVerificationModal && (
+				<div className="fixed inset-0 bg-black/60 z-[110] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+					<div className="bg-white rounded-2xl w-full max-w-md shadow-2xl relative p-8">
+						<div className="text-center mb-6">
+							<div className="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-600">
+								<Mail size={32} />
+							</div>
+							<h2 className="text-2xl font-bold text-gray-900">Email não verificado</h2>
+						</div>
+						
+						<p className="text-gray-600 text-center mb-8 leading-relaxed">
+							Por questões de segurança, para enviar o recurso por email, é necessário que o seu endereço de email esteja verificado.
+						</p>
+
+						<div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-8">
+							<div className="flex items-start gap-3">
+								<AlertTriangle className="text-blue-600 mt-0.5 flex-shrink-0" size={20} />
+								<div className="text-sm text-blue-800">
+									<p className="font-semibold mb-1">Verifique seu email</p>
+									<p>Clique no link enviado para <strong>{currentUser?.email}</strong> para concluir a verificação.</p>
+								</div>
+							</div>
+						</div>
+
+						{verificationSent ? (
+							<div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl mb-6 flex items-center gap-3 animate-in slide-in-from-bottom-2">
+								<CheckCircle size={20} />
+								<span className="text-sm font-medium">Novo email de verificação enviado! Verifique sua caixa de entrada e SPAM.</span>
+							</div>
+						) : (
+							<button
+								onClick={handleResendVerification}
+								disabled={resendingVerification}
+								className="w-full mb-3 flex items-center justify-center gap-2 bg-white border-2 border-blue-600 text-blue-600 font-bold py-3.5 rounded-xl hover:bg-blue-50 transition-colors shadow-sm disabled:opacity-50">
+								<Send size={20} />
+								{resendingVerification ? "Enviando..." : "Reenviar Email de Verificação"}
+							</button>
+						)}
+
+						<button
+							onClick={() => {
+								setShowEmailVerificationModal(false);
+								setVerificationSent(false);
+							}}
+							className="w-full bg-gray-100 text-gray-700 font-bold py-3.5 rounded-xl hover:bg-gray-200 transition-colors">
+							Fechar
+						</button>
+					</div>
+				</div>
+			)}
 		</MainLayout>
 	);
 }
