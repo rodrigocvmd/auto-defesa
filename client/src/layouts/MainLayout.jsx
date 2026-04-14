@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Shield, User, Menu, X, BookOpen, ChevronDown, ChevronUp, Info } from "lucide-react";
+import { Shield, User, Menu, X, BookOpen, ChevronDown, ChevronUp, Info, Zap } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { api } from "../services/api";
 import VerificationBanner from "../components/VerificationBanner";
 import GuestBanner from "../components/GuestBanner";
 import CookieBanner from "../components/CookieBanner";
@@ -17,6 +18,17 @@ const MainLayout = ({ children }) => {
 	const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
 	const [isWarningVisible, setIsWarningVisible] = useState(!hasShownWarningInitially);
 	const isHome = location.pathname === "/";
+	
+	const [guestCredits, setGuestCredits] = useState(0);
+	const guestEmail = localStorage.getItem("guestEmail");
+
+	useEffect(() => {
+		if (!currentUser && guestEmail) {
+			api.getGuestCredits(guestEmail)
+				.then(setGuestCredits)
+				.catch(() => setGuestCredits(0));
+		}
+	}, [currentUser, guestEmail]);
 
 	useEffect(() => {
 		// After the first render where it might be shown, mark it as shown so it's supressed on next route changes
@@ -54,28 +66,42 @@ const MainLayout = ({ children }) => {
 			<header className="bg-white border-b border-gray-200 sticky top-0 z-50">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex justify-between items-center h-16">
-						{/* Logo Area com Toggle */}
-						<div className="flex items-center gap-1 sm:gap-2">
-							<button
-								onClick={() => setIsWarningVisible(!isWarningVisible)}
-								className="text-gray-400 hover:text-blue-600 transition-colors px-1.5 py-1 flex flex-col items-center justify-center rounded-lg hover:bg-gray-50 group/toggle"
-								title={isWarningVisible ? "Esconder aviso legal" : "Mostrar aviso legal"}>
-								<div className="transition-transform duration-300">
-									{isWarningVisible ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-								</div>
-								<Info size={10} className="-mt-0.5 opacity-70 group-hover/toggle:opacity-100" />
-							</button>
+						{/* Logo Area and Guest Indicator */}
+						<div className="flex items-center gap-3 md:gap-5">
+							<div id="navbarLogo" className="flex items-center gap-1 sm:gap-2">
+								<button
+									onClick={() => setIsWarningVisible(!isWarningVisible)}
+									className="text-gray-400 hover:text-blue-600 transition-colors px-1.5 py-1 flex flex-col items-center justify-center rounded-lg hover:bg-gray-50 group/toggle"
+									title={isWarningVisible ? "Esconder aviso legal" : "Mostrar aviso legal"}>
+									<div className="transition-transform duration-300">
+										{isWarningVisible ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+									</div>
+									<Info size={10} className="-mt-0.5 opacity-70 group-hover/toggle:opacity-100" />
+								</button>
 
-							<Link to="/" className="flex items-center gap-2 group">
-								<img
-									src="/fullIcon.png"
-									alt="Auto Defesa Logo"
-									className="h-8 w-8 object-contain rounded-lg group-hover:opacity-90 transition-opacity"
-								/>
-								<span className="font-bold text-xl text-gray-900 tracking-tight">
-									Auto<span className="text-blue-600">Defesa</span>
-								</span>
-							</Link>
+								<Link to="/" className="flex items-center gap-2 group">
+									<img
+										src="/fullIcon.png"
+										alt="Auto Defesa Logo"
+										className="h-8 w-8 object-contain rounded-lg group-hover:opacity-90 transition-opacity"
+									/>
+									<span className="font-bold text-xl text-gray-900 tracking-tight">
+										Auto<span className="text-blue-600">Defesa</span>
+									</span>
+								</Link>
+							</div>
+
+							{!currentUser && guestCredits > 0 && (
+								<Link 
+									to="/upload" 
+									className="flex items-center gap-1.5 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full shadow-sm transition-colors animate-in fade-in duration-300" 
+									title={`Você tem ${guestCredits} crédito(s) vinculado(s) ao email ${guestEmail}`}>
+									<Zap size={14} className="text-green-600 fill-current animate-pulse" />
+									<span className="text-xs font-bold text-green-700">
+										{guestCredits} <span className="hidden min-[400px]:inline">Crédito{guestCredits > 1 ? 's' : ''}</span>
+									</span>
+								</Link>
+							)}
 						</div>
 
 						{/* Desktop Navigation */}
@@ -416,6 +442,25 @@ const MainLayout = ({ children }) => {
 					<p className="text-sm text-gray-400"></p>
 				</footer>
 			</main>
+
+			{/* Floating Guest Credits Indicator */}
+			{!currentUser && guestCredits > 0 && (
+				<Link 
+					to="/upload" 
+					className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-white border-2 border-green-500 p-3 rounded-2xl shadow-2xl hover:scale-105 transition-transform animate-in fade-in slide-in-from-bottom-4 duration-500 group"
+				>
+					<div className="bg-green-100 p-2.5 rounded-xl text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
+						<Zap size={24} className="fill-current" />
+					</div>
+					<div className="flex flex-col pr-2">
+						<span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Crédito Disponível</span>
+						<span className="text-sm font-black text-gray-900">
+							{guestCredits} <span className="font-medium text-gray-500 text-xs ml-1">no email {guestEmail?.split('@')[0]}</span>
+						</span>
+					</div>
+				</Link>
+			)}
+
 			<CookieBanner />
 		</div>
 	);
