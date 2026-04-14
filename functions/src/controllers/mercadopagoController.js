@@ -2,6 +2,7 @@ const { MercadoPagoConfig, Payment } = require('mercadopago');
 const { db } = require('../services/firebase');
 const cors = require('../middleware/cors');
 const { verifyAuth } = require('../middleware/auth');
+const { sendPurchaseConfirmation } = require('../services/emailService');
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN
@@ -73,5 +74,62 @@ exports.createPixPayment = (req, res) => {
 };
 
 exports.mercadopagoWebhook = async (req, res) => {
-  // To be implemented
+    // O Mercado Pago envia o ID do pagamento de diferentes formas dependendo da configuração
+    const paymentId = req.body?.data?.id || req.query?.["data.id"];
+
+    if (!paymentId) {
+        return res.status(200).send("Ignorado: Sem ID de pagamento.");
+    }
+
+    try {
+        const paymentObj = new Payment(client);
+        const paymentData = await paymentObj.get({ id: paymentId });
+
+        if (paymentData.status === "approved") {
+            const pixRef = db.collection("pix_payments").doc(paymentId.toString());
+            let emailToSend = null;
+            let credits = 0;
+            let planName = "";
+
+            await db.runTransaction(async (t) => {
+                const doc = await t.get(pixRef);
+                if (!doc.exists) return; // Não é um PIX gerado por nós
+
+                const data = doc.data();
+                if (data.status === "paid") return; // Já processado anteriormente
+
+                credits = data.credits;
+                planName = data.planName;
+
+                // Atualiza o documento do PIX para pago
+                t.set(pixRef, { status: "paid", paidAt: new Date().toISOString() }, { merge: true });
+
+                if (data.userId) {
+                    const userRef = db.collection("users").doc(data.userId);
+                    const userDoc = await t.get(userRef);
+                    const currentCredits = userDoc.exists ? (userDoc.data().credits || 0) : 0;
+                    t.set(userRef, { credits: currentCredits + credits }, { merge: true });
+                    emailToSend = userDoc.exists ? userDoc.data().email : null;
+                } else if (data.guestEmail) {
+                    const guestRef = db.collection("guest_credits").doc(data.guestEmail);
+                    const guestDoc = await t.get(guestRef);
+                    const currentCredits = guestDoc.exists ? (guestDoc.data().credits || 0) : 0;
+                    t.set(guestRef, {
+                        credits: currentCredits + credits,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true });
+                    emailToSend = data.guestEmail;
+                }
+            });
+
+            // Envia o email de confirmação após a transação ser concluída
+            if (emailToSend) {
+                await sendPurchaseConfirmation(emailToSend, credits, planName);
+            }
+        }
+        res.status(200).send("OK");
+    } catch (error) {
+        console.error("Erro no Webhook Mercado Pago:", error);
+        res.status(500).send("Erro interno");
+    }
 };

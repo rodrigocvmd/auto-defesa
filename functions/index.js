@@ -9,6 +9,7 @@ const paymentController = require("./src/controllers/paymentController");
 const userService = require("./src/services/userService");
 const userController = require("./src/controllers/userController");
 const supportController = require("./src/controllers/supportController");
+const mercadopagoController = require("./src/controllers/mercadopagoController");
 
 // --- FUNÇÃO 1: CONSULTA ---
 exports.getInfraction = onRequest(infractionController.getInfraction);
@@ -41,6 +42,10 @@ exports.sendDefensePdfEmail = onRequest({ timeoutSeconds: 60 }, defenseControlle
 
 // --- WEBHOOK STRIPE ---
 exports.stripeWebhook = onRequest(paymentController.stripeWebhook);
+
+// --- MERCADO PAGO ---
+exports.createPixPayment = onRequest(mercadopagoController.createPixPayment);
+exports.mercadopagoWebhook = onRequest(mercadopagoController.mercadopagoWebhook);
 
 // --- CRON JOB: LIMPEZA DE USUÁRIOS ---
 /* 
