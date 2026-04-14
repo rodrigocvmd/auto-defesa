@@ -106,63 +106,84 @@ exports.createPreference = (req, res) => {
 	});
 };
 
-exports.createPixPayment = (req, res) => {
-	cors(req, res, async () => {
-		try {
-			const { priceId, guestEmail } = req.body;
-			let userId = null;
-			const authHeader = req.headers.authorization;
+exports.createPixPayment = async (req, res) => {
+	try {
+		const { priceId, guestEmail } = req.body;
+		let userId = null;
+		const authHeader = req.headers.authorization;
 
-			if (authHeader && authHeader.startsWith("Bearer ")) {
-				try {
-					userId = await verifyAuth(req);
-				} catch (e) {
-					console.log("Token inválido, prosseguindo como convidado.");
-				}
+		if (authHeader && authHeader.startsWith("Bearer ")) {
+			try {
+				userId = await verifyAuth(req);
+			} catch (e) {
+				console.log("Token inválido, prosseguindo como convidado.");
 			}
+		}
 
-			if (!userId && !guestEmail) {
-				return res.status(401).json({ error: "Utilizador não autenticado e email não fornecido." });
-			}
+		if (!userId && !guestEmail) {
+			return res.status(401).json({ error: "Utilizador não autenticado e email não fornecido." });
+		}
 
-			const planInfo = PRICE_MAP[priceId || "price_H5ggYwtDq4fbrJ"];
-			if (!planInfo) {
-				return res.status(400).json({ error: "Produto inválido." });
-			}
+		const planInfo = PRICE_MAP[priceId || "price_H5ggYwtDq4fbrJ"];
+		if (!planInfo) {
+			return res.status(400).json({ error: "Produto inválido." });
+		}
 
-			const client = getMPClient();
-			const payment = new Payment(client);
-			const result = await payment.create({
-				body: {
-					transaction_amount: planInfo.amount,
-					description: planInfo.name,
-					payment_method_id: "pix",
-					payer: { email: guestEmail || "cliente@autodefesa.com.br" },
-				},
-			});
-
-			await db
-				.collection("pix_payments")
-				.doc(result.id.toString())
-				.set({
-					userId: userId || null,
-					guestEmail: guestEmail || null,
+		const client = getMPClient();
+		const payment = new Payment(client);
+		const result = await payment.create({
+			body: {
+				transaction_amount: planInfo.amount,
+				description: planInfo.name,
+				payment_method_id: "pix",
+				// Usamos um email genérico para o Mercado Pago não enviar um email automático ao cliente com o código PIX
+				payer: { email: "pix@meuautodefesa.com.br" },
+				notification_url: "https://us-central1-auto-defesa.cloudfunctions.net/mercadopagoWebhook",
+				metadata: {
+					userId: userId || "",
+					guestEmail: guestEmail || "",
 					credits: planInfo.credits,
 					planName: planInfo.name,
-					status: "pending",
-					createdAt: new Date().toISOString(),
-				});
+				}
+			},
+		});
 
-			res.status(200).json({
-				paymentId: result.id,
-				qrCode: result.point_of_interaction.transaction_data.qr_code,
-				qrCodeBase64: result.point_of_interaction.transaction_data.qr_code_base64,
+		await db
+			.collection("pix_payments")
+			.doc(result.id.toString())
+			.set({
+				userId: userId || null,
+				guestEmail: guestEmail || null,
+				credits: planInfo.credits,
+				planName: planInfo.name,
+				status: "pending",
+				createdAt: new Date().toISOString(),
 			});
-		} catch (error) {
-			console.error("Erro Mercado Pago:", error);
-			res.status(500).json({ error: error.message || "Erro interno ao processar pagamento PIX" });
-		}
-	});
+
+		res.status(200).json({
+			paymentId: result.id,
+			qrCode: result.point_of_interaction.transaction_data.qr_code,
+			qrCodeBase64: result.point_of_interaction.transaction_data.qr_code_base64,
+		});
+	} catch (error) {
+		console.error("Erro Mercado Pago:", error);
+		res.status(500).json({ error: error.message || "Erro interno ao processar pagamento PIX" });
+	}
+};
+
+exports.checkPixPaymentStatus = async (req, res) => {
+	try {
+		const { paymentId } = req.body;
+		if (!paymentId) return res.status(400).json({ error: "Sem paymentId fornecido." });
+		
+		const doc = await db.collection("pix_payments").doc(paymentId.toString()).get();
+		if (!doc.exists) return res.status(404).json({ error: "Pagamento não encontrado." });
+		
+		res.status(200).json({ status: doc.data().status });
+	} catch (e) {
+		console.error("Erro checkPixPaymentStatus:", e);
+		res.status(500).json({ error: e.message || "Erro interno" });
+	}
 };
 
 exports.mercadopagoWebhook = async (req, res) => {
@@ -201,6 +222,16 @@ exports.mercadopagoWebhook = async (req, res) => {
 				}
 			}
 
+			const pixRef = db.collection("pix_payments").doc(paymentId.toString());
+			const pixDoc = await pixRef.get();
+
+			if (!userId && !guestEmail && pixDoc.exists) {
+				userId = pixDoc.data().userId;
+				guestEmail = pixDoc.data().guestEmail;
+				credits = pixDoc.data().credits;
+				planName = pixDoc.data().planName;
+			}
+
 			if (!userId && !guestEmail) {
 				return res.status(200).send("OK: Não identificado.");
 			}
@@ -209,8 +240,27 @@ exports.mercadopagoWebhook = async (req, res) => {
 			let emailToSend = null;
 
 			await db.runTransaction(async (t) => {
+				// ALL READS MUST COME FIRST
 				const doc = await t.get(mpPaymentRef);
 				if (doc.exists && doc.data().status === "paid") return;
+
+				let userDoc = null;
+				let guestDoc = null;
+				let userRef = null;
+				let guestRef = null;
+
+				if (userId) {
+					userRef = db.collection("users").doc(userId);
+					userDoc = await t.get(userRef);
+				} else if (guestEmail) {
+					guestRef = db.collection("guest_credits").doc(guestEmail);
+					guestDoc = await t.get(guestRef);
+				}
+
+				// ALL WRITES MUST COME AFTER READS
+				if (pixDoc.exists) {
+					t.set(pixRef, { status: "paid", paidAt: new Date().toISOString() }, { merge: true });
+				}
 
 				t.set(
 					mpPaymentRef,
@@ -226,17 +276,11 @@ exports.mercadopagoWebhook = async (req, res) => {
 					{ merge: true },
 				);
 
-				if (userId) {
-					const userRef = db.collection("users").doc(userId);
-					const userDoc = await t.get(userRef);
-					if (userDoc.exists) {
-						const currentCredits = userDoc.data().credits || 0;
-						t.set(userRef, { credits: currentCredits + credits }, { merge: true });
-						emailToSend = userDoc.data().email;
-					}
-				} else if (guestEmail) {
-					const guestRef = db.collection("guest_credits").doc(guestEmail);
-					const guestDoc = await t.get(guestRef);
+				if (userId && userRef) {
+					const currentCredits = userDoc.exists ? userDoc.data().credits || 0 : 0;
+					t.set(userRef, { credits: currentCredits + credits }, { merge: true });
+					emailToSend = userDoc.exists ? userDoc.data().email : null;
+				} else if (guestEmail && guestRef) {
 					const currentCredits = guestDoc.exists ? guestDoc.data().credits || 0 : 0;
 					t.set(
 						guestRef,

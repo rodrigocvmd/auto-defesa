@@ -59,6 +59,30 @@ const Pricing = () => {
 		return () => clearInterval(interval);
 	}, []);
 
+	// --- TEMPORARY MAINTENANCE MESSAGE ---
+	// To test in production, append ?admin=true to the URL (e.g., /pricing?admin=true). 
+	// Regular users without this parameter will see the maintenance message.
+	// To revert this and show the pricing page to everyone, change showMaintenance to false or delete this block.
+	const showMaintenance = searchParams.get("admin") !== "true";
+	if (showMaintenance) {
+		return (
+			<MainLayout>
+				<SEO title="Em Manutenção" description="Atualização do sistema de pagamentos." />
+				<div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
+					<div className="bg-blue-50 text-blue-800 p-8 md:p-12 rounded-[2.5rem] max-w-2xl shadow-xl border border-blue-100 animate-in fade-in zoom-in duration-500">
+						<Zap className="w-16 h-16 mx-auto mb-6 text-blue-600 animate-pulse" />
+						<h2 className="text-3xl font-black mb-4">Atualização de Sistema</h2>
+						<p className="text-lg text-blue-700 leading-relaxed font-medium">
+							Estamos trabalhando no novo sistema de pagamentos com a opção de pagamento via PIX. 
+							Em poucos minutos a plataforma estará de volta ao ar.
+						</p>
+					</div>
+				</div>
+			</MainLayout>
+		);
+	}
+	// --- END TEMPORARY MAINTENANCE MESSAGE ---
+
 	// IMPORTANTE:
 	// O erro "No such price: 'prod_...'" ocorre porque você copiou o ID do PRODUTO (começa com prod_)
 	// ao invés do ID do PREÇO (começa com price_).

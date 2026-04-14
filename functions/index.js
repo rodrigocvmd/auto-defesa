@@ -49,6 +49,7 @@ exports.stripeWebhook = onRequest(paymentController.stripeWebhook);
 // --- MERCADO PAGO ---
 exports.createPreference = onRequest({ cors: true }, mercadopagoController.createPreference);
 exports.createPixPayment = onRequest({ cors: true }, mercadopagoController.createPixPayment);
+exports.checkPixPaymentStatus = onRequest({ cors: true }, mercadopagoController.checkPixPaymentStatus);
 exports.mercadopagoWebhook = onRequest({ cors: true }, mercadopagoController.mercadopagoWebhook);
 
 // --- CRON JOB: LIMPEZA DE USUÁRIOS ---

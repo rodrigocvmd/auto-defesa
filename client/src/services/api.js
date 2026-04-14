@@ -178,6 +178,28 @@ createPixPayment: async ({ priceId, guestEmail }) => {
   }
 },
 
+// 4.2 Checar Status do Pagamento PIX
+checkPixPaymentStatus: async (paymentId) => {
+  try {
+    const headers = await getAuthHeaders();
+    const response = await fetch(`${BASE_URL}/checkPixPaymentStatus`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ paymentId }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Erro ao checar status do PIX');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro em checkPixPaymentStatus:", error);
+    throw error;
+  }
+},
+
 // 5. Consultar Créditos de Convidado
 getGuestCredits: async (email) => {
   try {

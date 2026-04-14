@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail }) => {
   const [loading, setLoading] = useState(true);
   const [qrCodeBase64, setQrCodeBase64] = useState('');
   const [qrCodeText, setQrCodeText] = useState('');
+  const [paymentId, setPaymentId] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen) {
@@ -17,6 +20,7 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail }) => {
           const response = await api.createPixPayment({ priceId, guestEmail });
           setQrCodeBase64(response.qrCodeBase64);
           setQrCodeText(response.qrCode);
+          setPaymentId(response.paymentId);
         } catch (err) {
           console.error('Error fetching PIX data:', err);
           setError(err.message || 'Erro ao gerar o pagamento PIX. Tente novamente.');
@@ -26,8 +30,35 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail }) => {
       };
 
       fetchPixData();
+    } else {
+      // Reset state when closed
+      setQrCodeBase64('');
+      setQrCodeText('');
+      setPaymentId(null);
+      setError(null);
     }
   }, [isOpen, priceId, guestEmail]);
+
+  useEffect(() => {
+    let interval;
+    if (isOpen && paymentId) {
+      interval = setInterval(async () => {
+        try {
+          const res = await api.checkPixPaymentStatus(paymentId);
+          if (res && res.status === 'paid') {
+            clearInterval(interval);
+            onClose();
+            navigate('/credit-success?success=true');
+          }
+        } catch (e) {
+          // Ignora erros de polling silenciosamente para não interromper a UX
+        }
+      }, 5000); // Checa a cada 5 segundos
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isOpen, paymentId, navigate, onClose]);
 
   if (!isOpen) return null;
 
