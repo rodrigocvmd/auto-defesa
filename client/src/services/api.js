@@ -127,27 +127,26 @@ export const api = {
       throw error;
     }
   },
-// 4. Criar Sessão de Checkout (Pagamento)
-createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl, guestEmail }) => {
+// 4. Criar Sessão de Checkout (Pagamento Mercado Pago - Checkout Pro)
+createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl, cancelUrl, guestEmail }) => {
   try {
     const headers = await getAuthHeaders();
-    const response = await fetch(`${BASE_URL}/createCheckoutSession`, {
+    const response = await fetch(`${BASE_URL}/createMercadoPagoPreference`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
           priceId,
           userId,
           credits,
-          mode, // Envia o modo (payment ou subscription)
           guestEmail, // Email caso não esteja logado
           successUrl: successUrl || window.location.origin + '/credit-success?success=true',
-          cancelUrl: window.location.origin + '/pricing?canceled=true'
+          cancelUrl: cancelUrl || window.location.origin + '/pricing?canceled=true'
       }),
     });
 
     if (!response.ok) {
       const err = await response.json();
-      throw new Error(err.error || 'Erro ao iniciar pagamento');
+      throw new Error(err.error || 'Erro ao iniciar pagamento com cartão');
     }
 
     return await response.json();

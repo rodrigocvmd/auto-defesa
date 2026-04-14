@@ -44,6 +44,7 @@ exports.sendDefensePdfEmail = onRequest({ timeoutSeconds: 60 }, defenseControlle
 exports.stripeWebhook = onRequest(paymentController.stripeWebhook);
 
 // --- MERCADO PAGO ---
+exports.createMercadoPagoPreference = onRequest({ cors: true }, mercadopagoController.createMercadoPagoPreference);
 exports.createPixPayment = onRequest({ cors: true }, mercadopagoController.createPixPayment);
 exports.mercadopagoWebhook = onRequest({ cors: true }, mercadopagoController.mercadopagoWebhook);
 

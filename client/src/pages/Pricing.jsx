@@ -167,9 +167,9 @@ const Pricing = () => {
 			const response = await api.createCheckoutSession({
 				priceId: plan.id,
 				userId: currentUser.uid,
-				credits: plan.credits, // Passa a quantidade de créditos do plano
-				mode: plan.mode, // Passa o modo (payment) para a API
-				successUrl: `${window.location.origin}/credit-success?session_id={CHECKOUT_SESSION_ID}&amount=${plan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(plan.name)}`,
+				credits: plan.credits,
+				mode: plan.mode,
+				successUrl: `${window.location.origin}/credit-success?amount=${plan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(plan.name)}`,
 			});
 
 			if (response.url) {
@@ -201,7 +201,6 @@ const Pricing = () => {
 		setGuestEmailError("");
 		setGuestModalOpen(false);
 		
-		// If we opened guest modal because of PIX, open PIX modal now
 		if (selectedPlan && !isPixModalOpen) {
 			setSelectedPixPriceId(selectedPlan.id);
 			setIsPixModalOpen(true);
@@ -217,7 +216,7 @@ const Pricing = () => {
 				credits: selectedPlan.credits,
 				mode: selectedPlan.mode,
 				guestEmail: guestEmail,
-				successUrl: `${window.location.origin}/credit-success?session_id={CHECKOUT_SESSION_ID}&amount=${selectedPlan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(selectedPlan.name)}`,
+				successUrl: `${window.location.origin}/credit-success?amount=${selectedPlan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(selectedPlan.name)}`,
 			});
 
 			if (response.url) {
