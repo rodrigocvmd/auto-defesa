@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
 	Loader2,
 	CheckCircle,
@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
+import { api } from "../../../services/api";
 
 export const AnalysisStep = ({
 	analysisData,
@@ -23,6 +24,25 @@ export const AnalysisStep = ({
 }) => {
 	const { currentUser, userData } = useAuth();
 	const navigate = useNavigate();
+	const [guestCredits, setGuestCredits] = useState(0);
+
+	useEffect(() => {
+		const fetchGuestCredits = async () => {
+			if (!currentUser) {
+				const guestEmail = localStorage.getItem("guestEmail");
+				if (guestEmail) {
+					try {
+						const credits = await api.getGuestCredits(guestEmail);
+						setGuestCredits(credits);
+					} catch (e) {
+						console.error("Failed to fetch guest credits", e);
+						setGuestCredits(0);
+					}
+				}
+			}
+		};
+		fetchGuestCredits();
+	}, [currentUser]);
 
 	const exclusiveThesesCount = useMemo(() => Math.floor(Math.random() * (5 - 2 + 1)) + 2, []);
 
@@ -146,7 +166,7 @@ export const AnalysisStep = ({
 									Preencher Meus Dados Reais <PenTool size={20} className="hidden sm:block" />
 								</button>
 							</div>
-						) : !currentUser ? (
+						) : (!currentUser && guestCredits === 0) ? (
 							<div className="flex flex-col gap-3">
 								<p className="text-blue-100 text-md mb-2 font-medium">
 									Para gerar o documento final, crie uma conta ou adquira um crédito sem cadastro.
@@ -207,12 +227,38 @@ export const AnalysisStep = ({
 								</div>
 							</div>
 						) : (
-							<div className="w-full flex justify-center px-4">
-								<button
-									onClick={() => navigate("/upload/qualification")}
-									className={`salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2`}>
-									Inserir dados complementares <FileText size={20} className="hidden sm:block" />
-								</button>
+							<div className="flex flex-col gap-3">
+								{!currentUser && (
+									<p className="text-blue-100 text-md mb-2 font-medium">
+										Créditos encontrados! Prossiga ou crie uma conta para salvar seu histórico.
+									</p>
+								)}
+								<div className="w-full flex justify-center px-4">
+									<button
+										onClick={() => navigate("/upload/qualification")}
+										className={`salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2`}>
+										Inserir dados complementares <FileText size={20} className="hidden sm:block" />
+									</button>
+								</div>
+								{!currentUser && (
+									<div className="w-full flex justify-center px-4 mt-2">
+										<button
+											onClick={() => {
+												localStorage.setItem(
+													"pendingDefenseData",
+													JSON.stringify({
+														formData,
+														analysisData,
+														source: "upload",
+													}),
+												);
+												navigate("/register?redirect=/upload/qualification");
+											}}
+											className="salvarECriarConta w-full md:w-2/3 bg-blue-500 text-white font-bold py-4 px- rounded-xl hover:bg-blue-600 transition-colors shadow-sm flex items-center justify-center gap-2">
+											Criar Conta (Recomendado) <User size={20} className="hidden sm:block" />
+										</button>
+									</div>
+								)}
 							</div>
 						)}
 					</div>

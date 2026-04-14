@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Shield, User, Menu, X, BookOpen, ChevronDown, ChevronUp, Info } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import VerificationBanner from "../components/VerificationBanner";
+import GuestBanner from "../components/GuestBanner";
 import CookieBanner from "../components/CookieBanner";
 
 // Global flag to track if the warning has been shown during this session (until refresh)

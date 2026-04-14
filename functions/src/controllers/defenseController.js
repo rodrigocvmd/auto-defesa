@@ -299,9 +299,9 @@ exports.extractDataFromImage = (req, res) => {
 
 		try {
 			if (userId) {
-				await checkUserRateLimit(userId, 25, 1);
+				await checkUserRateLimit(userId, 100, 1);
 			} else {
-				await checkIpRateLimit(req, 20, 1);
+				await checkIpRateLimit(req, 100, 1);
 			}
 		} catch (e) {
 			if (e.message === "RATE_LIMIT_EXCEEDED") {
