@@ -131,7 +131,7 @@ export const api = {
 createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl, cancelUrl, guestEmail }) => {
   try {
     const headers = await getAuthHeaders();
-    const response = await fetch(`${BASE_URL}/createMercadoPagoPreference`, {
+    const response = await fetch(`${BASE_URL}/createPreference`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
