@@ -44,8 +44,8 @@ exports.sendDefensePdfEmail = onRequest({ timeoutSeconds: 60 }, defenseControlle
 exports.stripeWebhook = onRequest(paymentController.stripeWebhook);
 
 // --- MERCADO PAGO ---
-exports.createPixPayment = onRequest(mercadopagoController.createPixPayment);
-exports.mercadopagoWebhook = onRequest(mercadopagoController.mercadopagoWebhook);
+exports.createPixPayment = onRequest({ cors: true }, mercadopagoController.createPixPayment);
+exports.mercadopagoWebhook = onRequest({ cors: true }, mercadopagoController.mercadopagoWebhook);
 
 // --- CRON JOB: LIMPEZA DE USUÁRIOS ---
 /* 

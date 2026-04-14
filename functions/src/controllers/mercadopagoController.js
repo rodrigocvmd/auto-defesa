@@ -1,15 +1,17 @@
 const { MercadoPagoConfig, Payment } = require('mercadopago');
 const { db } = require('../services/firebase');
-const cors = require('../middleware/cors');
 const { verifyAuth } = require('../middleware/auth');
 const { sendPurchaseConfirmation } = require('../services/emailService');
 
-const client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN
-});
+// Inicialização lazy do client
+const getMPClient = () => {
+    return new MercadoPagoConfig({
+        accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN || ''
+    });
+};
 
-exports.createPixPayment = (req, res) => {
-    cors(req, res, async () => {
+exports.createPixPayment = async (req, res) => {
+    try {
         const { priceId, guestEmail } = req.body;
         let userId = null;
         const authHeader = req.headers.authorization;
@@ -41,40 +43,38 @@ exports.createPixPayment = (req, res) => {
             return res.status(400).json({ error: "Produto inválido." });
         }
 
-        try {
-            const payment = new Payment(client);
-            const result = await payment.create({
-                body: {
-                    transaction_amount: planInfo.amount,
-                    description: planInfo.name,
-                    payment_method_id: "pix",
-                    payer: { email: guestEmail || "cliente@autodefesa.com.br" }
-                }
-            });
+        const client = getMPClient();
+        const payment = new Payment(client);
+        const result = await payment.create({
+            body: {
+                transaction_amount: planInfo.amount,
+                description: planInfo.name,
+                payment_method_id: "pix",
+                payer: { email: guestEmail || "cliente@autodefesa.com.br" }
+            }
+        });
 
-            await db.collection("pix_payments").doc(result.id.toString()).set({
-                userId: userId || null,
-                guestEmail: guestEmail || null,
-                credits: planInfo.credits,
-                planName: planInfo.name,
-                status: "pending",
-                createdAt: new Date().toISOString()
-            });
+        await db.collection("pix_payments").doc(result.id.toString()).set({
+            userId: userId || null,
+            guestEmail: guestEmail || null,
+            credits: planInfo.credits,
+            planName: planInfo.name,
+            status: "pending",
+            createdAt: new Date().toISOString()
+        });
 
-            res.status(200).json({
-                paymentId: result.id,
-                qrCode: result.point_of_interaction.transaction_data.qr_code,
-                qrCodeBase64: result.point_of_interaction.transaction_data.qr_code_base64
-            });
-        } catch (error) {
-            console.error("Erro Mercado Pago:", error);
-            res.status(500).json({ error: error.message });
-        }
-    });
+        res.status(200).json({
+            paymentId: result.id,
+            qrCode: result.point_of_interaction.transaction_data.qr_code,
+            qrCodeBase64: result.point_of_interaction.transaction_data.qr_code_base64
+        });
+    } catch (error) {
+        console.error("Erro Mercado Pago:", error);
+        res.status(500).json({ error: error.message || "Erro interno ao processar pagamento" });
+    }
 };
 
 exports.mercadopagoWebhook = async (req, res) => {
-    // O Mercado Pago envia o ID do pagamento de diferentes formas dependendo da configuração
     const paymentId = req.body?.data?.id || req.query?.["data.id"];
 
     if (!paymentId) {
@@ -82,6 +82,7 @@ exports.mercadopagoWebhook = async (req, res) => {
     }
 
     try {
+        const client = getMPClient();
         const paymentObj = new Payment(client);
         const paymentData = await paymentObj.get({ id: paymentId });
 
@@ -93,15 +94,14 @@ exports.mercadopagoWebhook = async (req, res) => {
 
             await db.runTransaction(async (t) => {
                 const doc = await t.get(pixRef);
-                if (!doc.exists) return; // Não é um PIX gerado por nós
+                if (!doc.exists) return;
 
                 const data = doc.data();
-                if (data.status === "paid") return; // Já processado anteriormente
+                if (data.status === "paid") return;
 
                 credits = data.credits;
                 planName = data.planName;
 
-                // Atualiza o documento do PIX para pago
                 t.set(pixRef, { status: "paid", paidAt: new Date().toISOString() }, { merge: true });
 
                 if (data.userId) {
@@ -122,7 +122,6 @@ exports.mercadopagoWebhook = async (req, res) => {
                 }
             });
 
-            // Envia o email de confirmação após a transação ser concluída
             if (emailToSend) {
                 await sendPurchaseConfirmation(emailToSend, credits, planName);
             }
