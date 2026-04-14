@@ -6,7 +6,6 @@ import { api } from "../services/api";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import SEO from "../components/SEO";
 import ScrollReveal from "../components/ScrollReveal";
-import PixPaymentModal from "../components/PixPaymentModal";
 
 const Pricing = () => {
 	const { currentUser } = useAuth();
@@ -19,9 +18,6 @@ const Pricing = () => {
 	const [selectedPlan, setSelectedPlan] = useState(null);
 	const [guestEmail, setGuestEmail] = useState("");
 	const [guestEmailError, setGuestEmailError] = useState("");
-
-	const [isPixModalOpen, setIsPixModalOpen] = useState(false);
-	const [selectedPixPriceId, setSelectedPixPriceId] = useState(null);
 
 	const [timeLeft, setTimeLeft] = useState(null);
 	const [promoEnded, setPromoEnded] = useState(false);
@@ -155,8 +151,8 @@ const Pricing = () => {
 		return plan;
 	});
 
-	const handleSubscribe = async (plan) => {
-		if (!currentUser) {
+	const handleCheckout = async (plan) => {
+		if (!currentUser && !guestEmail) {
 			setSelectedPlan(plan);
 			setGuestModalOpen(true);
 			return;
@@ -164,31 +160,22 @@ const Pricing = () => {
 
 		setLoadingId(plan.id);
 		try {
-			const response = await api.createCheckoutSession({
+			const response = await api.createPreference({
 				priceId: plan.id,
-				userId: currentUser.uid,
+				userId: currentUser?.uid,
 				credits: plan.credits,
-				mode: plan.mode,
+				guestEmail: guestEmail || currentUser?.email,
 				successUrl: `${window.location.origin}/credit-success?amount=${plan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(plan.name)}`,
 			});
 
-			if (response.url) {
-				window.location.href = response.url;
+			if (response.init_point) {
+				if (guestEmail) localStorage.setItem("guestEmail", guestEmail);
+				window.location.href = response.init_point;
 			}
 		} catch (error) {
 			alert("Erro ao iniciar pagamento: " + error.message);
 			setLoadingId(null);
 		}
-	};
-
-	const handleOpenPix = (priceId) => {
-		if (!currentUser && !guestEmail) {
-			setSelectedPlan(PLANS.find(p => p.id === priceId));
-			setGuestModalOpen(true);
-			return;
-		}
-		setSelectedPixPriceId(priceId);
-		setIsPixModalOpen(true);
 	};
 
 	const handleGuestCheckout = async (e) => {
@@ -200,33 +187,7 @@ const Pricing = () => {
 
 		setGuestEmailError("");
 		setGuestModalOpen(false);
-		
-		if (selectedPlan && !isPixModalOpen) {
-			setSelectedPixPriceId(selectedPlan.id);
-			setIsPixModalOpen(true);
-			localStorage.setItem("guestEmail", guestEmail);
-			return;
-		}
-
-		setLoadingId(selectedPlan.id);
-
-		try {
-			const response = await api.createCheckoutSession({
-				priceId: selectedPlan.id,
-				credits: selectedPlan.credits,
-				mode: selectedPlan.mode,
-				guestEmail: guestEmail,
-				successUrl: `${window.location.origin}/credit-success?amount=${selectedPlan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(selectedPlan.name)}`,
-			});
-
-			if (response.url) {
-				localStorage.setItem("guestEmail", guestEmail);
-				window.location.href = response.url;
-			}
-		} catch (error) {
-			alert("Erro ao iniciar pagamento como convidado: " + error.message);
-			setLoadingId(null);
-		}
+		handleCheckout(selectedPlan);
 	};
 
 	return (
@@ -355,32 +316,20 @@ const Pricing = () => {
 									))}
 								</ul>
 
-								<div className="space-y-3">
-									<button
-										onClick={() => handleSubscribe(plan)}
-										disabled={!!loadingId || (isDiscountRoute && promoEnded)}
-										className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 ${
-											plan.recommended
-												? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-indigo-300"
-												: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-50"
-										} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""} ${isDiscountRoute && promoEnded ? "bg-gray-400 !text-gray-200 opacity-100 !shadow-none cursor-not-allowed" : ""}`}>
-										{loadingId === plan.id
-											? "Processando..."
-											: isDiscountRoute && promoEnded
-												? "Fim da promoção"
-												: "Pagar com Cartão"}
-									</button>
-
-									{!promoEnded && (
-										<button
-											onClick={() => handleOpenPix(plan.id)}
-											disabled={!!loadingId}
-											className="w-full py-3 rounded-xl font-bold text-md transition-all active:scale-95 bg-white text-green-600 border-2 border-green-500 hover:bg-green-50 flex items-center justify-center gap-2">
-											<Zap size={18} className="text-green-500" fill="currentColor" />
-											Pagar com PIX
-										</button>
-									)}
-								</div>
+								<button
+									onClick={() => handleCheckout(plan)}
+									disabled={!!loadingId || (isDiscountRoute && promoEnded)}
+									className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 ${
+										plan.recommended
+											? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-indigo-300"
+											: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-50"
+									} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""} ${isDiscountRoute && promoEnded ? "bg-gray-400 !text-gray-200 opacity-100 !shadow-none cursor-not-allowed" : ""}`}>
+									{loadingId === plan.id
+										? "Processando..."
+										: isDiscountRoute && promoEnded
+											? "Fim da promoção"
+											: "Adquirir Créditos"}
+								</button>
 							</div>
 						</ScrollReveal>
 					))}
@@ -528,13 +477,6 @@ const Pricing = () => {
 						</div>
 					</div>
 				)}
-
-				<PixPaymentModal
-					isOpen={isPixModalOpen}
-					onClose={() => setIsPixModalOpen(false)}
-					priceId={selectedPixPriceId}
-					guestEmail={currentUser ? currentUser.email : guestEmail}
-				/>
 			</div>
 		</MainLayout>
 	);

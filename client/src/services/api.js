@@ -127,8 +127,8 @@ export const api = {
       throw error;
     }
   },
-// 4. Criar Sessão de Checkout (Pagamento Mercado Pago - Checkout Pro)
-createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl, cancelUrl, guestEmail }) => {
+// 4. Criar Preferência de Pagamento (Mercado Pago - Checkout Pro)
+createPreference: async ({ priceId, userId, credits, guestEmail, successUrl, cancelUrl }) => {
   try {
     const headers = await getAuthHeaders();
     const response = await fetch(`${BASE_URL}/createPreference`, {
@@ -138,7 +138,7 @@ createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl, canc
           priceId,
           userId,
           credits,
-          guestEmail, // Email caso não esteja logado
+          guestEmail,
           successUrl: successUrl || window.location.origin + '/credit-success?success=true',
           cancelUrl: cancelUrl || window.location.origin + '/pricing?canceled=true'
       }),
@@ -146,34 +146,12 @@ createCheckoutSession: async ({ priceId, userId, credits, mode, successUrl, canc
 
     if (!response.ok) {
       const err = await response.json();
-      throw new Error(err.error || 'Erro ao iniciar pagamento com cartão');
+      throw new Error(err.error || 'Erro ao iniciar checkout');
     }
 
     return await response.json();
   } catch (error) {
-    console.error("Erro em createCheckoutSession:", error);
-    throw error;
-  }
-},
-
-// 4.1 Criar Pagamento via PIX (Mercado Pago)
-createPixPayment: async ({ priceId, guestEmail }) => {
-  try {
-    const headers = await getAuthHeaders();
-    const response = await fetch(`${BASE_URL}/createPixPayment`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ priceId, guestEmail }),
-    });
-
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Erro ao iniciar pagamento PIX');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Erro em createPixPayment:", error);
+    console.error("Erro em createPreference:", error);
     throw error;
   }
 },
