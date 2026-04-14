@@ -106,84 +106,88 @@ exports.createPreference = (req, res) => {
 	});
 };
 
-exports.createPixPayment = async (req, res) => {
-	try {
-		const { priceId, guestEmail } = req.body;
-		let userId = null;
-		const authHeader = req.headers.authorization;
+exports.createPixPayment = (req, res) => {
+	cors(req, res, async () => {
+		try {
+			const { priceId, guestEmail } = req.body;
+			let userId = null;
+			const authHeader = req.headers.authorization;
 
-		if (authHeader && authHeader.startsWith("Bearer ")) {
-			try {
-				userId = await verifyAuth(req);
-			} catch (e) {
-				console.log("Token inválido, prosseguindo como convidado.");
-			}
-		}
-
-		if (!userId && !guestEmail) {
-			return res.status(401).json({ error: "Utilizador não autenticado e email não fornecido." });
-		}
-
-		const planInfo = PRICE_MAP[priceId || "price_H5ggYwtDq4fbrJ"];
-		if (!planInfo) {
-			return res.status(400).json({ error: "Produto inválido." });
-		}
-
-		const client = getMPClient();
-		const payment = new Payment(client);
-		const result = await payment.create({
-			body: {
-				transaction_amount: planInfo.amount,
-				description: planInfo.name,
-				payment_method_id: "pix",
-				// Usamos um email genérico para o Mercado Pago não enviar um email automático ao cliente com o código PIX
-				payer: { email: "pix@meuautodefesa.com.br" },
-				notification_url: "https://us-central1-auto-defesa.cloudfunctions.net/mercadopagoWebhook",
-				metadata: {
-					userId: userId || "",
-					guestEmail: guestEmail || "",
-					credits: planInfo.credits,
-					planName: planInfo.name,
+			if (authHeader && authHeader.startsWith("Bearer ")) {
+				try {
+					userId = await verifyAuth(req);
+				} catch (e) {
+					console.log("Token inválido, prosseguindo como convidado.");
 				}
-			},
-		});
+			}
 
-		await db
-			.collection("pix_payments")
-			.doc(result.id.toString())
-			.set({
-				userId: userId || null,
-				guestEmail: guestEmail || null,
-				credits: planInfo.credits,
-				planName: planInfo.name,
-				status: "pending",
-				createdAt: new Date().toISOString(),
+			if (!userId && !guestEmail) {
+				return res.status(401).json({ error: "Utilizador não autenticado e email não fornecido." });
+			}
+
+			const planInfo = PRICE_MAP[priceId || "price_H5ggYwtDq4fbrJ"];
+			if (!planInfo) {
+				return res.status(400).json({ error: "Produto inválido." });
+			}
+
+			const client = getMPClient();
+			const payment = new Payment(client);
+			const result = await payment.create({
+				body: {
+					transaction_amount: planInfo.amount,
+					description: planInfo.name,
+					payment_method_id: "pix",
+					// Usamos um email genérico para o Mercado Pago não enviar um email automático ao cliente com o código PIX
+					payer: { email: "pix@meuautodefesa.com.br" },
+					notification_url: "https://us-central1-auto-defesa.cloudfunctions.net/mercadopagoWebhook",
+					metadata: {
+						userId: userId || "",
+						guestEmail: guestEmail || "",
+						credits: planInfo.credits,
+						planName: planInfo.name,
+					}
+				},
 			});
 
-		res.status(200).json({
-			paymentId: result.id,
-			qrCode: result.point_of_interaction.transaction_data.qr_code,
-			qrCodeBase64: result.point_of_interaction.transaction_data.qr_code_base64,
-		});
-	} catch (error) {
-		console.error("Erro Mercado Pago:", error);
-		res.status(500).json({ error: error.message || "Erro interno ao processar pagamento PIX" });
-	}
+			await db
+				.collection("pix_payments")
+				.doc(result.id.toString())
+				.set({
+					userId: userId || null,
+					guestEmail: guestEmail || null,
+					credits: planInfo.credits,
+					planName: planInfo.name,
+					status: "pending",
+					createdAt: new Date().toISOString(),
+				});
+
+			res.status(200).json({
+				paymentId: result.id,
+				qrCode: result.point_of_interaction.transaction_data.qr_code,
+				qrCodeBase64: result.point_of_interaction.transaction_data.qr_code_base64,
+			});
+		} catch (error) {
+			console.error("Erro Mercado Pago:", error);
+			res.status(500).json({ error: error.message || "Erro interno ao processar pagamento PIX" });
+		}
+	});
 };
 
-exports.checkPixPaymentStatus = async (req, res) => {
-	try {
-		const { paymentId } = req.body;
-		if (!paymentId) return res.status(400).json({ error: "Sem paymentId fornecido." });
-		
-		const doc = await db.collection("pix_payments").doc(paymentId.toString()).get();
-		if (!doc.exists) return res.status(404).json({ error: "Pagamento não encontrado." });
-		
-		res.status(200).json({ status: doc.data().status });
-	} catch (e) {
-		console.error("Erro checkPixPaymentStatus:", e);
-		res.status(500).json({ error: e.message || "Erro interno" });
-	}
+exports.checkPixPaymentStatus = (req, res) => {
+	cors(req, res, async () => {
+		try {
+			const { paymentId } = req.body;
+			if (!paymentId) return res.status(400).json({ error: "Sem paymentId fornecido." });
+			
+			const doc = await db.collection("pix_payments").doc(paymentId.toString()).get();
+			if (!doc.exists) return res.status(404).json({ error: "Pagamento não encontrado." });
+			
+			res.status(200).json({ status: doc.data().status });
+		} catch (e) {
+			console.error("Erro checkPixPaymentStatus:", e);
+			res.status(500).json({ error: e.message || "Erro interno" });
+		}
+	});
 };
 
 exports.mercadopagoWebhook = async (req, res) => {
