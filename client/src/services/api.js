@@ -156,6 +156,28 @@ createPreference: async ({ priceId, userId, credits, guestEmail, successUrl, can
   }
 },
 
+// 4.1 Criar Pagamento via PIX (Mercado Pago)
+createPixPayment: async ({ priceId, guestEmail }) => {
+  try {
+    const headers = await getAuthHeaders();
+    const response = await fetch(`${BASE_URL}/createPixPayment`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ priceId, guestEmail }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Erro ao iniciar pagamento PIX');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro em createPixPayment:", error);
+    throw error;
+  }
+},
+
 // 5. Consultar Créditos de Convidado
 getGuestCredits: async (email) => {
   try {

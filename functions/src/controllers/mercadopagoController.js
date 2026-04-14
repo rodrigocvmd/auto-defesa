@@ -2,6 +2,7 @@ const { MercadoPagoConfig, Preference, Payment } = require('mercadopago');
 const { db } = require('../services/firebase');
 const { verifyAuth } = require('../middleware/auth');
 const { sendPurchaseConfirmation } = require('../services/emailService');
+const cors = require("../middleware/cors");
 
 // Inicialização lazy do client
 const getMPClient = () => {
@@ -20,79 +21,154 @@ const PRICE_MAP = {
     price_H5ggYwtDq4fbrJ: { credits: 1, name: "Plano Teste", amount: 1.00 }
 };
 
-exports.createPreference = async (req, res) => {
-    try {
-        const { priceId, guestEmail, successUrl, cancelUrl } = req.body;
-        let userId = null;
-        const authHeader = req.headers.authorization;
+exports.createPreference = (req, res) => {
+    cors(req, res, async () => {
+        try {
+            const { priceId, guestEmail, successUrl, cancelUrl } = req.body;
+            let userId = null;
+            const authHeader = req.headers.authorization;
 
-        if (authHeader && authHeader.startsWith("Bearer ")) {
-            try {
-                userId = await verifyAuth(req);
-            } catch (e) {
-                console.log("Token inválido, prosseguindo como convidado.");
-            }
-        }
-
-        const planInfo = PRICE_MAP[priceId || "price_H5ggYwtDq4fbrJ"];
-        if (!planInfo) {
-            return res.status(400).json({ error: "Produto inválido." });
-        }
-
-        const client = getMPClient();
-        const preference = new Preference(client);
-
-        const result = await preference.create({
-            body: {
-                items: [
-                    {
-                        title: planInfo.name,
-                        unit_price: planInfo.amount,
-                        quantity: 1,
-                        currency_id: "BRL",
-                    }
-                ],
-                payer: {
-                    email: guestEmail || (userId ? "usuario@autodefesa.com.br" : "cliente@autodefesa.com.br"),
-                },
-                back_urls: {
-                    success: successUrl || "http://localhost:5173/credit-success?success=true",
-                    failure: cancelUrl || "http://localhost:5173/pricing?canceled=true",
-                    pending: cancelUrl || "http://localhost:5173/pricing?canceled=true",
-                },
-                auto_return: "approved",
-                notification_url: "https://sua-url-ngrok.ngrok-free.app/mercadopagoWebhook", 
-                metadata: {
-                    userId: userId || "",
-                    guestEmail: guestEmail || "",
-                    credits: planInfo.credits,
-                    planName: planInfo.name,
+            if (authHeader && authHeader.startsWith("Bearer ")) {
+                try {
+                    userId = await verifyAuth(req);
+                } catch (e) {
+                    console.log("Token inválido no checkout, prosseguindo como convidado.");
                 }
             }
-        });
 
-        res.status(200).json({
-            id: result.id,
-            init_point: result.init_point
-        });
-    } catch (error) {
-        console.error("Erro ao criar preferência Mercado Pago:", error);
-        res.status(500).json({ error: error.message || "Erro interno" });
-    }
+            const planInfo = PRICE_MAP[priceId || "price_H5ggYwtDq4fbrJ"];
+            if (!planInfo) {
+                return res.status(400).json({ error: "Produto inválido." });
+            }
+
+            const client = getMPClient();
+            const preference = new Preference(client);
+
+            // Garantir URLs válidas para o back_urls
+            const fallbackSuccess = "https://meuautodefesa.com.br/credit-success";
+            const fallbackCancel = "https://meuautodefesa.com.br/pricing";
+            
+            const finalSuccessUrl = (successUrl && successUrl.includes('http')) ? successUrl.split('?')[0] : fallbackSuccess;
+            const finalCancelUrl = (cancelUrl && cancelUrl.includes('http')) ? cancelUrl.split('?')[0] : fallbackCancel;
+
+            const externalReference = JSON.stringify({
+                userId: userId || "",
+                guestEmail: guestEmail || "",
+                credits: planInfo.credits,
+                planName: planInfo.name
+            });
+
+            const preferenceData = {
+                body: {
+                    items: [
+                        {
+                            id: priceId || "price_H5ggYwtDq4fbrJ",
+                            title: planInfo.name,
+                            unit_price: Number(planInfo.amount),
+                            quantity: 1,
+                            currency_id: "BRL",
+                        }
+                    ],
+                    payer: {
+                        email: guestEmail || (userId ? "usuario@autodefesa.com.br" : "cliente@autodefesa.com.br"),
+                    },
+                    back_urls: {
+                        success: finalSuccessUrl,
+                        failure: finalCancelUrl,
+                        pending: finalCancelUrl,
+                    },
+                    // Removido auto_return completamente
+                    notification_url: "https://us-central1-auto-defesa.cloudfunctions.net/mercadopagoWebhook",
+                    external_reference: externalReference,
+                    metadata: {
+                        userId: userId || "",
+                        guestEmail: guestEmail || "",
+                        credits: planInfo.credits,
+                        planName: planInfo.name,
+                    }
+                }
+            };
+
+            const result = await preference.create(preferenceData);
+
+            res.status(200).json({
+                id: result.id,
+                init_point: result.init_point,
+                sandbox_init_point: result.sandbox_init_point
+            });
+        } catch (error) {
+            console.error("Erro detalhado Mercado Pago:", error);
+            res.status(500).json({ error: error.message || "Erro interno ao gerar preferência" });
+        }
+    });
+};
+
+exports.createPixPayment = (req, res) => {
+    cors(req, res, async () => {
+        try {
+            const { priceId, guestEmail } = req.body;
+            let userId = null;
+            const authHeader = req.headers.authorization;
+
+            if (authHeader && authHeader.startsWith("Bearer ")) {
+                try {
+                    userId = await verifyAuth(req);
+                } catch (e) {
+                    console.log("Token inválido, prosseguindo como convidado.");
+                }
+            }
+
+            if (!userId && !guestEmail) {
+                return res.status(401).json({ error: "Utilizador não autenticado e email não fornecido." });
+            }
+
+            const planInfo = PRICE_MAP[priceId || "price_H5ggYwtDq4fbrJ"];
+            if (!planInfo) {
+                return res.status(400).json({ error: "Produto inválido." });
+            }
+
+            const client = getMPClient();
+            const payment = new Payment(client);
+            const result = await payment.create({
+                body: {
+                    transaction_amount: planInfo.amount,
+                    description: planInfo.name,
+                    payment_method_id: "pix",
+                    payer: { email: guestEmail || "cliente@autodefesa.com.br" }
+                }
+            });
+
+            await db.collection("pix_payments").doc(result.id.toString()).set({
+                userId: userId || null,
+                guestEmail: guestEmail || null,
+                credits: planInfo.credits,
+                planName: planInfo.name,
+                status: "pending",
+                createdAt: new Date().toISOString()
+            });
+
+            res.status(200).json({
+                paymentId: result.id,
+                qrCode: result.point_of_interaction.transaction_data.qr_code,
+                qrCodeBase64: result.point_of_interaction.transaction_data.qr_code_base64
+            });
+        } catch (error) {
+            console.error("Erro Mercado Pago:", error);
+            res.status(500).json({ error: error.message || "Erro interno ao processar pagamento PIX" });
+        }
+    });
 };
 
 exports.mercadopagoWebhook = async (req, res) => {
-    // O Mercado Pago envia o ID do pagamento em data.id para notificações do tipo 'payment'
     const paymentId = req.body?.data?.id || req.query?.["data.id"];
     const type = req.body?.type || req.query?.type;
 
-    // Se não for uma notificação de pagamento, ignoramos mas retornamos 200
     if (type && type !== 'payment') {
-        return res.status(200).send("OK: Tipo de notificação ignorado.");
+        return res.status(200).send("OK");
     }
 
     if (!paymentId) {
-        return res.status(200).send("Ignorado: Sem ID de pagamento.");
+        return res.status(200).send("Ignorado: Sem ID.");
     }
 
     try {
@@ -101,55 +177,30 @@ exports.mercadopagoWebhook = async (req, res) => {
         const paymentData = await paymentObj.get({ id: paymentId });
 
         if (paymentData.status === "approved") {
-            // Busca dados nos metadados preenchidos via Checkout Pro (Preferência)
             const metadata = paymentData.metadata || {};
-            const credits = parseInt(metadata.credits || metadata.credits_to_add || 0, 10);
-            const planName = metadata.plan_name || metadata.planName || "Plano Adquirido";
-            const userId = metadata.user_id || metadata.userId;
-            const guestEmail = metadata.guest_email || metadata.guestEmail;
+            let credits = parseInt(metadata.credits || 0, 10);
+            let planName = metadata.plan_name || metadata.planName || "Plano Adquirido";
+            let userId = metadata.user_id || metadata.userId;
+            let guestEmail = metadata.guest_email || metadata.guestEmail;
 
-            // Se não houver identificação nos metadados, verificamos se é um PIX direto legado
-            if (!userId && !guestEmail) {
-                const pixRef = db.collection("pix_payments").doc(paymentId.toString());
-                const pixDoc = await pixRef.get();
-                
-                if (pixDoc.exists) {
-                    const pixData = pixDoc.data();
-                    if (pixData.status === "paid") return res.status(200).send("OK");
-
-                    await db.runTransaction(async (t) => {
-                        const doc = await t.get(pixRef);
-                        const data = doc.data();
-                        t.set(pixRef, { status: "paid", paidAt: new Date().toISOString() }, { merge: true });
-
-                        if (data.userId) {
-                            const userRef = db.collection("users").doc(data.userId);
-                            const userDoc = await t.get(userRef);
-                            const currentCredits = userDoc.exists ? (userDoc.data().credits || 0) : 0;
-                            t.set(userRef, { credits: currentCredits + data.credits }, { merge: true });
-                            await sendPurchaseConfirmation(userDoc.data().email, data.credits, data.planName);
-                        } else if (data.guestEmail) {
-                            const guestRef = db.collection("guest_credits").doc(data.guestEmail);
-                            const guestDoc = await t.get(guestRef);
-                            const currentCredits = guestDoc.exists ? (guestDoc.data().credits || 0) : 0;
-                            t.set(guestRef, {
-                                credits: currentCredits + data.credits,
-                                updatedAt: new Date().toISOString()
-                            }, { merge: true });
-                            await sendPurchaseConfirmation(data.guestEmail, data.credits, data.planName);
-                        }
-                    });
-                    return res.status(200).send("OK");
+            if (!userId && !guestEmail && paymentData.external_reference) {
+                try {
+                    const extRef = JSON.parse(paymentData.external_reference);
+                    userId = extRef.userId;
+                    guestEmail = extRef.guestEmail;
+                    credits = extRef.credits;
+                    planName = extRef.planName;
+                } catch (e) {
+                    console.log("Falha ao parsear external_reference");
                 }
-
-                console.log("Pagamento aprovado sem metadados ou registro de PIX correspondente.");
-                return res.status(200).send("OK: Pagamento não identificado.");
             }
 
-            // Processamento padrão via Metadados (Checkout Pro)
+            if (!userId && !guestEmail) {
+                return res.status(200).send("OK: Não identificado.");
+            }
+
             const mpPaymentRef = db.collection("mp_payments").doc(paymentId.toString());
             let emailToSend = null;
-            let processed = false;
 
             await db.runTransaction(async (t) => {
                 const doc = await t.get(mpPaymentRef);
@@ -183,10 +234,9 @@ exports.mercadopagoWebhook = async (req, res) => {
                     }, { merge: true });
                     emailToSend = guestEmail;
                 }
-                processed = true;
             });
 
-            if (processed && emailToSend) {
+            if (emailToSend) {
                 await sendPurchaseConfirmation(emailToSend, credits, planName);
             }
         }

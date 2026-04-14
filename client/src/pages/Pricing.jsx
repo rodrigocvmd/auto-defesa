@@ -6,6 +6,7 @@ import { api } from "../services/api";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import SEO from "../components/SEO";
 import ScrollReveal from "../components/ScrollReveal";
+import PixPaymentModal from "../components/PixPaymentModal";
 
 const Pricing = () => {
 	const { currentUser } = useAuth();
@@ -18,6 +19,9 @@ const Pricing = () => {
 	const [selectedPlan, setSelectedPlan] = useState(null);
 	const [guestEmail, setGuestEmail] = useState("");
 	const [guestEmailError, setGuestEmailError] = useState("");
+
+	const [isPixModalOpen, setIsPixModalOpen] = useState(false);
+	const [selectedPixPriceId, setSelectedPixPriceId] = useState(null);
 
 	const [timeLeft, setTimeLeft] = useState(null);
 	const [promoEnded, setPromoEnded] = useState(false);
@@ -178,6 +182,16 @@ const Pricing = () => {
 		}
 	};
 
+	const handleOpenPix = (priceId) => {
+		if (!currentUser && !guestEmail) {
+			setSelectedPlan(PLANS.find(p => p.id === priceId));
+			setGuestModalOpen(true);
+			return;
+		}
+		setSelectedPixPriceId(priceId);
+		setIsPixModalOpen(true);
+	};
+
 	const handleGuestCheckout = async (e) => {
 		e.preventDefault();
 		if (!guestEmail || !/^\S+@\S+\.\S+$/.test(guestEmail)) {
@@ -187,6 +201,13 @@ const Pricing = () => {
 
 		setGuestEmailError("");
 		setGuestModalOpen(false);
+		
+		if (selectedPlan && !isPixModalOpen && selectedPixPriceId === selectedPlan.id) {
+			setIsPixModalOpen(true);
+			localStorage.setItem("guestEmail", guestEmail);
+			return;
+		}
+
 		handleCheckout(selectedPlan);
 	};
 
@@ -316,20 +337,35 @@ const Pricing = () => {
 									))}
 								</ul>
 
-								<button
-									onClick={() => handleCheckout(plan)}
-									disabled={!!loadingId || (isDiscountRoute && promoEnded)}
-									className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 ${
-										plan.recommended
-											? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-indigo-300"
-											: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-50"
-									} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""} ${isDiscountRoute && promoEnded ? "bg-gray-400 !text-gray-200 opacity-100 !shadow-none cursor-not-allowed" : ""}`}>
-									{loadingId === plan.id
-										? "Processando..."
-										: isDiscountRoute && promoEnded
-											? "Fim da promoção"
-											: "Adquirir Créditos"}
-								</button>
+								<div className="space-y-3">
+									<button
+										onClick={() => handleCheckout(plan)}
+										disabled={!!loadingId || (isDiscountRoute && promoEnded)}
+										className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 ${
+											plan.recommended
+												? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-indigo-300"
+												: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-50"
+										} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""} ${isDiscountRoute && promoEnded ? "bg-gray-400 !text-gray-200 opacity-100 !shadow-none cursor-not-allowed" : ""}`}>
+										{loadingId === plan.id
+											? "Processando..."
+											: isDiscountRoute && promoEnded
+												? "Fim da promoção"
+												: "Pagar com Cartão"}
+									</button>
+
+									{!promoEnded && (
+										<button
+											onClick={() => {
+												setSelectedPixPriceId(plan.id);
+												handleOpenPix(plan.id);
+											}}
+											disabled={!!loadingId}
+											className="w-full py-3 rounded-xl font-bold text-md transition-all active:scale-95 bg-white text-green-600 border-2 border-green-500 hover:bg-green-50 flex items-center justify-center gap-2">
+											<Zap size={18} className="text-green-500" fill="currentColor" />
+											Pagar com PIX
+										</button>
+									)}
+								</div>
 							</div>
 						</ScrollReveal>
 					))}
@@ -477,6 +513,13 @@ const Pricing = () => {
 						</div>
 					</div>
 				)}
+
+				<PixPaymentModal
+					isOpen={isPixModalOpen}
+					onClose={() => setIsPixModalOpen(false)}
+					priceId={selectedPixPriceId}
+					guestEmail={currentUser ? currentUser.email : guestEmail}
+				/>
 			</div>
 		</MainLayout>
 	);
