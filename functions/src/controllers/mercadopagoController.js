@@ -61,7 +61,7 @@ exports.createPreference = async (req, res) => {
                     pending: cancelUrl || "http://localhost:5173/pricing?canceled=true",
                 },
                 auto_return: "approved",
-                notification_url: "https://sua-url-ngrok.ngrok-free.app/mercadopagoWebhook", // Substitua pela sua URL do ngrok
+                notification_url: "https://sua-url-ngrok.ngrok-free.app/mercadopagoWebhook", 
                 metadata: {
                     userId: userId || "",
                     guestEmail: guestEmail || "",
@@ -82,7 +82,14 @@ exports.createPreference = async (req, res) => {
 };
 
 exports.mercadopagoWebhook = async (req, res) => {
+    // O Mercado Pago envia o ID do pagamento em data.id para notificações do tipo 'payment'
     const paymentId = req.body?.data?.id || req.query?.["data.id"];
+    const type = req.body?.type || req.query?.type;
+
+    // Se não for uma notificação de pagamento, ignoramos mas retornamos 200
+    if (type && type !== 'payment') {
+        return res.status(200).send("OK: Tipo de notificação ignorado.");
+    }
 
     if (!paymentId) {
         return res.status(200).send("Ignorado: Sem ID de pagamento.");
@@ -94,26 +101,52 @@ exports.mercadopagoWebhook = async (req, res) => {
         const paymentData = await paymentObj.get({ id: paymentId });
 
         if (paymentData.status === "approved") {
-            // Busca dados nos metadados (Checkout Pro / Preferência)
-            // Nota: O MP converte camelCase para snake_case no metadata às vezes, ou mantém. 
-            // Vamos verificar ambos por segurança.
+            // Busca dados nos metadados preenchidos via Checkout Pro (Preferência)
             const metadata = paymentData.metadata || {};
-            const credits = parseInt(metadata.credits || 0, 10);
+            const credits = parseInt(metadata.credits || metadata.credits_to_add || 0, 10);
             const planName = metadata.plan_name || metadata.planName || "Plano Adquirido";
             const userId = metadata.user_id || metadata.userId;
             const guestEmail = metadata.guest_email || metadata.guestEmail;
 
+            // Se não houver identificação nos metadados, verificamos se é um PIX direto legado
             if (!userId && !guestEmail) {
-                console.log("Pagamento sem metadados de identificação. Verificando coleção pix_payments...");
-                // Fallback para PIX direto se ainda houver
                 const pixRef = db.collection("pix_payments").doc(paymentId.toString());
                 const pixDoc = await pixRef.get();
-                if (!pixDoc.exists) return res.status(200).send("OK: Pagamento não identificado.");
                 
-                // ... lógica de PIX (se necessário manter)
-                return res.status(200).send("OK");
+                if (pixDoc.exists) {
+                    const pixData = pixDoc.data();
+                    if (pixData.status === "paid") return res.status(200).send("OK");
+
+                    await db.runTransaction(async (t) => {
+                        const doc = await t.get(pixRef);
+                        const data = doc.data();
+                        t.set(pixRef, { status: "paid", paidAt: new Date().toISOString() }, { merge: true });
+
+                        if (data.userId) {
+                            const userRef = db.collection("users").doc(data.userId);
+                            const userDoc = await t.get(userRef);
+                            const currentCredits = userDoc.exists ? (userDoc.data().credits || 0) : 0;
+                            t.set(userRef, { credits: currentCredits + data.credits }, { merge: true });
+                            await sendPurchaseConfirmation(userDoc.data().email, data.credits, data.planName);
+                        } else if (data.guestEmail) {
+                            const guestRef = db.collection("guest_credits").doc(data.guestEmail);
+                            const guestDoc = await t.get(guestRef);
+                            const currentCredits = guestDoc.exists ? (guestDoc.data().credits || 0) : 0;
+                            t.set(guestRef, {
+                                credits: currentCredits + data.credits,
+                                updatedAt: new Date().toISOString()
+                            }, { merge: true });
+                            await sendPurchaseConfirmation(data.guestEmail, data.credits, data.planName);
+                        }
+                    });
+                    return res.status(200).send("OK");
+                }
+
+                console.log("Pagamento aprovado sem metadados ou registro de PIX correspondente.");
+                return res.status(200).send("OK: Pagamento não identificado.");
             }
 
+            // Processamento padrão via Metadados (Checkout Pro)
             const mpPaymentRef = db.collection("mp_payments").doc(paymentId.toString());
             let emailToSend = null;
             let processed = false;
@@ -128,15 +161,18 @@ exports.mercadopagoWebhook = async (req, res) => {
                     userId: userId || null,
                     guestEmail: guestEmail || null,
                     credits,
-                    planName
+                    planName,
+                    paymentId: paymentId.toString()
                 }, { merge: true });
 
                 if (userId) {
                     const userRef = db.collection("users").doc(userId);
                     const userDoc = await t.get(userRef);
-                    const currentCredits = userDoc.exists ? (userDoc.data().credits || 0) : 0;
-                    t.set(userRef, { credits: currentCredits + credits }, { merge: true });
-                    emailToSend = userDoc.exists ? userDoc.data().email : null;
+                    if (userDoc.exists) {
+                        const currentCredits = userDoc.data().credits || 0;
+                        t.set(userRef, { credits: currentCredits + credits }, { merge: true });
+                        emailToSend = userDoc.data().email;
+                    }
                 } else if (guestEmail) {
                     const guestRef = db.collection("guest_credits").doc(guestEmail);
                     const guestDoc = await t.get(guestRef);
