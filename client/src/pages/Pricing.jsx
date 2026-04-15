@@ -16,6 +16,8 @@ const Pricing = () => {
 	const [loadingId, setLoadingId] = useState(null);
 
 	const [guestModalOpen, setGuestModalOpen] = useState(false);
+	const [existingGuestModalOpen, setExistingGuestModalOpen] = useState(false);
+	const [guestCredits, setGuestCredits] = useState(0);
 	const [selectedPlan, setSelectedPlan] = useState(null);
 	const [guestEmail, setGuestEmail] = useState("");
 	const [guestEmailError, setGuestEmailError] = useState("");
@@ -28,6 +30,14 @@ const Pricing = () => {
 
 	const isDiscountRoute = location.pathname === "/pricing/discount";
 	const redirect = searchParams.get("redirect");
+
+	useEffect(() => {
+		const storedEmail = localStorage.getItem("guestEmail");
+		if (storedEmail) {
+			setGuestEmail(storedEmail);
+			api.getGuestCredits(storedEmail).then(setGuestCredits).catch(console.error);
+		}
+	}, []);
 
 	useEffect(() => {
 		const endTimeStr = localStorage.getItem("discountEndTime");
@@ -156,10 +166,18 @@ const Pricing = () => {
 	});
 
 	const handleCheckout = async (plan) => {
-		if (!currentUser && !guestEmail) {
-			setSelectedPlan(plan);
-			setGuestModalOpen(true);
-			return;
+		if (!currentUser) {
+			const storedEmail = localStorage.getItem("guestEmail");
+			if (storedEmail) {
+				setSelectedPlan(plan);
+				setExistingGuestModalOpen(true);
+				return;
+			}
+			if (!guestEmail) {
+				setSelectedPlan(plan);
+				setGuestModalOpen(true);
+				return;
+			}
 		}
 
 		setLoadingId(plan.id);
@@ -185,13 +203,31 @@ const Pricing = () => {
 	};
 
 	const handleOpenPix = (priceId) => {
-		if (!currentUser && !guestEmail) {
-			setSelectedPlan(PLANS.find(p => p.id === priceId));
-			setGuestModalOpen(true);
-			return;
+		if (!currentUser) {
+			const storedEmail = localStorage.getItem("guestEmail");
+			const plan = PLANS.find(p => p.id === priceId);
+			if (storedEmail) {
+				setSelectedPlan(plan);
+				setExistingGuestModalOpen(true);
+				return;
+			}
+			if (!guestEmail) {
+				setSelectedPlan(plan);
+				setGuestModalOpen(true);
+				return;
+			}
 		}
 		setSelectedPixPriceId(priceId);
 		setIsPixModalOpen(true);
+	};
+
+	const handleConfirmGuestPayment = () => {
+		setExistingGuestModalOpen(false);
+		if (selectedPlan && selectedPixPriceId === selectedPlan.id) {
+			setIsPixModalOpen(true);
+		} else if (selectedPlan) {
+			handleCheckout(selectedPlan);
+		}
 	};
 
 	const handleGuestCheckout = async (e) => {
@@ -512,6 +548,42 @@ const Pricing = () => {
 									</button>
 								</div>
 							</form>
+						</div>
+					</div>
+				)}
+
+				{existingGuestModalOpen && (
+					<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+						<div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl relative animate-in fade-in zoom-in duration-200">
+							<h3 className="text-2xl font-black text-gray-900 mb-4 text-center">
+								Confirmar Vinculação
+							</h3>
+							<p className="text-gray-600 mb-6 text-center text-sm">
+								Os créditos adquiridos serão vinculados ao email <strong>{guestEmail}</strong>. 
+								Atualmente, o email vinculado possui <strong>{guestCredits}</strong> crédito(s).
+							</p>
+
+							<div className="flex flex-col gap-3 mt-6">
+								<button
+									onClick={handleConfirmGuestPayment}
+									disabled={!!loadingId}
+									className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-all shadow-md active:scale-95 disabled:opacity-50">
+									{loadingId ? "Processando..." : "Prosseguir"}
+								</button>
+								<button
+									onClick={() => {
+										setExistingGuestModalOpen(false);
+										setGuestModalOpen(true);
+									}}
+									className="w-full bg-indigo-50 text-indigo-700 font-bold py-3 rounded-xl hover:bg-indigo-100 transition-all border border-indigo-200">
+									Alterar email
+								</button>
+								<button
+									onClick={() => setExistingGuestModalOpen(false)}
+									className="w-full text-gray-500 hover:text-gray-700 text-sm py-2 font-medium underline">
+									Cancelar
+								</button>
+							</div>
 						</div>
 					</div>
 				)}
