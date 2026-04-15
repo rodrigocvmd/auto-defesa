@@ -558,9 +558,9 @@ const Pricing = () => {
 							<h3 className="text-2xl font-black text-gray-900 mb-4 text-center">
 								Confirmar Vinculação
 							</h3>
-							<p className="text-gray-600 mb-6 text-center text-sm">
+							<p id="guestCreditsModalP" className="text-gray-600 mb-6 text-center text-sm md:mx-3">
 								Os créditos adquiridos serão vinculados ao email <strong>{guestEmail}</strong>. 
-								Atualmente, o email vinculado possui <strong>{guestCredits}</strong> crédito(s).
+								Atualmente, o email vinculado possui <strong>{guestCredits} crédito(s)</strong>.
 							</p>
 
 							<div className="flex flex-col gap-3 mt-6">

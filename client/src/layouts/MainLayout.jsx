@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Shield, User, Menu, X, BookOpen, ChevronDown, ChevronUp, Info, Zap } from "lucide-react";
+import { Shield, User, Menu, X, BookOpen, ChevronDown, ChevronUp, Info, Zap, Coins } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { api } from "../services/api";
 import VerificationBanner from "../components/VerificationBanner";
@@ -20,15 +20,30 @@ const MainLayout = ({ children }) => {
 	const isHome = location.pathname === "/";
 	
 	const [guestCredits, setGuestCredits] = useState(0);
+	const [showGuestCredits, setShowGuestCredits] = useState(false);
 	const guestEmail = localStorage.getItem("guestEmail");
 
 	useEffect(() => {
 		if (!currentUser && guestEmail) {
 			api.getGuestCredits(guestEmail)
-				.then(setGuestCredits)
+				.then((credits) => {
+					setGuestCredits(credits);
+					if (credits > 0) {
+						setShowGuestCredits(true);
+					}
+				})
 				.catch(() => setGuestCredits(0));
 		}
 	}, [currentUser, guestEmail]);
+
+	useEffect(() => {
+		if (showGuestCredits) {
+			const timer = setTimeout(() => {
+				setShowGuestCredits(false);
+			}, 600000);
+			return () => clearTimeout(timer);
+		}
+	}, [showGuestCredits]);
 
 	useEffect(() => {
 		// After the first render where it might be shown, mark it as shown so it's supressed on next route changes
@@ -444,21 +459,25 @@ const MainLayout = ({ children }) => {
 			</main>
 
 			{/* Floating Guest Credits Indicator */}
-			{!currentUser && guestCredits > 0 && (
-				<Link 
+			{!currentUser && guestCredits > 0 && showGuestCredits && (
+				<div className="flex w-full justify-center">
+				<Link id="creditModalTemp"
 					to="/upload" 
-					className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-white border-2 border-green-500 p-3 rounded-2xl shadow-2xl hover:scale-105 transition-transform animate-in fade-in slide-in-from-bottom-4 duration-500 group"
+					className="fixed bottom-6 md:right-6 z-50 flex align-middle items-center gap-3 bg-white border-2 border-green-500 p-4 rounded-3xl shadow-2xl hover:scale-105 transition-all animate-in fade-in slide-in-from-bottom-4 duration-500 group"
 				>
-					<div className="bg-green-100 p-2.5 rounded-xl text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
-						<Zap size={24} className="fill-current" />
-					</div>
-					<div className="flex flex-col pr-2">
-						<span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Crédito Disponível</span>
-						<span className="text-sm font-black text-gray-900">
-							{guestCredits} <span className="font-medium text-gray-500 text-xs ml-1">no email {guestEmail?.split('@')[0]}</span>
+					<div className="flex flex-col gap-1 pr-2">
+						<span className="text-[12px] font-bold text-gray-500 uppercase tracking-wider">
+							Créditos disponíveis:
 						</span>
+						<div className="flex justify-around mx-auto gap-5 items-center">
+							<Coins size={20} className="text-green-600" />
+							<span id="guestCreditsInfo" className="text-xl font-black text-gray-900">
+								{guestCredits}
+							</span>
+						</div>
 					</div>
 				</Link>
+				</div>
 			)}
 
 			<CookieBanner />
