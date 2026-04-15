@@ -165,19 +165,17 @@ const Pricing = () => {
 		return plan;
 	});
 
-	const handleCheckout = async (plan) => {
-		if (!currentUser) {
+	const handleCheckout = async (plan, isConfirmed = false) => {
+		if (!currentUser && !isConfirmed) {
 			const storedEmail = localStorage.getItem("guestEmail");
 			if (storedEmail) {
 				setSelectedPlan(plan);
 				setExistingGuestModalOpen(true);
 				return;
 			}
-			if (!guestEmail) {
-				setSelectedPlan(plan);
-				setGuestModalOpen(true);
-				return;
-			}
+			setSelectedPlan(plan);
+			setGuestModalOpen(true);
+			return;
 		}
 
 		setLoadingId(plan.id);
@@ -202,8 +200,8 @@ const Pricing = () => {
 		}
 	};
 
-	const handleOpenPix = (priceId) => {
-		if (!currentUser) {
+	const handleOpenPix = (priceId, isConfirmed = false) => {
+		if (!currentUser && !isConfirmed) {
 			const storedEmail = localStorage.getItem("guestEmail");
 			const plan = PLANS.find(p => p.id === priceId);
 			if (storedEmail) {
@@ -211,11 +209,9 @@ const Pricing = () => {
 				setExistingGuestModalOpen(true);
 				return;
 			}
-			if (!guestEmail) {
-				setSelectedPlan(plan);
-				setGuestModalOpen(true);
-				return;
-			}
+			setSelectedPlan(plan);
+			setGuestModalOpen(true);
+			return;
 		}
 		setSelectedPixPriceId(priceId);
 		setIsPixModalOpen(true);
@@ -226,7 +222,7 @@ const Pricing = () => {
 		if (selectedPlan && selectedPixPriceId === selectedPlan.id) {
 			setIsPixModalOpen(true);
 		} else if (selectedPlan) {
-			handleCheckout(selectedPlan);
+			handleCheckout(selectedPlan, true);
 		}
 	};
 
@@ -246,7 +242,7 @@ const Pricing = () => {
 			return;
 		}
 
-		handleCheckout(selectedPlan);
+		handleCheckout(selectedPlan, true);
 	};
 
 	return (

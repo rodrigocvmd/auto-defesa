@@ -169,18 +169,18 @@ export const AnalysisStep = ({
 									Preencher Meus Dados Reais <PenTool size={20} className="hidden sm:block" />
 								</button>
 							</div>
-						) : (!currentUser && guestCredits === 0) ? (
+						) : !currentUser && guestCredits === 0 ? (
 							<div className="flex flex-col gap-3">
 								<p className="text-blue-100 text-md mb-2 font-medium">
 									Para gerar o documento final, crie uma conta ou adquira um crédito sem cadastro.
 								</p>
-									<div className="w-full flex justify-center px-1">
+								<div className="w-full flex justify-center px-1">
 									<button
 										onClick={() => {
 											setShowGuestCreditModal(true);
 										}}
 										className="w-full md:w-2/3 bg-white text-blue-600  font-bold py-3 rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
-										Adquirir crédito avulso
+										Adquirir ou Recuperar Créditos
 									</button>
 								</div>
 								<div className="w-full flex justify-center px-1">
@@ -200,8 +200,6 @@ export const AnalysisStep = ({
 										Salvar Análise e Criar Conta <User size={20} className="hidden sm:block" />
 									</button>
 								</div>
-
-							
 
 								<div className="w-full flex justify-center px-4">
 									<button
@@ -269,10 +267,10 @@ export const AnalysisStep = ({
 				</div>
 			</div>
 			{showGuestCreditModal && (
-				<GuestCreditModal 
-					onClose={() => setShowGuestCreditModal(false)} 
-					formData={formData} 
-					analysisData={analysisData} 
+				<GuestCreditModal
+					onClose={() => setShowGuestCreditModal(false)}
+					formData={formData}
+					analysisData={analysisData}
 				/>
 			)}
 		</div>
