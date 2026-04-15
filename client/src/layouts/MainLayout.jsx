@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Shield, User, Menu, X, BookOpen, ChevronDown, ChevronUp, Info, Zap, Coins } from "lucide-react";
+import {
+	Shield,
+	User,
+	Menu,
+	X,
+	BookOpen,
+	ChevronDown,
+	ChevronUp,
+	Info,
+	Zap,
+	Coins,
+} from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { api } from "../services/api";
 import VerificationBanner from "../components/VerificationBanner";
@@ -18,14 +29,15 @@ const MainLayout = ({ children }) => {
 	const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
 	const [isWarningVisible, setIsWarningVisible] = useState(!hasShownWarningInitially);
 	const isHome = location.pathname === "/";
-	
+
 	const [guestCredits, setGuestCredits] = useState(0);
 	const [showGuestCredits, setShowGuestCredits] = useState(false);
 	const guestEmail = localStorage.getItem("guestEmail");
 
 	useEffect(() => {
 		if (!currentUser && guestEmail) {
-			api.getGuestCredits(guestEmail)
+			api
+				.getGuestCredits(guestEmail)
 				.then((credits) => {
 					setGuestCredits(credits);
 					if (credits > 0) {
@@ -40,7 +52,7 @@ const MainLayout = ({ children }) => {
 		if (showGuestCredits) {
 			const timer = setTimeout(() => {
 				setShowGuestCredits(false);
-			}, 600000);
+			}, 7000);
 			return () => clearTimeout(timer);
 		}
 	}, [showGuestCredits]);
@@ -107,13 +119,13 @@ const MainLayout = ({ children }) => {
 							</div>
 
 							{!currentUser && guestCredits > 0 && (
-								<Link 
-									to="/upload" 
-									className="flex items-center gap-1.5 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full shadow-sm transition-colors animate-in fade-in duration-300" 
+								<Link
+									to="/upload"
+									className="flex items-center gap-1.5 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full shadow-sm transition-colors animate-in fade-in duration-300"
 									title={`Você tem ${guestCredits} crédito(s) vinculado(s) ao email ${guestEmail}`}>
-									<Zap size={14} className="text-green-600 fill-current animate-pulse" />
+									<Coins size={14} className="text-green-600 fill-current animate-pulse" />
 									<span className="text-xs font-bold text-green-700">
-										{guestCredits} <span className="hidden min-[400px]:inline">Crédito{guestCredits > 1 ? 's' : ''}</span>
+										{guestCredits}
 									</span>
 								</Link>
 							)}
@@ -461,22 +473,22 @@ const MainLayout = ({ children }) => {
 			{/* Floating Guest Credits Indicator */}
 			{!currentUser && guestCredits > 0 && showGuestCredits && (
 				<div className="flex w-full justify-center">
-				<Link id="creditModalTemp"
-					to="/upload" 
-					className="fixed bottom-6 md:right-6 z-50 flex align-middle items-center gap-3 bg-white border-2 border-green-500 p-4 rounded-3xl shadow-2xl hover:scale-105 transition-all animate-in fade-in slide-in-from-bottom-4 duration-500 group"
-				>
-					<div className="flex flex-col gap-1 pr-2">
-						<span className="text-[12px] font-bold text-gray-500 uppercase tracking-wider">
-							Créditos disponíveis:
-						</span>
-						<div className="flex justify-around mx-auto gap-5 items-center">
-							<Coins size={20} className="text-green-600" />
-							<span id="guestCreditsInfo" className="text-xl font-black text-gray-900">
-								{guestCredits}
+					<Link
+						id="creditModalTemp"
+						to="/upload"
+						className="fixed bottom-6 md:right-6 z-50 flex align-middle items-center gap-3 bg-white border-2 border-green-500 p-4 rounded-3xl shadow-2xl hover:scale-105 transition-all animate-in fade-in slide-in-from-bottom-4 duration-500 group">
+						<div className="flex flex-col gap-1 pr-2">
+							<span className="text-[12px] font-bold text-gray-500 uppercase tracking-wider">
+								Créditos disponíveis:
 							</span>
+							<div className="flex justify-around mx-auto gap-5 items-center">
+								<Coins size={20} className="text-green-600" />
+								<span id="guestCreditsInfo" className="text-xl font-black text-gray-900">
+									{guestCredits}
+								</span>
+							</div>
 						</div>
-					</div>
-				</Link>
+					</Link>
 				</div>
 			)}
 
