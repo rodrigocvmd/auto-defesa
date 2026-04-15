@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import { api } from "../../../services/api";
 
+import { GuestCreditModal } from "../components/modals/GuestCreditModal";
+
 export const AnalysisStep = ({
 	analysisData,
 	loading,
@@ -25,6 +27,7 @@ export const AnalysisStep = ({
 	const { currentUser, userData } = useAuth();
 	const navigate = useNavigate();
 	const [guestCredits, setGuestCredits] = useState(0);
+	const [showGuestCreditModal, setShowGuestCreditModal] = useState(false);
 
 	useEffect(() => {
 		const fetchGuestCredits = async () => {
@@ -174,15 +177,7 @@ export const AnalysisStep = ({
 									<div className="w-full flex justify-center px-1">
 									<button
 										onClick={() => {
-											localStorage.setItem(
-												"pendingDefenseData",
-												JSON.stringify({
-													formData,
-													analysisData,
-													source: "upload",
-												}),
-											);
-											navigate("/pricing?redirect=/upload/qualification");
+											setShowGuestCreditModal(true);
 										}}
 										className="w-full md:w-2/3 bg-white text-blue-600  font-bold py-3 rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
 										Adquirir crédito avulso
@@ -199,7 +194,7 @@ export const AnalysisStep = ({
 													source: "upload",
 												}),
 											);
-											navigate("/register?redirect=/upload");
+											navigate("/register?redirect=/upload/analysis");
 										}}
 										className="salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-bold py-4 px- rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2">
 										Salvar Análise e Criar Conta <User size={20} className="hidden sm:block" />
@@ -219,7 +214,7 @@ export const AnalysisStep = ({
 													source: "upload",
 												}),
 											);
-											navigate("/login?redirect=/upload");
+											navigate("/login?redirect=/upload/analysis");
 										}}
 										className="w-full md:w-2/3 bg-blue-500 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
 										Já tenho conta (Entrar)
@@ -273,6 +268,13 @@ export const AnalysisStep = ({
 					</div>
 				</div>
 			</div>
+			{showGuestCreditModal && (
+				<GuestCreditModal 
+					onClose={() => setShowGuestCreditModal(false)} 
+					formData={formData} 
+					analysisData={analysisData} 
+				/>
+			)}
 		</div>
 	);
 };

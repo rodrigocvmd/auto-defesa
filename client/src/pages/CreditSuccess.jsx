@@ -11,6 +11,7 @@ const CreditSuccess = () => {
 	const sessionId = searchParams.get("session_id");
 	const amount = searchParams.get("amount");
 	const planName = searchParams.get("plan");
+	const redirect = searchParams.get("redirect");
 
 	// test
 	useEffect(() => {
@@ -58,7 +59,7 @@ const CreditSuccess = () => {
 
 				<div className={`grid grid-cols-1 ${currentUser ? 'sm:grid-cols-2' : ''} gap-6 max-w-2xl mx-auto`}>
 					<Link
-						to="/upload"
+						to={redirect || "/upload"}
 						className="flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-2xl shadow-xl shadow-blue-200 transition-all active:scale-95 group order-1 sm:order-1">
 						<Upload className="w-6 h-6" />
 						<span>Gerar Recurso Agora</span>

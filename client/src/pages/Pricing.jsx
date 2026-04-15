@@ -164,12 +164,14 @@ const Pricing = () => {
 
 		setLoadingId(plan.id);
 		try {
+			const successUrl = `${window.location.origin}/credit-success?amount=${plan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(plan.name)}${redirect ? `&redirect=${encodeURIComponent(redirect)}` : ""}`;
+			
 			const response = await api.createPreference({
 				priceId: plan.id,
 				userId: currentUser?.uid,
 				credits: plan.credits,
 				guestEmail: guestEmail || currentUser?.email,
-				successUrl: `${window.location.origin}/credit-success?amount=${plan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(plan.name)}`,
+				successUrl: successUrl,
 			});
 
 			if (response.init_point) {
@@ -519,6 +521,7 @@ const Pricing = () => {
 					onClose={() => setIsPixModalOpen(false)}
 					priceId={selectedPixPriceId}
 					guestEmail={currentUser ? currentUser.email : guestEmail}
+					redirect={redirect}
 				/>
 			</div>
 		</MainLayout>

@@ -4,7 +4,7 @@ const { admin, db } = require("../services/firebase");
 /**
  * Limita requisições por IP (para usuários anônimos)
  */
-async function checkIpRateLimit(req, limitCount = 3, windowHours = 1) {
+async function checkIpRateLimit(req, limitCount = 25, windowHours = 1) {
 	// Tenta pegar o IP de forma mais robusta
 	let ip = req.headers["x-forwarded-for"] || req.headers["fastly-client-ip"] || req.ip || req.socket.remoteAddress;
 

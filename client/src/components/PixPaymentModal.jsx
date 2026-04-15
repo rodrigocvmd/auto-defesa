@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
-const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail }) => {
+const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => {
   const [loading, setLoading] = useState(true);
   const [qrCodeBase64, setQrCodeBase64] = useState('');
   const [qrCodeText, setQrCodeText] = useState('');
@@ -48,7 +48,8 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail }) => {
           if (res && res.status === 'paid') {
             clearInterval(interval);
             onClose();
-            navigate('/credit-success?success=true');
+            const successUrl = `/credit-success?success=true${redirect ? `&redirect=${encodeURIComponent(redirect)}` : ""}`;
+            navigate(successUrl);
           }
         } catch (e) {
           // Ignora erros de polling silenciosamente para não interromper a UX
@@ -58,7 +59,7 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail }) => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isOpen, paymentId, navigate, onClose]);
+  }, [isOpen, paymentId, navigate, onClose, redirect]);
 
   if (!isOpen) return null;
 
