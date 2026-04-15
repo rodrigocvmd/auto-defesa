@@ -47,7 +47,6 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => 
           const res = await api.checkPixPaymentStatus(paymentId);
           if (res && res.status === 'paid') {
             clearInterval(interval);
-            onClose();
             const successUrl = `/credit-success?success=true${redirect ? `&redirect=${encodeURIComponent(redirect)}` : ""}`;
             navigate(successUrl);
           }
@@ -59,7 +58,7 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isOpen, paymentId, navigate, onClose, redirect]);
+  }, [isOpen, paymentId, navigate, redirect]);
 
   if (!isOpen) return null;
 
