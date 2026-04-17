@@ -78,9 +78,9 @@ exports.createPreference = (req, res) => {
 					back_urls: {
 						success: finalSuccessUrl,
 						failure: finalCancelUrl,
-						pending: finalCancelUrl,
+						pending: finalSuccessUrl, // Alterado de finalCancelUrl para finalSuccessUrl
 					},
-					...(finalSuccessUrl.startsWith("https") ? { auto_return: "approved" } : {}),
+					auto_return: "approved", // Garantir auto_return approved (ou "all")
 					notification_url: "https://us-central1-auto-defesa.cloudfunctions.net/mercadopagoWebhook",
 					external_reference: externalReference,
 					metadata: {
