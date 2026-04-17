@@ -114,18 +114,11 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => 
 								<img
 									src={`data:image/png;base64,${qrCodeBase64}`}
 									alt="QR Code PIX"
-									className="w-64 h-64 object-contain"
+									className="w-48 h-48 md:w-64 md:h-64 object-contain"
 								/>
 								<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-white/50 pointer-events-none">
 									<img src="/logoMercadoPago.png" alt="Mercado Pago" className="h-8 object-contain" />
 								</div>
-							</div>
-
-							<div className="flex items-center justify-center gap-2 mb-4">
-								<img src="/logoMercadoPago.png" alt="Mercado Pago" className="h-5 object-contain" />
-								<p className="text-sm text-gray-500">
-									Pagamento processado pelo <strong>Mercado Pago</strong>
-								</p>
 							</div>
 
 							<p className="text-sm text-gray-500 mb-6 text-center px-4 leading-relaxed">
