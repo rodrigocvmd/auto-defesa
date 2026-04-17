@@ -118,12 +118,18 @@ const MainLayout = ({ children }) => {
 								</Link>
 							</div>
 
-							{!currentUser && guestCredits > 0 && (
+							{!currentUser && (
 								<Link
-									to="/upload"
+									to={guestCredits > 0 ? "/upload" : "/pricing"}
 									id="navBarCredits"
 									className="flex items-center gap-1.5 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full shadow-sm transition-colors animate-in fade-in duration-300"
-									title={`Você tem ${guestCredits} crédito(s) vinculado(s) ao email ${guestEmail}`}>
+									title={
+										guestCredits > 0
+											? `Você possui ${guestCredits} créditos vinculados ao email ${guestEmail}. Clique para iniciar a elaboração do Recurso`
+											: guestEmail
+												? `Você não possui créditos vinculados ao email ${guestEmail}. Clique para adquirir.`
+												: "Você não possui créditos. Clique para adquirir."
+									}>
 									<Coins size={14} className="text-green-600 fill-current animate-pulse" />
 									<span className="text-xs font-bold text-green-700">{guestCredits}</span>
 								</Link>
