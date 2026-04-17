@@ -69,6 +69,25 @@ exports.generateDefense = (req, res) => {
 		}
 
 		try {
+			// Limites diferenciados: Refinamentos são mais leves (Flash) e frequentes.
+			// Gerações iniciais são mais pesadas (Pro) e protegidas.
+			const limit = isRefinement ? 30 : 10;
+
+			if (userId && !isGuest) {
+				await checkUserRateLimit(userId, limit, 1);
+			} else if (isGuest) {
+				await checkIpRateLimit(req, limit, 1);
+			}
+		} catch (e) {
+			if (e.message === "RATE_LIMIT_EXCEEDED") {
+				const msg = isRefinement
+					? "Muitas solicitações de ajuste. Aguarde um pouco."
+					: "Muitas tentativas de geração. Aguarde uma hora para tentar novamente.";
+				return res.status(429).json({ error: msg });
+			}
+		}
+
+		try {
 			if (!isRefinement) {
 				await checkCredits(userId, isGuest, userEmail);
 			}
@@ -305,15 +324,15 @@ exports.extractDataFromImage = (req, res) => {
 
 		try {
 			if (userId) {
-				await checkUserRateLimit(userId, 200, 1);
+				await checkUserRateLimit(userId, 15, 1);
 			} else {
-				await checkIpRateLimit(req, 200, 1);
+				await checkIpRateLimit(req, 15, 1);
 			}
 		} catch (e) {
 			if (e.message === "RATE_LIMIT_EXCEEDED") {
-				return res
-					.status(429)
-					.json({ error: "Muitas tentativas. Aguarde um pouco antes de tentar novamente." });
+				return res.status(429).json({
+					error: "Muitas tentativas de extração de dados. Aguarde uma hora para tentar novamente.",
+				});
 			}
 		}
 
@@ -409,15 +428,15 @@ exports.preAnalyze = (req, res) => {
 
 		try {
 			if (userId) {
-				await checkUserRateLimit(userId, 50, 1);
+				await checkUserRateLimit(userId, 20, 1);
 			} else {
-				await checkIpRateLimit(req, 30, 1);
+				await checkIpRateLimit(req, 20, 1);
 			}
 		} catch (e) {
 			if (e.message === "RATE_LIMIT_EXCEEDED") {
-				return res
-					.status(429)
-					.json({ error: "Muitas tentativas. Aguarde um pouco ou faça login para continuar." });
+				return res.status(429).json({
+					error: "Muitas tentativas de análise. Aguarde uma hora ou faça login para continuar.",
+				});
 			}
 		}
 
@@ -510,6 +529,20 @@ exports.analyzeDocument = (req, res) => {
 			} else {
 				res.status(401).json({ error: "Usuário não autenticado." });
 				return;
+			}
+		}
+
+		try {
+			if (userId && !isGuest) {
+				await checkUserRateLimit(userId, 10, 1);
+			} else {
+				await checkIpRateLimit(req, 10, 1);
+			}
+		} catch (e) {
+			if (e.message === "RATE_LIMIT_EXCEEDED") {
+				return res
+					.status(429)
+					.json({ error: "Muitas tentativas de análise. Aguarde uma hora para tentar novamente." });
 			}
 		}
 
