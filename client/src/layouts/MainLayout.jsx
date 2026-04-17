@@ -129,14 +129,14 @@ const MainLayout = ({ children }) => {
 								</Link>
 							)}
 
-							{currentUser && userData?.credits > 0 && (
+							{currentUser && userData && (
 								<Link
 									to="/upload"
 									id="navBarUserCredits"
 									className="flex items-center gap-1.5 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full shadow-sm transition-colors animate-in fade-in duration-300"
-									title={`Você tem ${userData.credits} crédito(s) disponível(eis)`}>
+									title={`Você possui ${userData.credits || 0} créditos. Clique para iniciar a elaboração do Recurso`}>
 									<Coins size={14} className="text-green-600 fill-current animate-pulse" />
-									<span className="text-xs font-bold text-green-700">{userData.credits}</span>
+									<span className="text-xs font-bold text-green-700">{userData.credits || 0}</span>
 								</Link>
 							)}
 						</div>
