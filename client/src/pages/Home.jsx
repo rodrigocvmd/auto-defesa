@@ -25,6 +25,14 @@ import ScrollReveal from "../components/ScrollReveal";
 
 const Home = () => {
 	const [showArrow, setShowArrow] = useState(true);
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+	const landingImages = [
+		"/imagemLanding1.webp",
+		"/imagemLanding2.webp",
+		"/imagemLanding3.webp",
+		"/imagemLanding4.webp",
+	];
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -34,8 +42,17 @@ const Home = () => {
 		};
 
 		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
+
+		// Intervalo para trocar as imagens a cada 10 segundos
+		const interval = setInterval(() => {
+			setCurrentImageIndex((prevIndex) => (prevIndex + 1) % landingImages.length);
+		}, 10000);
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+			clearInterval(interval);
+		};
+	}, [landingImages.length]);
 
 	return (
 		<MainLayout>
@@ -138,20 +155,21 @@ const Home = () => {
 								{/* Soft backdrop for blending */}
 								<div className="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full opacity-20 blur-[80px] -z-10 transform scale-110"></div>
 
-								<div className="group relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500 hidden lg:block">
+								<div className="group relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500 hidden lg:block aspect-[3/4] max-h-[600px]">
 									{/* Shimmer Effect on Image - Slower and different angle */}
 									<div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-white/10 to-transparent w-full h-full animate-shimmer-slow pointer-events-none"></div>
 
-									<img
-										src="/imagemLanding.webp"
-										srcSet="/imagemLanding-SM.webp 600w, /imagemLanding.webp 1200w"
-										sizes="(max-width: 768px) 100vw, 50vw"
-										width="1200"
-										height="1600"
-										alt="Motorista segurando celular com recurso procedente"
-										className="w-full h-auto object-cover max-h-[500px] lg:max-h-[600px] rounded-[2.5rem] mix-blend-multiply"
-										fetchpriority="high"
-									/>
+									{landingImages.map((src, index) => (
+										<img
+											key={src}
+											src={src}
+											alt="Auto Defesa"
+											className={`absolute inset-0 w-full h-full object-cover rounded-[2.5rem] transition-opacity duration-1000 ease-in-out ${
+												index === currentImageIndex ? "opacity-100 z-0" : "opacity-0 -z-10"
+											}`}
+											fetchpriority={index === 0 ? "high" : "low"}
+										/>
+									))}
 								</div>
 							</div>
 						</div>
