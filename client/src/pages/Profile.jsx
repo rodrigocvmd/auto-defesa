@@ -420,7 +420,7 @@ export default function Profile() {
 							<Coins size={20} />
 							<span className="text-sm font-bold uppercase tracking-wider">Créditos</span>
 						</div>
-						<div className="text-3xl font-black text-gray-900 mb-2">{userData?.credits || 0}</div>
+						<div id="userCreditsInfo" className="text-3xl font-black text-gray-900 mb-2">{userData?.credits || 0}</div>
 						<Link
 							to="/pricing"
 							className="text-xs bg-blue-600 text-white px-4 py-1.5 rounded-full font-bold hover:bg-blue-700 transition-colors shadow-sm">

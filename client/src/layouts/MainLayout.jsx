@@ -24,7 +24,7 @@ let hasShownWarningInitially = false;
 const MainLayout = ({ children }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { currentUser } = useAuth();
+	const { currentUser, userData } = useAuth();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
 	const [isWarningVisible, setIsWarningVisible] = useState(!hasShownWarningInitially);
@@ -106,7 +106,7 @@ const MainLayout = ({ children }) => {
 									<Info size={10} className="-mt-0.5 opacity-70 group-hover/toggle:opacity-100" />
 								</button>
 
-								<Link to="/" className="flex items-center gap-2 group">
+								<Link id="navbarLogo" to="/" className="flex items-center gap-2 group">
 									<img
 										src="/fullIcon.png"
 										alt="Auto Defesa Logo"
@@ -126,6 +126,17 @@ const MainLayout = ({ children }) => {
 									title={`Você tem ${guestCredits} crédito(s) vinculado(s) ao email ${guestEmail}`}>
 									<Coins size={14} className="text-green-600 fill-current animate-pulse" />
 									<span className="text-xs font-bold text-green-700">{guestCredits}</span>
+								</Link>
+							)}
+
+							{currentUser && userData?.credits > 0 && (
+								<Link
+									to="/upload"
+									id="navBarUserCredits"
+									className="flex items-center gap-1.5 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full shadow-sm transition-colors animate-in fade-in duration-300"
+									title={`Você tem ${userData.credits} crédito(s) disponível(eis)`}>
+									<Coins size={14} className="text-green-600 fill-current animate-pulse" />
+									<span className="text-xs font-bold text-green-700">{userData.credits}</span>
 								</Link>
 							)}
 						</div>
