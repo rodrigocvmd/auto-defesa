@@ -21,7 +21,6 @@ const Pricing = () => {
 	const [selectedPlan, setSelectedPlan] = useState(null);
 	const [guestEmail, setGuestEmail] = useState("");
 	const [guestEmailError, setGuestEmailError] = useState("");
-	const [paymentMethod, setPaymentMethod] = useState(null); // 'card' ou 'pix'
 
 	const [isPixModalOpen, setIsPixModalOpen] = useState(false);
 	const [selectedPixPriceId, setSelectedPixPriceId] = useState(null);
@@ -29,7 +28,7 @@ const Pricing = () => {
 	const [timeLeft, setTimeLeft] = useState(null);
 	const [promoEnded, setPromoEnded] = useState(false);
 
-	const isDiscountRoute = location.pathname === "/pricing/discount";
+	const isDiscountRoute = location.pathname.includes("/pricing/discount");
 	const redirect = searchParams.get("redirect");
 
 	useEffect(() => {
@@ -167,7 +166,6 @@ const Pricing = () => {
 	});
 
 	const handleCheckout = async (plan, isConfirmed = false) => {
-		setPaymentMethod("card"); // Define intenção de Cartão
 		setSelectedPixPriceId(null);
 		if (!currentUser && !isConfirmed) {
 			const storedEmail = localStorage.getItem("guestEmail");
@@ -184,7 +182,7 @@ const Pricing = () => {
 		setLoadingId(plan.id);
 		try {
 			const successUrl = `${window.location.origin}/credit-success?amount=${plan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(plan.name)}${redirect ? `&redirect=${encodeURIComponent(redirect)}` : ""}`;
-
+			
 			const response = await api.createPreference({
 				priceId: plan.id,
 				userId: currentUser?.uid,
@@ -204,11 +202,10 @@ const Pricing = () => {
 	};
 
 	const handleOpenPix = (priceId, isConfirmed = false) => {
-		setPaymentMethod("pix"); // Define intenção de PIX
 		setSelectedPixPriceId(priceId);
 		if (!currentUser && !isConfirmed) {
 			const storedEmail = localStorage.getItem("guestEmail");
-			const plan = PLANS.find((p) => p.id === priceId);
+			const plan = PLANS.find(p => p.id === priceId);
 			if (storedEmail) {
 				setSelectedPlan(plan);
 				setExistingGuestModalOpen(true);
@@ -218,7 +215,6 @@ const Pricing = () => {
 			setGuestModalOpen(true);
 			return;
 		}
-		setSelectedPixPriceId(priceId);
 		setIsPixModalOpen(true);
 	};
 
@@ -240,7 +236,7 @@ const Pricing = () => {
 
 		setGuestEmailError("");
 		setGuestModalOpen(false);
-
+		
 		if (selectedPlan && !isPixModalOpen && selectedPixPriceId === selectedPlan.id) {
 			setIsPixModalOpen(true);
 			localStorage.setItem("guestEmail", guestEmail);
@@ -560,7 +556,7 @@ const Pricing = () => {
 								Confirmar Vinculação
 							</h3>
 							<p id="guestCreditsModalP" className="text-gray-600 mb-6 text-center text-sm md:mx-3">
-								Os créditos adquiridos serão vinculados ao email <strong>{guestEmail}</strong>.
+								Os créditos adquiridos serão vinculados ao email <strong>{guestEmail}</strong>. 
 								Atualmente, o email vinculado possui <strong>{guestCredits} crédito(s)</strong>.
 							</p>
 

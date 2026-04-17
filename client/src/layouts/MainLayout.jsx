@@ -120,8 +120,8 @@ const MainLayout = ({ children }) => {
 
 							{!currentUser && guestCredits > 0 && (
 								<Link
-									id="navBarCredits"
 									to="/upload"
+									id="navBarCredits"
 									className="flex items-center gap-1.5 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full shadow-sm transition-colors animate-in fade-in duration-300"
 									title={`Você tem ${guestCredits} crédito(s) vinculado(s) ao email ${guestEmail}`}>
 									<Coins size={14} className="text-green-600 fill-current animate-pulse" />
