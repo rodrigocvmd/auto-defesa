@@ -28,7 +28,7 @@ const Pricing = () => {
 	const [timeLeft, setTimeLeft] = useState(null);
 	const [promoEnded, setPromoEnded] = useState(false);
 
-	const isDiscountRoute = location.pathname === "/pricing/discount";
+	const isDiscountRoute = location.pathname.includes("/pricing/discount");
 	const redirect = searchParams.get("redirect");
 
 	useEffect(() => {
@@ -387,7 +387,7 @@ const Pricing = () => {
 												: "Pagar com Cartão"}
 									</button>
 
-									{!promoEnded && (
+									{(!isDiscountRoute || !promoEnded) && (
 										<button
 											onClick={() => {
 												setSelectedPixPriceId(plan.id);
