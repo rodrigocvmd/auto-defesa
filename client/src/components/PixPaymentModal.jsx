@@ -74,11 +74,11 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => 
 		<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
 			<div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-300">
 				<div className="p-6">
-					<div className="flex justify-between items-center mb-6">
+					<div className="relative flex items-center justify-center mb-6">
 						<h3 className="text-xl font-bold text-gray-900">Pagamento via PIX</h3>
 						<button
 							onClick={onClose}
-							className="text-gray-400 hover:text-gray-600 transition-colors">
+							className="absolute right-0 text-gray-400 hover:text-gray-600 transition-colors">
 							<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path
 									strokeLinecap="round"
@@ -88,6 +88,10 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => 
 								/>
 							</svg>
 						</button>
+					</div>
+
+					<div className="flex justify-center mb-6 -mt-4">
+						<img src="/logoMercadoPago.png" alt="Mercado Pago" className="h-6 object-contain opacity-80" />
 					</div>
 
 					{loading ? (
@@ -106,18 +110,26 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => 
 						</div>
 					) : (
 						<div className="flex flex-col items-center">
-							<div className="bg-gray-50 p-4 rounded-xl mb-6 shadow-inner border border-gray-100">
+							<div className="bg-gray-50 p-4 rounded-xl mb-4 shadow-inner border border-gray-100 relative group">
 								<img
 									src={`data:image/png;base64,${qrCodeBase64}`}
 									alt="QR Code PIX"
 									className="w-64 h-64 object-contain"
 								/>
+								<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-white/50 pointer-events-none">
+									<img src="/logoMercadoPago.png" alt="Mercado Pago" className="h-8 object-contain" />
+								</div>
 							</div>
-							<p className="text-sm text-gray-500 mb-4 text-center">
-								<strong>O pagamento é processado pelo Mercado Pago</strong>
-							</p>
-							<p className="text-sm text-gray-500 mb-4 text-center">
-								Aponte a câmera do seu banco para o QR Code acima ou copie o código abaixo.
+
+							<div className="flex items-center justify-center gap-2 mb-4">
+								<img src="/logoMercadoPago.png" alt="Mercado Pago" className="h-5 object-contain" />
+								<p className="text-sm text-gray-500">
+									Pagamento processado pelo <strong>Mercado Pago</strong>
+								</p>
+							</div>
+
+							<p className="text-sm text-gray-500 mb-6 text-center px-4 leading-relaxed">
+								Aponte a câmera do seu banco para o QR Code acima ou copie o código abaixo para pagar via PIX.
 							</p>
 
 							<div className="w-full space-y-3">
@@ -139,12 +151,6 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => 
 									</button>
 								</div>
 							</div>
-
-							<button
-								onClick={onClose}
-								className="mt-8 w-full border border-gray-200 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors">
-								Fechar e acompanhar pedido
-							</button>
 						</div>
 					)}
 				</div>
