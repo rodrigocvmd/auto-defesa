@@ -49,13 +49,19 @@ exports.generateDefense = (req, res) => {
 
 		let userId = null;
 		let isGuest = false;
+		let userEmail = null;
 
 		try {
 			userId = await verifyAuth(req);
+			const userDoc = await db.collection("users").doc(userId).get();
+			if (userDoc.exists) {
+				userEmail = userDoc.data().email;
+			}
 		} catch (e) {
 			if (clientIsGuest && !isRefinement) {
 				isGuest = true;
 				userId = guestEmail;
+				userEmail = guestEmail;
 			} else {
 				res.status(401).json({ error: "Usuário não autenticado." });
 				return;
@@ -64,7 +70,7 @@ exports.generateDefense = (req, res) => {
 
 		try {
 			if (!isRefinement) {
-				await checkCredits(userId, isGuest);
+				await checkCredits(userId, isGuest, userEmail);
 			}
 
 			const genAI = new GoogleGenerativeAI(apiKey);
@@ -266,7 +272,7 @@ exports.generateDefense = (req, res) => {
 				const docRef = await db.collection("defenses").add(defenseData);
 				defenseId = docRef.id;
 
-				await deductCredits(userId);
+				await deductCredits(userId, isGuest, userEmail);
 			}
 
 			res.status(200).json({
@@ -488,13 +494,19 @@ exports.analyzeDocument = (req, res) => {
 
 		let userId = null;
 		let isGuest = false;
+		let userEmail = null;
 
 		try {
 			userId = await verifyAuth(req);
+			const userDoc = await db.collection("users").doc(userId).get();
+			if (userDoc.exists) {
+				userEmail = userDoc.data().email;
+			}
 		} catch (e) {
 			if (clientIsGuest) {
 				isGuest = true;
 				userId = guestEmail;
+				userEmail = guestEmail;
 			} else {
 				res.status(401).json({ error: "Usuário não autenticado." });
 				return;
@@ -502,7 +514,7 @@ exports.analyzeDocument = (req, res) => {
 		}
 
 		try {
-			await checkCredits(userId, isGuest);
+			await checkCredits(userId, isGuest, userEmail);
 
 			const genAI = new GoogleGenerativeAI(apiKey);
 			const modelName = MODEL_PRO;
@@ -660,7 +672,7 @@ exports.analyzeDocument = (req, res) => {
 			const docRef = await db.collection("defenses").add(defenseData);
 			const defenseId = docRef.id;
 
-			await deductCredits(userId, isGuest);
+			await deductCredits(userId, isGuest, userEmail);
 
 			res.status(200).json({
 				success: true,

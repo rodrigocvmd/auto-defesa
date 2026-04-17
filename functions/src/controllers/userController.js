@@ -18,17 +18,37 @@ exports.getGuestCredits = async (req, res) => {
     }
 
     try {
-        const guestRef = db.collection("guest_credits").doc(email);
-        const doc = await guestRef.get();
+        let totalCredits = 0;
 
-        if (doc.exists) {
-            const data = doc.data();
-            res.status(200).json({ credits: data.credits || 0 });
-        } else {
-            res.status(200).json({ credits: 0 });
+        // 1. Verificar na coleção de convidados
+        const guestRef = db.collection("guest_credits").doc(email);
+        const guestDoc = await guestRef.get();
+        if (guestDoc.exists) {
+            totalCredits += (guestDoc.data().credits || 0);
         }
+
+        // 2. Verificar se existe um usuário cadastrado com esse email
+        // Primeiro tentamos via Auth para ter certeza do UID
+        try {
+            const userRecord = await admin.auth().getUserByEmail(email);
+            if (userRecord) {
+                const userRef = db.collection("users").doc(userRecord.uid);
+                const userDoc = await userRef.get();
+                if (userDoc.exists) {
+                    totalCredits += (userDoc.data().credits || 0);
+                }
+            }
+        } catch (authError) {
+            // Se não encontrar no Auth, tentamos busca direta no Firestore (caso o Auth falhe por algum motivo)
+            const userSnapshot = await db.collection("users").where("email", "==", email).limit(1).get();
+            if (!userSnapshot.empty) {
+                totalCredits += (userSnapshot.docs[0].data().credits || 0);
+            }
+        }
+
+        res.status(200).json({ credits: totalCredits });
     } catch (error) {
-        console.error("Erro ao verificar créditos do convidado:", error);
+        console.error("Erro ao verificar créditos:", error);
         res.status(500).json({ error: "Erro interno ao verificar créditos." });
     }
 };

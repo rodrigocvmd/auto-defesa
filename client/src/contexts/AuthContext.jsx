@@ -189,7 +189,20 @@ export function AuthProvider({ children }) {
                 // Subscribe to real-time updates
                 unsubscribeFirestoreRef.current = onSnapshot(userRef, async (docSnap) => {
                     if (docSnap.exists()) {
-                        setUserData(docSnap.data());
+                        const data = docSnap.data();
+                        
+                        // Busca créditos de convidado para somar ao total exibido
+                        try {
+                            const guestCredits = await api.getGuestCredits(user.email);
+                            // api.getGuestCredits já retorna a soma no backend, 
+                            // mas aqui queremos garantir que o frontend reflita o total correto.
+                            // Como o backend getGuestCredits agora soma ambos, podemos usá-lo diretamente
+                            // ou apenas confiar que ele retorna o total se o email bater.
+                            setUserData({ ...data, credits: guestCredits });
+                        } catch (e) {
+                            setUserData(data);
+                        }
+                        
                         dataLoadedRef.current = true; // Marcar como carregado
                     } else {
                         // Se os dados já foram carregados antes e agora sumiram, 

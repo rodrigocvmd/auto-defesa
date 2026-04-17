@@ -145,7 +145,7 @@ exports.createPixPayment = (req, res) => {
 						guestEmail: guestEmail || "",
 						credits: planInfo.credits,
 						planName: planInfo.name,
-					}
+					},
 				},
 			});
 
@@ -178,10 +178,10 @@ exports.checkPixPaymentStatus = (req, res) => {
 		try {
 			const { paymentId } = req.body;
 			if (!paymentId) return res.status(400).json({ error: "Sem paymentId fornecido." });
-			
+
 			const doc = await db.collection("pix_payments").doc(paymentId.toString()).get();
 			if (!doc.exists) return res.status(404).json({ error: "Pagamento não encontrado." });
-			
+
 			res.status(200).json({ status: doc.data().status });
 		} catch (e) {
 			console.error("Erro checkPixPaymentStatus:", e);
