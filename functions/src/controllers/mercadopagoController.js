@@ -292,6 +292,7 @@ exports.mercadopagoWebhook = async (req, res) => {
 						guestRef,
 						{
 							credits: currentCredits + credits,
+							email: normalizedEmail,
 							updatedAt: new Date().toISOString(),
 						},
 						{ merge: true },

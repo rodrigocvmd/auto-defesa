@@ -27,6 +27,7 @@ export const GuestCreditModal = ({ onClose, formData, analysisData }) => {
             })
         );
         localStorage.setItem("guestEmail", normalizedEmail);
+        window.dispatchEvent(new Event("guestEmailChanged"));
         navigate("/pricing?redirect=/upload/analysis");
     };
 
@@ -44,6 +45,7 @@ export const GuestCreditModal = ({ onClose, formData, analysisData }) => {
             const credits = await api.getGuestCredits(normalizedEmail);
             if (credits > 0) {
                 localStorage.setItem("guestEmail", normalizedEmail);
+                window.dispatchEvent(new Event("guestEmailChanged"));
                 // Redirects back or closes modal to trigger analysis state update
                 window.location.reload(); 
             } else {

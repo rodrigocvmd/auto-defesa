@@ -76,6 +76,7 @@ export const QualificacaoStep = ({
 			setGuestCredits(credits);
 			if (credits > 0) {
 				localStorage.setItem("guestEmail", normalizedEmail);
+				window.dispatchEvent(new Event("guestEmailChanged"));
 				setGuestEmailCheck(normalizedEmail);
 			} else {
 				setCheckError("Nenhum crédito encontrado para este email.");

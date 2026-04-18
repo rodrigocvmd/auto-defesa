@@ -1,6 +1,7 @@
 // Configuração da URL da API
 // Em dev (local), usa o emulador. Em produção, usa a variável de ambiente definida no build.
-import { auth } from '../firebaseConfig';
+import { auth, db } from '../firebaseConfig';
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 
 const IS_DEV = import.meta.env.DEV;
 const USE_EMULATOR = import.meta.env.VITE_USE_EMULATOR === 'true';
@@ -203,17 +204,38 @@ checkPixPaymentStatus: async (paymentId) => {
 // 5. Consultar Créditos de Convidado
 getGuestCredits: async (email) => {
   try {
-    const response = await fetch(`${BASE_URL}/getGuestCredits`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    if (!response.ok) throw new Error('Erro ao consultar créditos.');
-    const data = await response.json();
-    return data.credits || 0;
+    const normalizedEmail = (email || "").trim().toLowerCase();
+    if (!normalizedEmail) return 0;
+    
+    let totalCredits = 0;
+
+    // 1. Tentar ler diretamente do ID do documento
+    const guestRef = doc(db, "guest_credits", normalizedEmail);
+    const guestDoc = await getDoc(guestRef);
+    
+    if (guestDoc.exists()) {
+      totalCredits += guestDoc.data().credits || 0;
+    } else {
+      // 2. Fallback: buscar por campo email se o ID não bater
+      const guestQuery = query(collection(db, "guest_credits"), where("email", "==", normalizedEmail));
+      const guestSnapshot = await getDocs(guestQuery);
+      if (!guestSnapshot.empty) {
+        totalCredits += guestSnapshot.docs[0].data().credits || 0;
+      } else {
+        // 3. Fallback Legacy: varrer documentos (apenas para fallback extremo)
+        const allDocs = await getDocs(collection(db, "guest_credits"));
+        const legacyDoc = allDocs.docs.find(d => d.id.toLowerCase() === normalizedEmail);
+        if (legacyDoc) {
+          totalCredits += legacyDoc.data().credits || 0;
+        }
+      }
+    }
+
+    return totalCredits;
   } catch (error) {
-    console.error("Erro em getGuestCredits:", error);
-    return 0;
+    console.error("Erro ao consultar créditos diretamente no Firestore:", error);
+    // Throw error so UI doesn't reset to 0 improperly
+    throw error;
   }
 },
 

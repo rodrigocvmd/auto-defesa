@@ -194,7 +194,10 @@ const Pricing = () => {
 			});
 
 			if (response.init_point) {
-				if (normalizedEmail) localStorage.setItem("guestEmail", normalizedEmail);
+				if (normalizedEmail) {
+					localStorage.setItem("guestEmail", normalizedEmail);
+					window.dispatchEvent(new Event("guestEmailChanged"));
+				}
 				window.location.href = response.init_point;
 			}
 		} catch (error) {

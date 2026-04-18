@@ -32,7 +32,24 @@ const MainLayout = ({ children }) => {
 
 	const [guestCredits, setGuestCredits] = useState(0);
 	const [showGuestCredits, setShowGuestCredits] = useState(false);
-	const guestEmail = localStorage.getItem("guestEmail");
+	const [guestEmail, setGuestEmail] = useState(localStorage.getItem("guestEmail"));
+
+	useEffect(() => {
+		const handleStorageChange = () => {
+			const newEmail = localStorage.getItem("guestEmail");
+			setGuestEmail(newEmail);
+		};
+		window.addEventListener("storage", handleStorageChange);
+		window.addEventListener("guestEmailChanged", handleStorageChange);
+		return () => {
+			window.removeEventListener("storage", handleStorageChange);
+			window.removeEventListener("guestEmailChanged", handleStorageChange);
+		};
+	}, []);
+
+	useEffect(() => {
+		setGuestEmail(localStorage.getItem("guestEmail"));
+	}, [location.pathname]);
 
 	useEffect(() => {
 		const normalizedGuestEmail = (guestEmail || "").trim().toLowerCase();
@@ -40,12 +57,20 @@ const MainLayout = ({ children }) => {
 			api
 				.getGuestCredits(normalizedGuestEmail)
 				.then((credits) => {
+					console.log(`Créditos encontrados para ${normalizedGuestEmail}: ${credits}`);
 					setGuestCredits(credits);
 					if (credits > 0) {
 						setShowGuestCredits(true);
 					}
 				})
-				.catch(() => setGuestCredits(0));
+				.catch((err) => {
+					console.error("Erro ao carregar créditos de convidado:", err);
+					// Não resetar para 0 imediatamente em caso de erro de rede/rate limit
+					// para evitar que o usuário perca o acesso visual aos créditos se a API oscilar.
+				});
+		} else if (currentUser || !guestEmail) {
+			setGuestCredits(0);
+			setShowGuestCredits(false);
 		}
 	}, [currentUser, guestEmail]);
 

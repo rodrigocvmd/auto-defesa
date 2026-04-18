@@ -13,7 +13,17 @@ async function checkCredits(userId, isGuest = false, userEmail = null) {
 		const normalizedEmail = (userId || "").trim().toLowerCase();
 		const guestRef = db.collection("guest_credits").doc(normalizedEmail);
 		const doc = await guestRef.get();
-		totalCredits = doc.exists ? (doc.data().credits || 0) : 0;
+		
+		if (doc.exists) {
+			totalCredits = doc.data().credits || 0;
+		} else {
+			// Fallback: Busca caso o ID do documento não esteja em lowercase (legado)
+			const guestSnapshot = await db.collection("guest_credits").get();
+			const legacyDoc = guestSnapshot.docs.find(d => d.id.toLowerCase() === normalizedEmail);
+			if (legacyDoc) {
+				totalCredits = legacyDoc.data().credits || 0;
+			}
+		}
 	} else {
 		// Usuário registrado
 		const userRef = db.collection("users").doc(userId);
@@ -26,7 +36,17 @@ async function checkCredits(userId, isGuest = false, userEmail = null) {
 			const normalizedEmail = email.trim().toLowerCase();
 			const guestRef = db.collection("guest_credits").doc(normalizedEmail);
 			const guestDoc = await guestRef.get();
-			totalCredits += guestDoc.exists ? (guestDoc.data().credits || 0) : 0;
+			
+			if (guestDoc.exists) {
+				totalCredits += guestDoc.data().credits || 0;
+			} else {
+				// Fallback legado
+				const guestSnapshot = await db.collection("guest_credits").get();
+				const legacyDoc = guestSnapshot.docs.find(d => d.id.toLowerCase() === normalizedEmail);
+				if (legacyDoc) {
+					totalCredits += legacyDoc.data().credits || 0;
+				}
+			}
 		}
 	}
 	
@@ -42,43 +62,66 @@ async function checkCredits(userId, isGuest = false, userEmail = null) {
  * depois da coleção de guest_credits se necessário.
  */
 async function deductCredits(userId, isGuest = false, userEmail = null) {
-	await db.runTransaction(async (t) => {
-		if (isGuest) {
-			const normalizedEmail = (userId || "").trim().toLowerCase();
-			const guestRef = db.collection("guest_credits").doc(normalizedEmail);
-			const doc = await t.get(guestRef);
-			const credits = doc.exists ? (doc.data().credits || 0) : 0;
+	if (isGuest) {
+		const normalizedEmail = (userId || "").trim().toLowerCase();
+		let guestRef = db.collection("guest_credits").doc(normalizedEmail);
+		let guestDoc = await guestRef.get();
 
+		if (!guestDoc.exists) {
+			const guestSnapshot = await db.collection("guest_credits").get();
+			const legacyDoc = guestSnapshot.docs.find((d) => d.id.toLowerCase() === normalizedEmail);
+			if (legacyDoc) {
+				guestRef = legacyDoc.ref;
+				guestDoc = legacyDoc;
+			}
+		}
+
+		await db.runTransaction(async (t) => {
+			const doc = await t.get(guestRef);
+			const credits = doc.exists ? doc.data().credits || 0 : 0;
 			if (credits <= 0) throw new Error("Créditos insuficientes.");
 			t.update(guestRef, { credits: credits - 1 });
-		} else {
-			const userRef = db.collection("users").doc(userId);
+		});
+	} else {
+		const userRef = db.collection("users").doc(userId);
+		const userDocAtStart = await userRef.get();
+		const email = userEmail || (userDocAtStart.exists ? userDocAtStart.data().email : null);
+		let guestRef = null;
+
+		if (email) {
+			const normalizedEmail = email.trim().toLowerCase();
+			guestRef = db.collection("guest_credits").doc(normalizedEmail);
+			const guestDoc = await guestRef.get();
+			if (!guestDoc.exists) {
+				const guestSnapshot = await db.collection("guest_credits").get();
+				const legacyDoc = guestSnapshot.docs.find((d) => d.id.toLowerCase() === normalizedEmail);
+				if (legacyDoc) {
+					guestRef = legacyDoc.ref;
+				}
+			}
+		}
+
+		await db.runTransaction(async (t) => {
 			const userDoc = await t.get(userRef);
-			const userCredits = userDoc.exists ? (userDoc.data().credits || 0) : 0;
+			const userCredits = userDoc.exists ? userDoc.data().credits || 0 : 0;
 
-			const email = userEmail || (userDoc.exists ? userDoc.data().email : null);
 			let guestCredits = 0;
-			let guestRef = null;
-
-			if (email) {
-				const normalizedEmail = email.trim().toLowerCase();
-				guestRef = db.collection("guest_credits").doc(normalizedEmail);
-				const guestDoc = await t.get(guestRef);
-				guestCredits = guestDoc.exists ? (guestDoc.data().credits || 0) : 0;
+			if (guestRef) {
+				const gDoc = await t.get(guestRef);
+				guestCredits = gDoc.exists ? gDoc.data().credits || 0 : 0;
 			}
 
 			if (userCredits + guestCredits <= 0) {
 				throw new Error("Créditos insuficientes.");
 			}
 
-			// Lógica de dedução: Primeiro do usuário, depois do convidado
 			if (userCredits > 0) {
 				t.update(userRef, { credits: userCredits - 1 });
 			} else if (guestRef) {
 				t.update(guestRef, { credits: guestCredits - 1 });
 			}
-		}
-	});
+		});
+	}
 }
 
 async function deleteUnverifiedUsers() {

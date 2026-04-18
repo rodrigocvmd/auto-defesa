@@ -161,7 +161,7 @@ exports.stripeWebhook = async (req, res) => {
 						const newCredits = currentCredits + creditsToAdd;
 						t.set(
 							guestRef,
-							{ credits: newCredits, updatedAt: new Date().toISOString() },
+							{ credits: newCredits, email: normalizedEmail, updatedAt: new Date().toISOString() },
 							{ merge: true },
 						);
 					} else {
@@ -169,6 +169,7 @@ exports.stripeWebhook = async (req, res) => {
 							guestRef,
 							{
 								credits: creditsToAdd,
+								email: normalizedEmail,
 								createdAt: new Date().toISOString(),
 								updatedAt: new Date().toISOString(),
 							},

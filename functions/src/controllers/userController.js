@@ -12,14 +12,23 @@ exports.getGuestCredits = async (req, res) => {
 		return;
 	}
 
-	const email = (req.body?.email || "").trim().toLowerCase();
+	let body = req.body;
+	if (typeof body === "string") {
+		try {
+			body = JSON.parse(body);
+		} catch (e) {
+			// Não é JSON, talvez seja o próprio email se enviado como texto puro
+		}
+	}
+	const email = (body?.email || (typeof body === "string" ? body : "")).trim().toLowerCase();
 	if (!email) {
 		res.status(400).json({ error: "Email obrigatório." });
 		return;
 	}
 
 	try {
-		await checkIpRateLimit(req, 100, 1);
+		// Aumentado o limite para evitar bloqueios acidentais por loops no frontend (ex: useEffect)
+		await checkIpRateLimit(req, 5000, 1);
 	} catch (e) {
 		return res.status(429).json({ error: "Muitas consultas. Aguarde uma hora." });
 	}
@@ -32,6 +41,19 @@ exports.getGuestCredits = async (req, res) => {
 		const guestDoc = await guestRef.get();
 		if (guestDoc.exists) {
 			totalCredits += guestDoc.data().credits || 0;
+		} else {
+			// Fallback 1: Busca pelo campo 'email' (caso o ID não seja o email normalizado)
+			const emailQuery = await db.collection("guest_credits").where("email", "==", email).limit(1).get();
+			if (!emailQuery.empty) {
+				totalCredits += emailQuery.docs[0].data().credits || 0;
+			} else {
+				// Fallback 2: Busca manual case-insensitive no ID (legado pesado, mas seguro)
+				const guestSnapshot = await db.collection("guest_credits").get();
+				const legacyDoc = guestSnapshot.docs.find(doc => doc.id.toLowerCase() === email);
+				if (legacyDoc) {
+					totalCredits += legacyDoc.data().credits || 0;
+				}
+			}
 		}
 
 		// 2. Verificar se existe um usuário cadastrado com esse email
