@@ -81,7 +81,8 @@ export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) =
             reader.readAsDataURL(blob);
             const base64data = await base64Promise;
 
-            await api.sendDefensePdfEmail(base64data, fileName);
+            const guestEmail = localStorage.getItem("guestEmail");
+            await api.sendDefensePdfEmail(base64data, fileName, guestEmail);
             setEmailSuccess(true);
             return true;
         } catch (err) {

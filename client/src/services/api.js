@@ -100,8 +100,7 @@ export const api = {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) throw new Error('Erro na comunicação com o servidor');
-      return await response.json();
+      return await handleResponse(response);
     } catch (error) {
       console.error("API Call Error:", error);
       throw error;
@@ -118,11 +117,7 @@ export const api = {
         body: JSON.stringify({ image: fileBase64, mimeType, ...userData }),
       });
 
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.details || 'Erro ao processar documento');
-      }
-      return await response.json();
+      return await handleResponse(response);
     } catch (error) {
       console.error("Upload API Error:", error);
       throw error;
@@ -301,20 +296,16 @@ getGuestCredits: async (email) => {
   },
 
   // 10. Enviar PDF da Defesa por Email
-  sendDefensePdfEmail: async (pdfBase64, fileName) => {
+  sendDefensePdfEmail: async (pdfBase64, fileName, guestEmail) => {
     try {
       const headers = await getAuthHeaders();
       const response = await fetch(`${BASE_URL}/sendDefensePdfEmail`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ pdfBase64, fileName }),
+        body: JSON.stringify({ pdfBase64, fileName, guestEmail }),
       });
 
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.error || 'Erro ao enviar email com o PDF');
-      }
-      return await response.json();
+      return await handleResponse(response);
     } catch (error) {
       console.error("Send PDF Email Error:", error);
       throw error;
