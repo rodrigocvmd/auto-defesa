@@ -130,13 +130,28 @@ export default function Profile() {
 
 				// 3. Carregar histórico de defesas
 				const defensesRef = collection(db, "defenses");
-				const q = query(defensesRef, where("userId", "==", currentUser.uid));
+				const q1 = query(defensesRef, where("userId", "==", currentUser.uid));
+				const queries = [getDocs(q1)];
+				
+				if (currentUser.email) {
+					const normalizedEmail = currentUser.email.trim().toLowerCase();
+					const q2 = query(defensesRef, where("guestEmail", "==", normalizedEmail));
+					queries.push(getDocs(q2));
+				}
 
-				const querySnapshot = await getDocs(q);
-				const defensesList = querySnapshot.docs.map((doc) => ({
-					id: doc.id,
-					...doc.data(),
-				}));
+				const snapshots = await Promise.all(queries);
+				
+				const defensesMap = new Map();
+				snapshots.forEach(snapshot => {
+					snapshot.docs.forEach((doc) => {
+						defensesMap.set(doc.id, {
+							id: doc.id,
+							...doc.data(),
+						});
+					});
+				});
+
+				const defensesList = Array.from(defensesMap.values());
 
 				// Ordenar no cliente para evitar necessidade de índice composto
 				defensesList.sort((a, b) => {

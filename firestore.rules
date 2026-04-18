@@ -19,8 +19,8 @@ service cloud.firestore {
       // Permite criar se estiver autenticado e o userId no documento for o do usuário
       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
       
-      // Permite ler, atualizar e deletar apenas se o documento pertencer ao usuário
-      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      // Permite ler, atualizar e deletar apenas se o documento pertencer ao usuário ou se o email de convidado bater com o email do usuário
+      allow read, update, delete: if request.auth != null && (resource.data.userId == request.auth.uid || resource.data.guestEmail == request.auth.token.email);
     }
 
     // Regra para a coleção 'infracoes' (consulta pública de infrações)
