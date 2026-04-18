@@ -45,7 +45,12 @@ export const ResultStep = ({
 	const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
 	const [showProfileButton, setShowProfileButton] = useState(false);
 
-	const { handleGeneratePDF, handleSendEmail, loading: pdfLoading, emailSuccess } = usePdfGenerator(
+	const {
+		handleGeneratePDF,
+		handleSendEmail,
+		loading: pdfLoading,
+		emailSuccess,
+	} = usePdfGenerator(
 		result,
 		formData,
 		null, // Não mostramos o modal aqui, redirecionamos para o perfil
@@ -159,8 +164,8 @@ export const ResultStep = ({
 				/>
 			)}
 			{showDownloadSuccess && (
-				<DownloadSuccessModal 
-					onClose={() => setShowDownloadSuccess(false)} 
+				<DownloadSuccessModal
+					onClose={() => setShowDownloadSuccess(false)}
 					handleSendEmail={handleSendEmail}
 					emailSuccess={emailSuccess}
 				/>
@@ -432,8 +437,13 @@ export const ResultStep = ({
 								</p>
 								<ol className="list-decimal list-inside space-y-1">
 									<li>Leia o documento gerado com atenção.</li>
-									<li><strong>Descreva abaixo qualquer ajuste que quiser realizar</strong> ou eventual erro encontrado.</li>
-									<li>Clique em <strong>Aplicar Correções</strong>.</li>
+									<li>
+										<strong>Descreva abaixo qualquer ajuste que quiser realizar</strong> ou eventual
+										erro encontrado.
+									</li>
+									<li>
+										Clique em <strong>Aplicar Correções</strong>.
+									</li>
 								</ol>
 							</div>
 
@@ -449,9 +459,11 @@ export const ResultStep = ({
 									className="w-full p-3 rounded-xl border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
 									placeholder="Ex: Corrigir a data da infração para 12/05/2024..."
 								/>
-								<div className="flex justify-between items-center text-[10px] text-gray-500 px-1">
-									<span>Seja o mais específico posssível.</span>
-									<span>{refinementText.length}/500</span>
+								<div className="flex justify-between items-center text-[12px] text-gray-500 px-1 text-left">
+									<span className="mr-4">
+										Seja o mais específico possível, indicando o local na peça e o que quer alterar.
+									</span>
+									<span className="text-xs">{refinementText.length}/500</span>
 								</div>
 
 								<button
@@ -467,7 +479,7 @@ export const ResultStep = ({
 								</button>
 
 								<div className="text-center">
-									<span className="bg-gray-100 text-gray-600 text-[10px] px-3 py-1 rounded-full font-medium">
+									<span className="bg-gray-100 text-gray-600 text-[12px] px-3 py-1 rounded-full font-medium">
 										{refinementCount} revisões restantes
 									</span>
 								</div>
