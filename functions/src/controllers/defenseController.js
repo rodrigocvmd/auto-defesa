@@ -280,7 +280,9 @@ exports.generateDefense = (req, res) => {
 
 				const defenseData = {
 					userId: userId,
-					guestEmail: isGuest ? (data.guestEmail || "").trim().toLowerCase() : (userEmail || "").trim().toLowerCase(),
+					guestEmail: isGuest
+						? (data.guestEmail || "").trim().toLowerCase()
+						: (userEmail || "").trim().toLowerCase(),
 					infractionType: data.defenseType || "Análise de Upload",
 					licensePlate: data.plate || "",
 					defenseText: defenseText,
@@ -695,7 +697,9 @@ exports.analyzeDocument = (req, res) => {
 
 			const defenseData = {
 				userId: userId,
-				guestEmail: isGuest ? (guestEmail || "").trim().toLowerCase() : (userEmail || "").trim().toLowerCase(),
+				guestEmail: isGuest
+					? (guestEmail || "").trim().toLowerCase()
+					: (userEmail || "").trim().toLowerCase(),
 				infractionType: defenseTypeLabel,
 				licensePlate: userData.plate || "",
 				defenseText: defenseText,

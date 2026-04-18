@@ -231,12 +231,12 @@ export const ResultStep = ({
 				</div>
 			</div>
 
-			<div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+			<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 				<div
 					className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
 					<div
 						id="avisoPreview"
-						className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 mx-2 md:mx-4 !rounded-md flex flex-col gap-3">
+						className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 mx-2 md:ml-4 md:mr-0 !rounded-md flex flex-col gap-3">
 						<div className="flex gap-3 items-start">
 							<AlertCircle className="text-yellow-600 shrink-0 mt-0.5" size={20} />
 							<div>
@@ -260,7 +260,7 @@ export const ResultStep = ({
 						</div>
 					</div>
 
-					<div className="flex justify-center bg-gray-200/80  rounded-xl mx-2 md:mx-4 border border-gray-200 overflow-hidden relative min-h-screen md:py-7">
+					<div className="flex justify-center bg-gray-200/80  rounded-xl mx-2 md:ml-4 md:mr-0 border border-gray-200 overflow-hidden relative min-h-screen md:py-7">
 						<div id="defense-preview-content" className="print-content flex justify-center !w-full">
 							<style>{`
                                 /* Estilos do Documento A4 na Tela */
@@ -412,67 +412,62 @@ export const ResultStep = ({
 				</div>
 
 				{isRefining && (
-					<div className="lg:col-span-4 space-y-6 order-1 lg:order-2 animate-in slide-in-from-right-4 duration-300">
+					<div className="lg:col-span-4 space-y-6 order-1 lg:order-2 animate-in slide-in-from-right-4 duration-300 mr-3">
 						<div
 							id="aiFixesContainer"
-							className="bg-white border border-blue-100 p-6 rounded-2xl shadow-xl sticky top-40">
-							<div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
+							className="bg-white border border-blue-100 p-4 rounded-2xl shadow-xl lg:sticky lg:top-6">
+							<div className="flex items-center gap-3 mb-3 pb-3 border-b border-gray-100">
 								<div className="bg-blue-100 p-2 rounded-lg text-blue-600">
-									<PenTool size={24} />
+									<PenTool size={20} />
 								</div>
 								<div>
 									<h3 className="font-bold text-gray-900 leading-tight">Painel de Correção IA</h3>
-									<p className="text-xs text-gray-600">O seu assistente pessoal de Recursos.</p>
+									<p className="text-[10px] text-gray-600">O seu assistente pessoal de Recursos.</p>
 								</div>
 							</div>
 
-							<div className="bg-blue-50 rounded-xl p-4 mb-6 text-sm text-blue-800 leading-relaxed">
-								<p className="font-bold mb-2 flex items-center gap-2">
-									<Info size={16} /> Como utilizar:
+							<div className="bg-blue-50 rounded-xl p-3 mb-4 text-xs text-blue-800 leading-relaxed">
+								<p className="font-bold mb-1 flex items-center gap-2">
+									<Info size={14} /> Como utilizar:
 								</p>
-								<ol className="list-decimal list-inside space-y-2">
-									<li>Leia o documento ao lado.</li>
-									<li>
-										Identifique erros (ex: "A data está errada", "O modelo do carro é X", "Adicionar
-										lei Y").
-									</li>
-									<li>
-										Descreva o ajuste abaixo e clique em <strong>Aplicar Correções com IA</strong>.
-									</li>
+								<ol className="list-decimal list-inside space-y-1">
+									<li>Leia o documento gerado com atenção.</li>
+									<li><strong>Descreva abaixo qualquer ajuste que quiser realizar</strong> ou eventual erro encontrado.</li>
+									<li>Clique em <strong>Aplicar Correções</strong>.</li>
 								</ol>
 							</div>
 
-							<div className="space-y-4">
-								<label className="text-sm font-bold text-gray-700 block">
+							<div className="space-y-3">
+								<label className="text-xs font-bold text-gray-700 block">
 									O que precisa ser ajustado?
 								</label>
 								<textarea
 									value={refinementText}
 									onChange={(e) => setRefinementText(e.target.value)}
-									rows={6}
+									rows={4}
 									maxLength={500}
-									className="w-full p-4 rounded-xl border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-									placeholder="Ex: Corrigir a data da infração para 12/05/2024. Remover parte que menciona a velocidade da via. Adicionar parágrafo alegando falta de visibilidade da placa."
+									className="w-full p-3 rounded-xl border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+									placeholder="Ex: Corrigir a data da infração para 12/05/2024..."
 								/>
-								<div className="flex justify-between items-center text-xs text-gray-600 px-1">
-									<span>Seja específico nas instruções.</span>
-									<span>{refinementText.length}/500 caracteres</span>
+								<div className="flex justify-between items-center text-[10px] text-gray-500 px-1">
+									<span>Seja o mais específico posssível.</span>
+									<span>{refinementText.length}/500</span>
 								</div>
 
 								<button
 									onClick={handleRefinementSubmit}
 									disabled={!refinementText.trim() || refining || refinementCount <= 0}
-									className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${
+									className={`w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${
 										refinementCount <= 0
 											? "bg-gray-100 text-gray-600 cursor-not-allowed"
 											: "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 transform hover:-translate-y-0.5"
 									}`}>
-									{refining ? <Loader2 className="animate-spin" size={20} /> : <Send size={20} />}
-									{refining ? "Processando Correções..." : "Aplicar Correções com IA"}
+									{refining ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
+									{refining ? "Processando..." : "Aplicar Correções com IA"}
 								</button>
 
 								<div className="text-center">
-									<span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-medium">
+									<span className="bg-gray-100 text-gray-600 text-[10px] px-3 py-1 rounded-full font-medium">
 										{refinementCount} revisões restantes
 									</span>
 								</div>
