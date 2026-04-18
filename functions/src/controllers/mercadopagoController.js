@@ -257,7 +257,8 @@ exports.mercadopagoWebhook = async (req, res) => {
 					userRef = db.collection("users").doc(userId);
 					userDoc = await t.get(userRef);
 				} else if (guestEmail) {
-					guestRef = db.collection("guest_credits").doc(guestEmail);
+					const normalizedEmail = guestEmail.trim().toLowerCase();
+					guestRef = db.collection("guest_credits").doc(normalizedEmail);
 					guestDoc = await t.get(guestRef);
 				}
 
@@ -285,6 +286,7 @@ exports.mercadopagoWebhook = async (req, res) => {
 					t.set(userRef, { credits: currentCredits + credits }, { merge: true });
 					emailToSend = userDoc.exists ? userDoc.data().email : null;
 				} else if (guestEmail && guestRef) {
+					const normalizedEmail = guestEmail.trim().toLowerCase();
 					const currentCredits = guestDoc.exists ? guestDoc.data().credits || 0 : 0;
 					t.set(
 						guestRef,
@@ -294,7 +296,7 @@ exports.mercadopagoWebhook = async (req, res) => {
 						},
 						{ merge: true },
 					);
-					emailToSend = guestEmail;
+					emailToSend = normalizedEmail;
 				}
 			});
 

@@ -34,8 +34,9 @@ const Pricing = () => {
 	useEffect(() => {
 		const storedEmail = localStorage.getItem("guestEmail");
 		if (storedEmail) {
-			setGuestEmail(storedEmail);
-			api.getGuestCredits(storedEmail).then(setGuestCredits).catch(console.error);
+			const normalizedEmail = storedEmail.trim().toLowerCase();
+			setGuestEmail(normalizedEmail);
+			api.getGuestCredits(normalizedEmail).then(setGuestCredits).catch(console.error);
 		}
 	}, []);
 
@@ -183,16 +184,17 @@ const Pricing = () => {
 		try {
 			const successUrl = `${window.location.origin}/credit-success?amount=${plan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(plan.name)}${redirect ? `&redirect=${encodeURIComponent(redirect)}` : ""}`;
 			
+			const normalizedEmail = (guestEmail || "").trim().toLowerCase();
 			const response = await api.createPreference({
 				priceId: plan.id,
 				userId: currentUser?.uid,
 				credits: plan.credits,
-				guestEmail: guestEmail || currentUser?.email,
+				guestEmail: normalizedEmail || currentUser?.email,
 				successUrl: successUrl,
 			});
 
 			if (response.init_point) {
-				if (guestEmail) localStorage.setItem("guestEmail", guestEmail);
+				if (normalizedEmail) localStorage.setItem("guestEmail", normalizedEmail);
 				window.location.href = response.init_point;
 			}
 		} catch (error) {
@@ -234,12 +236,13 @@ const Pricing = () => {
 			return;
 		}
 
+		const normalizedEmail = (guestEmail || "").trim().toLowerCase();
 		setGuestEmailError("");
 		setGuestModalOpen(false);
 		
 		if (selectedPlan && !isPixModalOpen && selectedPixPriceId === selectedPlan.id) {
 			setIsPixModalOpen(true);
-			localStorage.setItem("guestEmail", guestEmail);
+			localStorage.setItem("guestEmail", normalizedEmail);
 			return;
 		}
 

@@ -34,8 +34,9 @@ export const AnalysisStep = ({
 			if (!currentUser) {
 				const guestEmail = localStorage.getItem("guestEmail");
 				if (guestEmail) {
+					const normalizedEmail = guestEmail.trim().toLowerCase();
 					try {
-						const credits = await api.getGuestCredits(guestEmail);
+						const credits = await api.getGuestCredits(normalizedEmail);
 						setGuestCredits(credits);
 					} catch (e) {
 						console.error("Failed to fetch guest credits", e);

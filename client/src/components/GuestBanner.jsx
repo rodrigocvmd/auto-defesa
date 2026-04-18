@@ -10,8 +10,9 @@ export default function GuestBanner() {
     const guestEmail = localStorage.getItem("guestEmail");
 
     useEffect(() => {
-        if (!currentUser && guestEmail) {
-            api.getGuestCredits(guestEmail).then(setCredits).catch(() => setCredits(0));
+        const normalizedEmail = (guestEmail || "").trim().toLowerCase();
+        if (!currentUser && normalizedEmail) {
+            api.getGuestCredits(normalizedEmail).then(setCredits).catch(() => setCredits(0));
         }
     }, [currentUser, guestEmail]);
 

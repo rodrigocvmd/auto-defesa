@@ -12,14 +12,14 @@ exports.getGuestCredits = async (req, res) => {
 		return;
 	}
 
-	const { email } = req.body || {};
+	const email = (req.body?.email || "").trim().toLowerCase();
 	if (!email) {
 		res.status(400).json({ error: "Email obrigatório." });
 		return;
 	}
 
 	try {
-		await checkIpRateLimit(req, 30, 1);
+		await checkIpRateLimit(req, 100, 1);
 	} catch (e) {
 		return res.status(429).json({ error: "Muitas consultas. Aguarde uma hora." });
 	}

@@ -48,10 +48,11 @@ export const QualificacaoStep = ({
 			// Guest mode check
 			const savedEmail = localStorage.getItem("guestEmail");
 			if (savedEmail) {
+				const normalizedEmail = savedEmail.trim().toLowerCase();
 				try {
-					const credits = await api.getGuestCredits(savedEmail);
+					const credits = await api.getGuestCredits(normalizedEmail);
 					setGuestCredits(credits);
-					setGuestEmailCheck(savedEmail);
+					setGuestEmailCheck(normalizedEmail);
 				} catch (e) {
 					console.error(e);
 				}
@@ -63,17 +64,19 @@ export const QualificacaoStep = ({
 
 	const handleVerifyGuest = async (e) => {
 		e.preventDefault();
-		if (!guestEmailCheck || !/^\S+@\S+\.\S+$/.test(guestEmailCheck)) {
+		const normalizedEmail = (guestEmailCheck || "").trim().toLowerCase();
+		if (!normalizedEmail || !/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
 			setCheckError("Email inválido.");
 			return;
 		}
 		setCheckError("");
 		setIsVerifying(true);
 		try {
-			const credits = await api.getGuestCredits(guestEmailCheck);
+			const credits = await api.getGuestCredits(normalizedEmail);
 			setGuestCredits(credits);
 			if (credits > 0) {
-				localStorage.setItem("guestEmail", guestEmailCheck);
+				localStorage.setItem("guestEmail", normalizedEmail);
+				setGuestEmailCheck(normalizedEmail);
 			} else {
 				setCheckError("Nenhum crédito encontrado para este email.");
 			}

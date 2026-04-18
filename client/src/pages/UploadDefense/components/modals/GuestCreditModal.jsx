@@ -11,7 +11,8 @@ export const GuestCreditModal = ({ onClose, formData, analysisData }) => {
     const [isVerifying, setIsVerifying] = useState(false);
 
     const handleProceed = () => {
-        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        const normalizedEmail = (email || "").trim().toLowerCase();
+        if (!normalizedEmail || !/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
             setEmailError('Por favor, insira um email válido.');
             return;
         }
@@ -25,12 +26,13 @@ export const GuestCreditModal = ({ onClose, formData, analysisData }) => {
                 source: "upload",
             })
         );
-        localStorage.setItem("guestEmail", email);
+        localStorage.setItem("guestEmail", normalizedEmail);
         navigate("/pricing?redirect=/upload/analysis");
     };
 
     const handleRecover = async () => {
-        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        const normalizedEmail = (email || "").trim().toLowerCase();
+        if (!normalizedEmail || !/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
             setEmailError('Por favor, insira um email válido para recuperar seus créditos.');
             return;
         }
@@ -39,9 +41,9 @@ export const GuestCreditModal = ({ onClose, formData, analysisData }) => {
         setIsVerifying(true);
 
         try {
-            const credits = await api.getGuestCredits(email);
+            const credits = await api.getGuestCredits(normalizedEmail);
             if (credits > 0) {
-                localStorage.setItem("guestEmail", email);
+                localStorage.setItem("guestEmail", normalizedEmail);
                 // Redirects back or closes modal to trigger analysis state update
                 window.location.reload(); 
             } else {

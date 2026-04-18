@@ -10,7 +10,8 @@ async function checkCredits(userId, isGuest = false, userEmail = null) {
 
 	if (isGuest) {
 		// userId aqui é o email do convidado
-		const guestRef = db.collection("guest_credits").doc(userId);
+		const normalizedEmail = (userId || "").trim().toLowerCase();
+		const guestRef = db.collection("guest_credits").doc(normalizedEmail);
 		const doc = await guestRef.get();
 		totalCredits = doc.exists ? (doc.data().credits || 0) : 0;
 	} else {
@@ -22,7 +23,8 @@ async function checkCredits(userId, isGuest = false, userEmail = null) {
 		// Também verifica se há créditos de convidado vinculados ao mesmo email
 		const email = userEmail || (userDoc.exists ? userDoc.data().email : null);
 		if (email) {
-			const guestRef = db.collection("guest_credits").doc(email);
+			const normalizedEmail = email.trim().toLowerCase();
+			const guestRef = db.collection("guest_credits").doc(normalizedEmail);
 			const guestDoc = await guestRef.get();
 			totalCredits += guestDoc.exists ? (guestDoc.data().credits || 0) : 0;
 		}
@@ -42,7 +44,8 @@ async function checkCredits(userId, isGuest = false, userEmail = null) {
 async function deductCredits(userId, isGuest = false, userEmail = null) {
 	await db.runTransaction(async (t) => {
 		if (isGuest) {
-			const guestRef = db.collection("guest_credits").doc(userId);
+			const normalizedEmail = (userId || "").trim().toLowerCase();
+			const guestRef = db.collection("guest_credits").doc(normalizedEmail);
 			const doc = await t.get(guestRef);
 			const credits = doc.exists ? (doc.data().credits || 0) : 0;
 
@@ -58,7 +61,8 @@ async function deductCredits(userId, isGuest = false, userEmail = null) {
 			let guestRef = null;
 
 			if (email) {
-				guestRef = db.collection("guest_credits").doc(email);
+				const normalizedEmail = email.trim().toLowerCase();
+				guestRef = db.collection("guest_credits").doc(normalizedEmail);
 				const guestDoc = await t.get(guestRef);
 				guestCredits = guestDoc.exists ? (guestDoc.data().credits || 0) : 0;
 			}
@@ -81,9 +85,6 @@ async function deleteUnverifiedUsers() {
     const now = new Date();
     const cutoffDate = new Date(now.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
 
-    // Note: Firestore doesn't support inequality filters on multiple fields easily without composite indexes.
-    // We will query by emailVerified == false and then filter by date in code to avoid index complexity for now,
-    // assuming the number of unverified users isn't massive. If it grows, add a compound query.
     const snapshot = await db.collection("users")
         .where("emailVerified", "==", false)
         .get();
@@ -94,14 +95,9 @@ async function deleteUnverifiedUsers() {
     for (const doc of snapshot.docs) {
         const userData = doc.data();
 
-        // NUNCA deletar usuários não-verificados se eles possuírem créditos pagos.
         if (userData.credits && userData.credits > 0) {
             continue;
         }
-
-        // Check if createdAt exists and is older than cutoff
-        // createdAt can be a Firestore Timestamp or a Date string depending on how it was saved.
-        // AuthContext saves as "new Date()", which Firestore converts to Timestamp.
         
         let createdAt;
         if (userData.createdAt && userData.createdAt.toDate) {
@@ -112,16 +108,13 @@ async function deleteUnverifiedUsers() {
 
         if (createdAt && createdAt < cutoffDate) {
             try {
-                // 1. Delete from Auth
                 await admin.auth().deleteUser(doc.id);
                 console.log(`Auth user ${doc.id} deleted.`);
 
-                // 2. Queue Firestore deletion
                 batch.delete(doc.ref);
                 deletedCount++;
             } catch (error) {
                 console.error(`Error deleting user ${doc.id}:`, error);
-                // If auth user not found (already deleted), we still delete from Firestore
                 if (error.code === 'auth/user-not-found') {
                     batch.delete(doc.ref);
                     deletedCount++;

@@ -192,14 +192,14 @@ export function AuthProvider({ children }) {
                         const data = docSnap.data();
                         
                         // Busca créditos de convidado para somar ao total exibido
+                        // Usamos Math.max para garantir que não vamos sobrescrever com 0 
+                        // caso a API falhe ou demore a sincronizar.
                         try {
-                            const guestCredits = await api.getGuestCredits(user.email);
-                            // api.getGuestCredits já retorna a soma no backend, 
-                            // mas aqui queremos garantir que o frontend reflita o total correto.
-                            // Como o backend getGuestCredits agora soma ambos, podemos usá-lo diretamente
-                            // ou apenas confiar que ele retorna o total se o email bater.
-                            setUserData({ ...data, credits: guestCredits });
+                            const totalCredits = await api.getGuestCredits(user.email);
+                            const finalCredits = Math.max(data.credits || 0, totalCredits);
+                            setUserData({ ...data, credits: finalCredits });
                         } catch (e) {
+                            console.error("Erro ao sincronizar créditos adicionais:", e);
                             setUserData(data);
                         }
                         

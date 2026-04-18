@@ -150,7 +150,8 @@ exports.stripeWebhook = async (req, res) => {
 			}
 		} else if (guestEmail) {
 			try {
-				const guestRef = db.collection("guest_credits").doc(guestEmail);
+				const normalizedEmail = guestEmail.trim().toLowerCase();
+				const guestRef = db.collection("guest_credits").doc(normalizedEmail);
 
 				await db.runTransaction(async (t) => {
 					const doc = await t.get(guestRef);
@@ -176,10 +177,10 @@ exports.stripeWebhook = async (req, res) => {
 					}
 				});
 
-				console.log(`🎉 Créditos de convidado adicionados para ${guestEmail}: +${creditsToAdd}`);
+				console.log(`🎉 Créditos de convidado adicionados para ${normalizedEmail}: +${creditsToAdd}`);
 
 				// Enviar email de confirmação para o convidado
-				await sendPurchaseConfirmation(guestEmail, creditsToAdd, planName);
+				await sendPurchaseConfirmation(normalizedEmail, creditsToAdd, planName);
 			} catch (error) {
 				console.error("❌ ERRO ao atualizar créditos de convidado no Firestore:", error);
 				return res.status(500).send("Erro interno ao atualizar créditos de convidado");

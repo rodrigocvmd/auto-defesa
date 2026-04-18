@@ -35,9 +35,10 @@ const MainLayout = ({ children }) => {
 	const guestEmail = localStorage.getItem("guestEmail");
 
 	useEffect(() => {
-		if (!currentUser && guestEmail) {
+		const normalizedGuestEmail = (guestEmail || "").trim().toLowerCase();
+		if (!currentUser && normalizedGuestEmail) {
 			api
-				.getGuestCredits(guestEmail)
+				.getGuestCredits(normalizedGuestEmail)
 				.then((credits) => {
 					setGuestCredits(credits);
 					if (credits > 0) {
