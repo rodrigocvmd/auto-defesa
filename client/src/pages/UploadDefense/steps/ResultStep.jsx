@@ -415,7 +415,7 @@ export const ResultStep = ({
 					<div className="lg:col-span-4 space-y-6 order-1 lg:order-2 animate-in slide-in-from-right-4 duration-300 mr-3">
 						<div
 							id="aiFixesContainer"
-							className="bg-white border border-blue-100 p-4 rounded-2xl shadow-xl lg:sticky lg:top-6">
+							className="bg-white border border-blue-100 p-4 rounded-2xl shadow-xl lg:sticky lg:top-24">
 							<div className="flex items-center gap-3 mb-3 pb-3 border-b border-gray-100">
 								<div className="bg-blue-100 p-2 rounded-lg text-blue-600">
 									<PenTool size={20} />
