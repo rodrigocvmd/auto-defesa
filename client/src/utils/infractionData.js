@@ -2,7 +2,8 @@ export const infractionData = {
 	"lei-seca": {
 		title: "Recurso de Multa por Lei Seca e Recusa (Art. 165 e 165-A)",
 		seoTitle: "Recurso Art. 165 e 165-A CTB: Defesa de Lei Seca e Recusa",
-		seoDescription: "Defesa técnica para multas de Lei Seca e Recusa ao bafômetro. Saiba como evitar a suspensão da CNH e anular a multa gravíssima de R$ 2.934,70.",
+		seoDescription:
+			"Defesa técnica para multas de Lei Seca e Recusa ao bafômetro. Saiba como evitar a suspensão da CNH e anular a multa gravíssima de R$ 2.934,70.",
 		description:
 			"A multa da Lei Seca é gravíssima e prevê suspensão da CNH por 12 meses. Nossa IA analisa tanto casos de teste positivo (Art. 165) quanto casos de recusa ao bafômetro (Art. 165-A), buscando falhas processuais e falta de provas materiais.",
 		faq: [
@@ -13,7 +14,7 @@ export const infractionData = {
 			},
 			{
 				q: "Recusar o bafômetro dá multa?",
-				a: "Sim, gera as mesmas penalidades. Mas a defesa técnica foca na falta de descrição dos sinais de embriaguez pelo agente.",
+				a: "Sim, gera as mesmas penalidades. Mas a defesa técnica foca em argumentos diversos como a falta de descrição dos sinais de embriaguez pelo agente e outros.",
 			},
 		],
 	},
@@ -35,7 +36,8 @@ export const infractionData = {
 	"excesso-velocidade": {
 		title: "Recurso de Multa por Excesso de Velocidade (Art. 218)",
 		seoTitle: "Recurso de Multa Art. 218 CTB: Excesso de Velocidade",
-		seoDescription: "Anule sua multa de excesso de velocidade (Art. 218 CTB). Defesa especializada para evitar pontos e suspensão da CNH por radar.",
+		seoDescription:
+			"Anule sua multa de excesso de velocidade (Art. 218 CTB). Defesa especializada para evitar pontos e suspensão da CNH por radar.",
 		description:
 			"Multas de radar podem suspender sua CNH dependendo da velocidade excedida. Verificamos a validade do equipamento (aferição do INMETRO), a sinalização da via e a correta notificação da infração.",
 		faq: [
