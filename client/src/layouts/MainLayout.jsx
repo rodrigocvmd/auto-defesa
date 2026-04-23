@@ -56,7 +56,8 @@ const MainLayout = ({ children }) => {
 		if (!currentUser && normalizedGuestEmail) {
 			api
 				.getGuestCredits(normalizedGuestEmail)
-				.then((credits) => {
+				.then((data) => {
+					const credits = data.credits;
 					console.log(`Créditos encontrados para ${normalizedGuestEmail}: ${credits}`);
 					setGuestCredits(credits);
 					if (credits > 0) {
