@@ -9,7 +9,7 @@ export const PhaseSelectionStep = ({ setFormData, setShowHelpModal }) => {
 		<div className="max-w-4xl mx-4 md:mx-auto py-10">
 			<header className="mb-4 md:mb-12 text-center">
 				<button
-					onClick={() => navigate("/upload")}
+					onClick={() => navigate("/upload?edit=true")}
 					className="inline-flex items-center text-gray-600 hover:text-blue-600 mb-6 transition-colors">
 					<ArrowLeft size={20} className="mr-1" /> Voltar
 				</button>

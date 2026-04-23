@@ -92,6 +92,16 @@ export const useDefenseLogic = (step) => {
 		}
 	}, [currentUser]);
 
+	// Redirecionar para análise se já houver dados de análise salvos e o usuário tentar acessar etapas iniciais
+	useEffect(() => {
+		const searchParams = new URLSearchParams(window.location.search);
+		const isEditing = searchParams.get("edit") === "true";
+
+		if ((step === "upload" || step === "form") && analysisData && !isEditing && !isTestMode && !result) {
+			navigate("/upload/analysis");
+		}
+	}, [step, analysisData, isTestMode, result, navigate]);
+
 	const isValidCPF = (cpf) => {
 		cpf = cpf.replace(/[^\d]+/g, "");
 		if (cpf === "" || cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;

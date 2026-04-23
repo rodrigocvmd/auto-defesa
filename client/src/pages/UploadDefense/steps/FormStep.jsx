@@ -97,7 +97,7 @@ export const FormStep = ({
 
 			<header className="mb-2 text-center flex flex-col items-center">
 				<button
-					onClick={() => navigate("/upload")}
+					onClick={() => navigate("/upload?edit=true")}
 					className="text-gray-600 hover:text-blue-600 flex items-center mb-4 transition-colors font-medium">
 					<ArrowLeft size={20} className="mr-1" /> Voltar
 				</button>

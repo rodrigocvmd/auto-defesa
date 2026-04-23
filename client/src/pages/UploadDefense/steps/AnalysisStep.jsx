@@ -259,7 +259,7 @@ export const AnalysisStep = ({
 					<div className="w-full flex justify-center px-4">
 						<div className="w-full flex justify-center">
 							<button
-								onClick={() => navigate("/upload/form")}
+								onClick={() => navigate("/upload/form?edit=true")}
 								className="w-full md:w-2/3 text-center text-gray-600 text-sm mt-8 hover:text-blue-600 hover:bg-blue-50/50 transition-all border border-gray-200 hover:border-blue-200 rounded-xl py-3 flex items-center justify-center gap-2 font-medium">
 								<ArrowLeft size={16} /> Voltar e editar dados da infração
 							</button>
