@@ -195,8 +195,8 @@ export function AuthProvider({ children }) {
                         // Usamos Math.max para garantir que não vamos sobrescrever com 0 
                         // caso a API falhe ou demore a sincronizar.
                         try {
-                            const totalCredits = await api.getGuestCredits(user.email);
-                            const finalCredits = Math.max(data.credits || 0, totalCredits);
+                            const guestData = await api.getGuestCredits(user.email);
+                            const finalCredits = Math.max(data.credits || 0, guestData.credits);
                             setUserData({ ...data, credits: finalCredits });
                         } catch (e) {
                             console.error("Erro ao sincronizar créditos adicionais:", e);

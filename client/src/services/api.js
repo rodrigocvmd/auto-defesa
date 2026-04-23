@@ -200,33 +200,47 @@ checkPixPaymentStatus: async (paymentId) => {
 getGuestCredits: async (email) => {
   try {
     const normalizedEmail = (email || "").trim().toLowerCase();
-    if (!normalizedEmail) return 0;
+    if (!normalizedEmail) return { credits: 0, createdAt: null };
     
     let totalCredits = 0;
+    let createdAt = null;
 
     // 1. Tentar ler diretamente do ID do documento
     const guestRef = doc(db, "guest_credits", normalizedEmail);
     const guestDoc = await getDoc(guestRef);
     
     if (guestDoc.exists()) {
-      totalCredits += guestDoc.data().credits || 0;
+      const data = guestDoc.data();
+      totalCredits += data.credits || 0;
+      createdAt = data.createdAt || data.updatedAt || null;
     } else {
       // 2. Fallback: buscar por campo email se o ID não bater
       const guestQuery = query(collection(db, "guest_credits"), where("email", "==", normalizedEmail));
       const guestSnapshot = await getDocs(guestQuery);
       if (!guestSnapshot.empty) {
-        totalCredits += guestSnapshot.docs[0].data().credits || 0;
+        const data = guestSnapshot.docs[0].data();
+        totalCredits += data.credits || 0;
+        createdAt = data.createdAt || data.updatedAt || null;
       } else {
         // 3. Fallback Legacy: varrer documentos (apenas para fallback extremo)
         const allDocs = await getDocs(collection(db, "guest_credits"));
         const legacyDoc = allDocs.docs.find(d => d.id.toLowerCase() === normalizedEmail);
         if (legacyDoc) {
-          totalCredits += legacyDoc.data().credits || 0;
+          const data = legacyDoc.data();
+          totalCredits += data.credits || 0;
+          createdAt = data.createdAt || data.updatedAt || null;
         }
       }
     }
 
-    return totalCredits;
+    // Converter Timestamp do Firestore para Date se necessário
+    if (createdAt && typeof createdAt.toDate === 'function') {
+      createdAt = createdAt.toDate();
+    } else if (createdAt) {
+      createdAt = new Date(createdAt);
+    }
+
+    return { credits: totalCredits, createdAt };
   } catch (error) {
     console.error("Erro ao consultar créditos diretamente no Firestore:", error);
     // Throw error so UI doesn't reset to 0 improperly

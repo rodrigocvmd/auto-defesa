@@ -225,7 +225,7 @@ export const ResultStep = ({
 								: "bg-blue-500 text-white hover:bg-blue-600 shadow-blue-200 shadow-md"
 						}`}>
 						{refining ? <Loader2 className="animate-spin" size={18} /> : <PenTool size={18} />}
-						{isRefining ? "Fechar Painel de Correção" : "Solicitar Correção via IA"}
+						{isRefining ? "Fechar Painel de Correção via IA" : "Solicitar Correção via IA"}
 					</button>
 
 					<button

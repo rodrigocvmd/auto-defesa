@@ -50,8 +50,8 @@ export const QualificacaoStep = ({
 			if (savedEmail) {
 				const normalizedEmail = savedEmail.trim().toLowerCase();
 				try {
-					const credits = await api.getGuestCredits(normalizedEmail);
-					setGuestCredits(credits);
+					const data = await api.getGuestCredits(normalizedEmail);
+					setGuestCredits(data.credits);
 					setGuestEmailCheck(normalizedEmail);
 				} catch (e) {
 					console.error(e);
@@ -72,7 +72,8 @@ export const QualificacaoStep = ({
 		setCheckError("");
 		setIsVerifying(true);
 		try {
-			const credits = await api.getGuestCredits(normalizedEmail);
+			const data = await api.getGuestCredits(normalizedEmail);
+			const credits = data.credits;
 			setGuestCredits(credits);
 			if (credits > 0) {
 				localStorage.setItem("guestEmail", normalizedEmail);

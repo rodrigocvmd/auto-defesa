@@ -42,8 +42,8 @@ export const GuestCreditModal = ({ onClose, formData, analysisData }) => {
         setIsVerifying(true);
 
         try {
-            const credits = await api.getGuestCredits(normalizedEmail);
-            if (credits > 0) {
+            const data = await api.getGuestCredits(normalizedEmail);
+            if (data.credits > 0) {
                 localStorage.setItem("guestEmail", normalizedEmail);
                 window.dispatchEvent(new Event("guestEmailChanged"));
                 // Redirects back or closes modal to trigger analysis state update

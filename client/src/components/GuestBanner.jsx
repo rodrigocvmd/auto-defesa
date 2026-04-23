@@ -12,7 +12,7 @@ export default function GuestBanner() {
     useEffect(() => {
         const normalizedEmail = (guestEmail || "").trim().toLowerCase();
         if (!currentUser && normalizedEmail) {
-            api.getGuestCredits(normalizedEmail).then(setCredits).catch(() => setCredits(0));
+            api.getGuestCredits(normalizedEmail).then(data => setCredits(data.credits)).catch(() => setCredits(0));
         }
     }, [currentUser, guestEmail]);
 

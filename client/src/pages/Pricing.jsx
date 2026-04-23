@@ -9,7 +9,7 @@ import ScrollReveal from "../components/ScrollReveal";
 import PixPaymentModal from "../components/PixPaymentModal";
 
 const Pricing = () => {
-	const { currentUser } = useAuth();
+	const { currentUser, userData } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [searchParams] = useSearchParams();
@@ -27,16 +27,37 @@ const Pricing = () => {
 
 	const [timeLeft, setTimeLeft] = useState(null);
 	const [promoEnded, setPromoEnded] = useState(false);
+	const [guestCreatedAt, setGuestCreatedAt] = useState(null);
 
 	const isDiscountRoute = location.pathname.includes("/pricing/discount");
 	const redirect = searchParams.get("redirect");
+
+	const isBeforeToday = (date) => {
+		if (!date) return false;
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		
+		let checkDate;
+		if (date && typeof date.toDate === "function") {
+			checkDate = date.toDate();
+		} else {
+			checkDate = new Date(date);
+		}
+		
+		return checkDate < today;
+	};
 
 	useEffect(() => {
 		const storedEmail = localStorage.getItem("guestEmail");
 		if (storedEmail) {
 			const normalizedEmail = storedEmail.trim().toLowerCase();
 			setGuestEmail(normalizedEmail);
-			api.getGuestCredits(normalizedEmail).then(setGuestCredits).catch(console.error);
+			api.getGuestCredits(normalizedEmail)
+				.then((data) => {
+					setGuestCredits(data.credits);
+					setGuestCreatedAt(data.createdAt);
+				})
+				.catch(console.error);
 		}
 	}, []);
 
@@ -53,7 +74,12 @@ const Pricing = () => {
 		const updateTimer = () => {
 			const now = Date.now();
 			const diff = endTime - now;
-			if (diff <= 0) {
+
+			// Nova lógica: se logado e criado antes de hoje, OU se guest e vinculado antes de hoje
+			const isOldUser = userData?.createdAt && isBeforeToday(userData.createdAt);
+			const isOldGuest = guestCreatedAt && isBeforeToday(guestCreatedAt);
+
+			if (diff <= 0 || isOldUser || isOldGuest) {
 				setTimeLeft({ h: "00", m: "00", s: "00" });
 				setPromoEnded(true);
 			} else {
@@ -68,7 +94,7 @@ const Pricing = () => {
 		updateTimer();
 		const interval = setInterval(updateTimer, 1000);
 		return () => clearInterval(interval);
-	}, []);
+	}, [userData, guestCreatedAt]);
 
 	// IMPORTANTE:
 	// O erro "No such price: 'prod_...'" ocorre porque você copiou o ID do PRODUTO (começa com prod_)
@@ -241,6 +267,22 @@ const Pricing = () => {
 
 		const normalizedEmail = (guestEmail || "").trim().toLowerCase();
 		setGuestEmailError("");
+		
+		setLoadingId("verifying");
+		try {
+			const data = await api.getGuestCredits(normalizedEmail);
+			setGuestCredits(data.credits);
+			setGuestCreatedAt(data.createdAt);
+			
+			if (isBeforeToday(data.createdAt) && isDiscountRoute) {
+				setLoadingId(null);
+				setGuestModalOpen(false);
+				return;
+			}
+		} catch (error) {
+			console.error("Erro ao verificar email:", error);
+		}
+		setLoadingId(null);
 		setGuestModalOpen(false);
 		
 		if (selectedPlan && !isPixModalOpen && selectedPixPriceId === selectedPlan.id) {
@@ -380,6 +422,7 @@ const Pricing = () => {
 
 								<div className="space-y-3">
 									<button
+										id="promoBtn"
 										onClick={() => handleCheckout(plan)}
 										disabled={!!loadingId || (isDiscountRoute && promoEnded)}
 										className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 ${
@@ -459,6 +502,7 @@ const Pricing = () => {
 									<button
 										onClick={() => navigate("/pricing/discount")}
 										disabled={promoEnded}
+										id="promoRouteBtn"
 										className={`w-full py-4 px-8 rounded-2xl font-black text-lg transition-all shadow-xl active:scale-95 flex justify-center items-center gap-2 ${promoEnded ? "bg-gray-500 text-gray-300 cursor-not-allowed border border-gray-400" : "bg-gradient-to-r from-yellow-400 to-yellow-300 text-yellow-900 hover:from-yellow-300 hover:to-yellow-200 border border-yellow-200 shadow-yellow-500/30 hover:shadow-yellow-500/50 hover:-translate-y-1"}`}>
 										{promoEnded ? (
 											"Fim da promoção"
