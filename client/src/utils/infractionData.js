@@ -149,12 +149,13 @@ export const infractionData = {
 		],
 	},
 	"geral": {
-		title: "Recurso de Multa de Trânsito com Inteligência Artificial",
+		alertTag: "⏳ Atenção: Não perca o prazo da sua defesa",
+		title: "Anule Sua Multa de Trânsito e Evite a Suspensão da CNH em Apenas 3 Minutos.",
 		seoTitle: "Recurso de Multa Online | Gerador com IA",
 		seoDescription:
 			"Evite a suspensão da sua CNH e pontos na carteira. Nossa IA analisa seu caso e gera uma defesa técnica fundamentada na legislação atualizada em até 3 minutos.",
 		description:
-			"Evite a suspensão da sua CNH e pontos na carteira. Nossa IA analisa seu caso e gera uma defesa técnica fundamentada na legislação atualizada em até 3 minutos.",
+			"O prazo para recorrer está correndo. Nossa Inteligência Artificial escaneia o Código de Trânsito e as resoluções do CONTRAN para encontrar brechas e erros na sua autuação, gerando uma defesa pronta para protocolo.",
 		ctaText: "Gerar Minha Defesa Agora",
 		benefits: [
 			"Pronto em 3 Minutos",
@@ -162,14 +163,56 @@ export const infractionData = {
 			"100% Online e Seguro",
 			"Sem Burocracia"
 		],
+		painPoints: [
+			{
+				icon: "AlertTriangle",
+				title: "Acúmulo de Pontos",
+				desc: "Pagar a multa é assumir a culpa. Os pontos vão direto para sua CNH e podem causar a suspensão do seu direito de dirigir."
+			},
+			{
+				icon: "Ban",
+				title: "Suspensão da CNH",
+				desc: "Ficar sem dirigir significa depender de aplicativo, perder a liberdade e até prejudicar o seu trabalho."
+			},
+			{
+				icon: "TrendingUp",
+				title: "Efeito Cascata",
+				desc: "Se você tem a PPD ou é motorista profissional (EAR), uma simples multa pode custar a sua carreira."
+			}
+		],
+		howItWorks: [
+			{
+				step: "1",
+				title: "Informe a Infração",
+				desc: "Preencha os dados básicos da multa que você recebeu. Leva menos de 1 minuto."
+			},
+			{
+				step: "2",
+				title: "Análise da IA",
+				desc: "Nossa tecnologia cruza as informações com o CTB atualizado e encontra as melhores brechas jurídicas."
+			},
+			{
+				step: "3",
+				title: "Receba o PDF",
+				desc: "Seu recurso técnico sai na hora, formatado e pronto para você imprimir e protocolar (ou enviar pelo site do Detran)."
+			}
+		],
 		faq: [
 			{
 				q: "A defesa gerada por IA é válida?",
-				a: "Sim, nossa Inteligência Artificial utiliza fundamentos técnicos da legislação atualizada (CTB e resoluções do CONTRAN) garantindo 100% de legalidade."
+				a: "Sim, nossa Inteligência Artificial utiliza fundamentos técnicos da legislação atualizada (CTB e resoluções do CONTRAN) garantindo 100% de legalidade. O formato gerado é o padrão exigido pelos órgãos de trânsito."
 			},
 			{
 				q: "Quanto tempo demora?",
-				a: "Menos de 3 minutos. O sistema gera seu recurso na hora, pronto para baixar e protocolar."
+				a: "Menos de 3 minutos. O sistema gera seu recurso na hora, pronto para baixar em formato PDF."
+			},
+			{
+				q: "Funciona para qualquer estado do Brasil?",
+				a: "Sim! O Código de Trânsito Brasileiro (CTB) é federal, portanto as regras de autuação e defesa são válidas para qualquer Detran, DER, PRF, DNIT ou prefeitura em todo o território nacional."
+			},
+			{
+				q: "E se eu já paguei a multa?",
+				a: "Mesmo que você já tenha pago (para aproveitar o desconto), você ainda tem o direito de recorrer para cancelar os pontos na sua CNH. Se você ganhar o recurso, o órgão é obrigado a devolver o valor pago."
 			}
 		],
 	},
