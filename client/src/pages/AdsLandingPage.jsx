@@ -23,12 +23,15 @@ const AdsLandingPage = () => {
 	}
 
 	const aggressiveTitle = `Recurso de Multa ${data.title.replace("Recurso de Multa ", "").replace("Multa ", "")} - Rápido e Profissional`;
+	
+	const seoTitle = data.seoTitle || aggressiveTitle;
+	const seoDesc = data.seoDescription || `Evite a suspensão da sua CNH! Defesa especializada para ${data.title}. Tecnologia de IA para identificar falhas técnicas e anular sua multa.`;
 
 	return (
 		<CleanLayout>
 			<SEO
-				title={aggressiveTitle}
-				description={`Evite a suspensão da sua CNH! Defesa especializada para ${data.title}. Tecnologia de IA para identificar falhas técnicas e anular sua multa.`}
+				title={seoTitle}
+				description={seoDesc}
 				keywords={`recurso multa, ${slug}, defesa cnh, anular multa`}
 			/>
 
@@ -44,11 +47,22 @@ const AdsLandingPage = () => {
 					<p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
 						{data.description}
 					</p>
+					
+					{data.benefits && (
+						<div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+							{data.benefits.map((benefit, idx) => (
+								<span key={idx} className="flex items-center gap-1 bg-green-50 text-green-700 px-3 py-1 rounded-full text-sm font-semibold border border-green-200">
+									<CheckCircle size={14} /> {benefit}
+								</span>
+							))}
+						</div>
+					)}
+
 					<div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
 						<Link
 							to="/upload"
 							className="w-full sm:w-auto bg-blue-600 text-white text-xl font-bold px-10 py-5 rounded-2xl shadow-2xl hover:bg-blue-700 hover:scale-105 transition-all flex items-center justify-center gap-2">
-							Começar Recurso Agora <ArrowRight size={24} />
+							{data.ctaText || "Começar Recurso Agora"} <ArrowRight size={24} />
 						</Link>
 						<p className="text-sm text-gray-500 flex items-center gap-1">
 							<Clock size={16} /> Leva menos de 2 minutos
@@ -117,7 +131,7 @@ const AdsLandingPage = () => {
 						<Link
 							to="/upload"
 							className="inline-flex bg-white text-gray-900 text-lg font-black px-12 py-5 rounded-2xl hover:bg-gray-100 transition-all shadow-xl">
-							Gerar Meu Recurso Agora
+							{data.ctaText || "Gerar Meu Recurso Agora"}
 						</Link>
 					</div>
 				</section>

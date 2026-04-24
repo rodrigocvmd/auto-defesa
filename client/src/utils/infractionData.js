@@ -148,4 +148,29 @@ export const infractionData = {
 			},
 		],
 	},
+	"geral": {
+		title: "Recurso de Multa de Trânsito com Inteligência Artificial",
+		seoTitle: "Recurso de Multa Online | Gerador com IA",
+		seoDescription:
+			"Evite a suspensão da sua CNH e pontos na carteira. Nossa IA analisa seu caso e gera uma defesa técnica fundamentada na legislação atualizada em até 3 minutos.",
+		description:
+			"Evite a suspensão da sua CNH e pontos na carteira. Nossa IA analisa seu caso e gera uma defesa técnica fundamentada na legislação atualizada em até 3 minutos.",
+		ctaText: "Gerar Minha Defesa Agora",
+		benefits: [
+			"Pronto em 3 Minutos",
+			"Base Legal Atualizada",
+			"100% Online e Seguro",
+			"Sem Burocracia"
+		],
+		faq: [
+			{
+				q: "A defesa gerada por IA é válida?",
+				a: "Sim, nossa Inteligência Artificial utiliza fundamentos técnicos da legislação atualizada (CTB e resoluções do CONTRAN) garantindo 100% de legalidade."
+			},
+			{
+				q: "Quanto tempo demora?",
+				a: "Menos de 3 minutos. O sistema gera seu recurso na hora, pronto para baixar e protocolar."
+			}
+		],
+	},
 };

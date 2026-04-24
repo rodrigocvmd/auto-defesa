@@ -13,9 +13,9 @@ const CreditSuccess = () => {
 	const planName = searchParams.get("plan");
 	const redirect = searchParams.get("redirect");
 
-	// test
 	useEffect(() => {
 		if (window.gtag && amount) {
+			// 1. Evento de compra geral (GA4) - Já existia
 			window.gtag("event", "purchase", {
 				transaction_id: sessionId || "",
 				value: parseFloat(amount),
@@ -29,7 +29,16 @@ const CreditSuccess = () => {
 					},
 				],
 			});
-			console.log("Purchase tracked:", { amount, sessionId, planName });
+
+			// 2. NOVO: Evento específico de conversão para o Google Ads
+			window.gtag("event", "conversion", {
+				send_to: "AW-18013866120/PQOpCPee_KEcEIiR141D",
+				value: parseFloat(amount),
+				currency: "BRL",
+				transaction_id: sessionId || "",
+			});
+
+			console.log("Purchase and Conversion tracked:", { amount, sessionId, planName });
 		}
 	}, [amount, sessionId, planName]);
 
@@ -57,7 +66,8 @@ const CreditSuccess = () => {
 						: "Seus créditos foram vinculados ao email informado na compra. Agora você já pode prosseguir para gerar seu recurso personalizado."}
 				</p>
 
-				<div className={`grid grid-cols-1 ${currentUser ? 'sm:grid-cols-2' : ''} gap-6 max-w-2xl mx-auto`}>
+				<div
+					className={`grid grid-cols-1 ${currentUser ? "sm:grid-cols-2" : ""} gap-6 max-w-2xl mx-auto`}>
 					<Link
 						to={redirect || "/upload"}
 						className="flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-2xl shadow-xl shadow-blue-200 transition-all active:scale-95 group order-1 sm:order-1">
