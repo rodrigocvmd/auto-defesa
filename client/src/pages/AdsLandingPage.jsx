@@ -77,10 +77,7 @@ const AdsLandingPage = () => {
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex justify-between items-center h-16">
 						{/* Logo */}
-						<div 
-							onClick={scrollToTop} 
-							className="flex items-center gap-2 cursor-pointer group"
-						>
+						<div onClick={scrollToTop} className="flex items-center gap-2 cursor-pointer group">
 							<img
 								src="/fullIcon.png"
 								alt="Auto Defesa Logo"
@@ -91,15 +88,26 @@ const AdsLandingPage = () => {
 							</span>
 						</div>
 
+						{/* Cadastro */}
+						<Link
+							to="/register"
+							className="group relative bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 md:px-6 md:py-2.5 rounded-xl font-black text-sm md:text-base transition-all shadow-lg hover:shadow-blue-200 hover:-translate-y-0.5 overflow-hidden">
+							<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-pulse"></div>
+							<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+							<span className="relative z-10">Cadastre-se</span>
+						</Link>
+
 						{/* CTA Header */}
-						<div>
+						{/* <div>
 							<button
 								onClick={scrollToCTA}
-								className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 md:px-6 md:py-2.5 rounded-xl font-bold text-sm md:text-base transition-all shadow-lg hover:shadow-blue-200 hover:-translate-y-0.5"
+								className="group relative bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 md:px-6 md:py-2.5 rounded-2xl font-black text-sm md:text-base transition-all shadow-lg hover:shadow-blue-200 hover:-translate-y-0.5 overflow-hidden"
 							>
-								Analisar Viabilidade (Grátis)
+								<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
+								<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+								<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
 							</button>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</header>
@@ -107,7 +115,9 @@ const AdsLandingPage = () => {
 			{/* BODY (BASEADO NA HOME.JSX) */}
 			<div className="flex flex-col pb-8">
 				{/* HERO SECTION */}
-				<section ref={heroRef} className="relative pt-1 mb-6 md:mb-0 overflow-hidden flex flex-col justify-center">
+				<section
+					ref={heroRef}
+					className="relative pt-1 mb-6 md:mb-0 overflow-hidden flex flex-col justify-center">
 					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/70 via-gray-50 to-white"></div>
 					<div className="absolute top-20 left-[-5%] w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[8000ms]"></div>
 					<div className="absolute bottom-20 right-[-5%] w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[10000ms]"></div>
@@ -137,6 +147,7 @@ const AdsLandingPage = () => {
 
 								<div className="flex flex-col items-center lg:items-center w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
 									<Link
+										id="mainCTABtn"
 										to="/upload"
 										className="group relative w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-black py-4 px-6 rounded-2xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] active:translate-y-0 flex items-center justify-center gap-3 overflow-hidden">
 										<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
@@ -351,6 +362,7 @@ const AdsLandingPage = () => {
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Resultado</span>
+
 											<span className="w-full items-center justify-center md:justify-end align-middle font-bold text-gray-800 flex gap-2">
 												<FileCheck size={18} className="text-blue-600" /> Pronto para Protocolar
 											</span>
@@ -358,8 +370,14 @@ const AdsLandingPage = () => {
 									</ul>
 									<Link
 										to="/upload"
-										className="mt-8 w-full block bg-gray-900 hover:bg-gray-800 text-white text-center font-bold py-4 rounded-xl transition-all">
-										Analisar Viabilidade (Grátis)
+										className="group relative mt-8 w-full flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white text-center font-black py-4 rounded-2xl transition-all shadow-[0_8px_30px_rgb(37,99,235,0.3)] hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] overflow-hidden">
+										<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
+										<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+										<Upload
+											size={20}
+											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
+										/>
+										<span className="relative px-3 py-2 text-lg z-10">Analisar Viabilidade (Grátis)</span>
 									</Link>
 								</div>
 							</ScrollReveal>
@@ -623,8 +641,15 @@ const AdsLandingPage = () => {
 								</p>
 								<Link
 									to="/upload"
-									className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-bold text-xl py-4 px-2 md:px-10 rounded-xl hover:bg-gray-800 transition-all hover:scale-105 shadow-lg">
-									Analisar Viabilidade (Grátis) <ArrowRight size={20} className="hidden md:block" />
+									className="group relative inline-flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white text-xl font-black py-4 px-6 md:px-10 rounded-2xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] overflow-hidden">
+									<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
+									<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+									<Upload
+										size={24}
+										className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
+									/>
+									<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
+									{/* <ArrowRight size={20} className="relative z-10 hidden md:block" /> */}
 								</Link>
 							</div>
 						</div>
@@ -656,7 +681,7 @@ const AdsLandingPage = () => {
 				</p>
 
 				<p className="text-sm text-gray-400 text-center">
-					Desenvolvido por RCM Software Studio | Contato:{" "}
+					Desenvolvido por Abax Labs | Contato:{" "}
 					<a href="mailto:suporte@meuautodefesa.com.br" className="hover:text-blue-600 underline">
 						suporte@meuautodefesa.com.br
 					</a>
@@ -671,8 +696,7 @@ const AdsLandingPage = () => {
 			<a
 				href="mailto:suporte@meuautodefesa.com.br"
 				className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 hover:bg-blue-700 transition-all active:scale-95 group"
-				title="Suporte por E-mail"
-			>
+				title="Suporte por E-mail">
 				<MessageCircle size={28} />
 				<span className="absolute right-full mr-3 bg-gray-900 text-white text-xs py-1.5 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
 					Dúvidas? Fale conosco

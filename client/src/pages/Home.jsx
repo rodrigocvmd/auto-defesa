@@ -323,8 +323,14 @@ const Home = () => {
 									</ul>
 									<Link
 										to="/upload"
-										className="mt-8 w-full block bg-gray-900 hover:bg-gray-800 text-white text-center font-bold py-4 rounded-xl transition-all">
-										Analisar Viabilidade (Grátis)
+										className="group relative mt-8 w-full flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white text-center font-black py-4 rounded-2xl transition-all shadow-[0_8px_30px_rgb(37,99,235,0.3)] hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] overflow-hidden">
+										<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
+										<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+										<Upload
+											size={20}
+											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
+										/>
+										<span className="relative z-10 px-3 py-2 text-lg">Analisar Viabilidade (Grátis)</span>
 									</Link>
 								</div>
 							</ScrollReveal>
@@ -588,8 +594,15 @@ const Home = () => {
 								</p>
 								<Link
 									to="/upload"
-									className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-bold text-xl py-4 px-2 md:px-10 rounded-xl hover:bg-gray-800 transition-all hover:scale-105 shadow-lg">
-									Analisar Viabilidade (Grátis) <ArrowRight size={20} className="hidden md:block" />
+									className="group relative inline-flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white text-xl font-black py-4 px-6 md:px-10 rounded-2xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] overflow-hidden">
+									<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
+									<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+									<Upload
+										size={24}
+										className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
+									/>
+									<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
+									{/* <ArrowRight size={20} className="relative z-10 hidden md:block" /> */}
 								</Link>
 							</div>
 						</div>

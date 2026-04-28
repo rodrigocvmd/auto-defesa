@@ -504,7 +504,7 @@ const MainLayout = ({ children }) => {
 					</p>
 
 					<p className="text-sm text-gray-400 mt-4 text-center">
-						Desenvolvido por RCM Software Studio | Contato:{" "}
+						Desenvolvido por Abax Labs | Contato:{" "}
 						<a href="mailto:suporte@meuautodefesa.com.br" className="hover:text-blue-600 underline">
 							suporte@meuautodefesa.com.br
 						</a>

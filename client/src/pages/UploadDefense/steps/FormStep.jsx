@@ -449,9 +449,15 @@ export const FormStep = ({
 
 					<button
 						type="submit"
-						className="w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-2xl hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 px-2"
+						className="group relative w-full max-w-xl bg-blue-600 text-white text-2xl font-black py-6 rounded-3xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] hover:bg-blue-700 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] active:translate-y-0 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 px-2 overflow-hidden flex items-center justify-center gap-4"
 						disabled={!consent}>
-						Analisar Viabilidade (Grátis)
+						<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
+						<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+						<Upload
+							size={28}
+							className="relative z-10 group-hover:-translate-y-1 transition-transform hidden md:block"
+						/>
+						<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
 					</button>
 
 					<div className="flex items-center justify-center text-center gap-4 text-gray-500 text-sm mt-2 px-4">
