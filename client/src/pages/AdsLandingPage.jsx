@@ -1,250 +1,684 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
-import CleanLayout from "../layouts/CleanLayout";
-import SEO from "../components/SEO";
-import { infractionData } from "../utils/infractionData";
-import { 
-	CheckCircle, 
-	ArrowRight, 
-	ShieldCheck, 
-	Zap, 
-	Clock, 
-	AlertTriangle, 
-	Ban, 
-	TrendingUp, 
-	FileText, 
-	Smartphone, 
-	Star 
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import {
+	Upload,
+	FileText,
+	ArrowRight,
+	CheckCircle,
+	Shield,
+	Clock,
+	DollarSign,
+	FileCheck,
+	Star,
+	StarHalf,
+	ChevronDown,
+	ChevronRight,
+	Scale,
+	AlertTriangle,
+	Zap,
+	BrainCircuit,
+	MessageCircle,
 } from "lucide-react";
+import SEO from "../components/SEO";
 import Testimonials from "../components/Testimonials";
-
-const ICON_MAP = {
-	AlertTriangle: AlertTriangle,
-	Ban: Ban,
-	TrendingUp: TrendingUp,
-	FileText: FileText,
-	Smartphone: Smartphone,
-	CheckCircle: CheckCircle,
-	ShieldCheck: ShieldCheck,
-	Zap: Zap
-};
+import ScrollReveal from "../components/ScrollReveal";
 
 const AdsLandingPage = () => {
-	const { slug } = useParams();
-	const data = infractionData[slug];
+	const [showArrow, setShowArrow] = useState(true);
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
+	const heroRef = useRef(null);
 
-	if (!data) {
-		return (
-			<CleanLayout>
-				<div className="text-center py-20 px-4">
-					<h1 className="text-2xl font-bold text-gray-800">Página não encontrada</h1>
-					<Link to="/" className="text-blue-600 mt-4 inline-block underline font-medium">
-						Voltar para o início
-					</Link>
-				</div>
-			</CleanLayout>
-		);
-	}
+	const landingImages = [
+		"/imagemLanding1.webp",
+		"/imagemLanding2.webp",
+		"/imagemLanding3.webp",
+		"/imagemLanding4.webp",
+	];
 
-	const aggressiveTitle = `Recurso de Multa ${data.title.replace("Recurso de Multa ", "").replace("Multa ", "")} - Rápido e Profissional`;
-	
-	const seoTitle = data.seoTitle || aggressiveTitle;
-	const seoDesc = data.seoDescription || `Evite a suspensão da sua CNH! Defesa especializada para ${data.title}. Tecnologia de IA para identificar falhas técnicas e anular sua multa.`;
+	useEffect(() => {
+		const handleScroll = () => {
+			if (window.scrollY > 20) {
+				setShowArrow(false);
+			}
+		};
+
+		window.addEventListener("scroll", handleScroll);
+
+		const interval = setInterval(() => {
+			setCurrentImageIndex((prevIndex) => (prevIndex + 1) % landingImages.length);
+		}, 10000);
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+			clearInterval(interval);
+		};
+	}, [landingImages.length]);
+
+	const scrollToTop = () => {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	};
+
+	const scrollToCTA = () => {
+		heroRef.current?.scrollIntoView({ behavior: "smooth" });
+	};
+
+	const ano = new Date().getFullYear();
 
 	return (
-		<CleanLayout>
+		<div className="min-h-screen bg-gray-50 flex flex-col font-sans">
 			<SEO
-				title={seoTitle}
-				description={seoDesc}
-				keywords={`recurso multa, ${slug}, defesa cnh, anular multa`}
+				title="Auto Defesa - Recursos de Trânsito com IA | Defesa Técnica em minutos"
+				description="Gere sua Defesa de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e fundamentado."
+				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, defesa de transito"
 			/>
 
-			<div className="space-y-0 bg-gray-50">
-				{/* Fold 1: Hero (Above the Fold) */}
-				<section className="text-center px-4 py-10 md:py-16 bg-gradient-to-b from-white to-gray-50 border-b border-gray-100">
-					<div className="max-w-4xl mx-auto space-y-6">
-						{data.alertTag && (
-							<div className="inline-flex items-center justify-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-bold border border-red-200 animate-pulse">
-								<Clock size={16} /> {data.alertTag}
-							</div>
-						)}
-						{!data.alertTag && (
-							<div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-bold">
-								<Zap size={16} /> Oportunidade: Recurso Gerado por IA Pro
-							</div>
-						)}
-
-						<h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight tracking-tight">
-							{data.title}
-						</h1>
-
-						<div className="flex items-center justify-center gap-2 text-yellow-500 pb-2">
-							<div className="flex">
-								{[...Array(5)].map((_, i) => (
-									<Star key={i} size={20} fill="currentColor" />
-								))}
-							</div>
-							<span className="text-gray-700 font-bold text-sm md:text-base">4.9/5 <span className="font-normal text-gray-500">(+1.200 recursos gerados)</span></span>
+			{/* HEADER LOCAL SIMPLIFICADO */}
+			<header className="sticky top-0 bg-white border-b border-gray-200 z-50">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="flex justify-between items-center h-16">
+						{/* Logo */}
+						<div 
+							onClick={scrollToTop} 
+							className="flex items-center gap-2 cursor-pointer group"
+						>
+							<img
+								src="/fullIcon.png"
+								alt="Auto Defesa Logo"
+								className="h-8 w-8 object-contain rounded-lg group-hover:opacity-90 transition-opacity"
+							/>
+							<span className="font-bold text-xl text-gray-900 tracking-tight">
+								Auto<span className="text-blue-600">Defesa</span>
+							</span>
 						</div>
 
-						<p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-							{data.description}
-						</p>
-						
-						{data.benefits && (
-							<div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 pt-4">
-								{data.benefits.map((benefit, idx) => (
-									<span key={idx} className="flex items-center justify-center w-full sm:w-auto gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-xl text-sm md:text-base font-semibold border border-green-200 shadow-sm">
-										<CheckCircle size={18} /> {benefit}
-									</span>
-								))}
-							</div>
-						)}
+						{/* CTA Header */}
+						<div>
+							<button
+								onClick={scrollToCTA}
+								className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 md:px-6 md:py-2.5 rounded-xl font-bold text-sm md:text-base transition-all shadow-lg hover:shadow-blue-200 hover:-translate-y-0.5"
+							>
+								Analisar Viabilidade (Grátis)
+							</button>
+						</div>
+					</div>
+				</div>
+			</header>
 
-						<div className="flex flex-col items-center justify-center gap-4 pt-8">
-							<Link
-								to="/upload"
-								className="w-full sm:w-auto bg-green-600 text-white text-xl md:text-2xl font-black px-8 py-5 rounded-2xl shadow-[0_8px_30px_rgb(22,163,74,0.3)] hover:bg-green-700 hover:scale-105 hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
-								{data.ctaText || "Começar Recurso Agora"} <ArrowRight size={28} />
-							</Link>
-							<p className="text-sm text-gray-500 flex items-center justify-center gap-1 font-medium">
-								<ShieldCheck size={16} className="text-green-600" /> Análise inicial 100% segura e sem compromisso
-							</p>
+			{/* BODY (BASEADO NA HOME.JSX) */}
+			<div className="flex flex-col pb-8">
+				{/* HERO SECTION */}
+				<section ref={heroRef} className="relative pt-1 mb-6 md:mb-0 overflow-hidden flex flex-col justify-center">
+					<div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/70 via-gray-50 to-white"></div>
+					<div className="absolute top-20 left-[-5%] w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[8000ms]"></div>
+					<div className="absolute bottom-20 right-[-5%] w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse duration-[10000ms]"></div>
+
+					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 md:mt-3">
+						<div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-center md:mt-4 !pb-5 md:!pb-0">
+							{/* Texto Hero */}
+							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0 mt-4 md:mt-2">
+								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-5 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
+									Elabore seu{" "}
+									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
+										Recurso
+									</span>{" "}
+									e cancele sua multa com <br className="hidden lg:block" />
+									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
+										Inteligência Artificial
+									</span>
+								</h1>
+
+								<p className="md:text-lg text-gray-600 mb-4 md:mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
+									Proteja seu direito de dirigir de forma técnica. Em <strong>2 minutos</strong>,
+									nossa IA identifica <strong>falhas formais</strong> e{" "}
+									<strong>vícios administrativos</strong> na sua autuação para fundamentar uma{" "}
+									<strong>Defesa Técnica Profissional</strong>. Aumente suas chances com argumentos
+									baseados na legislação atualizada.
+								</p>
+
+								<div className="flex flex-col items-center lg:items-center w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
+									<Link
+										to="/upload"
+										className="group relative w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-lg font-black py-4 px-6 rounded-2xl shadow-[0_8px_30px_rgb(37,99,235,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_40px_rgb(37,99,235,0.4)] active:translate-y-0 flex items-center justify-center gap-3 overflow-hidden">
+										<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
+										<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+										<Upload
+											size={24}
+											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
+										/>
+										<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
+									</Link>
+
+									<p className="text-[10px] md:text-xs text-gray-500 md:mt-2 text-center max-w-sm">
+										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
+										documento final em PDF tem um custo único a partir de R$ 4,79.
+									</p>
+
+									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-2 md:mt-4 !mx-20">
+										<div className="flex flex-col items-center gap-1">
+											<div className="flex items-center gap-0.5 text-yellow-400 mb-1">
+												<Star size={16} fill="currentColor" />
+												<Star size={16} fill="currentColor" />
+												<Star size={16} fill="currentColor" />
+												<Star size={16} fill="currentColor" />
+												<StarHalf size={16} fill="currentColor" />
+											</div>
+											<span className="!text-[12px] md:text-md text-center uppercase tracking-wider font-bold text-gray-400">
+												4.7 <br />
+												avaliação geral
+											</span>
+										</div>
+
+										<div className="flex flex-col items-center gap-1">
+											<div className="flex items-center -space-x-1 mb-1 text-blue-600">
+												<FileText size={18} className="drop-shadow-sm" />
+												<FileText size={18} className="drop-shadow-sm translate-y-0.5" />
+												<FileText size={18} className="drop-shadow-sm translate-y-1" />
+											</div>
+											<span className="!text-[12px] sm:text-xs text-center uppercase tracking-wider font-bold text-gray-400">
+												+500
+												<br />
+												defesas geradas
+											</span>
+										</div>
+									</div>
+
+									{showArrow && (
+										<div className="md:hidden flex flex-col items-center -mt-2 animate-bounce text-blue-500/60">
+											<ChevronDown size={24} />
+										</div>
+									)}
+								</div>
+							</div>
+
+							{/* Imagem Hero */}
+							<div className="hidden md:block lg:col-span-5 relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-400 mt-4 lg:mt-0 w-full max-w-[300px] sm:max-w-sm mx-auto lg:max-w-none justify-center lg:justify-end">
+								<div className="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full opacity-20 blur-[80px] -z-10 transform scale-110"></div>
+								<div className="group relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-transform hover:scale-[1.02] duration-500 hidden lg:block aspect-[3/4] max-h-[600px]">
+									<div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-white/10 to-transparent w-full h-full animate-shimmer-slow pointer-events-none"></div>
+									{landingImages.map((src, index) => (
+										<img
+											key={src}
+											src={src}
+											alt="Auto Defesa"
+											className={`absolute inset-0 w-full h-full object-cover rounded-[2.5rem] transition-opacity duration-1000 ease-in-out ${
+												index === currentImageIndex ? "opacity-100 z-0" : "opacity-0 -z-10"
+											}`}
+										/>
+									))}
+								</div>
+							</div>
 						</div>
 					</div>
 				</section>
 
-				{/* Fold 2: Agitação da Dor */}
-				{data.painPoints && (
-					<section className="py-12 md:py-20 bg-white">
-						<div className="max-w-5xl mx-auto px-4 space-y-10">
-							<div className="text-center space-y-4">
-								<h2 className="text-2xl md:text-4xl font-black text-gray-900">
-									O que acontece se você <span className="text-red-600">apenas pagar</span> a multa?
-								</h2>
-								<p className="text-gray-600 md:text-lg">Pagar a multa é confessar a infração. Veja as consequências reais:</p>
-							</div>
-							
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-								{data.painPoints.map((pain, idx) => {
-									const Icon = ICON_MAP[pain.icon] || AlertTriangle;
-									return (
-										<div key={idx} className="bg-red-50 border border-red-100 p-6 md:p-8 rounded-3xl relative overflow-hidden group hover:shadow-lg transition-all">
-											<div className="absolute top-0 right-0 w-32 h-32 bg-red-100 rounded-full -mr-16 -mt-16 opacity-50 group-hover:scale-150 transition-transform duration-500"></div>
-											<div className="relative z-10 space-y-4">
-												<div className="bg-red-100 text-red-600 w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm">
-													<Icon size={28} strokeWidth={2.5} />
-												</div>
-												<h3 className="text-xl font-bold text-gray-900">{pain.title}</h3>
-												<p className="text-gray-600 leading-relaxed">{pain.desc}</p>
-											</div>
-										</div>
-									);
-								})}
-							</div>
+				{/* COMO FUNCIONA */}
+				<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<ScrollReveal>
+						<div className="text-center mb-7">
+							<h2 className="text-3xl font-black text-gray-900 mt-2 mb-4 lg:mt-10">
+								Como funciona?
+							</h2>
+							<p className="text-gray-600 max-w-3xl mx-auto text-lg lg:text-xl">
+								Simplificamos a burocracia. Em poucos minutos você terá em mãos a fundamentação
+								técnica para o seu caso.
+							</p>
+						</div>
+					</ScrollReveal>
 
-							<div className="text-center pt-6">
-								<Link to="/upload" className="text-blue-600 font-bold hover:underline inline-flex items-center gap-1">
-									Não quero correr esse risco. Quero recorrer agora <ArrowRight size={16} />
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+						<ScrollReveal delay={100}>
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden h-full">
+								<div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-blue-50 rounded-full opacity-50 blur-2xl"></div>
+								<div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 font-bold text-2xl">
+									1
+								</div>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">Envie a Notificação</h3>
+								<p className="text-gray-600 leading-relaxed text-justify">
+									Envie o arquivo ou foto da multa ou ainda digite os dados manualmente. Nossa{" "}
+									<strong>tecnologia OCR</strong> lê as informações instantaneamente.
+								</p>
+							</div>
+						</ScrollReveal>
+
+						<ScrollReveal delay={200}>
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden h-full">
+								<div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-indigo-50 rounded-full opacity-50 blur-2xl"></div>
+								<div className="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 font-bold text-2xl">
+									2
+								</div>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">IA Analisa o Caso</h3>
+								<p className="text-gray-600 leading-relaxed text-justify">
+									O algoritmo verifica <strong>erros formais e materiais</strong> e busca as
+									melhores teses jurídicas na legislação para exercer seu direito de defesa.
+								</p>
+							</div>
+						</ScrollReveal>
+
+						<ScrollReveal delay={300}>
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden h-full">
+								<div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-green-50 rounded-full opacity-50 blur-2xl"></div>
+								<div className="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-6 font-bold text-2xl">
+									3
+								</div>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">Baixe e Protocole</h3>
+								<p className="text-gray-600 leading-relaxed text-justify">
+									Receba o <strong>documento completo em PDF</strong>. Basta imprimir ou assinar
+									digitalmente e enviar ou protocolar junto ao órgão autuador.
+								</p>
+							</div>
+						</ScrollReveal>
+					</div>
+				</section>
+
+				{/* VALOR / COMPARATIVO */}
+				<section className="bg-gray-900 rounded-[3rem] py-8 md:py-20 mx-4 sm:mx-8 text-white relative overflow-hidden mt-5 lg:mt-16">
+					<div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
+						<div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-500 rounded-full blur-[100px]"></div>
+						<div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-500 rounded-full blur-[100px]"></div>
+					</div>
+
+					<div className="max-w-6xl mx-auto px-6 lg:px-16 relative z-10">
+						<ScrollReveal>
+							<div className="text-center mb-16">
+								<h2 className="text-3xl md:text-4xl font-black mb-6">
+									Por que escolher o Auto Defesa?
+								</h2>
+								<p className="text-gray-300 max-w-3xl mx-auto text-lg">
+									Democratizamos o acesso à defesa de trânsito de qualidade. Compare e veja a
+									diferença:
+								</p>
+							</div>
+						</ScrollReveal>
+
+						<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+							{/* Card Lawyer */}
+							<ScrollReveal direction="left">
+								<div className="bg-white/5 backdrop-blur-sm rounded-3xl p-6 sm:p-8 border border-white/10 text-center">
+									<h3 className="text-xl font-bold text-gray-300 mb-6 flex items-center gap-2 justify-center">
+										<Shield size={20} /> Defesa Tradicional
+									</h3>
+									<ul className="space-y-4 text-gray-300">
+										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-1 sm:gap-0">
+											<span>Custo Médio</span>
+											<span className="font-bold text-white">R$ 350,00 - R$ 800,00</span>
+										</li>
+										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-1 sm:gap-0">
+											<span>Tempo de Espera</span>
+											<span className="font-bold text-white">&gt; 7 dias úteis</span>
+										</li>
+										<li className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
+											<span>Processo</span>
+											<span className="font-bold text-white">Burocrático e lento</span>
+										</li>
+									</ul>
+								</div>
+							</ScrollReveal>
+
+							{/* Card AutoDefesa */}
+							<ScrollReveal direction="right">
+								<div className="bg-white text-gray-900 rounded-3xl p-6 sm:p-8 border-4 border-blue-500 shadow-2xl relative transform lg:scale-110 text-center">
+									<div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-xs sm:text-sm font-bold shadow-lg whitespace-nowrap">
+										MELHOR ESCOLHA
+									</div>
+									<h3 className="text-2xl font-black text-gray-900 mb-6 flex justify-center items-center  gap-2">
+										<span className="text-blue-600">
+											<span className="text-gray-900">Auto</span>Defesa
+										</span>
+									</h3>
+									<ul className="space-y-4">
+										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
+											<span className="font-medium text-gray-600">Custo</span>
+											<span className="font-black text-green-600 text-lg mx-5 md:mx-0">
+												A partir de R$ 4,79 (no pacote)
+											</span>
+										</li>
+										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
+											<span className="font-medium text-gray-600">Tempo de Espera</span>
+											<div className=" flex">
+												<span className="w-full items-center justify-center align-middle font-bold text-blue-600 flex gap-2">
+													<Clock size={16} /> <p className="!text-gray-800">Pronto em 2 minutos</p>
+												</span>
+											</div>
+										</li>
+										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
+											<span className="font-medium text-gray-600">Qualidade</span>
+											<div className=" flex">
+												<span className="w-full items-center justify-center align-middle font-bold text-blue-600 flex gap-2">
+													<BrainCircuit size={16} />{" "}
+													<p className="!text-gray-800">IA Especializada em Trânsito</p>
+												</span>
+											</div>
+										</li>
+										<li className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
+											<span className="font-medium text-gray-600">Resultado</span>
+											<span className="w-full items-center justify-center md:justify-end align-middle font-bold text-gray-800 flex gap-2">
+												<FileCheck size={18} className="text-blue-600" /> Pronto para Protocolar
+											</span>
+										</li>
+									</ul>
+									<Link
+										to="/upload"
+										className="mt-8 w-full block bg-gray-900 hover:bg-gray-800 text-white text-center font-bold py-4 rounded-xl transition-all">
+										Analisar Viabilidade (Grátis)
+									</Link>
+								</div>
+							</ScrollReveal>
+						</div>
+					</div>
+				</section>
+
+				{/* FAQ SIMPLIFICADO */}
+				<section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:mt-5">
+					<ScrollReveal>
+						<div className="text-center mb-7">
+							<h2 className="text-3xl font-black text-gray-900 mt-12">Dúvidas Frequentes</h2>
+						</div>
+					</ScrollReveal>
+
+					<div className="grid gap-6">
+						<ScrollReveal delay={100}>
+							<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+								<h3 className="font-bold text-lg text-gray-900 mb-2">
+									O documento serve para qualquer estado?
+								</h3>
+								<p className="text-gray-600">
+									Sim. A legislação de trânsito (CTB) é federal. Nossa IA gera a defesa endereçada
+									corretamente para o órgão autuador de qualquer estado do Brasil.
+								</p>
+							</div>
+						</ScrollReveal>
+						<ScrollReveal delay={150}>
+							<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+								<h3 className="font-bold text-lg text-gray-900 mb-2">
+									Preciso contratar advogado depois?
+								</h3>
+								<p className="text-gray-600">
+									Não. O processo administrativo não exige advogado em nenhuma etapa. O documento
+									que geramos já vem com a fundamentação legal e técnica necessária. É só assinar e
+									entregar.
+								</p>
+							</div>
+						</ScrollReveal>
+						<ScrollReveal delay={200}>
+							<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+								<h3 className="font-bold text-lg text-gray-900 mb-2">
+									E se eu não souber o artigo da infração?
+								</h3>
+								<p className="text-gray-600">
+									Fique tranquilo. Ao fazer o upload da notificação, nossa IA identifica
+									automaticamente o artigo e materialidade da infração e os detalhes para montar a
+									melhor defesa técnica possível.
+								</p>
+							</div>
+						</ScrollReveal>
+						<ScrollReveal delay={250}>
+							<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+								<h3 className="font-bold text-lg text-gray-900 mb-2">
+									A defesa é personalizada para o meu caso?
+								</h3>
+								<p className="text-gray-600">
+									Sim. Diferente de modelos prontos da internet, nossa IA analisa os dados
+									específicos do seu auto de infração (horário, local, aferição do equipamento) para
+									encontrar nulidades reais que fundamentam sua defesa.
+								</p>
+							</div>
+						</ScrollReveal>
+						<ScrollReveal delay={300}>
+							<div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+								<h3 className="font-bold text-lg text-gray-900 mb-2">
+									Quanto tempo demora para receber o documento?
+								</h3>
+								<p className="text-gray-600">
+									O processo é instantâneo. Após a análise da IA, sua defesa em PDF é gerada em
+									menos de 2 minutos, pronta para você imprimir, assinar e protocolar.
+								</p>
+							</div>
+						</ScrollReveal>
+					</div>
+				</section>
+
+				{/* PROPOSTA DE VALOR / DIFERENCIAIS */}
+				<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+					<ScrollReveal>
+						<div className="text-center mb-16">
+							<span className="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-lg font-bold mb-8 inline-block">
+								Por que confiar no Auto Defesa?
+							</span>
+							<h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6">
+								Defesa Técnica com Inteligência Jurídica
+							</h2>
+							<p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+								Utilizamos tecnologia de ponta para analisar sua multa, identificando falhas
+								administrativas e garantindo o seu pleno direito de defesa.
+							</p>
+						</div>
+					</ScrollReveal>
+
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{/* Card 1 */}
+						<ScrollReveal delay={50}>
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-full">
+								<div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
+									<Shield size={24} />
+								</div>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">Rigor Legislativo</h3>
+								<p className="text-gray-600">
+									Nossa base de conhecimento é atualizada em tempo real com o CTB, resoluções do
+									CONTRAN e o Manual Brasileiro de Fiscalização de Trânsito.
+								</p>
+							</div>
+						</ScrollReveal>
+
+						{/* Card 2 */}
+						<ScrollReveal delay={100}>
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-full">
+								<div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-6">
+									<Scale size={24} />
+								</div>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">Foco em Nulidades</h3>
+								<p className="text-gray-600">
+									Buscamos erros de procedimento e vícios formais que, por lei, podem tornar o auto
+									de infração insubsistente por meio de defesa técnica.
+								</p>
+							</div>
+						</ScrollReveal>
+
+						{/* Card 3 */}
+						<ScrollReveal delay={150}>
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-full">
+								<div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 mb-6">
+									<FileCheck size={24} />
+								</div>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">Defesa Pronta para Uso</h3>
+								<p className="text-gray-600">
+									Ao detectar uma falha, geramos automaticamente o documento administrativo em PDF,
+									fundamentado e pronto para ser protocolado.
+								</p>
+							</div>
+						</ScrollReveal>
+
+						{/* Card 4 */}
+						<ScrollReveal delay={200}>
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-full">
+								<div className="w-12 h-12 bg-yellow-50 rounded-2xl flex items-center justify-center text-yellow-600 mb-6">
+									<AlertTriangle size={24} />
+								</div>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">Honestidade Jurídica</h3>
+								<p className="text-gray-600">
+									Não prometemos milagres. Oferecemos uma análise técnica real para que você possa
+									exercer seu direito de defesa com as melhores teses disponíveis.
+								</p>
+							</div>
+						</ScrollReveal>
+
+						{/* Card 5 */}
+						<ScrollReveal delay={250}>
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-full">
+								<div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
+									<Clock size={24} />
+								</div>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">Resposta Instantânea</h3>
+								<p className="text-gray-600">
+									Em poucos segundos, nossa IA processa os dados e indica o caminho técnico mais
+									viável para sua defesa de multa.
+								</p>
+							</div>
+						</ScrollReveal>
+
+						{/* Card 6 */}
+						<ScrollReveal delay={300}>
+							<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-full">
+								<div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-6">
+									<Zap size={24} />
+								</div>
+								<h3 className="text-xl font-bold text-gray-900 mb-3">Tecnologia de Ponta</h3>
+								<p className="text-gray-600">
+									Utilizamos OCR e visão computacional para ler sua multa automaticamente,
+									eliminando erros de digitação e agilizando o processo.
+								</p>
+							</div>
+						</ScrollReveal>
+					</div>
+				</section>
+
+				{/* NÚMEROS POSITIVOS */}
+				<section className="relative overflow-hidden">
+					<div className="absolute inset-0 -z-10 bg-gray-50/50"></div>
+					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent"></div>
+
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 pb-8 md:pb-0 snap-x snap-mandatory no-scrollbar">
+							<ScrollReveal delay={0} className="flex-none w-[280px] md:w-auto">
+								<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-transform duration-300 group snap-start transform-gpu will-change-transform h-full">
+									<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
+										<FileText size={24} />
+									</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+587</div>
+									<div className="text-gray-600 font-medium">Defesas Elaboradas</div>
+									<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
+								</div>
+							</ScrollReveal>
+
+							<ScrollReveal delay={100} className="flex-none w-[280px] md:w-auto">
+								<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-transform duration-300 group snap-start transform-gpu will-change-transform h-full">
+									<div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
+										<DollarSign size={24} />
+									</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
+										R$ 293
+									</div>
+									<div className="text-gray-600 font-medium">Economia Média p/ Usuário</div>
+									<div className="mt-4 h-1 w-12 bg-green-600 rounded-full"></div>
+								</div>
+							</ScrollReveal>
+
+							<ScrollReveal delay={200} className="flex-none w-[280px] md:w-auto">
+								<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-transform duration-300 group snap-start transform-gpu will-change-transform h-full">
+									<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
+										<Star size={24} fill="currentColor" />
+									</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">94%</div>
+									<div className="text-gray-600 font-medium">Satisfação dos Usuários</div>
+									<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
+								</div>
+							</ScrollReveal>
+
+							<ScrollReveal delay={300} className="flex-none w-[280px] md:w-auto">
+								<div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-transform duration-300 group snap-start transform-gpu will-change-transform h-full">
+									<div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
+										<Clock size={24} />
+									</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
+										&lt; 3min
+									</div>
+									<div className="text-gray-600 font-medium">Tempo Médio de Geração</div>
+									<div className="mt-4 h-1 w-12 bg-indigo-600 rounded-full"></div>
+								</div>
+							</ScrollReveal>
+						</div>
+
+						{/* Hint for mobile */}
+						<div className="text-center mt-2 text-gray-600 text-sm animate-pulse md:hidden">
+							Arraste para o lado e veja mais <ChevronRight size={14} className="inline" />
+						</div>
+					</div>
+				</section>
+
+				{/* AVALIAÇÕES */}
+				<ScrollReveal>
+					<Testimonials />
+				</ScrollReveal>
+
+				{/* CTA FINAL */}
+				<ScrollReveal>
+					<div className="text-center px-4 pt-5">
+						<div className="inline-block p-1 rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 shadow-2xl">
+							<div className="bg-white rounded-[1.3rem] px-8 py-12 md:px-16 md:py-10 max-w-4xl">
+								<h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+									Não deixe os pontos vencerem
+								</h2>
+								<p className="text-gray-600 text-lg mb-8 max-w-xl mx-auto">
+									Teste agora mesmo. A análise inicial de viabilidade é{" "}
+									<strong>100% gratuita</strong>.
+								</p>
+								<Link
+									to="/upload"
+									className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-bold text-xl py-4 px-2 md:px-10 rounded-xl hover:bg-gray-800 transition-all hover:scale-105 shadow-lg">
+									Analisar Viabilidade (Grátis) <ArrowRight size={20} className="hidden md:block" />
 								</Link>
 							</div>
 						</div>
-					</section>
-				)}
+					</div>
+				</ScrollReveal>
+			</div>
 
-				{/* Fold 3: Como Funciona (Método) */}
-				{data.howItWorks && (
-					<section className="py-12 md:py-20 bg-gray-900 text-white">
-						<div className="max-w-5xl mx-auto px-4 space-y-12">
-							<div className="text-center space-y-4">
-								<h2 className="text-2xl md:text-4xl font-black">
-									Como nossa IA anula sua multa em <span className="text-blue-400">3 passos</span>
-								</h2>
-								<p className="text-gray-400 md:text-lg">Sem burocracia, sem termos difíceis. Nós fazemos o trabalho duro.</p>
-							</div>
-
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-								{/* Conector Line (Desktop) */}
-								<div className="hidden md:block absolute top-12 left-[15%] right-[15%] h-0.5 bg-gradient-to-r from-blue-900 via-blue-500 to-blue-900 z-0"></div>
-								
-								{data.howItWorks.map((step, idx) => (
-									<div key={idx} className="relative z-10 flex flex-col items-center text-center space-y-4">
-										<div className="w-24 h-24 bg-gray-800 border-4 border-gray-900 outline outline-4 outline-blue-600/30 rounded-full flex items-center justify-center text-3xl font-black shadow-2xl">
-											{step.step}
-										</div>
-										<h3 className="text-xl font-bold text-white">{step.title}</h3>
-										<p className="text-gray-400 leading-relaxed max-w-xs">{step.desc}</p>
-									</div>
-								))}
-							</div>
-						</div>
-					</section>
-				)}
-
-				{/* Fold 4: Testimonials (Prova Social) */}
-				<div className="bg-white">
-					<Testimonials />
+			{/* FOOTER LOCAL MINIMALISTA */}
+			<footer className="border-t border-gray-100 pb-10 mt-12 bg-white flex flex-col items-center">
+				<div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-gray-600 mb-6 pt-10">
+					<Link to="/about" target="_blank" className="hover:text-blue-600 hover:underline">
+						Sobre Nós
+					</Link>
+					<Link to="/terms" target="_blank" className="hover:text-blue-600 hover:underline">
+						Termos de Uso
+					</Link>
+					<Link to="/privacy" target="_blank" className="hover:text-blue-600 hover:underline">
+						Privacidade
+					</Link>
 				</div>
 
-				{/* Fold 5: FAQ */}
-				<section className="py-12 md:py-20 bg-gray-50 border-t border-gray-100">
-					<div className="max-w-3xl mx-auto px-4 space-y-10">
-						<div className="text-center space-y-4">
-							<h2 className="text-2xl md:text-4xl font-black text-gray-900">Ainda tem dúvidas?</h2>
-							<p className="text-gray-600 md:text-lg">Tudo o que você precisa saber antes de gerar seu recurso.</p>
-						</div>
-						
-						<div className="space-y-4">
-							{data.faq.map((item, idx) => (
-								<div key={idx} className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-									<h4 className="text-lg md:text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-										<div className="min-w-[8px] h-2 bg-blue-600 rounded-full mt-2.5"></div>
-										{item.q}
-									</h4>
-									<p className="text-gray-600 leading-relaxed pl-5">{item.a}</p>
-								</div>
-							))}
-						</div>
-					</div>
-				</section>
+				<p className="text-[10px] md:text-xs text-gray-500 max-w-4xl mx-4 text-center mb-4 leading-relaxed">
+					<strong>Aviso Legal:</strong> O Auto Defesa - Recursos de Trânsito é um assistente
+					jurídico automatizado desenvolvido pela iniciativa privada. Não representamos o DETRAN,
+					CONTRAN ou qualquer órgão público. O uso da plataforma serve para auxiliar na elaboração
+					de defesas administrativas com base na lei (CTB), mas não garante o deferimento dos
+					recursos, que depende da análise dos órgãos julgadores. Seus dados são processados de
+					acordo com a LGPD e nossa Política de Privacidade.
+				</p>
 
-				{/* Fold 6: CTA Final */}
-				<section className="py-12 md:py-20 bg-white">
-					<div className="max-w-4xl mx-auto px-4">
-						<div className="bg-gradient-to-br from-blue-900 to-gray-900 rounded-[2rem] p-8 md:p-14 text-center text-white space-y-8 shadow-2xl relative overflow-hidden">
-							{/* Background effects */}
-							<div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 blur-3xl rounded-full -mr-32 -mt-32 pointer-events-none"></div>
-							<div className="absolute bottom-0 left-0 w-64 h-64 bg-green-500/20 blur-3xl rounded-full -ml-32 -mb-32 pointer-events-none"></div>
-							
-							<div className="relative z-10 space-y-6">
-								<div className="inline-flex items-center gap-2 bg-red-500/20 text-red-100 border border-red-500/30 px-4 py-1.5 rounded-full text-sm font-bold animate-pulse">
-									<Clock size={16} /> O prazo está correndo
-								</div>
-								
-								<h2 className="text-3xl md:text-5xl font-black leading-tight">
-									Não deixe o sistema tirar o seu direito de dirigir.
-								</h2>
-								<p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto">
-									Milhares de multas são anuladas todos os anos por erros técnicos que só uma análise
-									profissional identifica. Exerça seu direito de defesa agora.
-								</p>
-								
-								<div className="pt-4 flex flex-col items-center gap-4">
-									<Link
-										to="/upload"
-										className="w-full sm:w-auto bg-green-500 text-white text-xl md:text-2xl font-black px-12 py-6 rounded-2xl hover:bg-green-400 transition-all shadow-[0_0_40px_rgb(34,197,94,0.4)] hover:shadow-[0_0_60px_rgb(34,197,94,0.6)] hover:scale-105 transform flex items-center justify-center gap-2">
-										{data.ctaText || "Gerar Meu Recurso Agora"}
-									</Link>
-									<p className="text-sm text-gray-400 flex items-center justify-center gap-1">
-										<ShieldCheck size={16} /> Processo 100% seguro e sigiloso
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-			</div>
-		</CleanLayout>
+				<p className="text-sm text-gray-400 text-center">
+					Desenvolvido por RCM Software Studio | Contato:{" "}
+					<a href="mailto:suporte@meuautodefesa.com.br" className="hover:text-blue-600 underline">
+						suporte@meuautodefesa.com.br
+					</a>
+				</p>
+
+				<p className="text-sm text-gray-400 mt-2 text-center">
+					&copy; {ano} Auto Defesa Recursos. Todos os direitos reservados.
+				</p>
+			</footer>
+
+			{/* WIDGET DE SUPORTE FLUTUANTE */}
+			<a
+				href="mailto:suporte@meuautodefesa.com.br"
+				className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 hover:bg-blue-700 transition-all active:scale-95 group"
+				title="Suporte por E-mail"
+			>
+				<MessageCircle size={28} />
+				<span className="absolute right-full mr-3 bg-gray-900 text-white text-xs py-1.5 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+					Dúvidas? Fale conosco
+				</span>
+			</a>
+		</div>
 	);
 };
 
