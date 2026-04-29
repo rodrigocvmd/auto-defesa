@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Star, User, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import CountUp from "./CountUp";
 
 const REVIEWS = [
 	{
@@ -317,7 +318,9 @@ const Testimonials = () => {
 
 					<div className="flex-col">
 						<div className="flex items-center justify-center gap-2 mt-4 text-yellow-500 font-bold">
-							<span className="text-2xl text-gray-900">4.7</span>
+							<span className="text-2xl text-gray-900">
+								<CountUp end={4.7} decimals={1} />
+							</span>
 							<div className="flex">
 								{[...Array(5)].map((_, i) => (
 									<Star

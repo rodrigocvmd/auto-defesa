@@ -22,6 +22,7 @@ import MainLayout from "../layouts/MainLayout";
 import SEO from "../components/SEO";
 import Testimonials from "../components/Testimonials";
 import ScrollReveal from "../components/ScrollReveal";
+import CountUp from "../components/CountUp";
 
 const Home = () => {
 	const [showArrow, setShowArrow] = useState(true);
@@ -122,23 +123,23 @@ const Home = () => {
 												<StarHalf size={16} fill="currentColor" />
 											</div>
 											<span className="!text-[12px] md:text-md text-center uppercase tracking-wider font-bold text-gray-400">
-												4.7 <br />
+												<CountUp end={4.7} decimals={1} /> <br />
 												avaliação geral
 											</span>
-										</div>
+											</div>
 
-										<div className="flex flex-col items-center gap-1">
+											<div className="flex flex-col items-center gap-1">
 											<div className="flex items-center -space-x-1 mb-1 text-blue-600">
 												<FileText size={18} className="drop-shadow-sm" />
 												<FileText size={18} className="drop-shadow-sm translate-y-0.5" />
 												<FileText size={18} className="drop-shadow-sm translate-y-1" />
 											</div>
 											<span className="!text-[12px] sm:text-xs text-center uppercase tracking-wider font-bold text-gray-400">
-												+500
+												+<CountUp end={1366} />
 												<br />
 												defesas geradas
 											</span>
-										</div>
+											</div>
 									</div>
 
 									{/* Seta indicativa para mobile */}
@@ -524,7 +525,7 @@ const Home = () => {
 									<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 										<FileText size={24} />
 									</div>
-									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+587</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+<CountUp end={1366} /></div>
 									<div className="text-gray-600 font-medium">Defesas Elaboradas</div>
 									<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
 								</div>
@@ -536,7 +537,7 @@ const Home = () => {
 										<DollarSign size={24} />
 									</div>
 									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
-										R$ 293
+										R$ <CountUp end={293} />
 									</div>
 									<div className="text-gray-600 font-medium">Economia Média p/ Usuário</div>
 									<div className="mt-4 h-1 w-12 bg-green-600 rounded-full"></div>
@@ -548,7 +549,7 @@ const Home = () => {
 									<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 										<Star size={24} fill="currentColor" />
 									</div>
-									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">94%</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight"><CountUp end={94} />%</div>
 									<div className="text-gray-600 font-medium">Satisfação dos Usuários</div>
 									<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
 								</div>
@@ -560,7 +561,7 @@ const Home = () => {
 										<Clock size={24} />
 									</div>
 									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
-										&lt; 3min
+										&lt; <CountUp end={3} />min
 									</div>
 									<div className="text-gray-600 font-medium">Tempo Médio de Geração</div>
 									<div className="mt-4 h-1 w-12 bg-indigo-600 rounded-full"></div>

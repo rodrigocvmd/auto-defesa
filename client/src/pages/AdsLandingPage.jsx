@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
 	Upload,
 	FileText,
@@ -22,8 +22,13 @@ import {
 import SEO from "../components/SEO";
 import Testimonials from "../components/Testimonials";
 import ScrollReveal from "../components/ScrollReveal";
+import CountUp from "../components/CountUp";
+import { infractionData } from "../utils/infractionData";
 
 const AdsLandingPage = () => {
+	const { slug } = useParams();
+	const data = infractionData[slug] || infractionData["geral"];
+	
 	const [showArrow, setShowArrow] = useState(true);
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 	const heroRef = useRef(null);
@@ -64,11 +69,28 @@ const AdsLandingPage = () => {
 
 	const ano = new Date().getFullYear();
 
+	const renderStyledTitle = (title) => {
+		if (!title) return null;
+		const parts = title.split(/(Recurso|anular sua multa|3 minutos)/g);
+		return parts.map((part, i) => {
+			if (["Recurso", "anular sua multa", "3 minutos"].includes(part)) {
+				return (
+					<span
+						key={i}
+						className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
+						{part}
+					</span>
+				);
+			}
+			return part;
+		});
+	};
+
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col font-sans">
 			<SEO
-				title="Auto Defesa - Recursos de Trânsito com IA | Defesa Técnica em minutos"
-				description="Gere sua Defesa de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e fundamentado."
+				title={data.seoTitle || "Auto Defesa - Recursos de Trânsito com IA | Defesa Técnica em minutos"}
+				description={data.seoDescription || "Gere sua Defesa de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e fundamentado."}
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, defesa de transito"
 			/>
 
@@ -127,23 +149,41 @@ const AdsLandingPage = () => {
 							{/* Texto Hero */}
 							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0 mt-4 md:mt-2">
 								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-5 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
-									Elabore seu{" "}
-									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
-										Recurso
-									</span>{" "}
-									e cancele sua multa com <br className="hidden lg:block" />
-									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
-										Inteligência Artificial
-									</span>
+									{data.lpTitle ? (
+										renderStyledTitle(data.lpTitle)
+									) : data.title ? (
+										renderStyledTitle(data.title)
+									) : (
+										<>
+											Elabore seu{" "}
+											<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
+												Recurso
+											</span>{" "}
+											e cancele sua multa com <br className="hidden lg:block" />
+											<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
+												Inteligência Artificial
+											</span>
+										</>
+									)}
 								</h1>
 
-								<p className="md:text-lg text-gray-600 mb-4 md:mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
-									Proteja seu direito de dirigir de forma técnica. Em <strong>2 minutos</strong>,
-									nossa IA identifica <strong>falhas formais</strong> e{" "}
-									<strong>vícios administrativos</strong> na sua autuação para fundamentar uma{" "}
-									<strong>Defesa Técnica Profissional</strong>. Aumente suas chances com argumentos
-									baseados na legislação atualizada.
-								</p>
+								<div className="md:text-lg text-gray-600 mb-4 md:mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
+									{data.lpDescription ? (
+										<p dangerouslySetInnerHTML={{ __html: data.lpDescription }} />
+									) : (
+										<p>
+											{data.description || (
+												<>
+													Proteja seu direito de dirigir de forma técnica. Em <strong>2 minutos</strong>,
+													nossa IA identifica <strong>falhas formais</strong> e{" "}
+													<strong>vícios administrativos</strong> na sua autuação para fundamentar uma{" "}
+													<strong>Defesa Técnica Profissional</strong>. Aumente suas chances com argumentos
+													baseados na legislação atualizada.
+												</>
+											)}
+										</p>
+									)}
+								</div>
 
 								<div className="flex flex-col items-center lg:items-center w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
 									<Link
@@ -174,7 +214,7 @@ const AdsLandingPage = () => {
 												<StarHalf size={16} fill="currentColor" />
 											</div>
 											<span className="!text-[12px] md:text-md text-center uppercase tracking-wider font-bold text-gray-400">
-												4.7 <br />
+												<CountUp end={4.7} decimals={1} /> <br />
 												avaliação geral
 											</span>
 										</div>
@@ -186,7 +226,7 @@ const AdsLandingPage = () => {
 												<FileText size={18} className="drop-shadow-sm translate-y-1" />
 											</div>
 											<span className="!text-[12px] sm:text-xs text-center uppercase tracking-wider font-bold text-gray-400">
-												+500
+												+<CountUp end={1366} />
 												<br />
 												defesas geradas
 											</span>
@@ -571,7 +611,7 @@ const AdsLandingPage = () => {
 									<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 										<FileText size={24} />
 									</div>
-									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+587</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+<CountUp end={1366} /></div>
 									<div className="text-gray-600 font-medium">Defesas Elaboradas</div>
 									<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
 								</div>
@@ -583,7 +623,7 @@ const AdsLandingPage = () => {
 										<DollarSign size={24} />
 									</div>
 									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
-										R$ 293
+										R$ <CountUp end={293} />
 									</div>
 									<div className="text-gray-600 font-medium">Economia Média p/ Usuário</div>
 									<div className="mt-4 h-1 w-12 bg-green-600 rounded-full"></div>
@@ -595,7 +635,7 @@ const AdsLandingPage = () => {
 									<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 										<Star size={24} fill="currentColor" />
 									</div>
-									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">94%</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight"><CountUp end={94} />%</div>
 									<div className="text-gray-600 font-medium">Satisfação dos Usuários</div>
 									<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
 								</div>
@@ -607,7 +647,7 @@ const AdsLandingPage = () => {
 										<Clock size={24} />
 									</div>
 									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
-										&lt; 3min
+										&lt; <CountUp end={3} />min
 									</div>
 									<div className="text-gray-600 font-medium">Tempo Médio de Geração</div>
 									<div className="mt-4 h-1 w-12 bg-indigo-600 rounded-full"></div>
