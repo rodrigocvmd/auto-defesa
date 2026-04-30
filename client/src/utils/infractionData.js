@@ -217,7 +217,7 @@ export const infractionData = {
 		title: "Anule Sua Multa de Trânsito e Evite a Suspensão da CNH em Apenas 3 Minutos.",
 		lpTitle: "Gere seu Recurso para anular sua multa e proteja sua CNH em apenas 3 minutos",
 		lpDescription:
-			"Não aceite pontos na sua CNH sem antes recorrer. Nossa IA analisa <strong>qualquer infração</strong> em busca de <strong>falhas formais e nulidades</strong>. Defesa <strong>técnica profissional</strong> ao toque de um botão: receba seu recurso pronto <strong>por apenas R$ 4,79</strong>. A <strong>IA faz todo o trabalho</strong> e você só assina.",
+			"Não aceite pontos na sua CNH sem antes recorrer. Nossa IA analisa <strong>qualquer infração</strong> em busca de <strong>falhas formais e nulidades</strong>. Defesa <strong>técnica profissional</strong> ao toque de um botão: receba seu recurso pronto <strong>por apenas R$ 4,79</strong>. A IA faz <strong>todo o trabalho</strong> e você só assina.",
 		seoTitle: "Recurso de Multa Online | Gerador com IA",
 		seoDescription:
 			"Evite a suspensão da sua CNH e pontos na carteira. Nossa IA analisa seu caso e gera uma defesa técnica fundamentada na legislação atualizada em até 3 minutos.",

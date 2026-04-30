@@ -15,6 +15,7 @@ import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import printJS from "print-js";
 
+import { useAuth } from "../../../contexts/AuthContext";
 import { usePdfGenerator } from "../hooks/usePdfGenerator";
 import { EditWarningModal } from "../components/modals/EditWarningModal";
 import { PrintInstructionModal } from "../components/modals/PrintInstructionModal";
@@ -36,6 +37,7 @@ export const ResultStep = ({
 	loading,
 }) => {
 	const navigate = useNavigate();
+	const { currentUser } = useAuth();
 	const [showEditWarning, setShowEditWarning] = useState(false);
 	const [isEditing, setIsEditing] = useState(true); // Default to true or controlled? Original was default true but had logic.
 	// Actually in original: const [isEditing, setIsEditing] = useState(true);
@@ -64,7 +66,11 @@ export const ResultStep = ({
 		setShowDownloadConfirm(false);
 		const success = await handleGeneratePDF();
 		if (success) {
-			navigate("/profile", { state: { downloadStarted: true } });
+			if (currentUser) {
+				navigate("/profile", { state: { downloadStarted: true } });
+			} else {
+				navigate("/register");
+			}
 		}
 	};
 

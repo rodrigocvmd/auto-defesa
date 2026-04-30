@@ -18,7 +18,7 @@ export const DownloadSuccessModal = ({ onClose, btnText, onBtnClick, handleSendE
             onBtnClick();
         } else {
             onClose();
-            navigate("/profile");
+            navigate(currentUser ? "/profile" : "/register");
         }
     };
 

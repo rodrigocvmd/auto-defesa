@@ -114,7 +114,7 @@ export default function Profile() {
 
 	useEffect(() => {
 		if (!currentUser) {
-			navigate("/login");
+			navigate("/register");
 			return;
 		}
 
