@@ -1,8 +1,10 @@
 export const infractionData = {
 	"lei-seca": {
 		title: "Recurso de Multa por Lei Seca e Recusa (Art. 165 e 165-A)",
-		lpTitle: "Gere seu Recurso para anular sua multa da Lei Seca e evite a suspensão da sua CNH em apenas 3 minutos.",
-		lpDescription: "A multa da Lei Seca é <strong>gravíssima</strong>, custa <strong>R$ 2.934,70</strong> e suspende sua CNH por <strong>1 ano</strong>. Nossa IA identifica erros no bafômetro e no auto de infração para anular a penalidade. <strong>Praticidade absoluta:</strong> você só sobe o arquivo, nossa IA faz o trabalho pesado e você recebe o recurso pronto por apenas <strong>R$ 4,79</strong>.",
+		lpTitle:
+			"Gere seu Recurso para anular sua multa da Lei Seca e evite a suspensão da sua CNH em apenas 3 minutos.",
+		lpDescription:
+			"A multa da Lei Seca é <strong>gravíssima</strong> e custa <strong>R$ 2.934,70</strong>, além de suspender sua CNH por <strong>1 ano</strong>. <strong>Nossa IA faz todo o trabalho</strong>, identificando erros no bafômetro e no auto de infração para anular a penalidade. Você recebe o recurso pronto a partir de <strong>R$ 4,79</strong>.",
 		seoTitle: "Recurso Art. 165 e 165-A CTB: Defesa de Lei Seca e Recusa",
 		seoDescription:
 			"Defesa técnica para multas de Lei Seca e Recusa ao bafômetro. Saiba como evitar a suspensão da CNH e anular a multa gravíssima de R$ 2.934,70.",
@@ -20,31 +22,37 @@ export const infractionData = {
 			},
 		],
 	},
-	"bafometro": {
+	bafometro: {
 		title: "Recurso de Multa de Bafômetro: Como Anular a Suspensão da CNH",
-		lpTitle: "Gere seu Recurso para anular sua multa de Bafômetro e evite a suspensão da sua CNH em apenas 3 minutos.",
-		lpDescription: "Seja por teste positivo ou recusa, a multa de bafômetro gera <strong>suspensão de 12 meses</strong> e custo de <strong>R$ 2.934,70</strong>. Recorra com fundamentos técnicos sobre aferição e procedimentos do agente. Nossa IA gera sua defesa em minutos por apenas <strong>R$ 4,79</strong>. Basta anexar o documento e a <strong>IA faz todo o resto</strong>.",
-		seoTitle: "Recurso de Multa de Bafômetro | Defesa Lei Seca Art. 165 e 165-A",
+		lpTitle:
+			"Gere seu Recurso para anular sua multa de Bafômetro e evite a suspensão da sua CNH em apenas 3 minutos.",
+		lpDescription:
+			"A multa da Lei Seca é <strong>gravíssima</strong> e custa <strong>R$ 2.934,70</strong>, além de suspender sua CNH por <strong>1 ano</strong>. <strong>Nossa IA faz todo o trabalho</strong>, identificando erros no bafômetro e no auto de infração para anular a penalidade. Você recebe o recurso pronto a partir de <strong>R$ 4,79</strong>.",
 		seoDescription:
 			"Foi multado no bafômetro ou recusou o teste? Proteja sua CNH com uma defesa técnica baseada em falhas do etilômetro e erros do agente.",
 		description:
 			"Seja por teste positivo ou recusa, a multa de bafômetro é uma das mais severas do CTB. Nossa IA identifica erros na aferição do aparelho, falta de sinais de embriaguez no auto e vícios processuais para fundamentar seu recurso.",
 		faq: [
-			{ q: "O bafômetro estava desatualizado?", a: "O etilômetro deve ser verificado anualmente pelo INMETRO. Se o prazo passou, a multa é nula." },
+			{
+				q: "O bafômetro estava desatualizado?",
+				a: "O etilômetro deve ser verificado anualmente pelo INMETRO. Se o prazo passou, a multa é nula.",
+			},
 			{
 				q: "Fui multado por recusar o teste. Tem defesa?",
-				a: "Sim. A recusa por si só não comprova embriaguez. O agente deve descrever detalhadamente os sinais psicomotores, o que raramente ocorre de forma correta."
+				a: "Sim. A recusa por si só não comprova embriaguez. O agente deve descrever detalhadamente os sinais psicomotores, o que raramente ocorre de forma correta.",
 			},
 			{
 				q: "Posso perder a CNH na hora?",
-				a: "Não. Você tem o direito constitucional à ampla defesa. A suspensão só ocorre após o fim de todo o processo administrativo."
+				a: "Não. Você tem o direito constitucional à ampla defesa. A suspensão só ocorre após o fim de todo o processo administrativo.",
 			},
 		],
 	},
 	"faixa-exclusiva": {
 		title: "Multa por Transitar em Faixa Exclusiva (Art. 184)",
-		lpTitle: "Gere seu Recurso para anular sua multa de Faixa Exclusiva e evite pontos na sua CNH em apenas 3 minutos",
-		lpDescription: "Transitar em faixa exclusiva é infração <strong>gravíssima</strong>. Nossa IA analisa se havia sinalização correta ou se você estava em acesso local para anular a multa. Evite os <strong>7 pontos na carteira</strong> de forma simples: suba o arquivo e deixe a <strong>IA trabalhar por você</strong>. Recurso profissional por apenas <strong>R$ 4,79</strong>.",
+		lpTitle:
+			"Gere seu Recurso para anular sua multa de Faixa Exclusiva e evite pontos na sua CNH em apenas 3 minutos",
+		lpDescription:
+			"Transitar em faixa exclusiva é infração <strong>gravíssima</strong>. Nossa IA analisa se havia sinalização correta ou se você estava em acesso local para anular a multa. Evite os <strong>pontos na CNH</strong> de forma simples: suba o arquivo e deixe a <strong>IA trabalhar por você</strong>. Recurso profissional por apenas <strong>R$ 4,79</strong>.",
 		description:
 			"Transitar em faixa exclusiva de ônibus ou seletiva é infração gravíssima. A defesa é focada em situações de acesso local, conversões próximas ou falhas na sinalização da via.",
 		faq: [
@@ -60,8 +68,10 @@ export const infractionData = {
 	},
 	"excesso-velocidade": {
 		title: "Recurso de Multa por Excesso de Velocidade (Art. 218)",
-		lpTitle: "Gere seu Recurso para anular sua multa de Velocidade e evite pagar ou acumular penalidades na sua CNH em apenas 3 minutos",
-		lpDescription: "Multas de radar podem causar <strong>suspensão imediata da CNH</strong>. Nossa IA verifica a validade do radar e a sinalização da via para fundamentar seu recurso. Economize tempo e dinheiro: por apenas <strong>R$ 4,79</strong>, nossa tecnologia gera sua <strong>defesa técnica completa</strong>. Você só precisa anexar a multa e preencher quase nada.",
+		lpTitle:
+			"Gere seu Recurso para anular sua multa de velocidade e evite pagar ou acumular pontos em apenas 3 minutos",
+		lpDescription:
+			"Nossa IA verifica a validade do radar e a sinalização da via para <strong>fundamentar seu recurso</strong>. Economize tempo e dinheiro: por apenas <strong>R$ 4,79</strong>, nossa tecnologia gera sua <strong>defesa técnica completa</strong>. Você só precisa <strong>baixar e assinar</strong>.",
 		seoTitle: "Recurso de Multa Art. 218 CTB: Excesso de Velocidade",
 		seoDescription:
 			"Anule sua multa de excesso de velocidade (Art. 218 CTB). Defesa especializada para evitar pontos e suspensão da CNH por radar.",
@@ -80,8 +90,10 @@ export const infractionData = {
 	},
 	"ultrapassagem-indevida": {
 		title: "Ultrapassagem em Local Proibido (Art. 203)",
-		lpTitle: "Gere seu Recurso para anular sua multa de Ultrapassagem e evite a perda de 7 pontos na CNH em apenas 3 minutos",
-		lpDescription: "Ultrapassar em local proibido custa <strong>R$ 1.467,35</strong> e é infração <strong>gravíssima</strong>. Frequentemente aplicada sem abordagem, nossa IA questiona a visibilidade e o relato do agente. Recorra agora por apenas <strong>R$ 4,79</strong>: suba o arquivo, confirme os dados e a <strong>IA faz todo o resto</strong> instantaneamente.",
+		lpTitle:
+			"Gere seu Recurso para anular sua multa de ultrapassagem e evite a perda pontos na CNH em apenas 3 minutos",
+		lpDescription:
+			"Ultrapassar em local proibido é infração <strong>gravíssima de R$ 1.467,35</strong>. Frequentemente aplicada sem abordagem, nossa IA questiona a visibilidade e o relato do agente. Por apenas <strong>R$ 4,79</strong>, nossa IA faz <strong>todo o trabalho</strong> instantaneamente.",
 		description:
 			"Infração gravíssima com multa multiplicada por 5. Muitas vezes aplicada sem abordagem e baseada apenas na observação do agente. A defesa técnica questiona a visibilidade da sinalização e as condições do local.",
 		faq: [
@@ -97,8 +109,10 @@ export const infractionData = {
 	},
 	"cnh-vencida": {
 		title: "Dirigir com CNH Vencida (Art. 162, V)",
-		lpTitle: "Gere seu Recurso para anular sua multa de CNH Vencida e proteja seu direito de dirigir em apenas 3 minutos",
-		lpDescription: "Dirigir com CNH vencida há mais de 30 dias é infração <strong>gravíssima</strong> com multa de <strong>R$ 293,47</strong>. Nossa IA busca falhas formais no preenchimento do auto para anular a infração. <strong>Processo 100% automatizado:</strong> anexe sua multa e tenha seu recurso profissional por apenas <strong>R$ 4,79</strong>.",
+		lpTitle:
+			"Gere seu Recurso para anular sua multa de CNH Vencida e proteja seu direito de dirigir em apenas 3 minutos",
+		lpDescription:
+			"Dirigir com CNH vencida há mais de 30 dias é infração <strong>gravíssima</strong>. Nossa IA busca <strong>falhas formais no preenchimento</strong> do auto para anular a infração. Processo 100% automatizado:</strong> anexe sua multa e tenha seu recurso profissional por apenas <strong>R$ 4,79</strong>.",
 		description:
 			"Dirigir com a CNH vencida há mais de 30 dias é infração gravíssima. A defesa pode focar na regularização do documento e em erros no preenchimento do auto, especialmente se o condutor não for o proprietário.",
 		faq: [
@@ -114,8 +128,10 @@ export const infractionData = {
 	},
 	"celular-direcao": {
 		title: "Uso de Celular ao Volante (Art. 252)",
-		lpTitle: "Gere seu Recurso para anular sua multa de Celular ao Volante e livre-se dos pontos na CNH em apenas 3 minutos",
-		lpDescription: "Multas por uso de celular são subjetivas e podem ser anuladas se o agente não descrever a infração corretamente. Nossa IA utiliza as <strong>melhores teses</strong> para derrubar essa autuação. Simples e rápido: você sobe o documento e nossa tecnologia faz tudo por apenas <strong>R$ 4,79</strong>.",
+		lpTitle:
+			"Gere seu Recurso para anular sua multa de Celular ao volante e evite as penalidades em apenas 3 minutos",
+		lpDescription:
+			"Multas por uso de celular são subjetivas e <strong>podem ser anuladas</strong> se o agente não descrever a infração corretamente. Nossa IA utiliza as <strong>melhores teses</strong> para derrubar sua autuação. Basta você subir o documento e nossa tecnologia faz todo o resto por apenas <strong>R$ 4,79</strong>.",
 		description:
 			"Uma das multas mais comuns e controversas. Para ser válida, o agente deve descrever claramente a situação. O simples fato de segurar o aparelho já caracteriza infração, mas a falta de detalhes pode anular a multa.",
 		faq: [
@@ -131,8 +147,10 @@ export const infractionData = {
 	},
 	"manobra-perigosa": {
 		title: "Manobra Perigosa ou Arrancada Brusca (Art. 175)",
-		lpTitle: "Gere seu Recurso para anular sua multa de Manobra Perigosa e evite a suspensão da CNH em apenas 3 minutos",
-		lpDescription: "Manobras perigosas têm multas pesadas e podem <strong>suspender seu direito de dirigir</strong>. Nossa IA contesta a subjetividade da abordagem com argumentos técnicos. Defesa profissional ao seu alcance: por apenas <strong>R$ 4,79</strong>, nossa IA gera o recurso. <strong>Basta subir o arquivo</strong> e preencher o mínimo.",
+		lpTitle:
+			"Gere seu Recurso para anular sua multa de Direção Perigosa e evite a suspensão da CNH em apenas 3 minutos",
+		lpDescription:
+			"Direção perigosa tem multas pesadas e pode <strong>suspender seu direito de dirigir</strong>. <strong>Envie sua multa</strong> e nossa IA elabora seu recurso pronto com argumentos técnicos profissionais por apenas <strong>R$ 4,79</strong>.",
 		description:
 			"Infração gravíssima que prevê suspensão do direito de dirigir. É uma autuação subjetiva que depende da interpretação do agente. Nossa defesa técnica busca provar a desproporcionalidade ou inexistência do risco.",
 		faq: [
@@ -149,7 +167,8 @@ export const infractionData = {
 	"multa-moto": {
 		title: "Infrações de Motocicleta (Capacete/Viseira)",
 		lpTitle: "Gere seu Recurso para anular sua multa de Moto e proteja sua CNH em apenas 3 minutos",
-		lpDescription: "Multas de viseira ou capacete são alvo frequente de <strong>erros administrativos</strong>. Nossa IA conhece todas as resoluções do CONTRAN para anular essas autuações. Praticidade total: anexe sua multa e nossa IA faz o recurso técnico por apenas <strong>R$ 4,79</strong>. Você não precisa fazer quase nada.",
+		lpDescription:
+			"Multas de viseira ou capacete são alvo frequente de <strong>erros administrativos</strong>. Nossa IA aplica todas as resoluções do CONTRAN para <strong>anular essas autuações</strong>. Basta anexar sua multa e receber o recurso técnico por apenas <strong>R$ 4,79</strong>.",
 		description:
 			"Multas específicas para motociclistas, como viseira levantada ou falta de capacete, possuem regras rígidas. Analisamos se a autuação respeita as resoluções do CONTRAN, como a diferenciação entre falta de capacete e viseira levantada.",
 		faq: [
@@ -161,8 +180,10 @@ export const infractionData = {
 	},
 	"perda-ppd": {
 		title: "Cassação da Permissão para Dirigir (PPD)",
-		lpTitle: "Gere seu Recurso para Salvar sua PPD e garanta sua CNH Definitiva em apenas 3 minutos",
-		lpDescription: "Qualquer multa grave ou gravíssima impede que você pegue sua CNH definitiva. Nossa IA foca em <strong>anular a infração</strong> para salvar sua habilitação. Não corra riscos: suba seu documento agora e tenha sua defesa por apenas <strong>R$ 4,79</strong>. Rápido, prático e a <strong>IA faz todo o resto</strong>.",
+		lpTitle:
+			"Gere seu Recurso para salvar sua PPD e garanta sua CNH Definitiva em apenas 3 minutos",
+		lpDescription:
+			"Qualquer multa grave ou gravíssima impede que você pegue sua CNH definitiva. Nossa IA foca em <strong>anular a infração</strong> para salvar sua habilitação. Basta enviar sua multa e receber o recurso pronto por apenas <strong>R$ 4,79</strong>.",
 		description:
 			"Se você tem a PPD e cometeu infração grave, gravíssima ou reincidência em média, pode não pegar a CNH definitiva. O recurso visa anular a infração para salvar sua permissão.",
 		faq: [
@@ -174,8 +195,10 @@ export const infractionData = {
 	},
 	"multa-nic": {
 		title: "Multa NIC (Não Indicação de Condutor)",
-		lpTitle: "Gere seu Recurso para anular sua multa NIC de Empresa e economize dinheiro em apenas 3 minutos",
-		lpDescription: "Multas NIC por falta de indicação de condutor podem ser exorbitantes para empresas. Nossa IA identifica vícios na notificação para <strong>anular a cobrança</strong>. Gestão simples: anexe a multa e nossa tecnologia gera o recurso fundamentado por apenas <strong>R$ 4,79</strong>. <strong>Praticidade máxima</strong> para o seu negócio.",
+		lpTitle:
+			"Gere seu Recurso para anular sua multa de Não Indicação e economize dinheiro em apenas 3 minutos",
+		lpDescription:
+			"Multas por falta de indicação de condutor podem ser <strong>exorbitantes para empresas</strong>. Nossa IA identifica vícios na notificação para <strong>anular a cobrança</strong>. Basta anexar a multa e nossa tecnologia gera o recurso fundamentado por apenas <strong>R$ 4,79</strong>. <strong>Praticidade máxima</strong> para o seu negócio.",
 		description:
 			"Multa aplicada a pessoas jurídicas (empresas) que não indicam o condutor infrator. O valor é multiplicado pelo número de vezes que a mesma infração foi cometida nos últimos 12 meses.",
 		faq: [
@@ -189,11 +212,12 @@ export const infractionData = {
 			},
 		],
 	},
-	"geral": {
+	geral: {
 		alertTag: "⏳ Atenção: Não perca o prazo da sua defesa",
 		title: "Anule Sua Multa de Trânsito e Evite a Suspensão da CNH em Apenas 3 Minutos.",
-		lpTitle: "Gere seu Recurso para anular sua Multa de Trânsito e Proteja sua CNH em apenas 3 minutos",
-		lpDescription: "Não aceite pontos na sua CNH sem antes recorrer. Nossa IA analisa qualquer infração em busca de <strong>falhas formais e nulidades</strong>. Defesa técnica profissional ao toque de um botão: suba seu arquivo e receba seu recurso pronto por apenas <strong>R$ 4,79</strong>. A <strong>IA faz todo o trabalho pesado</strong> por você.",
+		lpTitle: "Gere seu Recurso para anular sua multa e proteja sua CNH em apenas 3 minutos",
+		lpDescription:
+			"Não aceite pontos na sua CNH sem antes recorrer. Nossa IA analisa <strong>qualquer infração</strong> em busca de <strong>falhas formais e nulidades</strong>. Defesa <strong>técnica profissional</strong> ao toque de um botão: receba seu recurso pronto <strong>por apenas R$ 4,79</strong>. A <strong>IA faz todo o trabalho</strong> e você só assina.",
 		seoTitle: "Recurso de Multa Online | Gerador com IA",
 		seoDescription:
 			"Evite a suspensão da sua CNH e pontos na carteira. Nossa IA analisa seu caso e gera uma defesa técnica fundamentada na legislação atualizada em até 3 minutos.",
@@ -204,59 +228,59 @@ export const infractionData = {
 			"Pronto em 3 Minutos",
 			"Base Legal Atualizada",
 			"100% Online e Seguro",
-			"Sem Burocracia"
+			"Sem Burocracia",
 		],
 		painPoints: [
 			{
 				icon: "AlertTriangle",
 				title: "Acúmulo de Pontos",
-				desc: "Pagar a multa é assumir a culpa. Os pontos vão direto para sua CNH e podem causar a suspensão do seu direito de dirigir."
+				desc: "Pagar a multa é assumir a culpa. Os pontos vão direto para sua CNH e podem causar a suspensão do seu direito de dirigir.",
 			},
 			{
 				icon: "Ban",
 				title: "Suspensão da CNH",
-				desc: "Ficar sem dirigir significa depender de aplicativo, perder a liberdade e até prejudicar o seu trabalho."
+				desc: "Ficar sem dirigir significa depender de aplicativo, perder a liberdade e até prejudicar o seu trabalho.",
 			},
 			{
 				icon: "TrendingUp",
 				title: "Efeito Cascata",
-				desc: "Se você tem a PPD ou é motorista profissional (EAR), uma simples multa pode custar a sua carreira."
-			}
+				desc: "Se você tem a PPD ou é motorista profissional (EAR), uma simples multa pode custar a sua carreira.",
+			},
 		],
 		howItWorks: [
 			{
 				step: "1",
 				title: "Informe a Infração",
-				desc: "Preencha os dados básicos da multa que você recebeu. Leva menos de 1 minuto."
+				desc: "Preencha os dados básicos da multa que você recebeu. Leva menos de 1 minuto.",
 			},
 			{
 				step: "2",
 				title: "Análise da IA",
-				desc: "Nossa tecnologia cruza as informações com o CTB atualizado e encontra as melhores brechas jurídicas."
+				desc: "Nossa tecnologia cruza as informações com o CTB atualizado e encontra as melhores brechas jurídicas.",
 			},
 			{
 				step: "3",
 				title: "Receba o PDF",
-				desc: "Seu recurso técnico sai na hora, formatado e pronto para você imprimir e protocolar (ou enviar pelo site do Detran)."
-			}
+				desc: "Seu recurso técnico sai na hora, formatado e pronto para você imprimir e protocolar (ou enviar pelo site do Detran).",
+			},
 		],
 		faq: [
 			{
 				q: "A defesa gerada por IA é válida?",
-				a: "Sim, nossa Inteligência Artificial utiliza fundamentos técnicos da legislação atualizada (CTB e resoluções do CONTRAN) garantindo 100% de legalidade. O formato gerado é o padrão exigido pelos órgãos de trânsito."
+				a: "Sim, nossa Inteligência Artificial utiliza fundamentos técnicos da legislação atualizada (CTB e resoluções do CONTRAN) garantindo 100% de legalidade. O formato gerado é o padrão exigido pelos órgãos de trânsito.",
 			},
 			{
 				q: "Quanto tempo demora?",
-				a: "Menos de 3 minutos. O sistema gera seu recurso na hora, pronto para baixar em formato PDF."
+				a: "Menos de 3 minutos. O sistema gera seu recurso na hora, pronto para baixar em formato PDF.",
 			},
 			{
 				q: "Funciona para qualquer estado do Brasil?",
-				a: "Sim! O Código de Trânsito Brasileiro (CTB) é federal, portanto as regras de autuação e defesa são válidas para qualquer Detran, DER, PRF, DNIT ou prefeitura em todo o território nacional."
+				a: "Sim! O Código de Trânsito Brasileiro (CTB) é federal, portanto as regras de autuação e defesa são válidas para qualquer Detran, DER, PRF, DNIT ou prefeitura em todo o território nacional.",
 			},
 			{
 				q: "E se eu já paguei a multa?",
-				a: "Mesmo que você já tenha pago (para aproveitar o desconto), você ainda tem o direito de recorrer para cancelar os pontos na sua CNH. Se você ganhar o recurso, o órgão é obrigado a devolver o valor pago."
-			}
+				a: "Mesmo que você já tenha pago (para aproveitar o desconto), você ainda tem o direito de recorrer para cancelar os pontos na sua CNH. Se você ganhar o recurso, o órgão é obrigado a devolver o valor pago.",
+			},
 		],
 	},
 };

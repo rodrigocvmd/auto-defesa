@@ -71,9 +71,9 @@ const AdsLandingPage = () => {
 
 	const renderStyledTitle = (title) => {
 		if (!title) return null;
-		const parts = title.split(/(Recurso|anular sua multa|3 minutos)/g);
+		const parts = title.split(/(Recurso|anular sua multa|3 minutos)/gi);
 		return parts.map((part, i) => {
-			if (["Recurso", "anular sua multa", "3 minutos"].includes(part)) {
+			if (part && ["recurso", "anular sua multa", "3 minutos"].includes(part.toLowerCase())) {
 				return (
 					<span
 						key={i}
@@ -147,8 +147,8 @@ const AdsLandingPage = () => {
 					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 md:mt-3">
 						<div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-center md:mt-4 !pb-5 md:!pb-0">
 							{/* Texto Hero */}
-							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0 mt-4 md:mt-2">
-								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-5 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
+							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0 mt-1 md:mt-2">
+								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-3 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
 									{data.lpTitle ? (
 										renderStyledTitle(data.lpTitle)
 									) : data.title ? (
