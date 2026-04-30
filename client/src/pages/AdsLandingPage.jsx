@@ -114,7 +114,7 @@ const AdsLandingPage = () => {
 						<Link
 							to="/register"
 							className="group relative bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 md:px-6 md:py-2.5 rounded-xl font-black text-sm md:text-base transition-all shadow-lg hover:shadow-blue-200 hover:-translate-y-0.5 overflow-hidden">
-							<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-pulse"></div>
+							<div className="absolute inset-0 z-0 from-transparent via-white/20 to-transparent w-full h-full animate-pulse"></div>
 							<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
 							<span className="relative z-10">Cadastre-se</span>
 						</Link>
@@ -135,7 +135,7 @@ const AdsLandingPage = () => {
 			</header>
 
 			{/* BODY (BASEADO NA HOME.JSX) */}
-			<div className="flex flex-col pb-8">
+			<div className="flex flex-col pb-1">
 				{/* HERO SECTION */}
 				<section
 					ref={heroRef}
@@ -698,7 +698,7 @@ const AdsLandingPage = () => {
 			</div>
 
 			{/* FOOTER LOCAL MINIMALISTA */}
-			<footer className="border-t border-gray-100 pb-10 mt-12 bg-white flex flex-col items-center">
+			<footer className="border-t border-gray-100 pb-5 mt-12 bg-white flex flex-col items-center">
 				<div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-gray-600 mb-6 pt-10">
 					<Link to="/about" target="_blank" className="hover:text-blue-600 hover:underline">
 						Sobre Nós
@@ -733,7 +733,8 @@ const AdsLandingPage = () => {
 			</footer>
 
 			{/* WIDGET DE SUPORTE FLUTUANTE */}
-			<a
+			{/* <a
+				id="lpSuportBtn"
 				href="mailto:suporte@meuautodefesa.com.br"
 				className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 hover:bg-blue-700 transition-all active:scale-95 group"
 				title="Suporte por E-mail">
@@ -741,7 +742,7 @@ const AdsLandingPage = () => {
 				<span className="absolute right-full mr-3 bg-gray-900 text-white text-xs py-1.5 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
 					Dúvidas? Fale conosco
 				</span>
-			</a>
+			</a> */}
 		</div>
 	);
 };

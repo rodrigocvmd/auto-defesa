@@ -41,26 +41,28 @@ const About = () => {
 				title="Sobre a Auto Defesa - Recursos de Trânsito"
 				description="Conheça o Auto Defesa - Recursos de Trânsito: Unimos inteligência artificial e expertise jurídica para proteger o direito de dirigir de milhares de brasileiros."
 			/>
-			<script type="application/ld+json">{JSON.stringify({
-				"@context": "https://schema.org",
-				"@type": "AboutPage",
-				mainEntity: {
-					"@type": "Organization",
-					name: "Auto Defesa - Recursos de Trânsito",
-					description:
-						"Tecnologia jurídica avançada para democratizar o direito de defesa dos motoristas brasileiros.",
-					founder: {
-						"@type": "Person",
-						name: "Rodrigo Carvalho",
-						jobTitle: "Especialista em Direito de Trânsito",
-						knowsAbout: ["Direito de Trânsito", "CTB", "Inteligência Artificial"],
+			<script type="application/ld+json">
+				{JSON.stringify({
+					"@context": "https://schema.org",
+					"@type": "AboutPage",
+					mainEntity: {
+						"@type": "Organization",
+						name: "Auto Defesa - Recursos de Trânsito",
+						description:
+							"Tecnologia jurídica avançada para democratizar o direito de defesa dos motoristas brasileiros.",
+						founder: {
+							"@type": "Person",
+							name: "Rodrigo Carvalho",
+							jobTitle: "Especialista em Direito de Trânsito",
+							knowsAbout: ["Direito de Trânsito", "CTB", "Inteligência Artificial"],
+						},
 					},
-				},
-			})}</script>
+				})}
+			</script>
 
 			{/* 1. Hero Section */}
 			<section className="bg-blue-50 border-b border-blue-100 overflow-hidden">
-				<div className="max-w-7xl mx-auto px-4 py-12 md:py-12 relative">
+				<div className="max-w-7xl mx-auto px-4 pb-12 pt-8 md:py-12 relative">
 					<div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl"></div>
 					<div className="max-w-3xl relative z-10">
 						<div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-blue-200">
@@ -79,9 +81,9 @@ const About = () => {
 			</section>
 
 			{/* 2. Nossa História (Storytelling) */}
-			<section className="py-20 bg-white">
+			<section className="py-10 bg-white">
 				<div className="max-w-7xl mx-auto px-4">
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mx-2">
 						<ScrollReveal direction="left" className="order-2 lg:order-1">
 							<div>
 								<div className="inline-flex items-center gap-2 text-blue-600 font-bold mb-4 uppercase tracking-wider text-sm">
@@ -100,11 +102,11 @@ const About = () => {
 										tradicional.
 									</p>
 									<p>
-										Entendemos que o Código de Trânsito Brasileiro (CTB) é técnico e rigoroso, e que a
-										defesa do condutor também precisa ser. Foi assim que decidimos unir o rigor da lei
-										com a velocidade da tecnologia. Criamos um sistema capaz de analisar infrações em
-										segundos, identificar erros formais e gerar defesas personalizadas com embasamento
-										jurídico sólido.
+										Entendemos que o Código de Trânsito Brasileiro (CTB) é técnico e rigoroso, e que
+										a defesa do condutor também precisa ser. Foi assim que decidimos unir o rigor da
+										lei com a velocidade da tecnologia. Criamos um sistema capaz de analisar
+										infrações em segundos, identificar erros formais e gerar defesas personalizadas
+										com embasamento jurídico sólido.
 									</p>
 								</div>
 							</div>
@@ -125,17 +127,17 @@ const About = () => {
 			</section>
 
 			{/* 3. Como Funciona Nossa Tecnologia */}
-			<section className="pt-16 pb-12 bg-gray-50 border-y border-gray-100">
+			<section className="pt-10 pb-6 bg-gray-50 border-y border-gray-100">
 				<div className="max-w-7xl mx-auto px-4">
 					<ScrollReveal>
-						<div className="text-center max-w-3xl mx-auto mb-16">
+						<div className="text-center max-w-3xl mx-auto mb-6">
 							<div className="inline-flex items-center gap-2 text-blue-600 font-bold mb-4 uppercase tracking-wider text-sm">
 								<Cpu size={20} /> Inovação
 							</div>
 							<h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6">
 								Inteligência Artificial treinada na Legislação de Trânsito
 							</h2>
-							<p className="text-lg text-gray-600">
+							<p className="text-lg text-center mx-3 text-gray-600">
 								Diferente de modelos genéricos, o "cérebro" do Auto Defesa - Recursos de Trânsito
 								foi treinado especificamente com as normas do CONTRAN, resoluções atualizadas e o
 								Código de Trânsito Brasileiro.
@@ -166,8 +168,8 @@ const About = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-4">Argumentação Personalizada</h3>
 								<p className="text-gray-600 leading-relaxed">
-									Não usamos modelos prontos (copia e cola) onde você apenas preenche os campos. Cada
-									recurso é redigido considerando as especificidades do seu caso.
+									Não usamos modelos prontos (copia e cola) onde você apenas preenche os campos.
+									Cada recurso é redigido considerando as especificidades do seu caso.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -180,8 +182,8 @@ const About = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-4">Atualização Constante</h3>
 								<p className="text-gray-600 leading-relaxed">
-									O sistema é atualizado em tempo real sempre que uma nova lei de trânsito, resolução
-									do CONTRAN ou portaria do SENATRAN entra em vigor.
+									O sistema é atualizado em tempo real sempre que uma nova lei de trânsito,
+									resolução do CONTRAN ou portaria do SENATRAN entra em vigor.
 								</p>
 							</div>
 						</ScrollReveal>
@@ -190,7 +192,7 @@ const About = () => {
 			</section>
 
 			{/* 4. Quem Faz Acontecer (Foco em E-E-A-T) */}
-			<section className="pt-16 pb-12 bg-white overflow-hidden">
+			<section className="pt-6 pb-8 bg-white overflow-hidden">
 				<div className="max-w-7xl mx-auto px-4">
 					<ScrollReveal>
 						<div className="bg-blue-900 rounded-[3rem] overflow-hidden shadow-2xl relative">
@@ -218,8 +220,8 @@ const About = () => {
 										<div className="mt-8 md:mt-12 flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 max-w-sm mx-auto text-left">
 											<CheckCircle className="text-blue-400 shrink-0" size={20} />
 											<span className="text-white font-medium text-left text-sm leading-tight">
-												Dedicado a facilitar análise da legislação de trânsito e possibilitar a defesa
-												administrativa absoluta do usuário.
+												Dedicado a facilitar análise da legislação de trânsito e possibilitar a
+												defesa administrativa absoluta do usuário.
 											</span>
 										</div>
 									</div>
@@ -237,7 +239,9 @@ const About = () => {
 											para a justiça. Ninguém deve ser penalizado por uma infração indevida, que
 											contém vícios técnicos ou erros de procedimento."
 										</p>
-										<p className="not-italic text-blue-400 font-black text-xl">— Rodrigo Carvalho</p>
+										<p className="not-italic text-blue-400 font-black text-xl">
+											— Rodrigo Carvalho
+										</p>
 									</div>
 								</div>
 							</div>
@@ -247,11 +251,11 @@ const About = () => {
 			</section>
 
 			{/* 5. Nossa Missão e Compromisso */}
-			<section className="pt-16 pb-12 bg-white">
+			<section className="pt-16 pb-6 bg-white">
 				<div className="max-w-7xl mx-auto px-4">
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 						<ScrollReveal direction="left">
-							<div>
+							<div className="mx-2">
 								<div className="inline-flex items-center gap-2 text-blue-600 font-bold mb-4 uppercase tracking-wider text-sm">
 									<Target size={20} /> Nosso Compromisso
 								</div>
@@ -259,8 +263,8 @@ const About = () => {
 									Transparência e Resultado
 								</h2>
 								<p className="text-lg text-gray-600 leading-relaxed mb-8">
-									Não vendemos promessas de "milagres" ou garantias ilegais. Nosso compromisso é com a
-									melhor defesa técnica possível dentro da lei.
+									Não vendemos promessas de "milagres" ou garantias ilegais. Nosso compromisso é com
+									a melhor defesa técnica possível dentro da lei.
 								</p>
 
 								<div className="space-y-4">
@@ -301,7 +305,7 @@ const About = () => {
 							</div>
 						</ScrollReveal>
 						<ScrollReveal direction="right">
-							<div className="bg-gray-50 p-12 rounded-[3rem] border border-gray-100">
+							<div className="bg-gray-50 p-8 rounded-[3rem] border border-gray-100 mb-3">
 								<h3 className="text-2xl font-black text-gray-900 mb-8">Nossos Valores</h3>
 								<ul className="space-y-8">
 									<li className="flex gap-6">
@@ -319,8 +323,8 @@ const About = () => {
 										<div>
 											<h4 className="text-xl font-bold text-gray-900 mb-2">Inovação Ética</h4>
 											<p className="text-gray-600">
-												Usamos IA para ampliar a capacidade humana, nunca para substituir a ética e a
-												verdade.
+												Usamos IA para ampliar a capacidade humana, nunca para substituir a ética e
+												a verdade.
 											</p>
 										</div>
 									</li>
@@ -361,7 +365,7 @@ const About = () => {
 								<Link
 									to="/upload"
 									className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 text-xl font-black py-5 px-10 rounded-2xl hover:bg-blue-50 transition-all active:scale-95 shadow-lg">
-									Consultar Minha Multa Grátis <ArrowRight size={24} />
+									Consultar Minha Multa Grátis <ArrowRight className="hidden md:block" size={24} />
 								</Link>
 								<Link
 									to="/help"
