@@ -42,6 +42,7 @@ export const ResultStep = ({
 	const [isEditing, setIsEditing] = useState(true);
 
 	const [showQualModal, setShowQualModal] = useState(false);
+	const [hasSavedQual, setHasSavedQual] = useState(false);
 	const [qualText, setQualText] = useState(
 		"NOME COMPLETO, portador do documento de número XXX.XXX.XXX-XX, residente e domiciliado em ENDEREÇO COMPLETO COM CEP, podendo ser contatado pelo telefone (XX)XXXXX-XXXX e pelo email EMAIL@PROVEDOR.com, proprietário/condutor do veículo de placa XXXYYYY e RENAVAM XXXXXXXXXXX"
 	);
@@ -77,6 +78,7 @@ export const ResultStep = ({
 
 	const handleSaveQual = (newText) => {
 		setQualText(newText);
+		setHasSavedQual(true);
 		setShowQualModal(false);
 	};
 
@@ -221,24 +223,36 @@ export const ResultStep = ({
 				</div>
 
 				<div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-					<button
-						onClick={() => setIsRefining(!isRefining)}
-						disabled={refining}
-						className={`px-6 py-2 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${
-							isRefining
-								? "bg-gray-100 text-gray-600 border border-gray-300"
-								: "bg-blue-500 text-white hover:bg-blue-600 shadow-blue-200 shadow-md"
-						}`}>
-						{refining ? <Loader2 className="animate-spin" size={18} /> : <PenTool size={18} />}
-						{isRefining ? "Fechar Correção via IA" : "Solicitar Correção via IA"}
-					</button>
+					{!hasSavedQual ? (
+						<button
+							onClick={() => setShowQualModal(true)}
+							className="bg-blue-600 text-white px-8 py-3 rounded-xl font-black hover:bg-blue-700 flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group overflow-hidden relative">
+							<div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+							<PenTool size={20} className="relative z-10" /> 
+							<span className="relative z-10">Preencher qualificação com meus dados</span>
+						</button>
+					) : (
+						<>
+							<button
+								onClick={() => setIsRefining(!isRefining)}
+								disabled={refining}
+								className={`px-6 py-2 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${
+									isRefining
+										? "bg-gray-100 text-gray-600 border border-gray-300"
+										: "bg-blue-500 text-white hover:bg-blue-600 shadow-blue-200 shadow-md"
+								}`}>
+								{refining ? <Loader2 className="animate-spin" size={18} /> : <PenTool size={18} />}
+								{isRefining ? "Fechar Correção via IA" : "Solicitar Correção via IA"}
+							</button>
 
-					<button
-						onClick={handleDownloadRequest}
-						disabled={pdfLoading}
-						className="bg-green-700 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-600 flex items-center justify-center gap-2 shadow-md disabled:opacity-50">
-						<Download size={18} /> Baixar PDF Final
-					</button>
+							<button
+								onClick={handleDownloadRequest}
+								disabled={pdfLoading}
+								className="bg-green-700 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-600 flex items-center justify-center gap-2 shadow-md disabled:opacity-50">
+								<Download size={18} /> Baixar PDF Final
+							</button>
+						</>
+					)}
 				</div>
 			</div>
 
@@ -246,14 +260,16 @@ export const ResultStep = ({
 				<div
 					className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
 					
-					<div className="flex justify-between items-center mb-4 mx-2 md:ml-4 md:mr-0">
+					<div id="previaDaMinuta" className="flex justify-between items-center mb-4 mx-2 md:ml-4 md:mr-0">
 						<h3 className="font-bold text-gray-800 text-lg hidden md:block">Prévia da Minuta</h3>
-						<button 
-							onClick={() => setShowQualModal(true)} 
-							className="text-blue-600 bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-100 transition-colors border border-blue-100 shadow-sm w-full md:w-auto justify-center"
-						>
-							<PenTool size={16} /> ✏️ Preencher qualificação com meus dados reais
-						</button>
+						{hasSavedQual && (
+							<button 
+								onClick={() => setShowQualModal(true)} 
+								className="text-blue-600 bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-100 transition-colors border border-blue-100 shadow-sm w-full md:w-auto justify-center"
+							>
+								<PenTool size={16} /> ✏️ Editar qualificação preenchida
+							</button>
+						)}
 					</div>
 
 					<div
