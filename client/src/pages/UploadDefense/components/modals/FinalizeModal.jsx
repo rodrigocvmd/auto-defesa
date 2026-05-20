@@ -14,12 +14,27 @@ export const FinalizeModal = ({ onClose, onConfirm, loading }) => {
 		locState: "",
 	});
 
-	const [vErrors, setVErrors] = useState({});
-
 	const hChange = (e) => {
-		const { name, value } = e.target;
+		let { name, value } = e.target;
+		
+		// Aplicando máscaras visuais dinâmicas
+		if (name === "idPrimary") {
+			// Máscara para Cadastro de Pessoa Física: 000.000.000-00
+			value = value.replace(/\D/g, "").slice(0, 11);
+			if (value.length > 9) value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+			else if (value.length > 6) value = value.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
+			else if (value.length > 3) value = value.replace(/(\d{3})(\d+)/, "$1.$2");
+		} else if (name === "locZip") {
+			// Máscara para Código Postal: 00000-000
+			value = value.replace(/\D/g, "").slice(0, 8);
+			if (value.length > 5) value = value.replace(/(\d{5})(\d+)/, "$1-$2");
+		} else if (name === "driverReg") {
+			value = value.replace(/\D/g, "").slice(0, 11);
+		} else if (name === "locState") {
+			value = value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 2);
+		}
+
 		setVData((prev) => ({ ...prev, [name]: value }));
-		if (vErrors[name]) setVErrors((prev) => ({ ...prev, [name]: null }));
 	};
 
 	const hSubmit = (e) => {
@@ -37,13 +52,13 @@ export const FinalizeModal = ({ onClose, onConfirm, loading }) => {
 						<div className="bg-blue-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-blue-600">
 							<ShieldCheck size={32} />
 						</div>
-						<h2 className="text-2xl md:text-3xl font-black text-gray-900">Finalize seu Documento</h2>
+						<h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">Finalize seu Documento</h2>
 						<div className="mt-3 flex items-start gap-2 bg-blue-50 p-4 rounded-xl border border-blue-100 text-left">
 							<Info size={20} className="text-blue-600 shrink-0 mt-0.5" />
 							<p className="text-xs md:text-sm text-blue-900 leading-relaxed">
-								<strong>Privacidade Total:</strong> Para sua segurança, os dados abaixo 
-								<strong> não são salvos em nosso sistema</strong>. Eles serão injetados apenas no 
-								arquivo PDF gerado agora e descartados imediatamente.
+								<strong>Segurança em Primeiro Lugar:</strong> Os dados informados abaixo são 
+								processados localmente apenas para preencher as lacunas da sua minuta e 
+								<strong> nunca são enviados aos nossos servidores</strong>.
 							</p>
 						</div>
 					</div>
@@ -52,11 +67,11 @@ export const FinalizeModal = ({ onClose, onConfirm, loading }) => {
 						<div className="space-y-4">
 							<h3 className="font-bold text-gray-800 border-b pb-2 flex items-center gap-2">
 								<span className="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">1</span>
-								Dados de Identificação
+								Dados de Identificação Civil
 							</h3>
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div className="space-y-1">
-									<label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Nº Documento 1 (ex: CPF)</label>
+									<label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Cadastro de Pessoa Física (11 dígitos)</label>
 									<input
 										name="idPrimary"
 										value={vData.idPrimary}
@@ -66,23 +81,23 @@ export const FinalizeModal = ({ onClose, onConfirm, loading }) => {
 									/>
 								</div>
 								<div className="space-y-1">
-									<label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Nº Documento 2 (ex: RG)</label>
+									<label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Documento de Identidade Civil</label>
 									<input
 										name="idSecondary"
 										value={vData.idSecondary}
 										onChange={hChange}
 										className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-										placeholder="00.000.000-0"
+										placeholder="Apenas números e letras"
 									/>
 								</div>
 								<div className="space-y-1 md:col-span-2">
-									<label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Registro de Habilitação (CNH)</label>
+									<label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Registro Nacional de Condutor</label>
 									<input
 										name="driverReg"
 										value={vData.driverReg}
 										onChange={hChange}
 										className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-										placeholder="Nº de Registro da CNH"
+										placeholder="Número do registro"
 									/>
 								</div>
 							</div>
@@ -91,11 +106,11 @@ export const FinalizeModal = ({ onClose, onConfirm, loading }) => {
 						<div className="space-y-4">
 							<h3 className="font-bold text-gray-800 border-b pb-2 flex items-center gap-2">
 								<span className="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">2</span>
-								Endereço de Correspondência
+								Localidade para Correspondência
 							</h3>
 							<div className="grid grid-cols-1 md:grid-cols-6 gap-4">
 								<div className="md:col-span-2 space-y-1">
-									<label className="text-xs font-bold text-gray-600 uppercase tracking-wider">CEP</label>
+									<label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Código Postal</label>
 									<input
 										name="locZip"
 										value={vData.locZip}
@@ -111,7 +126,7 @@ export const FinalizeModal = ({ onClose, onConfirm, loading }) => {
 										value={vData.locStreet}
 										onChange={hChange}
 										className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-										placeholder="Nome da rua ou avenida"
+										placeholder="Nome da via pública"
 									/>
 								</div>
 								<div className="md:col-span-2 space-y-1">
@@ -151,7 +166,7 @@ export const FinalizeModal = ({ onClose, onConfirm, loading }) => {
 										value={vData.locState}
 										onChange={hChange}
 										maxLength={2}
-										className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm text-center"
+										className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm text-center font-bold"
 										placeholder="SP"
 									/>
 								</div>

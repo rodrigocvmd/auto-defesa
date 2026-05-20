@@ -246,6 +246,20 @@ export const ResultStep = ({
 			<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 				<div
 					className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
+					
+					{/* Novo Banner de Privacidade e Expectativa */}
+					<div className="bg-blue-600 text-white p-5 rounded-2xl shadow-lg mb-6 mx-2 md:ml-4 md:mr-0 flex items-start gap-4 animate-in fade-in slide-in-from-left-4 duration-500">
+						<div className="bg-white/20 p-2 rounded-xl shrink-0">
+							<Lock size={24} className="text-white" />
+						</div>
+						<div>
+							<h4 className="font-black text-lg mb-1 tracking-tight">🔒 Privacidade garantida: A sua minuta foi gerada com sucesso!</h4>
+							<p className="text-blue-50 text-sm leading-relaxed text-justify md:text-left">
+								Note que as lacunas de qualificação civil (identificação pessoal e endereço) estão em branco. Não se preocupe e não utilize a correção por IA para inseri-las. Você preencherá estes campos em um ambiente seguro no momento exato de baixar o arquivo final.
+							</p>
+						</div>
+					</div>
+
 					<div
 						id="avisoPreview"
 						className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 mx-2 md:ml-4 md:mr-0 !rounded-md flex flex-col gap-3">
