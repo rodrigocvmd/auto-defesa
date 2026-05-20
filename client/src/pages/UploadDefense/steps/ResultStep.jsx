@@ -210,15 +210,72 @@ export const ResultStep = ({
 				</div>
 			)}
 
-			<div
+			
+
+			<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+				<div
+					className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
+					
+					{hasSavedQual && (
+						<>
+							<div id="previaDaMinuta" className="flex justify-between items-center mb-4 mx-2 md:ml-4 md:mr-0">
+								<h3 className="font-bold text-gray-800 text-lg hidden md:block">Prévia da Minuta</h3>
+								<button 
+									onClick={() => setShowQualModal(true)} 
+									className="text-blue-600 bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-100 transition-colors border border-blue-100 shadow-sm w-full md:w-auto justify-center"
+								>
+									<PenTool size={16} /> Editar Qualificação
+								</button>
+							</div>
+
+							<div
+								id="avisoPreview"
+								className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 mx-2 md:ml-4 md:mr-0 !rounded-md flex flex-col gap-3">
+								<div className="flex gap-3 items-start">
+									<AlertCircle className="text-yellow-600 shrink-0 mt-0.5" size={20} />
+									<div>
+										<h4 className="font-bold text-yellow-800 text-sm">Modo de Conferência e Edição</h4>
+										<p className="text-yellow-700 text-sm mt-1 text-justify">
+											Leia todo o conteúdo. Se, porventura, encontrar nomes errados, datas incorretas ou
+											argumentos indesejados, use o botão <strong>"Solicitar Correção via IA"</strong>.
+										</p>
+									</div>
+								</div>
+
+
+
+
+								
+
+								<div className="md:hidden bg-yellow-100/50 p-3 rounded-lg border border-yellow-200 flex gap-2 items-start mt-1">
+									<Info className="text-yellow-700 shrink-0 mt-0.5" size={16} />
+									<p className="text-yellow-800 text-sm text-justify leading-relaxed">
+										<strong>Nota sobre a visualização:</strong> A formatação nesta tela pequena pode
+										parecer estreita ou desalinhada. A <strong>formatação final oficial</strong>{" "}
+										(margens, fontes e espaçamentos) será aplicada corretamente no arquivo PDF após o
+										download.
+									</p>
+								</div>
+							</div>
+						</>
+					)}
+
+					<div
 				id="topReviewPanel"
 				className="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-gray-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in slide-in-from-top-4 mx-2 md:mx-4">
 				<div>
 					<h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-						<CheckCircle className="text-green-500" /> Revisão Final
+						{hasSavedQual ? (
+							<><CheckCircle className="text-green-500" /> Revisão Final</>
+						) : (
+							<><CheckCircle className="text-blue-600" /> Dados de Qualificação</>
+						)}
 					</h2>
 					<p className="text-md text-gray-600">
-						Leia atentamente; use a IA para correções; baixe quando pronto.
+						{hasSavedQual 
+							? "Leia atentamente; use a IA para correções; baixe quando pronto."
+							: "Preencha os dados necessários para o Recurso"
+						}
 					</p>
 				</div>
 
@@ -228,7 +285,7 @@ export const ResultStep = ({
 							onClick={() => setShowQualModal(true)}
 							className="bg-blue-600 text-white px-8 py-3 rounded-xl font-black hover:bg-blue-700 flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group overflow-hidden relative">
 							<div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-							<PenTool size={20} className="relative z-10" /> 
+							<PenTool size={20} className="relative z-10 hidden md:block" /> 
 							<span className="relative z-10">Preencher qualificação com meus dados</span>
 						</button>
 					) : (
@@ -255,47 +312,6 @@ export const ResultStep = ({
 					)}
 				</div>
 			</div>
-
-			<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-				<div
-					className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
-					
-					<div id="previaDaMinuta" className="flex justify-between items-center mb-4 mx-2 md:ml-4 md:mr-0">
-						<h3 className="font-bold text-gray-800 text-lg hidden md:block">Prévia da Minuta</h3>
-						{hasSavedQual && (
-							<button 
-								onClick={() => setShowQualModal(true)} 
-								className="text-blue-600 bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-100 transition-colors border border-blue-100 shadow-sm w-full md:w-auto justify-center"
-							>
-								<PenTool size={16} /> ✏️ Editar qualificação preenchida
-							</button>
-						)}
-					</div>
-
-					<div
-						id="avisoPreview"
-						className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 mx-2 md:ml-4 md:mr-0 !rounded-md flex flex-col gap-3">
-						<div className="flex gap-3 items-start">
-							<AlertCircle className="text-yellow-600 shrink-0 mt-0.5" size={20} />
-							<div>
-								<h4 className="font-bold text-yellow-800 text-sm">Modo de Conferência e Edição</h4>
-								<p className="text-yellow-700 text-sm mt-1 text-justify">
-									Leia todo o conteúdo. Se, porventura, encontrar nomes errados, datas incorretas ou
-									argumentos indesejados, use o botão <strong>"Solicitar Correção via IA"</strong>.
-								</p>
-							</div>
-						</div>
-
-						<div className="md:hidden bg-yellow-100/50 p-3 rounded-lg border border-yellow-200 flex gap-2 items-start mt-1">
-							<Info className="text-yellow-700 shrink-0 mt-0.5" size={16} />
-							<p className="text-yellow-800 text-sm text-justify leading-relaxed">
-								<strong>Nota sobre a visualização:</strong> A formatação nesta tela pequena pode
-								parecer estreita ou desalinhada. A <strong>formatação final oficial</strong>{" "}
-								(margens, fontes e espaçamentos) será aplicada corretamente no arquivo PDF após o
-								download.
-							</p>
-						</div>
-					</div>
 
 					<div className="flex justify-center bg-gray-200/80 rounded-xl mx-2 md:ml-4 md:mr-0 border border-gray-200 overflow-hidden relative min-h-screen md:py-7">
 						<div id="defense-preview-content" className="print-content flex justify-center !w-full">
