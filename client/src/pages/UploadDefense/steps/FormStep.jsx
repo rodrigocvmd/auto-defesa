@@ -148,6 +148,8 @@ export const FormStep = ({
 			<form
 				onSubmit={handlePreAnalysis}
 				className="space-y-8 bg-white px-2 py-4 md:px-5 md:py-4 rounded-3xl shadow-sm border border-gray-100">
+				{/* Banner de Contexto da IA (Prevenção de Impersonação) */}
+
 				{loading && (
 					<div className="fixed inset-0 bg-white/80 z-[100] flex flex-col items-center justify-center p-4 text-center">
 						<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
@@ -162,7 +164,7 @@ export const FormStep = ({
 					</div>
 				)}
 
-				<section className="bg-white px-3 md:px-4 py-4 md:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
+				<section className="bg-white md:!mt-4 px-3 md:px-4 py-4 md:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
 						<MapPin className="text-blue-600" />
 						<h3 className="text-xl font-bold text-gray-800">1. Infração</h3>
@@ -214,7 +216,7 @@ export const FormStep = ({
 							)}
 						</div>
 						<div className="md:col-span-2">
-							<label className="label-form">Amparo Legal</label>
+							<label className="label-form">Artigo / Enquadramento Legal</label>
 							<input
 								name="article"
 								value={formData.article}
@@ -229,7 +231,7 @@ export const FormStep = ({
 
 						<div className="md:col-span-2">
 							<label className="label-form">
-								AIT (Nº do Auto) <span className="text-red-500">*</span>
+								Código de Registro da Autuação (AIT) <span className="text-red-500">*</span>
 							</label>
 							<input
 								name="aitNumber"
@@ -244,7 +246,7 @@ export const FormStep = ({
 						{/* Linha 1: Órgão, Data, Hora */}
 						<div className="md:col-span-3">
 							<label className="label-form">
-								Órgão Autuador <span className="text-red-500">*</span>
+								Entidade Emissora (Ex: Detran, DER) <span className="text-red-500">*</span>
 							</label>
 							<input
 								name="issuingBody"
@@ -261,7 +263,7 @@ export const FormStep = ({
 						{/* Linha 4: Local */}
 						<div className="md:col-span-6">
 							<label className="label-form">
-								Local <span className="text-red-500">*</span>
+								Local da Ocorrência <span className="text-red-500">*</span>
 							</label>
 							<input
 								name="location"
@@ -332,7 +334,8 @@ export const FormStep = ({
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 						<div>
 							<label className="label-form">
-								Nº Equipamento <span className="text-red-500">*</span>
+								Identificação do Radar/Equipamento (Opcional){" "}
+								<span className="text-red-500">*</span>
 							</label>
 							<div className="flex flex-col gap-2">
 								<input
@@ -432,7 +435,7 @@ export const FormStep = ({
 								onChange={(e) => setConsent(e.target.checked)}
 								className="cursor-pointer mr-2 w-4 h-4 shrink-0 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
 							/>
-							<span className="text-gray-600 leading-tight text-justify mx-2">
+							<span className="text-gray-600 leading-tight text-justify mx-4">
 								Declaro que li e concordo com os{" "}
 								<Link target="_blank" to="/terms" className="text-blue-600 hover:underline">
 									Termos de Uso
@@ -465,11 +468,12 @@ export const FormStep = ({
 						<span>Ambiente Seguro e Dados Criptografados de Ponta a Ponta</span>
 					</div>
 
-					<div className="max-w-xl text-center space-y-2 mt-4">
+					<div className="max-w-2xl text-center space-y-2 mt-4">
 						<p className="text-gray-600 text-sm">Nenhum crédito será cobrado nesta etapa.</p>
 						<p className="text-[10px] md:text-xs text-gray-500 leading-relaxed">
-							Seus dados são utilizados exclusivamente para a redação da sua defesa administrativa e
-							não são compartilhados com terceiros.
+							Os seus dados técnicos são utilizados exclusivamente para que nossa IA formule os
+							argumentos da sua minuta de defesa administrativa; eles não são compartilhados com
+							terceiros, armazenados ou enviados para órgãos de trânsito.
 						</p>
 					</div>
 				</div>
