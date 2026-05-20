@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
 import { PenTool, CheckCircle, Info } from "lucide-react";
 
-export const QualificationEditorModal = ({ initialText, onSave, onClose }) => {
+export const QualificationEditorModal = ({ initialText, initialCity, initialDate, onSave, onClose }) => {
 	const [text, setText] = useState(initialText);
+	const [city, setCity] = useState(initialCity || "");
+	const [date, setDate] = useState(initialDate || "");
 	const backdropRef = useRef(null);
 	const textareaRef = useRef(null);
 
@@ -65,6 +67,18 @@ export const QualificationEditorModal = ({ initialText, onSave, onClose }) => {
 		});
 	};
 
+	const handleDateChange = (e) => {
+		let value = e.target.value.replace(/\D/g, "");
+		if (value.length > 8) value = value.slice(0, 8);
+
+		if (value.length > 4) {
+			value = value.replace(/(\d{2})(\d{2})(\d+)/, "$1/$2/$3");
+		} else if (value.length > 2) {
+			value = value.replace(/(\d{2})(\d+)/, "$1/$2");
+		}
+		setDate(value);
+	};
+
 	return (
 		<div className="fixed inset-0 bg-black/70 z-[200] flex items-center justify-center p-3 md:p-4 backdrop-blur-sm animate-in fade-in duration-300">
 			<div className="bg-white rounded-3xl w-full max-w-4xl shadow-2xl relative flex flex-col max-h-[95vh] overflow-hidden">
@@ -91,11 +105,11 @@ export const QualificationEditorModal = ({ initialText, onSave, onClose }) => {
 						</p>
 					</div>
 
-					<div className="flex-grow flex flex-col mb-6">
+					<div className="flex flex-col mb-6">
 						<label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
 							Editor de Qualificação (Texto Livre)
 						</label>
-						<div className="relative w-full flex-grow border border-gray-300 rounded-xl overflow-hidden bg-gray-50 min-h-[300px] font-mono text-[14px] md:text-[15px] leading-relaxed shadow-inner">
+						<div className="relative w-full border border-gray-300 rounded-xl overflow-hidden bg-gray-50 min-h-[160px] font-mono text-[14px] md:text-[15px] leading-relaxed shadow-inner">
 							<div
 								ref={backdropRef}
 								className="absolute inset-0 p-4 md:p-5 whitespace-pre-wrap break-words overflow-y-auto pointer-events-none z-0">
@@ -113,6 +127,28 @@ export const QualificationEditorModal = ({ initialText, onSave, onClose }) => {
 						</div>
 					</div>
 
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+						<div className="space-y-1">
+							<label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Cidade de Assinatura</label>
+							<input
+								value={city}
+								onChange={(e) => setCity(e.target.value)}
+								className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+								placeholder="Ex: São Paulo"
+							/>
+						</div>
+						<div className="space-y-1">
+							<label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Data de Assinatura</label>
+							<input
+								value={date}
+								onChange={handleDateChange}
+								className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+								placeholder="DD/MM/AAAA"
+								maxLength={10}
+							/>
+						</div>
+					</div>
+
 					<div className="flex flex-col md:flex-row gap-3 mt-auto">
 						<button
 							onClick={onClose}
@@ -120,7 +156,7 @@ export const QualificationEditorModal = ({ initialText, onSave, onClose }) => {
 							Cancelar
 						</button>
 						<button
-							onClick={() => onSave(text)}
+							onClick={() => onSave(text, city, date)}
 							className="flex-[2] px-6 py-3.5 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all flex items-center justify-center gap-2 order-1 md:order-2">
 							<CheckCircle size={20} /> Salvar Qualificação
 						</button>

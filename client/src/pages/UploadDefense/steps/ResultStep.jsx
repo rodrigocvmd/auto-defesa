@@ -46,6 +46,8 @@ export const ResultStep = ({
 	const [qualText, setQualText] = useState(
 		"NOME COMPLETO, portador do documento de número XXX.XXX.XXX-XX, residente e domiciliado em ENDEREÇO COMPLETO COM CEP, podendo ser contatado pelo telefone (XX)XXXXX-XXXX e pelo email EMAIL@PROVEDOR.com, proprietário/condutor do veículo de placa XXXYYYY e RENAVAM XXXXXXXXXXX"
 	);
+	const [overrideCity, setOverrideCity] = useState("");
+	const [overrideDate, setOverrideDate] = useState(formData.signDate || "");
 
 	const [showDownloadSuccess, setShowDownloadSuccess] = useState(false);
 	const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
@@ -54,7 +56,17 @@ export const ResultStep = ({
 	const addressing = `<p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 40px;">AO ILUSTRÍSSIMO SENHOR ${formData.issuingBody || "DIRETOR DO ÓRGÃO AUTUADOR"}</p>`;
 	const aitRef = `<p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº ${formData.aitNumber || "[NÚMERO]"}</p>`;
 	const connection = " vem por meio deste apresentar";
-	const displayHtml = `${addressing}${aitRef}<p style="text-align: justify; text-indent: 50px; margin-bottom: 5px;">${qualText}${connection}</p>${result}`;
+	
+	// Pre-process result to replace signature placeholders with overrides
+	let processedResult = result;
+	if (overrideCity) {
+		processedResult = processedResult.replace(/\[CIDADE\]|Local/g, overrideCity);
+	}
+	if (overrideDate) {
+		processedResult = processedResult.replace(/\[DATA\]|Data/g, overrideDate);
+	}
+
+	const displayHtml = `${addressing}${aitRef}<p style="text-align: justify; text-indent: 50px; margin-bottom: 5px;">${qualText}${connection}</p>${processedResult}`;
 
 	const {
 		handleGeneratePDF,
@@ -76,8 +88,10 @@ export const ResultStep = ({
 		}
 	};
 
-	const handleSaveQual = (newText) => {
+	const handleSaveQual = (newText, newCity, newDate) => {
 		setQualText(newText);
+		setOverrideCity(newCity);
+		setOverrideDate(newDate);
 		setHasSavedQual(true);
 		setShowQualModal(false);
 	};
@@ -166,6 +180,8 @@ export const ResultStep = ({
 			{showQualModal && (
 				<QualificationEditorModal
 					initialText={qualText}
+					initialCity={overrideCity}
+					initialDate={overrideDate}
 					onClose={() => setShowQualModal(false)}
 					onSave={handleSaveQual}
 				/>
