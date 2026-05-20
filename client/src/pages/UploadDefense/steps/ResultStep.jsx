@@ -19,7 +19,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { usePdfGenerator } from "../hooks/usePdfGenerator";
 import { EditWarningModal } from "../components/modals/EditWarningModal";
 import { PrintInstructionModal } from "../components/modals/PrintInstructionModal";
-import { DownloadConfirmModal } from "../components/modals/DownloadConfirmModal";
+import { FinalizeModal } from "../components/modals/FinalizeModal";
 import { DownloadSuccessModal } from "../components/modals/DownloadSuccessModal";
 
 export const ResultStep = ({
@@ -39,10 +39,9 @@ export const ResultStep = ({
 	const navigate = useNavigate();
 	const { currentUser } = useAuth();
 	const [showEditWarning, setShowEditWarning] = useState(false);
-	const [isEditing, setIsEditing] = useState(true); // Default to true or controlled? Original was default true but had logic.
-	// Actually in original: const [isEditing, setIsEditing] = useState(true);
+	const [isEditing, setIsEditing] = useState(true);
 
-	const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
+	const [showFinalizeModal, setShowFinalizeModal] = useState(false);
 	const [showDownloadSuccess, setShowDownloadSuccess] = useState(false);
 	const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
 	const [showProfileButton, setShowProfileButton] = useState(false);
@@ -55,21 +54,22 @@ export const ResultStep = ({
 	} = usePdfGenerator(
 		result,
 		formData,
-		null, // Não mostramos o modal aqui, redirecionamos para o perfil
+		setShowDownloadSuccess,
 	);
 
 	const handleDownloadRequest = () => {
-		setShowDownloadConfirm(true);
+		setShowFinalizeModal(true);
 	};
 
-	const handleConfirmDownload = async () => {
-		setShowDownloadConfirm(false);
-		const success = await handleGeneratePDF();
+	const handleConfirmDownload = async (piiData) => {
+		setShowFinalizeModal(false);
+		const success = await handleGeneratePDF(piiData);
 		if (success) {
 			if (currentUser) {
-				navigate("/profile", { state: { downloadStarted: true } });
+				// We don't necessarily need to redirect to profile immediately if success modal is shown
+				// navigate("/profile", { state: { downloadStarted: true } });
 			} else {
-				navigate("/register");
+				// navigate("/register");
 			}
 		}
 	};
@@ -163,10 +163,11 @@ export const ResultStep = ({
 					}}
 				/>
 			)}
-			{showDownloadConfirm && (
-				<DownloadConfirmModal
-					onClose={() => setShowDownloadConfirm(false)}
+			{showFinalizeModal && (
+				<FinalizeModal
+					onClose={() => setShowFinalizeModal(false)}
 					onConfirm={handleConfirmDownload}
+					loading={pdfLoading}
 				/>
 			)}
 			{showDownloadSuccess && (

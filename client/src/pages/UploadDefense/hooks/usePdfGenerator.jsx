@@ -9,6 +9,35 @@ export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) =
     const [loadingText, setLoadingText] = useState("");
     const [emailSuccess, setEmailSuccess] = useState(false);
 
+    const injectPII = (html, pii) => {
+        if (!pii) return html;
+        let processed = html;
+
+        const mappings = [
+            { label: "CPF", val: pii.idPrimary, fallback: "_______________________" },
+            { label: "RG", val: pii.idSecondary, fallback: "_______________________" },
+            { label: "CNH", val: pii.driverReg, fallback: "_______________________" },
+            { label: "CEP", val: pii.locZip, fallback: "________-___" },
+            { label: "Bairro", val: pii.locNeighb, fallback: "_______________________" },
+            { label: "Cidade", val: pii.locCity, fallback: "_______________________" },
+            { label: "UF", val: pii.locState, fallback: "____" },
+            { label: "Logradouro", val: pii.locStreet, fallback: "_______________________" },
+            { label: "Endereço", val: pii.locStreet, fallback: "_______________________" },
+            { label: "Nº", val: pii.locNum, fallback: "____" },
+            { label: "Número", val: pii.locNum, fallback: "____" },
+        ];
+
+        mappings.forEach(({ label, val, fallback }) => {
+            const value = val || fallback;
+            // Regex matches "LABEL: [any common placeholder]" or just "LABEL:" if followed by space/line break
+            // Includes support for bold tags etc.
+            const regex = new RegExp(`(${label}:?\\s*)(?:<u>.*?<\\/u>|<strong>.*?<\\/strong>|\\[.*?\\]|\\(.*?\\)|_{3,}|\\.{3,}|\\s*)(?=\\s|,|\\.|<|$)`, "gi");
+            processed = processed.replace(regex, `$1${value}`);
+        });
+
+        return processed;
+    };
+
     const getFileInfo = () => {
         const defenseType = (formData.defenseType || "").toLowerCase();
         let typeStr = "Defesa_Previa";
@@ -21,13 +50,17 @@ export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) =
         return `${typeStr}_${firstName}_${cleanPlate}.pdf`;
     };
 
-    const handleGeneratePDF = async () => {
+    const handleGeneratePDF = async (piiData = null) => {
         if (!htmlContent) {
             alert("Erro: Conteúdo não encontrado para gerar PDF.");
             return false;
         }
 
-        const finalHtml = formatDefenseToHtml(htmlContent);
+        let finalHtml = formatDefenseToHtml(htmlContent);
+        if (piiData) {
+            finalHtml = injectPII(finalHtml, piiData);
+        }
+
         const fileName = getFileInfo();
 
         try {
@@ -57,13 +90,17 @@ export const usePdfGenerator = (htmlContent, formData, setShowDownloadSuccess) =
         }
     };
 
-    const handleSendEmail = async () => {
+    const handleSendEmail = async (piiData = null) => {
         if (!htmlContent) {
             alert("Erro: Conteúdo não encontrado para gerar PDF.");
             return false;
         }
 
-        const finalHtml = formatDefenseToHtml(htmlContent);
+        let finalHtml = formatDefenseToHtml(htmlContent);
+        if (piiData) {
+            finalHtml = injectPII(finalHtml, piiData);
+        }
+        
         const fileName = getFileInfo();
 
         try {
