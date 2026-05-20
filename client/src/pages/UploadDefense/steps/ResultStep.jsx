@@ -43,7 +43,7 @@ export const ResultStep = ({
 
 	const [showQualModal, setShowQualModal] = useState(false);
 	const [qualText, setQualText] = useState(
-		"NOME COMPLETO, portador do documento de número XXX.XXX.XXX-XX, residente e domiciliado em ENDEREÇO COMPLETO COM CEP, podendo ser contatado pelo telefone (XX)XXXXX-XXXX e pelo email EMAIL@PROVEDOR.com, proprietário/condutor do veículo de placa XXXYYYY e RENAVAM XXXXXXXXXXX, vem por meio deste apresentar defesa/recurso..."
+		"NOME COMPLETO, portador do documento de número XXX.XXX.XXX-XX, residente e domiciliado em ENDEREÇO COMPLETO COM CEP, podendo ser contatado pelo telefone (XX)XXXXX-XXXX e pelo email EMAIL@PROVEDOR.com, proprietário/condutor do veículo de placa XXXYYYY e RENAVAM XXXXXXXXXXX"
 	);
 
 	const [showDownloadSuccess, setShowDownloadSuccess] = useState(false);

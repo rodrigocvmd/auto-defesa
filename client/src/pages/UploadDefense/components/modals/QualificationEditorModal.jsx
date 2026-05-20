@@ -41,18 +41,8 @@ export const QualificationEditorModal = ({ initialText, onSave, onClose }) => {
 	};
 
 	const renderHighlightedText = () => {
-		const staticParts = [
-			", portador do documento de número ",
-			", residente e domiciliado em ",
-			", podendo ser contatado pelo telefone ",
-			" e pelo email ",
-			", proprietário/condutor do veículo de placa ",
-			" e RENAVAM ",
-			", vem por meio deste apresentar defesa/recurso..."
-		];
-
 		const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-		const combinedTokens = [...placeholders, ...staticParts].map(escapeRegExp).join('|');
+		const combinedTokens = placeholders.map(escapeRegExp).join('|');
 		const splitRegex = new RegExp(`(${combinedTokens})`, "g");
 
 		const parts = text.split(splitRegex);
@@ -61,21 +51,14 @@ export const QualificationEditorModal = ({ initialText, onSave, onClose }) => {
 			if (!part) return null;
 			if (placeholders.includes(part)) {
 				return (
-					<span key={i} className="bg-red-200 text-red-900 rounded-[2px] font-bold">
+					<span key={i} className="bg-red-100 text-red-700 rounded-[2px] font-bold">
 						{part}
 					</span>
 				);
 			}
-			if (staticParts.includes(part)) {
-				return (
-					<span key={i} className="text-gray-900">
-						{part}
-					</span>
-				);
-			}
-			// Qualquer texto inserido pelo usuário (que não seja um placeholder nem a base estática)
+			// Todo o resto (texto estático ou inserido pelo usuário) fica na cor padrão
 			return (
-				<span key={i} className="bg-green-200 text-green-900 rounded-[2px] font-bold">
+				<span key={i} className="text-gray-900">
 					{part}
 				</span>
 			);
