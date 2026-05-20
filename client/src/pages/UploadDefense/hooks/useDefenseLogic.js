@@ -462,18 +462,9 @@ export const useDefenseLogic = (step) => {
 	const validateQualification = () => {
 		const qualificationFields = [
 			"name",
-			"cpf",
-			"rg",
-			"rgIssuer",
 			"preferredTreatment",
 			"phone",
 			"email",
-			"zipCode",
-			"address",
-			"addressNumber",
-			"neighborhood",
-			"city",
-			"state",
 			"plate",
 			"plateUF",
 			"vehicleModel",

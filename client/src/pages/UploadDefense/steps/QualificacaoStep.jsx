@@ -193,8 +193,7 @@ export const QualificacaoStep = ({
 				<div className="flex items-center gap-4 mt-4 py-3 px-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800 max-w-5xl md:max-w-5xl text-justify md:text-center">
 					<Info size={18} className="shrink-0" />
 					<p>
-						Os dados solicitados abaixo são necessários para o a validade do seu recurso nos termos
-						da <strong>Resolução CONTRAN nº 900/2022</strong> e não são armazenados.
+						Preencha os dados básicos abaixo para personalizar sua minuta de defesa. Para sua total segurança e privacidade, dados sensíveis (como CPF, RG e Endereço) não são coletados pelo nosso sistema e deverão ser preenchidos manualmente por você nas lacunas do documento final gerado.
 					</p>
 				</div>
 			</header>
@@ -258,82 +257,6 @@ export const QualificacaoStep = ({
 						</div>
 						<div className="md:col-span-5">
 							<label className="label-form">
-								CPF <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="cpf"
-								value={formData.cpf}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.cpf ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.cpf && <p className="text-red-500 text-xs mt-1">{errors.cpf}</p>}
-						</div>
-						<div className="md:col-span-2">
-							<label className="label-form">
-								RG <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="rg"
-								value={formData.rg}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.rg ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.rg && <p className="text-red-500 text-xs mt-1">{errors.rg}</p>}
-						</div>
-						<div className="md:col-span-2">
-							<label className="label-form">
-								UF do RG <span className="text-red-500">*</span>
-							</label>
-							<select
-								name="rgIssuer"
-								value={formData.rgIssuer}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.rgIssuer ? "border-red-500" : ""}`}
-								required>
-								<option value="">Selecione...</option>
-								{[
-									"AC",
-									"AL",
-									"AP",
-									"AM",
-									"BA",
-									"CE",
-									"DF",
-									"ES",
-									"GO",
-									"MA",
-									"MT",
-									"MS",
-									"MG",
-									"PA",
-									"PB",
-									"PR",
-									"PE",
-									"PI",
-									"RJ",
-									"RN",
-									"RS",
-									"RO",
-									"RR",
-									"SC",
-									"SP",
-									"SE",
-									"TO",
-								].map((uf) => (
-									<option key={uf} value={uf}>
-										{uf}
-									</option>
-								))}
-							</select>
-							{errors.rgIssuer && <p className="text-red-500 text-xs mt-1">{errors.rgIssuer}</p>}
-						</div>
-						<div className="md:col-span-3">
-							<label className="label-form">
 								Como prefere ser tratado? <span className="text-red-500">*</span>
 							</label>
 							<select
@@ -351,17 +274,6 @@ export const QualificacaoStep = ({
 							{errors.preferredTreatment && (
 								<p className="text-red-500 text-xs mt-1">{errors.preferredTreatment}</p>
 							)}
-						</div>
-						<div className="md:col-span-3">
-							<label className="label-form">CNH</label>
-							<input
-								name="cnh"
-								value={formData.cnh}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.cnh ? "border-red-500" : ""}`}
-							/>
-							{errors.cnh && <p className="text-red-500 text-xs mt-1">{errors.cnh}</p>}
 						</div>
 						<div className="md:col-span-5">
 							<label className="label-form">
@@ -395,153 +307,11 @@ export const QualificacaoStep = ({
 					</div>
 				</section>
 
-				{/* Seção 2: Endereço */}
-				<section className="space-y-6">
-					<div className="flex items-center gap-2 border-b pb-4">
-						<MapPin className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">2. Endereço Completo</h3>
-					</div>
-					<div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-						<div>
-							<label className="label-form">
-								CEP <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="zipCode"
-								value={formData.zipCode}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.zipCode ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
-						</div>
-						<div className="md:col-span-3">
-							<label className="label-form">
-								Logradouro <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="address"
-								value={formData.address}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.address ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
-						</div>
-						<div>
-							<label className="label-form">
-								Número <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="addressNumber"
-								value={formData.addressNumber}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.addressNumber ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.addressNumber && (
-								<p className="text-red-500 text-xs mt-1">{errors.addressNumber}</p>
-							)}
-						</div>
-						<div>
-							<label className="label-form">Complemento</label>
-							<input
-								name="addressComplement"
-								value={formData.addressComplement}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className="input-form"
-							/>
-						</div>
-						<div className="md:col-span-2">
-							<label className="label-form">
-								Bairro <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="neighborhood"
-								value={formData.neighborhood}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.neighborhood ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.neighborhood && (
-								<p className="text-red-500 text-xs mt-1">{errors.neighborhood}</p>
-							)}
-						</div>
-						<div className="md:col-span-2">
-							<label className="label-form">
-								Cidade <span className="text-red-500">*</span>
-							</label>
-							<input
-								name="city"
-								value={formData.city}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.city ? "border-red-500" : ""}`}
-								required
-							/>
-							{errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
-						</div>
-						<div className="md:col-span-2">
-							<label className="label-form">
-								UF <span className="text-red-500">*</span>
-							</label>
-							<select
-								name="state"
-								value={formData.state}
-								onChange={handleChange}
-								onBlur={handleBlur}
-								className={`input-form ${errors.state ? "border-red-500" : ""}`}
-								required>
-								<option value="">Selecione...</option>
-								{[
-									"AC",
-									"AL",
-									"AP",
-									"AM",
-									"BA",
-									"CE",
-									"DF",
-									"ES",
-									"GO",
-									"MA",
-									"MT",
-									"MS",
-									"MG",
-									"PA",
-									"PB",
-									"PR",
-									"PE",
-									"PI",
-									"RJ",
-									"RN",
-									"RS",
-									"RO",
-									"RR",
-									"SC",
-									"SP",
-									"SE",
-									"TO",
-								].map((uf) => (
-									<option key={uf} value={uf}>
-										{uf}
-									</option>
-								))}
-							</select>
-							{errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
-						</div>
-					</div>
-				</section>
-
-				{/* Seção 3: Veículo */}
+				{/* Seção 2: Veículo */}
 				<section className="space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
 						<Car className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">3. Dados do Veículo</h3>
+						<h3 className="text-xl font-bold text-gray-800">2. Dados do Veículo</h3>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-5">
 						<div>
@@ -625,11 +395,11 @@ export const QualificacaoStep = ({
 					</div>
 				</section>
 
-				{/* Seção 4: Assinatura */}
+				{/* Seção 3: Assinatura */}
 				<section className="space-y-6">
 					<div className="flex items-center gap-2 border-b pb-4">
 						<FileText className="text-blue-600" />
-						<h3 className="text-xl font-bold text-gray-800">4. Finalização</h3>
+						<h3 className="text-xl font-bold text-gray-800">3. Finalização</h3>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 						<div>
@@ -674,7 +444,7 @@ export const QualificacaoStep = ({
 							</>
 						) : (
 							<div className="flex flex-col sm:flex-row items-center sm:gap-2">
-								<span className="text-xl">Gerar Recurso Oficial</span>
+								<span className="text-xl">Gerar Minuta de Defesa</span>
 								<span className="text-xl font-bold sm:font-black">(Utiliza 1 Crédito)</span>
 							</div>
 						)}
