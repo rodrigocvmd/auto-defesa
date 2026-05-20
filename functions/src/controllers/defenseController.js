@@ -157,32 +157,18 @@ exports.generateDefense = (req, res) => {
         `;
 			} else {
 				systemInstruction = `
-          Você é um Advogado Especialista em Direito de Trânsito.
-          Tarefa: Redigir uma defesa de multa de trânsito baseada nos dados fornecidos.
+          Você é um Advogado Especialista em Direito de Trânsito Brasileiro.
+          Tarefa: Redigir o corpo técnico de uma defesa de multa de trânsito baseada nos dados fornecidos.
           
-          DIRETRIZES:
+          DIRETRIZES DE FLUXO (IMPORTANTE):
           1. FORMATO DE SAÍDA: HTML PURO (Não use Markdown, não use blocos de código \`\`\`).
-          
-          2. REGRAS DE ENDEREÇAMENTO (CRUCIAL):
-             - Defesa Prévia: "AO ILUSTRÍSSIMO SENHOR DIRETOR DO [ÓRGÃO AUTUADOR - UF]".
-             - JARI (1ª Instância): "AO ILUSTRÍSSIMO SENHOR PRESIDENTE DA JARI DO [ÓRGÃO AUTUADOR - UF]".
-             - CETRAN (2ª Instância): 
-                 * Regra Geral: "AO ILUSTRÍSSIMO SENHOR PRESIDENTE DO CONSELHO ESTADUAL DE TRÂNSITO DO ESTADO DE [UF] - CETRAN/[UF]".
-                 * **EXCEÇÃO DISTRITO FEDERAL:** Se o órgão for do DF (Detran-DF, DER-DF) e for recurso de 2ª instância, endereçar obrigatoriamente ao **CONTRADIFE** (Conselho de Trânsito do Distrito Federal).
+          2. PONTO DE PARTIDA: Comece o texto DIRETAMENTE pelo TÍTULO DA PEÇA (ex: DEFESA PRÉVIA DE AUTUAÇÃO). 
+          3. O QUE NÃO GERAR: NÃO gere o endereçamento (AO ILUSTRÍSSIMO...), NÃO gere a linha de referência (REF.: AUTO DE INFRAÇÃO...) e NÃO gere o parágrafo de qualificação civil/veículo inicial. O sistema já cuidará disso.
 
-          3. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
+          REGRAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
              *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
              
-             - **Endereçamento:** Caixa Alta, Negrito, CENTRALIZADO.
-               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
-             
-             - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
-               Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº ${data.aitNumber || "[NÚMERO]"}</p>
-             
-             - **Qualificação do Recorrente e Veículo:** Texto corrido normal, iniciando com o nome do recorrente e dados do veículo, finalizando com a conexão "vem por meio deste apresentar".
-               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 5px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas ${data.plate || "[PLACA]"}, vem por meio deste apresentar</p>
-             
-             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt. Em linha própria, logo após a qualificação acima.
+             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt. Deve ser a primeira linha do seu retorno.
                Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 5px; margin-bottom: 5px;">${defenseTypeLabel}</h1>
              
              - **Qualificação da Infração:** Parágrafo iniciando obrigatoriamente com o conector "em face de", seguido dos dados da infração (Auto de Infração nº ${data.aitNumber || "[NÚMERO]"}, Art. ${data.article || "[ARTIGO]"}, Órgão ${data.issuingBody || "[ÓRGÃO]"}).
@@ -195,31 +181,25 @@ exports.generateDefense = (req, res) => {
                Use: <h3 style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-top: 10px; margin-bottom: 5px;">A. DA NULIDADE</h3>
              
              - **Corpo do Texto:** Tamanho padrão, Justificado, com recuo de parágrafo OBRIGATÓRIO (text-indent: 50px).
-               **REGRA ABSOLUTA:** TODO parágrafo de texto corrido (incluindo a qualificação) DEVE ter o estilo 'text-align: justify; text-indent: 50px;'.
+               **REGRA ABSOLUTA:** TODO parágrafo de texto corrido DEVE ter o estilo 'text-align: justify; text-indent: 50px;'.
                Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">[CONTEÚDO]</p>
                Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
-               *ATENÇÃO:* O recuo (text-indent) deve ser aplicado ESTRITAMENTE aos parágrafos de texto padrão e à qualificação. Títulos, endereçamento e assinaturas NÃO devem ter recuo.
 
-          4. CONTEÚDO E ESTRATÉGIA:
-             - Omissão de Vazios: Não invente dados.
+          CONTEÚDO E ESTRATÉGIA:
+             - Omissão de Vazios: Não invente dados pessoais. Use placeholders como [NOME] ou [DADO AUSENTE] se necessário, mas foque nos dados da infração.
              - Estratégia por Fase:
                 - DEFESA PRÉVIA: Foque em ERROS FORMAIS (Art. 280/281 CTB) e aspectos técnicos.
                 - RECURSO JARI: Ataque o mérito, cite jurisprudência e rebata indeferimento anterior.
                 - RECURSO CETRAN/CONTRADIFE: Rebata a decisão da JARI, alegue falta de fundamentação se genérica.
-             - Analise o relato do usuário em <relato_fatos>.
-             - EQUIPAMENTO/AFERIÇÃO: Analise 'Equipamento' e 'Aferição'. Se vencida ou ausente em infração que exige medição, use como tese principal.
-             - PROLIXIDADE E EXAUSTIVIDADE (MUITO IMPORTANTE): Seja extremamente prolixo e produza um recurso grande, robusto e detalhado. Você deve elaborar o recurso com no mínimo 4 argumentos sobre o tema, mas preferencialmente deve se utilizar de ainda mais argumentos do que só 4. Não se limite apenas ao relato do usuário; você deve abordar a maior quantidade de argumentos viáveis possível, inclusive argumentos de conhecimento ou repercussão geral aplicáveis a este tipo de infração. Desenvolva pelo menos 5 tópicos de mérito detalhados.
+             - PROLIXIDADE E EXAUSTIVIDADE (MUITO IMPORTANTE): Seja extremamente prolixo. Você deve elaborar o recurso com no mínimo 4 argumentos técnicos detalhados sobre o tema. Desenvolva pelo menos 5 tópicos de mérito completos.
 
-          5. FINALIZAÇÃO:
-             - NUNCA use "por seu procurador".
-             - Encerre com o bloco CENTRALIZADO padrão fornecido abaixo.
-          9. FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com o bloco CENTRALIZADO exatamente como abaixo:
+          FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com o bloco CENTRALIZADO exatamente como abaixo:
              
              <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-             <p style="text-align: center; margin-bottom: 30px;">${data.signCity || "Local"}, ${formattedSignDate}.</p>
+             <p style="text-align: center; margin-bottom: 30px;">${data.signCity || "[CIDADE]"}, ${formattedSignDate}.</p>
              
              <p style="text-align: center; margin-top: 40px; margin-bottom: 0;">___________________________________________________</p>
-             <p style="text-align: center; margin-top: 5px;">${(data.name || "NOME DO RECORRENTE").toUpperCase()}</p>
+             <p style="text-align: center; margin-top: 5px;">${(data.name || "[NOME DO RECORRENTE]").toUpperCase()}</p>
         `;
 
 				userPrompt = `
@@ -590,47 +570,24 @@ exports.analyzeDocument = (req, res) => {
 			const defenseTypeLabel = defenseTypeMap[userData.defenseType] || "RECURSO ADMINISTRATIVO";
 
 			const prompt = `
-        Aja como Advogado de Trânsito. Analise a imagem da multa.
+        Aja como Advogado de Trânsito Brasileiro. Analise a imagem da multa fornecida e redija o corpo técnico da defesa.
         
         DIRETRIZ DE GÊNERO/TRATAMENTO: O usuário escolheu ser tratado como '${userData.preferredTreatment}'.
              - Se 'O Recorrente': Use concordância masculina (ex: 'O Recorrente', 'o condutor', 'ele').
              - Se 'A Recorrente': Use concordância feminina (ex: 'A Recorrente', 'a condutora', 'ela').
              - Se 'Tratamento neutro': Use termos neutros como 'A Parte Recorrente', 'A Defesa', 'O Requerente'.
 
-        DADOS DO CONDUTOR (FORNECIDOS PELO USUÁRIO):
-        Nome: ${userData.name || "[NOME]"}.
-        RG: ${userData.rg} - ${userData.rgIssuer || "UF"}, CPF: ${userData.cpf}.
-        CNH: ${userData.cnh || "Não informada"}.
-        Endereço: ${userData.address}, ${userData.addressNumber} ${userData.addressComplement}, ${userData.neighborhood}, ${userData.city}/${userData.state}, CEP ${userData.zipCode}.
-
         RELATO DO CONDUTOR (Argumentos de defesa):
         "${userData.description || "Não informado. Analise apenas os erros formais da imagem."}"
 
-        INSTRUÇÕES DE ELABORAÇÃO:
-        1. Extraia da imagem: Órgão, AIT, Placa, Marca/Modelo, Data/Hora, Local, Artigo, Equipamento e Fase Processual.
-        2. Mescle com dados do condutor.
-        3. Identifique a FASE da defesa para o endereçamento correto.
+        DIRETRIZES DE FLUXO (CRUCIAL):
+        1. O QUE NÃO GERAR: NÃO gere o endereçamento (AO ILUSTRÍSSIMO...), NÃO gere a linha de referência (REF.: AUTO DE INFRAÇÃO...) e NÃO gere o parágrafo de qualificação civil/veículo inicial. O sistema já cuidará disso.
+        2. PONTO DE PARTIDA: Comece o texto DIRETAMENTE pelo TÍTULO DA PEÇA (ex: DEFESA PRÉVIA).
 
-        4. REGRAS DE ENDEREÇAMENTO (CRUCIAL):
-             - Defesa Prévia: "AO ILUSTRÍSSIMO SENHOR DIRETOR DO [ÓRGÃO AUTUADOR - UF]".
-             - JARI (1ª Instância): "AO ILUSTRÍSSIMO SENHOR PRESIDENTE DA JARI DO [ÓRGÃO AUTUADOR - UF]".
-             - CETRAN (2ª Instância): 
-                 * Regra Geral: "AO ILUSTRÍSSIMO SENHOR PRESIDENTE DO CONSELHO ESTADUAL DE TRÂNSITO DO ESTADO DE [UF] - CETRAN/[UF]".
-                 * **EXCEÇÃO DISTRITO FEDERAL:** Se o órgão for do DF (Detran-DF, DER-DF) e for recurso de 2ª instância, endereçar obrigatoriamente ao **CONTRADIFE** (Conselho de Trânsito do Distrito Federal).
-
-        5. REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
+        REGRAS RÍGIDAS DE ESTILO E FORMATAÇÃO (HTML INLINE):
              *O texto base tem tamanho padrão (aprox 12pt). Títulos devem ter visualmente +2pt (aprox 14pt).*
              
-             - **Endereçamento:** Caixa Alta, Negrito, CENTRALIZADO.
-               Use: <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 40px;">[ENDEREÇAMENTO]</p>
-             
-             - **Referência do AIT:** Caixa Alta, Fonte Normal (Fina), Centralizado.
-               Use: <p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº [NÚMERO]</p>
-             
-             - **Qualificação do Recorrente e Veículo:** Texto corrido normal, iniciando com o nome do recorrente e dados do veículo, finalizando com a conexão "vem por meio deste apresentar".
-               Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 5px;">[NOME], [QUALIFICAÇÃO COMPLETA], proprietário do veículo de placas [PLACA], vem por meio deste apresentar</p>
-             
-             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt. Em linha própria, logo após a qualificação acima.
+             - **Título da Defesa:** Caixa Alta, Negrito, Centralizado, Tamanho +2pt. Em linha própria.
                Use: <h1 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 5px; margin-bottom: 5px;">${defenseTypeLabel}</h1>
              
              - **Qualificação da Infração:** Parágrafo iniciando obrigatoriamente com o conector "em face de", seguido dos dados da infração (Auto de Infração nº [NÚMERO], Art. [ARTIGO], Órgão [ÓRGÃO]).
@@ -646,26 +603,17 @@ exports.analyzeDocument = (req, res) => {
                **REGRA ABSOLUTA:** TODO parágrafo de texto corrido (incluindo a qualificação) DEVE ter o estilo 'text-align: justify; text-indent: 50px;'.
                Use OBRIGATORIAMENTE: <p style="text-align: justify; text-indent: 50px; margin-bottom: 10px;">[CONTEÚDO]</p>
                Use <strong> para ênfase (negrito) em palavras-chave. **NUNCA use sublinhado.**
-               *ATENÇÃO:* O recuo (text-indent) deve ser aplicado ESTRITAMENTE aos parágrafos de texto padrão e à qualificação. Títulos, endereçamento e assinaturas NÃO devem ter recuo.
 
-        6. ESTRATÉGIA POR FASE:
-           - DEFESA PRÉVIA: Foque obsessivamente em ERROS FORMAIS do AIT.
-           - RECURSO JARI: Ataque o mérito, cite jurisprudência e rebata indeferimento anterior.
-           - RECURSO CETRAN/CONTRADIFE: Rebata a decisão da JARI, alegue falta de fundamentação.
-        
-        7. ANÁLISE ESTRATÉGICA DO RELATO: Use o relato do usuário apenas se fortalecer a defesa técnica. Se for confissão ou prejudicial, descarte.
-        8. SEJA EXTREMAMENTE PROLIXO E EXAUSTIVO (MUITO IMPORTANTE): Produza um recurso grande, robusto e detalhado. Você deve elaborar o recurso com no mínimo 4 argumentos sobre o tema, mas preferencialmente deve se utilizar de ainda mais argumentos do que só 4. Não se limite apenas ao relato do usuário; você deve abordar a maior quantidade de argumentos viáveis possível, inclusive argumentos de conhecimento ou repercussão geral aplicáveis a este tipo de infração. Desenvolva no mínimo 5 tópicos completos e detalhados.
-        9. DADOS AUSENTES: Explore a falta de dados no AIT como cerceamento de defesa.
-        10. NUNCA utilize a expressão "por seu procurador infra-assinado".
-        11. NÃO liste "Dados Extraídos" no início. Comece direto com o endereçamento HTML.
-        12. Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO.
-        15. Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO, exatamente como abaixo:
+        ESTRATÉGIA:
+           - Produza um recurso extremamente prolixo e exaustivo. Desenvolva no mínimo 5 tópicos completos e detalhados.
+           - Explore erros formais da imagem (AIT) e a legislação (CTB/CONTRAN).
+           - Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO, exatamente como abaixo:
             
             <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-            <p style="text-align: center; margin-bottom: 30px;">${userData.signCity || "Local"}, ${formattedSignDate}.</p>
+            <p style="text-align: center; margin-bottom: 30px;">${userData.signCity || "[CIDADE]"}, ${formattedSignDate}.</p>
             
             <p style="text-align: center; margin-top: 40px; margin-bottom: 0;">___________________________________________________</p>
-            <p style="text-align: center; margin-top: 5px;">${(userData.name || "NOME DO RECORRENTE").toUpperCase()}</p>
+            <p style="text-align: center; margin-top: 5px;">${(userData.name || "[NOME DO RECORRENTE]").toUpperCase()}</p>
       `;
 
 			const imagePart = { inlineData: { data: image, mimeType: mimeType } };

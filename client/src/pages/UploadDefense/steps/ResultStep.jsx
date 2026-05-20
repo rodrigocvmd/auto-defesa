@@ -50,7 +50,10 @@ export const ResultStep = ({
 	const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
 	const [showProfileButton, setShowProfileButton] = useState(false);
 
-	const displayHtml = `<p style="text-align: justify; text-indent: 50px;">${qualText}</p><br/>${result}`;
+	const addressing = `<p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 40px;">AO ILUSTRÍSSIMO SENHOR ${formData.issuingBody || "DIRETOR DO ÓRGÃO AUTUADOR"}</p>`;
+	const aitRef = `<p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº ${formData.aitNumber || "[NÚMERO]"}</p>`;
+	const connection = " vem por meio deste apresentar";
+	const displayHtml = `${addressing}${aitRef}<p style="text-align: justify; text-indent: 50px; margin-bottom: 5px;">${qualText}${connection}</p>${result}`;
 
 	const {
 		handleGeneratePDF,

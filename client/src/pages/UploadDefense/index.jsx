@@ -18,7 +18,6 @@ import { DivergenceWarningModal } from './components/modals/DivergenceWarningMod
 import { Loader2 } from 'lucide-react';
 
 const FormStep = React.lazy(() => import('./steps/FormStep').then(m => ({ default: m.FormStep })));
-const QualificacaoStep = React.lazy(() => import('./steps/QualificacaoStep').then(m => ({ default: m.QualificacaoStep })));
 
 const UploadDefense = () => {
     const { step: routeStep } = useParams();
@@ -69,12 +68,6 @@ const UploadDefense = () => {
                 return <PhaseSelectionStep setFormData={logic.setFormData} setShowHelpModal={setShowHelpModal} />;
             case "analysis":
                 return <AnalysisStep {...logic} />;
-            case "qualification":
-                return (
-                    <Suspense fallback={<FallbackLoader />}>
-                        <QualificacaoStep {...logic} />
-                    </Suspense>
-                );
             case "result":
                 return <ResultStep {...logic} />;
             default:

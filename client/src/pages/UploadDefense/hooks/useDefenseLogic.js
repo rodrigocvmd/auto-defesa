@@ -511,11 +511,6 @@ export const useDefenseLogic = (step) => {
 	};
 
 	const handleUnlockDefense = async () => {
-		if (!validateQualification()) {
-			window.scrollTo({ top: 0, behavior: "smooth" });
-			return;
-		}
-
 		setLoading(true);
 		try {
 			const payload = {

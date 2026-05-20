@@ -229,9 +229,15 @@ export const AnalysisStep = ({
 								)}
 								<div className="w-full flex justify-center px-4">
 									<button
-										onClick={() => navigate("/upload/qualification")}
-										className={`salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2`}>
-										Inserir dados complementares <FileText size={20} className="hidden sm:block" />
+										onClick={handleUnlockDefense}
+										className={`salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-black py-4 px- rounded-xl hover:bg-gray-50 transition-all active:scale-95 shadow-lg shadow-blue-100 flex items-center justify-center gap-2`}>
+										<div className="flex flex-col items-center">
+											<div className="flex items-center gap-2">
+												<FileText size={20} className="hidden sm:block" />
+												<span>Gerar Minuta de Defesa</span>
+											</div>
+											<span className="text-[10px] opacity-70 uppercase tracking-widest">(Utiliza 1 Crédito)</span>
+										</div>
 									</button>
 								</div>
 								{!currentUser && (
@@ -246,7 +252,7 @@ export const AnalysisStep = ({
 														source: "upload",
 													}),
 												);
-												navigate("/register?redirect=/upload/qualification");
+												navigate("/register?redirect=/upload/analysis");
 											}}
 											className="salvarECriarConta w-full md:w-2/3 bg-blue-500 text-white font-bold py-4 px- rounded-xl hover:bg-blue-600 transition-colors shadow-sm flex items-center justify-center gap-2">
 											Criar Conta (Recomendado) <User size={20} className="hidden sm:block" />
