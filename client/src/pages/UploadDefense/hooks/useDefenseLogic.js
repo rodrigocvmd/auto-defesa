@@ -136,7 +136,11 @@ export const useDefenseLogic = (step) => {
 		}
 		if (name === "phone") {
 			value = value.replace(/\D/g, "").slice(0, 11);
-			if (value.length > 10) value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+			if (value.length === 11) {
+				value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+			} else if (value.length === 10) {
+				value = value.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+			}
 		}
 		if (name === "rg") {
 			value = value.replace(/\D/g, "").slice(0, 7);
@@ -213,7 +217,7 @@ export const useDefenseLogic = (step) => {
 					if (value.length < 5) error = "Horário incompleto (HH:MM).";
 					break;
 				case "phone":
-					if (value.length < 14) error = "Telefone incompleto.";
+					if (value.replace(/\D/g, "").length < 10) error = "Telefone incompleto.";
 					break;
 				default:
 					break;
@@ -380,9 +384,23 @@ export const useDefenseLogic = (step) => {
 	};
 
 	const validateForm = () => {
+		const formFields = [
+			"infractionCode",
+			"infractionSplit",
+			"article",
+			"aitNumber",
+			"issuingBody",
+			"location",
+			"date",
+			"time",
+			"infractionDescription",
+			"equipmentNumber",
+			"lastCalibration",
+			"description",
+		];
 		const newErrors = {};
 		let isValid = true;
-		Object.keys(formData).forEach((key) => {
+		formFields.forEach((key) => {
 			const error = validateField(key, formData[key] || "");
 			if (error) {
 				newErrors[key] = error;
@@ -493,8 +511,6 @@ export const useDefenseLogic = (step) => {
 	};
 
 	const handleUnlockDefense = async () => {
-		if (isTestMode) return;
-
 		if (!validateQualification()) {
 			window.scrollTo({ top: 0, behavior: "smooth" });
 			return;

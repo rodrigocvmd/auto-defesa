@@ -3,8 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import {
 	Upload,
 	FileText,
-	ArrowRight,
-	CheckCircle,
 	Shield,
 	Clock,
 	DollarSign,
@@ -17,7 +15,6 @@ import {
 	AlertTriangle,
 	Zap,
 	BrainCircuit,
-	MessageCircle,
 } from "lucide-react";
 import SEO from "../components/SEO";
 import Testimonials from "../components/Testimonials";
@@ -61,10 +58,6 @@ const AdsLandingPage = () => {
 
 	const scrollToTop = () => {
 		window.scrollTo({ top: 0, behavior: "smooth" });
-	};
-
-	const scrollToCTA = () => {
-		heroRef.current?.scrollIntoView({ behavior: "smooth" });
 	};
 
 	const ano = new Date().getFullYear();
@@ -118,18 +111,6 @@ const AdsLandingPage = () => {
 							<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
 							<span className="relative z-10">Cadastre-se</span>
 						</Link>
-
-						{/* CTA Header */}
-						{/* <div>
-							<button
-								onClick={scrollToCTA}
-								className="group relative bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 md:px-6 md:py-2.5 rounded-2xl font-black text-sm md:text-base transition-all shadow-lg hover:shadow-blue-200 hover:-translate-y-0.5 overflow-hidden"
-							>
-								<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full animate-shimmer"></div>
-								<div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-								<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
-							</button>
-						</div> */}
 					</div>
 				</div>
 			</header>
@@ -196,13 +177,17 @@ const AdsLandingPage = () => {
 											size={24}
 											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
 										/>
-										<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
+										<span className="relative z-10">Iniciar Análise Técnica (Grátis)</span>
 									</Link>
 
 									<p className="text-[10px] md:text-xs text-gray-500 md:mt-2 text-center max-w-sm">
 										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
 										documento final em PDF tem um custo único a partir de R$ 4,79.
 									</p>
+
+									<div className="bg-amber-50 text-amber-800 border border-amber-200 text-xs md:text-sm font-medium py-2 px-4 rounded-xl text-center max-w-lg mx-auto mt-4 mb-2 shadow-sm">
+										⚠️ Serviço de software privado e independente. Não possuímos vínculo com o Detran, Senatran ou qualquer órgão governamental.
+									</div>
 
 									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-2 md:mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
@@ -313,7 +298,7 @@ const AdsLandingPage = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Baixe e Protocole</h3>
 								<p className="text-gray-600 leading-relaxed text-justify">
-									Receba o <strong>documento completo em PDF</strong>. Basta imprimir ou assinar
+									Receba o <strong>documento em PDF (minuta)</strong>. Basta imprimir ou assinar
 									digitalmente e enviar ou protocolar junto ao órgão autuador.
 								</p>
 							</div>
@@ -417,7 +402,7 @@ const AdsLandingPage = () => {
 											size={20}
 											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
 										/>
-										<span className="relative px-3 py-2 text-lg z-10">Analisar Viabilidade (Grátis)</span>
+										<span className="relative px-3 py-2 text-lg z-10">Iniciar Análise Técnica (Grátis)</span>
 									</Link>
 								</div>
 							</ScrollReveal>
@@ -549,7 +534,7 @@ const AdsLandingPage = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Defesa Pronta para Uso</h3>
 								<p className="text-gray-600">
-									Ao detectar uma falha, geramos automaticamente o documento administrativo em PDF,
+									Ao detectar uma falha, geramos automaticamente o documento em PDF (minuta),
 									fundamentado e pronto para ser protocolado.
 								</p>
 							</div>
@@ -688,7 +673,7 @@ const AdsLandingPage = () => {
 										size={24}
 										className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
 									/>
-									<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
+									<span className="relative z-10">Iniciar Análise Técnica (Grátis)</span>
 									{/* <ArrowRight size={20} className="relative z-10 hidden md:block" /> */}
 								</Link>
 							</div>
@@ -696,53 +681,6 @@ const AdsLandingPage = () => {
 					</div>
 				</ScrollReveal>
 			</div>
-
-			{/* FOOTER LOCAL MINIMALISTA */}
-			<footer className="border-t border-gray-100 pb-5 mt-12 bg-white flex flex-col items-center">
-				<div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-gray-600 mb-6 pt-10">
-					<Link to="/about" target="_blank" className="hover:text-blue-600 hover:underline">
-						Sobre Nós
-					</Link>
-					<Link to="/terms" target="_blank" className="hover:text-blue-600 hover:underline">
-						Termos de Uso
-					</Link>
-					<Link to="/privacy" target="_blank" className="hover:text-blue-600 hover:underline">
-						Privacidade
-					</Link>
-				</div>
-
-				<p className="text-[10px] md:text-xs text-gray-500 max-w-4xl mx-4 text-center mb-4 leading-relaxed">
-					<strong>Aviso Legal:</strong> O Auto Defesa - Recursos de Trânsito é um assistente
-					jurídico automatizado desenvolvido pela iniciativa privada. Não representamos o DETRAN,
-					CONTRAN ou qualquer órgão público. O uso da plataforma serve para auxiliar na elaboração
-					de defesas administrativas com base na lei (CTB), mas não garante o deferimento dos
-					recursos, que depende da análise dos órgãos julgadores. Seus dados são processados de
-					acordo com a LGPD e nossa Política de Privacidade.
-				</p>
-
-				<p className="text-sm text-gray-400 text-center">
-					Desenvolvido por Abax Labs | Contato:{" "}
-					<a href="mailto:suporte@meuautodefesa.com.br" className="hover:text-blue-600 underline">
-						suporte@meuautodefesa.com.br
-					</a>
-				</p>
-
-				<p className="text-sm text-gray-400 mt-2 text-center">
-					&copy; {ano} Auto Defesa Recursos. Todos os direitos reservados.
-				</p>
-			</footer>
-
-			{/* WIDGET DE SUPORTE FLUTUANTE */}
-			{/* <a
-				id="lpSuportBtn"
-				href="mailto:suporte@meuautodefesa.com.br"
-				className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 hover:bg-blue-700 transition-all active:scale-95 group"
-				title="Suporte por E-mail">
-				<MessageCircle size={28} />
-				<span className="absolute right-full mr-3 bg-gray-900 text-white text-xs py-1.5 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-					Dúvidas? Fale conosco
-				</span>
-			</a> */}
 		</div>
 	);
 };

@@ -26,6 +26,7 @@ export const DefenseProvider = ({ children }) => {
 		zipCode: "",
 		phone: "",
 		email: "",
+		preferredTreatment: "",
 		plate: "",
 		plateUF: "",
 		vehicleModel: "",

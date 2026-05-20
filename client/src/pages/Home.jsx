@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import {
 	Upload,
 	FileText,
-	ArrowRight,
-	CheckCircle,
 	Shield,
 	Clock,
 	DollarSign,
@@ -105,13 +103,17 @@ const Home = () => {
 											size={24}
 											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
 										/>
-										<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
+										<span className="relative z-10">Iniciar Análise Técnica (Grátis)</span>
 									</Link>
 
 									<p className="text-[10px] md:text-xs text-gray-500 md:mt-2 text-center max-w-sm">
 										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
 										documento final em PDF tem um custo único a partir de R$ 4,79.
 									</p>
+
+									<div className="bg-amber-50 text-amber-800 border border-amber-200 text-xs md:text-sm font-medium py-2 px-4 rounded-xl text-center max-w-lg mx-auto mt-4 mb-2 shadow-sm">
+										⚠️ Serviço de software privado e independente. Não possuímos vínculo com o Detran, Senatran ou qualquer órgão governamental.
+									</div>
 
 									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-2 md:mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
@@ -228,7 +230,7 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Baixe e Protocole</h3>
 								<p className="text-gray-600 leading-relaxed text-justify">
-									Receba o <strong>documento completo em PDF</strong>. Basta imprimir ou assinar
+									Receba o <strong>documento em PDF (minuta)</strong>. Basta imprimir ou assinar
 									digitalmente e enviar ou protocolar junto ao órgão autuador.
 								</p>
 							</div>
@@ -331,7 +333,7 @@ const Home = () => {
 											size={20}
 											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
 										/>
-										<span className="relative z-10 px-3 py-2 text-lg">Analisar Viabilidade (Grátis)</span>
+										<span className="relative z-10 px-3 py-2 text-lg">Iniciar Análise Técnica (Grátis)</span>
 									</Link>
 								</div>
 							</ScrollReveal>
@@ -463,7 +465,7 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Defesa Pronta para Uso</h3>
 								<p className="text-gray-600">
-									Ao detectar uma falha, geramos automaticamente o documento administrativo em PDF,
+									Ao detectar uma falha, geramos automaticamente o documento em PDF (minuta),
 									fundamentado e pronto para ser protocolado.
 								</p>
 							</div>
@@ -602,7 +604,7 @@ const Home = () => {
 										size={24}
 										className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
 									/>
-									<span className="relative z-10">Analisar Viabilidade (Grátis)</span>
+									<span className="relative z-10">Iniciar Análise Técnica (Grátis)</span>
 									{/* <ArrowRight size={20} className="relative z-10 hidden md:block" /> */}
 								</Link>
 							</div>
