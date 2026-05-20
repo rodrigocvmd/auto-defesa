@@ -61,14 +61,11 @@ export const UploadStep = ({
 	return (
 		<div className="max-w-3xl mx-auto pt-5 pb-1">
 			<div className="docUploadInfo mb-5 text-center relative md:mx-5">
-				<h1 className="text-2xl font-bold text-gray-700 mb-4">Análise de Documento</h1>
+				<h1 className="text-2xl font-bold text-gray-700 mb-4">Leitura de Dados da Infração</h1>
 				<p className="text-gray-600 mt-2 mb-4 mx-2 md:mx-5">
-					Envie a foto ou arquivo da <strong>Notificação de Autuação</strong>,{" "}
-					<strong>Multa/Boleto</strong> ou da <strong>Decisão que negou</strong> seu recurso
-					anterior. A IA <strong>identificará a fase</strong> e preencherá os dados{" "}
-					<strong>automaticamente</strong>.
+					Envie uma imagem do registro da infração apenas para leitura técnica do código, data e local através de IA (Reconhecimento Óptico de Caracteres). O preenchimento automático agiliza a formatação da sua minuta.
 				</p>
-				<p className="text-gray-600 mt-2 mb-4 mx-10">Não tem o arquivo ou imagem da infração?</p>
+				<p className="text-gray-600 mt-2 mb-4 mx-10">Prefere preencher os dados técnicos manualmente?</p>
 				<div className="text-center">
 					<button
 						onClick={handleManualEntry}
@@ -135,10 +132,10 @@ export const UploadStep = ({
 								className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && !loading ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"}`}>
 								{loading ? (
 									<>
-										<Loader2 className="animate-spin inline mr-2" /> Lendo Documento...
+										<Loader2 className="animate-spin inline mr-2" /> Extraindo Dados Técnicos...
 									</>
 								) : (
-									"Analisar com IA"
+									"Extrair Dados com IA"
 								)}
 							</button>
 						</div>
@@ -147,9 +144,7 @@ export const UploadStep = ({
 					<div className="mt-8 flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
 						<Lock className="lockerIcon text-gray-400 shrink-0" size={18} />
 						<p className="lockerInfo text-xs text-gray-500 leading-relaxed">
-							Seus documentos são processados de forma criptografada apenas para a extração dos
-							dados da infração e geração da defesa. Não guardamos ou compartilhamos suas informações com
-							terceiros.
+							Privacidade garantida por design: As imagens trafegam com criptografia ponta a ponta e são descartadas imediatamente após a leitura (OCR) dos dados de trânsito. Não armazenamos nenhuma imagem ou documento em nossos servidores.
 						</p>
 					</div>
 				</div>
