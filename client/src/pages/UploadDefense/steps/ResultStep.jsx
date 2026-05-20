@@ -19,7 +19,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { usePdfGenerator } from "../hooks/usePdfGenerator";
 import { EditWarningModal } from "../components/modals/EditWarningModal";
 import { PrintInstructionModal } from "../components/modals/PrintInstructionModal";
-import { FinalizeModal } from "../components/modals/FinalizeModal";
+import { QualificationEditorModal } from "../components/modals/QualificationEditorModal";
 import { DownloadSuccessModal } from "../components/modals/DownloadSuccessModal";
 
 export const ResultStep = ({
@@ -41,10 +41,16 @@ export const ResultStep = ({
 	const [showEditWarning, setShowEditWarning] = useState(false);
 	const [isEditing, setIsEditing] = useState(true);
 
-	const [showFinalizeModal, setShowFinalizeModal] = useState(false);
+	const [showQualModal, setShowQualModal] = useState(false);
+	const [qualText, setQualText] = useState(
+		"NOME COMPLETO, portador do documento de número XXX.XXX.XXX-XX, residente e domiciliado em ENDEREÇO COMPLETO COM CEP, podendo ser contatado pelo telefone (XX)XXXXX-XXXX e pelo email EMAIL@PROVEDOR.com, proprietário/condutor do veículo de placa XXXYYYY e RENAVAM XXXXXXXXXXX, vem por meio deste apresentar defesa/recurso..."
+	);
+
 	const [showDownloadSuccess, setShowDownloadSuccess] = useState(false);
 	const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
 	const [showProfileButton, setShowProfileButton] = useState(false);
+
+	const displayHtml = `<p style="text-align: justify; text-indent: 50px;">${qualText}</p><br/>${result}`;
 
 	const {
 		handleGeneratePDF,
@@ -52,35 +58,26 @@ export const ResultStep = ({
 		loading: pdfLoading,
 		emailSuccess,
 	} = usePdfGenerator(
-		result,
+		displayHtml,
 		formData,
 		setShowDownloadSuccess,
 	);
 
-	const handleDownloadRequest = () => {
-		setShowFinalizeModal(true);
-	};
-
-	const handleConfirmDownload = async (piiData) => {
-		setShowFinalizeModal(false);
-		const success = await handleGeneratePDF(piiData);
+	const handleDownloadRequest = async () => {
+		const success = await handleGeneratePDF();
 		if (success) {
 			if (currentUser) {
-				// We don't necessarily need to redirect to profile immediately if success modal is shown
 				// navigate("/profile", { state: { downloadStarted: true } });
-			} else {
-				// navigate("/register");
 			}
 		}
 	};
 
+	const handleSaveQual = (newText) => {
+		setQualText(newText);
+		setShowQualModal(false);
+	};
+
 	const handleFinalizePDF = async () => {
-		const originalElement = document.getElementById("defense-preview-content"); // Need to ensure ID exists
-		if (!originalElement) {
-			// alert("Erro: Visualização não encontrada.");
-			// Actually we use componentRef in the hook, so maybe this is for printJS?
-			// printJS uses 'defense-preview-content' ID.
-		}
 		setShowPrintInstructionModal(true);
 	};
 
@@ -88,7 +85,7 @@ export const ResultStep = ({
 		setShowPrintInstructionModal(false);
 		try {
 			printJS({
-				printable: "defense-preview-content", // We need to add this ID to the container
+				printable: "defense-preview-content", 
 				type: "html",
 				targetStyles: [
 					"font-family",
@@ -126,7 +123,7 @@ export const ResultStep = ({
                         .ql-editor {
                             width: 100% !important;
                             box-sizing: border-box !important;
-                            padding: 0 !important; /* Margins handled by @page */
+                            padding: 0 !important;
                             min-height: auto !important;
                             height: auto !important;
                             overflow: visible !important;
@@ -134,8 +131,6 @@ export const ResultStep = ({
                         }
                         h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
                         p { orphans: 2; widows: 2; }
-                        
-                        /* Fix Alignment */
                         .ql-align-center { text-align: center !important; }
                         .ql-align-right { text-align: right !important; }
                         .ql-align-justify { text-align: justify !important; }
@@ -163,11 +158,11 @@ export const ResultStep = ({
 					}}
 				/>
 			)}
-			{showFinalizeModal && (
-				<FinalizeModal
-					onClose={() => setShowFinalizeModal(false)}
-					onConfirm={handleConfirmDownload}
-					loading={pdfLoading}
+			{showQualModal && (
+				<QualificationEditorModal
+					initialText={qualText}
+					onClose={() => setShowQualModal(false)}
+					onSave={handleSaveQual}
 				/>
 			)}
 			{showDownloadSuccess && (
@@ -184,7 +179,7 @@ export const ResultStep = ({
 				/>
 			)}
 
-			{loading && (
+			{(loading || pdfLoading) && (
 				<div className="fixed inset-0 bg-white/90 z-[100] flex flex-col items-center justify-center p-4 text-center backdrop-blur-sm animate-in fade-in duration-300">
 					<Loader2 size={60} className="text-blue-600 animate-spin mb-4" />
 					<h2 className="text-2xl font-black text-gray-900 mb-2">Construindo sua Defesa...</h2>
@@ -237,7 +232,8 @@ export const ResultStep = ({
 
 					<button
 						onClick={handleDownloadRequest}
-						className="bg-green-700 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-600 flex items-center justify-center gap-2 shadow-md">
+						disabled={pdfLoading}
+						className="bg-green-700 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-600 flex items-center justify-center gap-2 shadow-md disabled:opacity-50">
 						<Download size={18} /> Baixar PDF Final
 					</button>
 				</div>
@@ -247,17 +243,14 @@ export const ResultStep = ({
 				<div
 					className={`${isRefining ? "lg:col-span-8" : "lg:col-span-12"} order-2 lg:order-1 transition-all duration-300`}>
 					
-					{/* Novo Banner de Privacidade e Expectativa */}
-					<div className="bg-blue-600 text-white p-5 rounded-2xl shadow-lg mb-6 mx-2 md:ml-4 md:mr-0 flex items-start gap-4 animate-in fade-in slide-in-from-left-4 duration-500">
-						<div className="bg-white/20 p-2 rounded-xl shrink-0">
-							<Lock size={24} className="text-white" />
-						</div>
-						<div>
-							<h4 className="font-black text-lg mb-1 tracking-tight">🔒 Privacidade garantida: A sua minuta foi gerada com sucesso!</h4>
-							<p className="text-blue-50 text-sm leading-relaxed text-justify md:text-left">
-								Note que as lacunas de qualificação civil (identificação pessoal e endereço) estão em branco. Não se preocupe e não utilize a correção por IA para inseri-las. Você preencherá estes campos em um ambiente seguro no momento exato de baixar o arquivo final.
-							</p>
-						</div>
+					<div className="flex justify-between items-center mb-4 mx-2 md:ml-4 md:mr-0">
+						<h3 className="font-bold text-gray-800 text-lg hidden md:block">Prévia da Minuta</h3>
+						<button 
+							onClick={() => setShowQualModal(true)} 
+							className="text-blue-600 bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-100 transition-colors border border-blue-100 shadow-sm w-full md:w-auto justify-center"
+						>
+							<PenTool size={16} /> ✏️ Preencher qualificação com meus dados reais
+						</button>
 					</div>
 
 					<div
@@ -274,7 +267,6 @@ export const ResultStep = ({
 							</div>
 						</div>
 
-						{/* Aviso apenas para Mobile */}
 						<div className="md:hidden bg-yellow-100/50 p-3 rounded-lg border border-yellow-200 flex gap-2 items-start mt-1">
 							<Info className="text-yellow-700 shrink-0 mt-0.5" size={16} />
 							<p className="text-yellow-800 text-sm text-justify leading-relaxed">
@@ -286,17 +278,12 @@ export const ResultStep = ({
 						</div>
 					</div>
 
-					<div className="flex justify-center bg-gray-200/80  rounded-xl mx-2 md:ml-4 md:mr-0 border border-gray-200 overflow-hidden relative min-h-screen md:py-7">
+					<div className="flex justify-center bg-gray-200/80 rounded-xl mx-2 md:ml-4 md:mr-0 border border-gray-200 overflow-hidden relative min-h-screen md:py-7">
 						<div id="defense-preview-content" className="print-content flex justify-center !w-full">
 							<style>{`
                                 /* Estilos do Documento A4 na Tela */
                                 .ql-container.ql-snow { border: none !important; }
-                                /* ESCONDER TOOLBAR TOTALMENTE - MODO LEITURA */
-                                .ql-toolbar.ql-snow { 
-                                    display: none !important;
-                                }
-                                
-                                /* O Papel A4 - Responsivo */
+                                .ql-toolbar.ql-snow { display: none !important; }
                                 .ql-editor {
                                     width: 100%;
                                     max-width: 210mm;
@@ -304,68 +291,28 @@ export const ResultStep = ({
                                     background-color: white;
                                     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
                                     margin: 0 auto;
-                                    padding: 20mm !important; /* Margens A4 Padrão */
+                                    padding: 20mm !important;
                                     box-sizing: border-box !important;
                                     overflow-wrap: break-word !important;
                                     word-wrap: break-word !important;
                                     word-break: break-word !important;
-                                    
-                                    /* Tipografia Final */
                                     font-family: 'Times New Roman', Times, serif !important;
                                     font-size: 12pt !important;
                                     line-height: 1.5 !important;
                                     color: #000 !important;
                                 }
-
-                                /* Ajustes dinâmicos para telas menores que um A4 */
                                 @media (max-width: 210mm) {
-                                    .ql-editor {
-                                        padding: 10mm !important; /* Reduz margens em tablets */
-                                        box-shadow: none !important;
-                                    }
+                                    .ql-editor { padding: 10mm !important; box-shadow: none !important; }
                                 }
-
-                                /* Ajustes para Mobile */
                                 @media (max-width: 480px) {
-                                    .ql-editor {
-                                        padding: 20px !important; /* Margens equilibradas para mobile */
-                                        font-size: 11pt !important;
-                                    }
+                                    .ql-editor { padding: 20px !important; font-size: 11pt !important; }
                                 }
-
-                                /* Ajustes para Mobile Ultra-estreito (abaixo de 380px) */
                                 @media (max-width: 380px) {
-                                    .ql-editor {
-                                        padding: 12px !important; /* Margens mínimas */
-                                        font-size: 10.5pt !important; /* Fonte menor para evitar quebra de linha excessiva */
-                                    }
+                                    .ql-editor { padding: 12px !important; font-size: 10.5pt !important; }
                                 }
-
-                                                                /* Forçar estilos nos elementos internos para vencer o CSS do Tailwind/Quill */
-
-                                                                .ql-editor p {
-
-                                                                    margin-bottom: 10px !important;
-
-                                                                    font-family: 'Times New Roman', Times, serif !important;
-
-                                                                }
-
-                                                                
-
-                                                                /* Suporte para indentação via style inline */
-
-                                                                .ql-editor p[style*="text-indent"] {
-
-                                                                    text-indent: 50px !important;
-
-                                                                }
-
-                                
-
-                                                                .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4 {
-
-                                
+                                .ql-editor p { margin-bottom: 10px !important; font-family: 'Times New Roman', Times, serif !important; }
+                                .ql-editor p[style*="text-indent"] { text-indent: 50px !important; }
+                                .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4 {
                                     font-family: 'Times New Roman', Times, serif !important;
                                     font-weight: bold !important;
                                     text-align: center !important;
@@ -376,62 +323,31 @@ export const ResultStep = ({
                                 .ql-editor h1 { font-size: 16pt !important; text-transform: uppercase !important; }
                                 .ql-editor h2 { font-size: 14pt !important; }
                                 .ql-editor h3 { font-size: 12pt !important; text-align: center !important; }
-                                
-                                /* Garantir que nada seja sublinhado por padrão, a menos que seja um link (que não deve haver) */
                                 .ql-editor * { text-decoration: none !important; }
-                                
                                 .ql-editor strong, .ql-editor b { font-weight: bold !important; }
                                 .ql-editor em, .ql-editor i { font-style: italic !important; }
-                                
                                 .ql-editor ul, .ql-editor ol { margin-left: 20px !important; padding-left: 0 !important; }
                                 .ql-editor li { margin-bottom: 5px !important; padding-left: 5px !important; }
-
-                                /* Alinhamentos específicos do Quill */
                                 .ql-editor .ql-align-center { text-align: center !important; }
                                 .ql-editor .ql-align-right { text-align: right !important; }
                                 .ql-editor .ql-align-justify { text-align: justify !important; }
-                                
-                                /* Remover borda azul de seleção do editor quando readOnly */
                                 .ql-editor.ql-blank::before { color: rgba(0,0,0,0.6); font-style: normal; }
-
-                                /* Ajustes para Impressão Real */
                                 @media print {
-                                    @page { 
-                                        size: A4; 
-                                        margin: 20mm; 
-                                    }
-                                    body { 
-                                        background: white; 
-                                        -webkit-print-color-adjust: exact;
-                                    }
+                                    @page { size: A4; margin: 20mm; }
+                                    body { background: white; -webkit-print-color-adjust: exact; }
                                     body * { visibility: hidden; }
                                     .print-content, .print-content * { visibility: visible; }
-                                    .print-content {
-                                        position: absolute;
-                                        left: 0;
-                                        top: 0;
-                                        width: 100%;
-                                        margin: 0;
-                                        padding: 0;
-                                    }
+                                    .print-content { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; }
                                     .ql-toolbar { display: none !important; }
-                                    .ql-editor {
-                                        width: 100% !important;
-                                        min-height: auto !important;
-                                        box-shadow: none !important;
-                                        margin: 0 !important;
-                                        padding: 0 !important; 
-                                        background-image: none !important;
-                                        overflow: visible !important;
-                                    }
+                                    .ql-editor { width: 100% !important; min-height: auto !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; background-image: none !important; overflow: visible !important; }
                                 }
                             `}</style>
 
 							<ReactQuill
 								theme="snow"
-								value={result}
-								readOnly={true} // BLOQUEIA EDIÇÃO MANUAL
-								modules={{ toolbar: false }} // DESATIVA TOOLBAR
+								value={displayHtml}
+								readOnly={true}
+								modules={{ toolbar: false }}
 							/>
 						</div>
 					</div>
