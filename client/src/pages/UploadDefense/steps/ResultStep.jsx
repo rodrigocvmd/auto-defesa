@@ -9,6 +9,7 @@ import {
 	Info,
 	Send,
 	Lock,
+	User,
 } from "lucide-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -321,7 +322,7 @@ export const ResultStep = ({
 								onClick={() => setShowQualModal(true)} 
 								className="px-6 py-2 bg-white text-blue-600 border border-blue-200 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-50 transition-colors shadow-sm justify-center order-1 md:order-1"
 							>
-								<PenTool size={18} /> Editar Qualificação
+								<User size={18} /> Editar Qualificação
 							</button>
 
 							<button

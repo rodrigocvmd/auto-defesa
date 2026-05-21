@@ -92,6 +92,8 @@ const Home = () => {
 									baseados na legislação atualizada.
 								</p>
 
+								
+
 								<div className="flex flex-col items-center lg:items-center w-full gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
 									<Link
 										to="/upload"
@@ -106,14 +108,11 @@ const Home = () => {
 										<span className="relative z-10">Iniciar Análise Técnica (Grátis)</span>
 									</Link>
 
-									<p className="text-[10px] md:text-xs text-gray-500 md:mt-2 text-center max-w-sm">
-										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
-										documento final em PDF tem um custo único a partir de R$ 4,79.
-									</p>
+									
 
-									<div className="bg-amber-50 text-amber-800 border border-amber-200 text-xs md:text-sm font-medium py-2 px-4 rounded-xl text-center max-w-lg mx-auto mt-4 mb-2 shadow-sm">
+									{/* <div className="bg-amber-50 text-amber-800 border border-amber-200 text-xs md:text-sm font-medium py-2 px-4 rounded-xl text-center max-w-lg mx-auto mt-4 mb-2 shadow-sm">
 										⚠️ Serviço de software privado e independente. Não possuímos vínculo com o Detran, Senatran ou qualquer órgão governamental.
-									</div>
+									</div> */}
 
 									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-2 md:mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
@@ -142,6 +141,15 @@ const Home = () => {
 												defesas geradas
 											</span>
 											</div>
+									</div>
+
+									<div><p className="text-[10px] md:text-xs text-gray-500 md:mt-2 text-center max-w-sm">
+										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
+										documento final em PDF tem um custo único a partir de R$ 4,79.
+									</p>
+									<p className="text-[10px] md:text-xs text-gray-500 text-center max-w-sm">
+										*Serviço de software privado e independente. Não possuímos vínculo com o Detran, Senatran ou qualquer órgão governamental.
+									</p>
 									</div>
 
 									{/* Seta indicativa para mobile */}
