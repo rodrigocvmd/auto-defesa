@@ -193,13 +193,13 @@ exports.generateDefense = (req, res) => {
                 - RECURSO CETRAN/CONTRADIFE: Rebata a decisão da JARI, alegue falta de fundamentação se genérica.
              - PROLIXIDADE E EXAUSTIVIDADE (MUITO IMPORTANTE): Seja extremamente prolixo. Você deve elaborar o recurso com no mínimo 4 argumentos técnicos detalhados sobre o tema. Desenvolva pelo menos 5 tópicos de mérito completos.
 
-          FINALIZAÇÃO E ASSINATURA: Ao final, obrigatoriamente encerre com o bloco CENTRALIZADO exatamente como abaixo:
+          FINALIZAÇÃO E ASSINATURA (MUITO IMPORTANTE: NÃO preencha Cidade, Data ou Nome. Deixe os placeholders EXATAMENTE como estão no bloco abaixo): Ao final, obrigatoriamente encerre com o bloco CENTRALIZADO exatamente como abaixo:
              
              <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-             <p style="text-align: center; margin-bottom: 30px;">${data.signCity || "[CIDADE]"}, ${formattedSignDate}.</p>
+             <p style="text-align: center; margin-bottom: 30px;">[CIDADE DE ASSINATURA], [DATA DE ASSINATURA].</p>
              
              <p style="text-align: center; margin-top: 40px; margin-bottom: 0;">___________________________________________________</p>
-             <p style="text-align: center; margin-top: 5px;">${(data.name || "[NOME DO RECORRENTE]").toUpperCase()}</p>
+             <p style="text-align: center; margin-top: 5px;">[NOME DO RECORRENTE]</p>
         `;
 
 				userPrompt = `
@@ -607,13 +607,13 @@ exports.analyzeDocument = (req, res) => {
         ESTRATÉGIA:
            - Produza um recurso extremamente prolixo e exaustivo. Desenvolva no mínimo 5 tópicos completos e detalhados.
            - Explore erros formais da imagem (AIT) e a legislação (CTB/CONTRAN).
-           - Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO, exatamente como abaixo:
+           - Finalize obrigatoriamente com o bloco de encerramento e assinatura CENTRALIZADO (MUITO IMPORTANTE: NÃO preencha Cidade, Data ou Nome. Deixe os placeholders EXATAMENTE como estão no bloco abaixo), exatamente como abaixo:
             
             <p style="text-align: center; margin-top: 30px;">Nestes termos, pede deferimento.</p>
-            <p style="text-align: center; margin-bottom: 30px;">${userData.signCity || "[CIDADE]"}, ${formattedSignDate}.</p>
+            <p style="text-align: center; margin-bottom: 30px;">[CIDADE DE ASSINATURA], [DATA DE ASSINATURA].</p>
             
             <p style="text-align: center; margin-top: 40px; margin-bottom: 0;">___________________________________________________</p>
-            <p style="text-align: center; margin-top: 5px;">${(userData.name || "[NOME DO RECORRENTE]").toUpperCase()}</p>
+            <p style="text-align: center; margin-top: 5px;">[NOME DO RECORRENTE]</p>
       `;
 
 			const imagePart = { inlineData: { data: image, mimeType: mimeType } };

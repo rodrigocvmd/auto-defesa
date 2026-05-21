@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
 import { PenTool, CheckCircle, Info } from "lucide-react";
 
-export const QualificationEditorModal = ({ initialText, initialCity, initialDate, onSave, onClose }) => {
+export const QualificationEditorModal = ({ initialText, initialCity, initialDate, initialName, onSave, onClose }) => {
 	const [text, setText] = useState(initialText);
 	const [city, setCity] = useState(initialCity || "");
 	const [date, setDate] = useState(initialDate || "");
+	const [name, setName] = useState(initialName || "");
 	const backdropRef = useRef(null);
 	const textareaRef = useRef(null);
 
@@ -127,7 +128,16 @@ export const QualificationEditorModal = ({ initialText, initialCity, initialDate
 						</div>
 					</div>
 
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+						<div className="space-y-1">
+							<label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Nome para Assinatura</label>
+							<input
+								value={name}
+								onChange={(e) => setName(e.target.value)}
+								className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+								placeholder="Ex: João da Silva"
+							/>
+						</div>
 						<div className="space-y-1">
 							<label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Cidade de Assinatura</label>
 							<input
@@ -156,7 +166,7 @@ export const QualificationEditorModal = ({ initialText, initialCity, initialDate
 							Cancelar
 						</button>
 						<button
-							onClick={() => onSave(text, city, date)}
+							onClick={() => onSave(text, city, date, name)}
 							className="flex-[2] px-6 py-3.5 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all flex items-center justify-center gap-2 order-1 md:order-2">
 							<CheckCircle size={20} /> Salvar Qualificação
 						</button>
