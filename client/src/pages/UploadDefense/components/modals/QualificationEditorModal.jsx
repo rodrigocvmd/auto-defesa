@@ -110,7 +110,7 @@ export const QualificationEditorModal = ({ initialText, initialCity, initialDate
 						<label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
 							Editor de Qualificação (Texto Livre)
 						</label>
-						<div className="relative w-full border border-gray-300 rounded-xl overflow-hidden bg-gray-50 min-h-[160px] font-mono text-[14px] md:text-[15px] leading-relaxed shadow-inner">
+						<div className="relative w-full border border-gray-300 rounded-xl overflow-hidden bg-gray-50 min-h-[250px] font-mono text-[14px] md:text-[15px] leading-relaxed shadow-inner">
 							<div
 								ref={backdropRef}
 								className="absolute inset-0 p-4 md:p-5 whitespace-pre-wrap break-words overflow-y-auto pointer-events-none z-0">

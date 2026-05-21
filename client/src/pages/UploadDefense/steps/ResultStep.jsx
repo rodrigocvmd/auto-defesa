@@ -253,15 +253,7 @@ export const ResultStep = ({
 					
 					{hasSavedQual && (
 						<>
-							<div id="previaDaMinuta" className="flex justify-between items-center mb-4 mx-2 md:ml-4 md:mr-0">
-								<h3 className="font-bold text-gray-800 text-lg hidden md:block">Prévia da Minuta</h3>
-								<button 
-									onClick={() => setShowQualModal(true)} 
-									className="text-blue-600 bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-100 transition-colors border border-blue-100 shadow-sm w-full md:w-auto justify-center"
-								>
-									<PenTool size={16} /> Editar Qualificação
-								</button>
-							</div>
+					
 
 							<div
 								id="avisoPreview"
@@ -325,10 +317,17 @@ export const ResultStep = ({
 						</button>
 					) : (
 						<>
+							<button 
+								onClick={() => setShowQualModal(true)} 
+								className="px-6 py-2 bg-white text-blue-600 border border-blue-200 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-50 transition-colors shadow-sm justify-center order-1 md:order-1"
+							>
+								<PenTool size={18} /> Editar Qualificação
+							</button>
+
 							<button
 								onClick={() => setIsRefining(!isRefining)}
 								disabled={refining}
-								className={`px-6 py-2 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${
+								className={`px-6 py-2 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-sm order-2 md:order-2 ${
 									isRefining
 										? "bg-gray-100 text-gray-600 border border-gray-300"
 										: "bg-blue-500 text-white hover:bg-blue-600 shadow-blue-200 shadow-md"
@@ -340,7 +339,7 @@ export const ResultStep = ({
 							<button
 								onClick={handleDownloadRequest}
 								disabled={pdfLoading}
-								className="bg-green-700 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-600 flex items-center justify-center gap-2 shadow-md disabled:opacity-50">
+								className="bg-green-700 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-600 flex items-center justify-center gap-2 shadow-md disabled:opacity-50 order-3 md:order-3">
 								<Download size={18} /> Baixar PDF Final
 							</button>
 						</>
