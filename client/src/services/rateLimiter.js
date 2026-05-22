@@ -11,9 +11,10 @@ export const rateLimiter = {
 				usage: data.usage || {},
 				bypasses: data.bypasses || {},
 				blocks: data.blocks || {},
+				refinement_counts: data.refinement_counts || {},
 			};
 		} catch (e) {
-			return { usage: {}, bypasses: {}, blocks: {} };
+			return { usage: {}, bypasses: {}, blocks: {}, refinement_counts: {} };
 		}
 	},
 

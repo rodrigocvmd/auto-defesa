@@ -59,6 +59,20 @@ export const useDefenseLogic = (step) => {
 		}
 	}, []);
 
+	// Sync Refinement Count on mount or when defenseId changes
+	useEffect(() => {
+		const fetchCount = async () => {
+			if (defenseId) {
+				const count = await rateLimiter.getRefinementCount(defenseId, currentUser);
+				setRefinementCount(count);
+			} else {
+				const count = await rateLimiter.getRefinementCount("temp_upload", currentUser);
+				setRefinementCount(count);
+			}
+		};
+		fetchCount();
+	}, [defenseId, currentUser]);
+
 	// Reset state if user navigates back to start
 	useEffect(() => {
 		if (step === "upload") {
