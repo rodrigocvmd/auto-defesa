@@ -216,7 +216,7 @@ export const FormStep = ({
 							)}
 						</div>
 						<div className="md:col-span-2">
-							<label className="label-form">Artigo / Enquadramento Legal</label>
+							<label className="label-form">Art./Enquadramento Legal</label>
 							<input
 								name="article"
 								value={formData.article}
@@ -231,7 +231,7 @@ export const FormStep = ({
 
 						<div className="md:col-span-2">
 							<label className="label-form">
-								Código de Registro da Autuação (AIT) <span className="text-red-500">*</span>
+								Núm. da Autuação (AIT) <span className="text-red-500">*</span>
 							</label>
 							<input
 								name="aitNumber"
@@ -334,7 +334,7 @@ export const FormStep = ({
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 						<div>
 							<label className="label-form">
-								Identificação do Radar/Equipamento (Opcional){" "}
+								Identificação do Radar/Equipamento{" "}
 								<span className="text-red-500">*</span>
 							</label>
 							<div className="flex flex-col gap-2">
@@ -371,7 +371,7 @@ export const FormStep = ({
 						</div>
 						<div>
 							<label className="label-form">
-								Aferição <span className="text-red-500">*</span>
+								Data de Aferição <span className="text-red-500">*</span>
 							</label>
 							<div className="flex flex-col gap-2">
 								<input

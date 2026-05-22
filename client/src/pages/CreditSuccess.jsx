@@ -32,7 +32,7 @@ const CreditSuccess = () => {
 
 			// 2. NOVO: Evento específico de conversão para o Google Ads
 			window.gtag("event", "conversion", {
-				send_to: "AW-18013866120/PQOpCPee_KEcEIiR141D",
+				send_to: "AW-18180147737/6qvsCPqxobEcEJmU_NxD",
 				value: parseFloat(amount),
 				currency: "BRL",
 				transaction_id: sessionId || "",
