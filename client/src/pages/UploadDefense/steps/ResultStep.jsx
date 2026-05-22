@@ -26,6 +26,7 @@ import { DownloadSuccessModal } from "../components/modals/DownloadSuccessModal"
 export const ResultStep = ({
 	result,
 	formData,
+	analysisData,
 	isRefining,
 	setIsRefining,
 	refinementText,
@@ -55,7 +56,8 @@ export const ResultStep = ({
 	const [showPrintInstructionModal, setShowPrintInstructionModal] = useState(false);
 	const [showProfileButton, setShowProfileButton] = useState(false);
 
-	const addressing = `<p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 40px;">AO ILUSTRÍSSIMO SENHOR ${formData.issuingBody || "DIRETOR DO ÓRGÃO AUTUADOR"}</p>`;
+	const dynamicAddressing = analysisData?.addressing || `AO ILUSTRÍSSIMO SENHOR DIRETOR DO ${formData.issuingBody || "ÓRGÃO AUTUADOR"}`;
+	const addressing = `<p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 40px;">${dynamicAddressing}</p>`;
 	const aitRef = `<p style="font-size: 14pt; font-weight: normal; text-transform: uppercase; text-align: center; margin-bottom: 30px;">REF.: AUTO DE INFRAÇÃO Nº ${formData.aitNumber || "[NÚMERO]"}</p>`;
 	const connection = " vem por meio deste apresentar";
 	

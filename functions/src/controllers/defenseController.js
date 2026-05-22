@@ -442,7 +442,8 @@ exports.preAnalyze = (req, res) => {
 			          "divergence": {
 			             "isDivergent": boolean,
 			             "message": "Se houver divergência forte, explique em 1 frase curta alertando o usuário. Caso contrário, string vazia."
-			          }
+			          },
+			          "addressing": "Endereçamento formal exato e completo da peça. Avalie o órgão autuador e a fase da defesa (previa, jari, cetran). Exemplo para prévia: 'AO ILUSTRÍSSIMO SENHOR DIRETOR DO DEPARTAMENTO DE TRÂNSITO DO DISTRITO FEDERAL – DETRAN/DF'. Exemplo para JARI: 'À ILUSTRÍSSIMA TURMA DE JULGAMENTO DA JARI DO DETRAN/SP'."
 			        }
 			        REQUISITO DOS ARGUMENTOS: Cada um dos 5 argumentos técnicos deve ser detalhado e possuir, obrigatoriamente, no mínimo 175 caracteres de extensão.
 			      `;
