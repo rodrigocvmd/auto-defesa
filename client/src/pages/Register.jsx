@@ -13,6 +13,7 @@ export default function Register() {
     const redirect = searchParams.get('redirect') || fromPath;
     
     const intent = searchParams.get('intent');
+    const isFromPricing = redirect.includes('/pricing');
     const emailParam = searchParams.get('email') || '';
 
     const [name, setName] = useState('');
@@ -62,7 +63,7 @@ export default function Register() {
             if (err.code === 'auth/email-already-in-use') {
                 setError(
                     <span>
-                        Este email já possui cadastro. <Link to={`/login?redirect=${redirect}`} className="underline font-bold">Faça login aqui</Link>.
+                        Este email já possui cadastro. <Link to={`/login?redirect=${encodeURIComponent(redirect)}`} className="underline font-bold">Faça login aqui</Link>.
                     </span>
                 );
             } else {
@@ -103,8 +104,20 @@ export default function Register() {
                         </div>
                     )}
 
+                    {!intent && isFromPricing && (
+                        <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded-xl text-center shadow-sm">
+                            <div className="flex justify-center mb-2">
+                                <ShieldCheck size={32} className="text-blue-600" />
+                            </div>
+                            <h3 className="text-blue-900 font-bold mb-1 text-sm md:text-base">Segurança na Aquisição</h3>
+                            <p className="text-blue-800 text-xs leading-relaxed">
+                                Por motivos de segurança, é necessário identificar-se para adquirir créditos. O cadastro é gratuito e leva apenas 10 segundos.
+                            </p>
+                        </div>
+                    )}
+
                     <div className="text-center mb-8">
-                        {intent !== 'upload' && (
+                        {(!intent && !isFromPricing) && (
                             <div className="bg-blue-100 p-3 rounded-full w-fit mx-auto mb-4 text-blue-600">
                                 <UserPlus size={24} />
                             </div>
