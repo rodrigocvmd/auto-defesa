@@ -15,20 +15,13 @@ const Pricing = () => {
 	const location = useLocation();
 	const [searchParams] = useSearchParams();
 	const [loadingId, setLoadingId] = useState(null);
-
-	const [guestModalOpen, setGuestModalOpen] = useState(false);
-	const [existingGuestModalOpen, setExistingGuestModalOpen] = useState(false);
-	const [guestCredits, setGuestCredits] = useState(0);
 	const [selectedPlan, setSelectedPlan] = useState(null);
-	const [guestEmail, setGuestEmail] = useState("");
-	const [guestEmailError, setGuestEmailError] = useState("");
 
 	const [isPixModalOpen, setIsPixModalOpen] = useState(false);
 	const [selectedPixPriceId, setSelectedPixPriceId] = useState(null);
 
 	const [timeLeft, setTimeLeft] = useState(null);
 	const [promoEnded, setPromoEnded] = useState(false);
-	const [guestCreatedAt, setGuestCreatedAt] = useState(null);
 	const [isDiscountActive, setIsDiscountActive] = useState(() => {
 		return localStorage.getItem("isDiscountActive") === "true";
 	});
@@ -51,20 +44,6 @@ const Pricing = () => {
 	};
 
 	useEffect(() => {
-		const storedEmail = localStorage.getItem("guestEmail");
-		if (storedEmail) {
-			const normalizedEmail = storedEmail.trim().toLowerCase();
-			setGuestEmail(normalizedEmail);
-			api.getGuestCredits(normalizedEmail)
-				.then((data) => {
-					setGuestCredits(data.credits);
-					setGuestCreatedAt(data.createdAt);
-				})
-				.catch(console.error);
-		}
-	}, []);
-
-	useEffect(() => {
 		if (!isDiscountActive) {
 			setTimeLeft(null);
 			return;
@@ -84,9 +63,8 @@ const Pricing = () => {
 			const diff = endTime - now;
 
 			const isOldUser = userData?.createdAt && isBeforeToday(userData.createdAt);
-			const isOldGuest = guestCreatedAt && isBeforeToday(guestCreatedAt);
 
-			if (diff <= 0 || isOldUser || isOldGuest) {
+			if (diff <= 0 || isOldUser) {
 				setTimeLeft({ h: "00", m: "00", s: "00" });
 				setPromoEnded(true);
 			} else {
@@ -101,7 +79,7 @@ const Pricing = () => {
 		updateTimer();
 		const interval = setInterval(updateTimer, 1000);
 		return () => clearInterval(interval);
-	}, [userData, guestCreatedAt, isDiscountActive]);
+	}, [userData, isDiscountActive]);
 
 	const handleActivateDiscount = () => {
 		setIsDiscountActive(true);
@@ -179,17 +157,10 @@ const Pricing = () => {
 
 	const PLANS = BASE_PLANS;
 
-	const handleCheckout = async (plan, isConfirmed = false) => {
+	const handleCheckout = async (plan) => {
 		setSelectedPixPriceId(null);
-		if (!currentUser && !isConfirmed) {
-			const storedEmail = localStorage.getItem("guestEmail");
-			if (storedEmail) {
-				setSelectedPlan(plan);
-				setExistingGuestModalOpen(true);
-				return;
-			}
-			setSelectedPlan(plan);
-			setGuestModalOpen(true);
+		if (!currentUser) {
+			navigate(`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
 			return;
 		}
 
@@ -197,20 +168,14 @@ const Pricing = () => {
 		try {
 			const successUrl = `${window.location.origin}/credit-success?amount=${plan.price.replace("R$ ", "").replace(",", ".")}&plan=${encodeURIComponent(plan.name)}${redirect ? `&redirect=${encodeURIComponent(redirect)}` : ""}`;
 			
-			const normalizedEmail = (guestEmail || "").trim().toLowerCase();
 			const response = await api.createPreference({
 				priceId: plan.id,
 				userId: currentUser?.uid,
 				credits: plan.credits,
-				guestEmail: normalizedEmail || currentUser?.email,
 				successUrl: successUrl,
 			});
 
 			if (response.init_point) {
-				if (normalizedEmail) {
-					localStorage.setItem("guestEmail", normalizedEmail);
-					window.dispatchEvent(new Event("guestEmailChanged"));
-				}
 				window.location.href = response.init_point;
 			}
 		} catch (error) {
@@ -219,60 +184,13 @@ const Pricing = () => {
 		}
 	};
 
-	const handleOpenPix = (priceId, isConfirmed = false) => {
+	const handleOpenPix = (priceId) => {
 		setSelectedPixPriceId(priceId);
-		if (!currentUser && !isConfirmed) {
-			const storedEmail = localStorage.getItem("guestEmail");
-			const plan = PLANS.find(p => p.id === priceId);
-			if (storedEmail) {
-				setSelectedPlan(plan);
-				setExistingGuestModalOpen(true);
-				return;
-			}
-			setSelectedPlan(plan);
-			setGuestModalOpen(true);
+		if (!currentUser) {
+			navigate(`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
 			return;
 		}
 		setIsPixModalOpen(true);
-	};
-
-	const handleConfirmGuestPayment = () => {
-		setExistingGuestModalOpen(false);
-		if (selectedPlan && selectedPixPriceId === selectedPlan.id) {
-			setIsPixModalOpen(true);
-		} else if (selectedPlan) {
-			handleCheckout(selectedPlan, true);
-		}
-	};
-
-	const handleGuestCheckout = async (e) => {
-		e.preventDefault();
-		if (!guestEmail || !/^\S+@\S+\.\S+$/.test(guestEmail)) {
-			setGuestEmailError("Por favor, insira um email válido.");
-			return;
-		}
-
-		const normalizedEmail = (guestEmail || "").trim().toLowerCase();
-		setGuestEmailError("");
-		
-		setLoadingId("verifying");
-		try {
-			const data = await api.getGuestCredits(normalizedEmail);
-			setGuestCredits(data.credits);
-			setGuestCreatedAt(data.createdAt);
-		} catch (error) {
-			console.error("Erro ao verificar email:", error);
-		}
-		setLoadingId(null);
-		setGuestModalOpen(false);
-		
-		if (selectedPlan && !isPixModalOpen && selectedPixPriceId === selectedPlan.id) {
-			setIsPixModalOpen(true);
-			localStorage.setItem("guestEmail", normalizedEmail);
-			return;
-		}
-
-		handleCheckout(selectedPlan, true);
 	};
 
 	return (

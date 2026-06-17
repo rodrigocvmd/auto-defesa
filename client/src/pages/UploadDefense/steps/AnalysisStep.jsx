@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import {
 	Loader2,
 	CheckCircle,
@@ -9,12 +9,10 @@ import {
 	User,
 	FileText,
 	ArrowLeft,
+	Zap
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
-import { api } from "../../../services/api";
-
-import { GuestCreditModal } from "../components/modals/GuestCreditModal";
 
 export const AnalysisStep = ({
 	analysisData,
@@ -26,27 +24,6 @@ export const AnalysisStep = ({
 }) => {
 	const { currentUser, userData } = useAuth();
 	const navigate = useNavigate();
-	const [guestCredits, setGuestCredits] = useState(0);
-	const [showGuestCreditModal, setShowGuestCreditModal] = useState(false);
-
-	useEffect(() => {
-		const fetchGuestCredits = async () => {
-			if (!currentUser) {
-				const guestEmail = localStorage.getItem("guestEmail");
-				if (guestEmail) {
-					const normalizedEmail = guestEmail.trim().toLowerCase();
-					try {
-						const data = await api.getGuestCredits(normalizedEmail);
-						setGuestCredits(data.credits);
-					} catch (e) {
-						console.error("Failed to fetch guest credits", e);
-						setGuestCredits(0);
-					}
-				}
-			}
-		};
-		fetchGuestCredits();
-	}, [currentUser]);
 
 	const exclusiveThesesCount = useMemo(() => Math.floor(Math.random() * (5 - 2 + 1)) + 2, []);
 
@@ -56,6 +33,8 @@ export const AnalysisStep = ({
 		: analysisData.summary;
 	const isHighViability = viability === "Alta" || viability === "Muito Alta";
 	const isPossibleViability = viability === "Possível";
+
+	const hasCredits = userData?.credits > 0;
 
 	return (
 		<div className="completeLoadingInfo max-w-2xl mx-auto pt-5 pb-12 px-4">
@@ -170,20 +149,8 @@ export const AnalysisStep = ({
 									Preencher Meus Dados Reais <PenTool size={20} className="hidden sm:block" />
 								</button>
 							</div>
-						) : !currentUser && guestCredits === 0 ? (
+						) : !hasCredits ? (
 							<div className="flex flex-col gap-3">
-								<p className="text-blue-100 text-md mb-2 font-medium">
-									Para gerar o documento final, crie uma conta ou adquira um crédito sem cadastro.
-								</p>
-								<div className="w-full flex justify-center px-1">
-									<button
-										onClick={() => {
-											setShowGuestCreditModal(true);
-										}}
-										className="w-full md:w-2/3 bg-white text-blue-600  font-bold py-3 rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
-										Adquirir ou Recuperar Créditos
-									</button>
-								</div>
 								<div className="w-full flex justify-center px-1">
 									<button
 										onClick={() => {
@@ -195,38 +162,15 @@ export const AnalysisStep = ({
 													source: "upload",
 												}),
 											);
-											navigate("/register?redirect=/upload/analysis");
+											navigate("/pricing?redirect=/upload/analysis");
 										}}
-										className="salvarECriarConta w-full md:w-2/3 bg-white text-blue-600 font-bold py-4 px- rounded-xl hover:bg-gray-100 transition-colors shadow-sm flex items-center justify-center gap-2">
-										Salvar Análise e Criar Conta <User size={20} className="hidden sm:block" />
-									</button>
-								</div>
-
-								<div className="w-full flex justify-center px-4">
-									<button
-										onClick={() => {
-											localStorage.setItem(
-												"pendingDefenseData",
-												JSON.stringify({
-													formData,
-													analysisData,
-													source: "upload",
-												}),
-											);
-											navigate("/login?redirect=/upload/analysis");
-										}}
-										className="w-full md:w-2/3 bg-blue-500 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors shadow-sm flex items-center justify-center gap-2 text-md">
-										Já tenho conta (Entrar)
+										className="w-full md:w-2/3 bg-gradient-to-r from-yellow-400 to-yellow-300 text-yellow-900 font-black py-4 rounded-xl hover:from-yellow-300 hover:to-yellow-200 transition-all shadow-xl hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 text-md">
+										<Zap size={20} fill="currentColor" /> Adquirir créditos para gerar seu Recurso
 									</button>
 								</div>
 							</div>
 						) : (
 							<div className="flex flex-col gap-3">
-								{!currentUser && (
-									<p className="text-blue-100 text-md mb-2 font-medium">
-										Créditos encontrados! Prossiga ou crie uma conta para salvar seu histórico.
-									</p>
-								)}
 								<div className="w-full flex justify-center px-4">
 									<button
 										onClick={handleUnlockDefense}
@@ -240,25 +184,6 @@ export const AnalysisStep = ({
 										</div>
 									</button>
 								</div>
-								{!currentUser && (
-									<div className="w-full flex justify-center px-4 mt-2">
-										<button
-											onClick={() => {
-												localStorage.setItem(
-													"pendingDefenseData",
-													JSON.stringify({
-														formData,
-														analysisData,
-														source: "upload",
-													}),
-												);
-												navigate("/register?redirect=/upload/analysis");
-											}}
-											className="salvarECriarConta w-full md:w-2/3 bg-blue-500 text-white font-bold py-4 px- rounded-xl hover:bg-blue-600 transition-colors shadow-sm flex items-center justify-center gap-2">
-											Criar Conta (Recomendado) <User size={20} className="hidden sm:block" />
-										</button>
-									</div>
-								)}
 							</div>
 						)}
 					</div>
@@ -273,13 +198,6 @@ export const AnalysisStep = ({
 					</div>
 				</div>
 			</div>
-			{showGuestCreditModal && (
-				<GuestCreditModal
-					onClose={() => setShowGuestCreditModal(false)}
-					formData={formData}
-					analysisData={analysisData}
-				/>
-			)}
 		</div>
 	);
 };

@@ -1,17 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { AlertTriangle, Send } from 'lucide-react';
+import { AlertTriangle, Send, X } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 export default function VerificationBanner() {
     const { currentUser, resendVerificationEmail } = useAuth();
     const [sending, setSending] = useState(false);
     const [sent, setSent] = useState(false);
     const [error, setError] = useState(null);
+    const [isClosed, setIsClosed] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        // Only load the closed state from session storage once on mount
+        const closedStatus = sessionStorage.getItem('verificationBannerClosed');
+        if (closedStatus === 'true') {
+            setIsClosed(true);
+        }
+    }, []);
 
     // Only show if user is logged in but NOT verified
     if (!currentUser || currentUser.emailVerified) {
         return null;
     }
+
+    const isProfilePage = location.pathname === '/profile';
+
+    // If it's closed and we are NOT on the profile page, don't render it
+    if (isClosed && !isProfilePage) {
+        return null;
+    }
+
+    const handleClose = () => {
+        setIsClosed(true);
+        sessionStorage.setItem('verificationBannerClosed', 'true');
+    };
 
     const handleResend = async () => {
         setSending(true);
@@ -33,43 +56,49 @@ export default function VerificationBanner() {
     };
 
     return (
-        <div className="bg-amber-50 border-b border-amber-200 px-4 py-2">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
-                <div className="flex items-center gap-2 text-amber-800 text-center">
-                    <AlertTriangle size={18} className="shrink-0" />
+        <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 relative">
+            {!isProfilePage && (
+                <button 
+                    onClick={handleClose} 
+                    className="absolute right-2 top-2 text-amber-700 hover:text-amber-900 transition-colors p-1"
+                    aria-label="Fechar aviso"
+                >
+                    <X size={16} />
+                </button>
+            )}
+            
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 text-sm pr-6">
+                <div className="flex items-center gap-2 text-amber-800 text-center sm:text-left">
+                    <AlertTriangle size={18} className="shrink-0 hidden sm:block" />
                     <span>
-                        Seu email ainda não foi confirmado. 
-                        Confirme-o para garantir o recebimento de cópias em PDF dos seus recursos e melhor suporte.
+                        <strong className="sm:hidden">Email não confirmado.</strong>
+                        <span className="hidden sm:inline">Seu email ainda não foi confirmado. </span> 
+                        Confirme-o para garantir o recebimento em PDF dos seus recursos.
                     </span>
                 </div>
                 
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="flex flex-col sm:flex-row items-center gap-2 shrink-0">
                     {sent ? (
-                        <span className="text-green-600 font-bold flex items-center gap-1">
+                        <span className="text-green-600 font-bold flex items-center gap-1 text-xs sm:text-sm">
                             Email enviado! Verifique o Spam.
                         </span>
                     ) : (
-                        <>
-                            <span className="inline text-amber-800 text-sm text-center md:border-l-2 pl-4">
-                                Não recebeu? Verifique o Spam ou
-                            </span>
-                            <button
-                                onClick={handleResend}
-                                disabled={sending}
-                                className="bg-amber-100 hover:bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1 disabled:opacity-50"
-                            >
-                                {sending ? 'Enviando...' : (
-                                    <>
-                                        Envie novo email <Send size={12} />
-                                    </>
-                                )}
-                            </button>
-                        </>
+                        <button
+                            onClick={handleResend}
+                            disabled={sending}
+                            className="bg-amber-100 hover:bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1 disabled:opacity-50 text-xs sm:text-sm w-full sm:w-auto justify-center"
+                        >
+                            {sending ? 'Enviando...' : (
+                                <>
+                                    Reenviar email de confirmação <Send size={12} />
+                                </>
+                            )}
+                        </button>
                     )}
                 </div>
             </div>
             {error && (
-                <div className="max-w-7xl mx-auto mt-2 text-xs text-red-600 font-bold">
+                <div className="max-w-7xl mx-auto mt-2 text-xs text-red-600 font-bold text-center sm:text-left">
                     {error}
                 </div>
             )}

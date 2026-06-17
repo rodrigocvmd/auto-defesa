@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { api } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
-const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => {
+const PixPaymentModal = ({ isOpen, onClose, priceId, redirect }) => {
 	const [loading, setLoading] = useState(true);
 	const [qrCodeBase64, setQrCodeBase64] = useState("");
 	const [qrCodeText, setQrCodeText] = useState("");
@@ -17,7 +17,7 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => 
 				setLoading(true);
 				setError(null);
 				try {
-					const response = await api.createPixPayment({ priceId, guestEmail });
+					const response = await api.createPixPayment({ priceId });
 					setQrCodeBase64(response.qrCodeBase64);
 					setQrCodeText(response.qrCode);
 					setPaymentId(response.paymentId);
@@ -37,7 +37,7 @@ const PixPaymentModal = ({ isOpen, onClose, priceId, guestEmail, redirect }) => 
 			setPaymentId(null);
 			setError(null);
 		}
-	}, [isOpen, priceId, guestEmail]);
+	}, [isOpen, priceId]);
 
 	useEffect(() => {
 		let interval;

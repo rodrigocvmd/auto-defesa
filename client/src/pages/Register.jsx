@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
-import { AlertCircle, UserPlus, Check, X, Mail } from 'lucide-react';
+import { AlertCircle, UserPlus, Check, X, Mail, ShieldCheck } from 'lucide-react';
 
 export default function Register() {
     const [searchParams] = useSearchParams();
-    const redirect = searchParams.get('redirect') || '/profile';
+    const location = useLocation();
+    
+    // Check if the user was redirected from a protected route
+    const fromPath = location.state?.from?.pathname || '/profile';
+    const redirect = searchParams.get('redirect') || fromPath;
+    
+    const intent = searchParams.get('intent');
     const emailParam = searchParams.get('email') || '';
 
     const [name, setName] = useState('');
@@ -56,7 +62,7 @@ export default function Register() {
             if (err.code === 'auth/email-already-in-use') {
                 setError(
                     <span>
-                        Este email já possui cadastro. <Link to="/login" className="underline font-bold">Faça login aqui</Link>.
+                        Este email já possui cadastro. <Link to={`/login?redirect=${redirect}`} className="underline font-bold">Faça login aqui</Link>.
                     </span>
                 );
             } else {
@@ -84,10 +90,25 @@ export default function Register() {
         <MainLayout>
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mx-3 my-3">
-                    <div className="text-center mb-8">
-                        <div className="bg-blue-100 p-3 rounded-full w-fit mx-auto mb-4 text-blue-600">
-                            <UserPlus size={24} />
+                    
+                    {intent === 'upload' && (
+                        <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded-xl text-center shadow-sm">
+                            <div className="flex justify-center mb-2">
+                                <ShieldCheck size={32} className="text-blue-600" />
+                            </div>
+                            <h3 className="text-blue-900 font-bold mb-1 text-sm md:text-base">Ambiente Seguro (LGPD)</h3>
+                            <p className="text-blue-800 text-xs leading-relaxed">
+                                Para garantir o sigilo absoluto do seu documento, crie uma conta gratuita em 10 segundos antes de enviar sua infração.
+                            </p>
                         </div>
+                    )}
+
+                    <div className="text-center mb-8">
+                        {intent !== 'upload' && (
+                            <div className="bg-blue-100 p-3 rounded-full w-fit mx-auto mb-4 text-blue-600">
+                                <UserPlus size={24} />
+                            </div>
+                        )}
                         <h2 className="text-2xl font-bold text-gray-900">Crie sua conta</h2>
                         <p className="text-gray-600 mt-2">Comece a defender seus direitos hoje</p>
                     </div>

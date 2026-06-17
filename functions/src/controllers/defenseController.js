@@ -44,11 +44,8 @@ exports.generateDefense = (req, res) => {
 
 		let data = req.body || {};
 		const isRefinement = !!data.refinementInstructions;
-		const guestEmail = data.guestEmail;
-		const clientIsGuest = !!guestEmail;
 
 		let userId = null;
-		let isGuest = false;
 		let userEmail = null;
 
 		try {
@@ -58,26 +55,15 @@ exports.generateDefense = (req, res) => {
 				userEmail = userDoc.data().email;
 			}
 		} catch (e) {
-			if (clientIsGuest) {
-				isGuest = true;
-				userId = guestEmail;
-				userEmail = guestEmail;
-			} else {
-				res.status(401).json({ error: "Usuário não autenticado." });
-				return;
-			}
+			res.status(401).json({ error: "Usuário não autenticado." });
+			return;
 		}
 
 		try {
 			// Limites diferenciados: Refinamentos são mais leves (Flash) e frequentes.
 			// Gerações iniciais são mais pesadas (Pro) e protegidas.
 			const limit = isRefinement ? 30 : 10;
-
-			if (userId && !isGuest) {
-				await checkUserRateLimit(userId, limit, 1);
-			} else if (isGuest) {
-				await checkIpRateLimit(req, limit, 1);
-			}
+			await checkUserRateLimit(userId, limit, 1);
 		} catch (e) {
 			if (e.message === "RATE_LIMIT_EXCEEDED") {
 				const msg = isRefinement
@@ -89,7 +75,7 @@ exports.generateDefense = (req, res) => {
 
 		try {
 			if (!isRefinement) {
-				await checkCredits(userId, isGuest, userEmail);
+				await checkCredits(userId, false, userEmail);
 			}
 
 			const genAI = new GoogleGenerativeAI(apiKey);
@@ -303,14 +289,12 @@ exports.extractDataFromImage = (req, res) => {
 		let userId = null;
 		try {
 			userId = await verifyAuth(req);
-		} catch (e) {}
+		} catch (e) {
+			return res.status(401).json({ error: "Usuário não autenticado." });
+		}
 
 		try {
-			if (userId) {
-				await checkUserRateLimit(userId, 15, 1);
-			} else {
-				await checkIpRateLimit(req, 15, 1);
-			}
+			await checkUserRateLimit(userId, 15, 1);
 		} catch (e) {
 			if (e.message === "RATE_LIMIT_EXCEEDED") {
 				return res.status(429).json({
@@ -407,14 +391,12 @@ exports.preAnalyze = (req, res) => {
 		let userId = null;
 		try {
 			userId = await verifyAuth(req);
-		} catch (e) {}
+		} catch (e) {
+			return res.status(401).json({ error: "Usuário não autenticado." });
+		}
 
 		try {
-			if (userId) {
-				await checkUserRateLimit(userId, 20, 1);
-			} else {
-				await checkIpRateLimit(req, 20, 1);
-			}
+			await checkUserRateLimit(userId, 20, 1);
 		} catch (e) {
 			if (e.message === "RATE_LIMIT_EXCEEDED") {
 				return res.status(429).json({
@@ -492,11 +474,8 @@ exports.analyzeDocument = (req, res) => {
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
 
 		const { image, mimeType, ...userData } = req.body || {};
-		const guestEmail = userData.guestEmail;
-		const clientIsGuest = !!guestEmail;
 
 		let userId = null;
-		let isGuest = false;
 		let userEmail = null;
 
 		try {
@@ -506,22 +485,12 @@ exports.analyzeDocument = (req, res) => {
 				userEmail = userDoc.data().email;
 			}
 		} catch (e) {
-			if (clientIsGuest) {
-				isGuest = true;
-				userId = guestEmail;
-				userEmail = guestEmail;
-			} else {
-				res.status(401).json({ error: "Usuário não autenticado." });
-				return;
-			}
+			res.status(401).json({ error: "Usuário não autenticado." });
+			return;
 		}
 
 		try {
-			if (userId && !isGuest) {
-				await checkUserRateLimit(userId, 10, 1);
-			} else {
-				await checkIpRateLimit(req, 10, 1);
-			}
+			await checkUserRateLimit(userId, 10, 1);
 		} catch (e) {
 			if (e.message === "RATE_LIMIT_EXCEEDED") {
 				return res
@@ -531,7 +500,7 @@ exports.analyzeDocument = (req, res) => {
 		}
 
 		try {
-			await checkCredits(userId, isGuest, userEmail);
+			await checkCredits(userId, false, userEmail);
 
 			const genAI = new GoogleGenerativeAI(apiKey);
 			const modelName = MODEL_PRO;
@@ -646,9 +615,7 @@ exports.analyzeDocument = (req, res) => {
 
 			const defenseData = {
 				userId: userId,
-				guestEmail: isGuest
-					? (guestEmail || "").trim().toLowerCase()
-					: (userEmail || "").trim().toLowerCase(),
+				guestEmail: (userEmail || "").trim().toLowerCase(),
 				infractionType: defenseTypeLabel,
 				licensePlate: userData.plate || "",
 				defenseText: defenseText,
@@ -660,7 +627,7 @@ exports.analyzeDocument = (req, res) => {
 			const docRef = await db.collection("defenses").add(defenseData);
 			const defenseId = docRef.id;
 
-			await deductCredits(userId, isGuest, userEmail);
+			await deductCredits(userId, false, userEmail);
 
 			res.status(200).json({
 				success: true,
@@ -683,7 +650,7 @@ exports.analyzeDocument = (req, res) => {
 exports.sendDefensePdfEmail = (req, res) => {
 	cors(req, res, async () => {
 		try {
-			const { pdfBase64, fileName, guestEmail } = req.body;
+			const { pdfBase64, fileName } = req.body;
 			let toEmail = null;
 
 			try {
@@ -691,11 +658,7 @@ exports.sendDefensePdfEmail = (req, res) => {
 				const userRecord = await admin.auth().getUser(userId);
 				toEmail = userRecord.email;
 			} catch (e) {
-				if (guestEmail) {
-					toEmail = guestEmail;
-				} else {
-					return res.status(401).json({ error: "Usuário não autenticado." });
-				}
+				return res.status(401).json({ error: "Usuário não autenticado." });
 			}
 
 			if (!pdfBase64 || !fileName || !toEmail) {

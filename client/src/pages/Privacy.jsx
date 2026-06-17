@@ -92,6 +92,19 @@ const Privacy = () => {
 										infração e cópia da Notificação de Autuação.
 									</span>
 								</li>
+								<li className="flex flex-col">
+									<strong className="text-gray-900 mb-2 mt-2">
+										⚙️ Processamento Seguro de Documentos (OCR e Descarte Imediato):
+									</strong>
+									<span className="text-sm bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+										Garantimos tecnicamente que <strong>nenhuma imagem ou foto enviada por você é armazenada em nossos bancos de dados</strong>. Quando você faz o upload de uma Notificação de Autuação:
+										<br/><br/>
+										1. O arquivo trafega até nossos servidores através de canais criptografados de ponta a ponta (TLS/SSL).<br/>
+										2. A imagem é carregada e mantida <strong>exclusivamente na memória volátil (RAM)</strong> do servidor temporário.<br/>
+										3. A Inteligência Artificial (OCR) extrai o conteúdo textual (dados da infração).<br/>
+										4. <strong>A imagem original é sumariamente destruída e apagada da memória RAM</strong> antes mesmo que a geração do seu recurso seja concluída.
+									</span>
+								</li>
 								<li className="flex flex-col md:flex-row md:gap-2">
 									<strong className="text-gray-900 md:shrink-0">• Dados de Navegação:</strong>
 									<span>

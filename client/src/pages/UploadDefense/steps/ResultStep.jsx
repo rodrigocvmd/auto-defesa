@@ -102,9 +102,7 @@ export const ResultStep = ({
 	const handleDownloadRequest = async () => {
 		const success = await handleGeneratePDF();
 		if (success) {
-			if (currentUser) {
-				// navigate("/profile", { state: { downloadStarted: true } });
-			}
+			// PDF download initiated
 		}
 	};
 

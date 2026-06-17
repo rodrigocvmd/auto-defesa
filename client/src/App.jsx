@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { DefenseProvider } from './contexts/DefenseContext';
 import ScrollToTop from './components/ScrollToTop';
 import { initializeAnalytics } from './services/analytics';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Initialize analytics service
 initializeAnalytics();
@@ -57,9 +58,9 @@ function App() {
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/email-confirmation" element={<EmailConfirmation />} />
               
-              {/* Rotas com parâmetro opcional para o fluxo de passos */}
-              <Route path="/upload" element={<UploadDefense />} />
-              <Route path="/upload/:step" element={<UploadDefense />} />
+              {/* Rotas Protegidas para o fluxo de passos */}
+              <Route path="/upload" element={<ProtectedRoute><UploadDefense /></ProtectedRoute>} />
+              <Route path="/upload/:step" element={<ProtectedRoute><UploadDefense /></ProtectedRoute>} />
               
               {/* Páginas de Conteúdo */}
               <Route path="/motorista-app" element={<ArticlePage customSlug="motorista-app" />} />
