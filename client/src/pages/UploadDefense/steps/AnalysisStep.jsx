@@ -165,8 +165,10 @@ export const AnalysisStep = ({
 											);
 											navigate("/pricing?redirect=/upload/analysis");
 										}}
-										className="w-full md:w-2/3 bg-gradient-to-r from-yellow-400 to-yellow-300 text-yellow-900 font-black py-4 rounded-xl hover:from-yellow-300 hover:to-yellow-200 transition-all shadow-xl hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 text-md px-4 md:px-1">
-										<Coins size={20} className="hidden sm:block" /> Adquirir créditos para gerar seu Recurso
+										className="group relative overflow-hidden w-full md:w-2/3 bg-gradient-to-r from-yellow-400 to-yellow-300 text-yellow-900 font-black py-4 rounded-xl hover:from-yellow-300 hover:to-yellow-200 transition-all shadow-xl hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 text-md">
+										<div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent w-full h-full -translate-x-full animate-shimmer"></div>
+										<Coins size={20} className="hidden sm:block relative z-10" /> 
+										<span className="relative z-10">Adquirir créditos para gerar seu Recurso</span>
 									</button>
 								</div>
 							</div>

@@ -235,7 +235,7 @@ export default function Register() {
                         </button>
                     </div>
 
-                    <div className="mt-8 text-center text-sm text-gray-600">
+                    <div className="mt-8 text-center text-gray-600">
                         Já tem uma conta?{' '}
                         <Link to={`/login${redirect !== '/' ? `?redirect=${redirect}` : ''}`} className="font-medium text-blue-600 hover:text-blue-500">
                             Entrar
