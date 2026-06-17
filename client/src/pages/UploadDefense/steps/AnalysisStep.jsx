@@ -9,7 +9,8 @@ import {
 	User,
 	FileText,
 	ArrowLeft,
-	Zap
+	Zap,
+	Coins
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -127,7 +128,7 @@ export const AnalysisStep = ({
 						<span>+ {exclusiveThesesCount} teses exclusivas identificadas</span>
 					</div>
 					<div
-						className={`${isTestMode ? "bg-gray-800" : "bg-blue-600"} rounded-2xl py-6 px-4 md:p-6 text-white text-center flex-col !items-center shadow-lg shadow-blue-200 transition-colors`}>
+						className={`${isTestMode ? "bg-gray-800" : "bg-blue-600"} rounded-2xl py-6 px-2 md:px-2 text-white text-center flex-col !items-center shadow-lg shadow-blue-200 transition-colors`}>
 						<div className="flex items-center justify-center gap-2 mb-2 opacity-90">
 							<Lock size={16} />
 							<span className="text-sm font-medium">Recurso Completo Bloqueado</span>
@@ -164,8 +165,8 @@ export const AnalysisStep = ({
 											);
 											navigate("/pricing?redirect=/upload/analysis");
 										}}
-										className="w-full md:w-2/3 bg-gradient-to-r from-yellow-400 to-yellow-300 text-yellow-900 font-black py-4 rounded-xl hover:from-yellow-300 hover:to-yellow-200 transition-all shadow-xl hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 text-md">
-										<Zap size={20} fill="currentColor" /> Adquirir créditos para gerar seu Recurso
+										className="w-full md:w-2/3 bg-gradient-to-r from-yellow-400 to-yellow-300 text-yellow-900 font-black py-4 rounded-xl hover:from-yellow-300 hover:to-yellow-200 transition-all shadow-xl hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 text-md px-4 md:px-1">
+										<Coins size={20} className="hidden sm:block" /> Adquirir créditos para gerar seu Recurso
 									</button>
 								</div>
 							</div>

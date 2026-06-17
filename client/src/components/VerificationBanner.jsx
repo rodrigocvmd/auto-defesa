@@ -67,12 +67,12 @@ export default function VerificationBanner() {
                 </button>
             )}
             
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 text-sm pr-6">
-                <div className="flex items-center gap-2 text-amber-800 text-center sm:text-left">
-                    <AlertTriangle size={18} className="shrink-0 hidden sm:block" />
+            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-3 text-sm pr-6">
+                <div className="flex items-center gap-2 text-amber-800 text-center lg:text-left">
+                    <AlertTriangle size={18} className="shrink-0 hidden lg:block" />
                     <span>
-                        <strong className="sm:hidden">Email não confirmado.</strong>
-                        <span className="hidden sm:inline">Seu email ainda não foi confirmado. </span> 
+                        <strong className="lg:hidden">Email não confirmado.</strong>
+                        <span className="hidden lg:inline">Seu email ainda não foi confirmado. </span> 
                         Confirme-o para garantir o recebimento em PDF dos seus recursos.
                     </span>
                 </div>
@@ -83,17 +83,22 @@ export default function VerificationBanner() {
                             Email enviado! Verifique o Spam.
                         </span>
                     ) : (
-                        <button
-                            onClick={handleResend}
-                            disabled={sending}
-                            className="bg-amber-100 hover:bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1 disabled:opacity-50 text-xs sm:text-sm w-full sm:w-auto justify-center"
-                        >
-                            {sending ? 'Enviando...' : (
-                                <>
-                                    Reenviar email de confirmação <Send size={12} />
-                                </>
-                            )}
-                        </button>
+                        <div className="flex flex-col sm:flex-row items-center gap-2">
+                            <span className="text-amber-800 text-sm sm:text-md text-center">
+                                Não recebeu o email? Verifique o SPAM ou
+                            </span>
+                            <button
+                                onClick={handleResend}
+                                disabled={sending}
+                                className="bg-amber-100 hover:bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1 disabled:opacity-50 text-sm sm:text-md w-full sm:w-auto justify-center"
+                            >
+                                {sending ? 'Enviando...' : (
+                                    <>
+                                        Envie nova confirmação <Send size={16} />
+                                    </>
+                                )}
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
