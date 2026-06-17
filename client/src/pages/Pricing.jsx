@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import MainLayout from "../layouts/MainLayout";
-import { Check, Shield, Zap, Star, Briefcase, FileText, Scale } from "lucide-react";
+import { Check, Shield, Zap, Star, Briefcase, FileText, Scale, QrCode } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { FaPix } from "react-icons/fa6";
 import { api } from "../services/api";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import SEO from "../components/SEO";
@@ -439,7 +440,7 @@ const Pricing = () => {
 											}}
 											disabled={!!loadingId}
 											className="w-full py-3 rounded-xl font-bold text-md transition-all active:scale-95 bg-white text-green-600 border-2 border-green-500 hover:bg-green-50 flex items-center justify-center gap-2">
-											<Zap size={18} className="text-green-500" fill="currentColor" />
+											<FaPix size={18} className="text-green-500" fill="currentColor" />
 											Adquirir com PIX
 										</button>
 									)}
