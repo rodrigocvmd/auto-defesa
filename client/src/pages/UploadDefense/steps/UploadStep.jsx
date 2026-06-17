@@ -16,6 +16,7 @@ export const UploadStep = ({
 	const { currentUser } = useAuth();
 	const navigate = useNavigate();
 	const [isDragging, setIsDragging] = useState(false);
+	const [consentChecked, setConsentChecked] = useState(false);
 
 	const processFile = (selectedFile) => {
 		if (!selectedFile) return;
@@ -125,11 +126,32 @@ export const UploadStep = ({
 								</div>
 							)}
 						</div>
+						<div className="flex items-start gap-2 max-w-md mx-auto my-4 text-left bg-blue-50/50 p-3 rounded-xl border border-blue-100/50">
+							<input
+								type="checkbox"
+								id="lgpd-consent"
+								checked={consentChecked}
+								onChange={(e) => setConsentChecked(e.target.checked)}
+								className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+							/>
+							<label htmlFor="lgpd-consent" className="text-xs text-gray-600 leading-tight cursor-pointer">
+								Concordo com os{" "}
+								<Link to="/terms" className="text-blue-600 underline font-semibold">
+									Termos de Uso
+								</Link>{" "}
+								e autorizo o processamento dos dados do meu auto de infração pela IA estritamente para a
+								formulação da defesa técnica conforme a{" "}
+								<Link to="/privacy" className="text-blue-600 underline font-semibold">
+									Política de Privacidade
+								</Link>
+								.
+							</label>
+						</div>
 						<div className="flex flex-col items-center gap-6 pt-4 border-t border-gray-100">
 							<button
 								type="submit"
-								disabled={!file || loading}
-								className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && !loading ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"}`}>
+								disabled={!file || !consentChecked || loading}
+								className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all w-full md:w-auto ${file && consentChecked && !loading ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"}`}>
 								{loading ? (
 									<>
 										<Loader2 className="animate-spin inline mr-2" /> Extraindo Dados Técnicos...
