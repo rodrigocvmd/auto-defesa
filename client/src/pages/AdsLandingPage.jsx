@@ -180,18 +180,9 @@ const AdsLandingPage = () => {
 										<span className="relative z-10">Iniciar Análise Técnica (Grátis)</span>
 									</Link>
 
-										<div><p className="text-[10px] md:text-xs text-gray-500 md:mt-2 text-center max-w-sm">
-										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
-										documento final em PDF tem um custo único a partir de R$ 9,99.
-									</p>
-									<p className="text-[10px] md:text-xs text-gray-500 text-center max-w-sm">
-										*Serviço de software privado e independente. Não possuímos vínculo com o Detran, Senatran ou qualquer órgão governamental.
-									</p>
+									<div className="w-full max-w-md mx-auto mt-2 bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-semibold py-2 px-4 rounded-xl text-center shadow-sm">
+										⚠️ O Auto Defesa é uma plataforma privada de software independente. Não possuímos nenhum vínculo com o DETRAN, Senatran, JARI ou qualquer órgão público governamental.
 									</div>
-
-									{/* <div className="bg-amber-50 text-amber-800 border border-amber-200 text-xs md:text-sm font-medium py-2 px-4 rounded-xl text-center max-w-lg mx-auto mt-4 mb-2 shadow-sm">
-										⚠️ Serviço de software privado e independente. Não possuímos vínculo com o Detran, Senatran ou qualquer órgão governamental.
-									</div> */}
 
 									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-2 md:mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
@@ -685,6 +676,16 @@ const AdsLandingPage = () => {
 					</div>
 				</ScrollReveal>
 			</div>
+
+			<footer className="bg-white border-t border-gray-200 py-8 mt-12 text-center text-xs text-gray-500">
+				<div className="max-w-4xl mx-auto px-4 space-y-2">
+					<p className="font-bold text-gray-700">Auto Defesa Recursos de Trânsito</p>
+					<p>Operado por Abax Labs Ltda | CNPJ: 46.463.308/0001-44</p>
+					<p>Endereço Comercial: Setor Comercial Sul, Quadra 04, Bloco A, Brasília - DF, CEP: 70304-000</p>
+					<p>Contato Suporte: suporte@meuautodefesa.com.br</p>
+					<p className="pt-4 text-[10px]">© {ano} Auto Defesa. Todos os direitos reservados. Plataforma privada e independente.</p>
+				</div>
+			</footer>
 		</div>
 	);
 };
