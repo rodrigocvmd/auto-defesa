@@ -12,12 +12,16 @@ const getMPClient = () => {
 };
 
 const PRICE_MAP = {
-	price_1SxBbqRTHGPeccd9D66pZoXs: { credits: 1, name: "Recurso Expresso", amount: 17.9 },
-	price_1SuFi7RTHGPeccd987NViaZP: { credits: 3, name: "Proteção Completa", amount: 27.9 },
-	price_1SuFiORTHGPeccd9HKTxjPO7: { credits: 10, name: "Pacote Profissional", amount: 47.9 },
-	price_1TL2dLRTHGPeccd9tAHX77rE: { credits: 1, name: "Recurso Expresso (50%)", amount: 8.95 },
-	price_1TL2dqRTHGPeccd9IvRUpANK: { credits: 3, name: "Proteção Completa (50%)", amount: 13.95 },
-	price_1TL2eARTHGPeccd9ub7jSux7: { credits: 10, name: "Pacote Profissional (50%)", amount: 23.95 },
+	// Preços Promocionais (50% OFF)
+	price_1SxBbqRTHGPeccd9D66pZoXs: { credits: 1, name: "Recurso Expresso", amount: 29.9 },
+	price_1SuFi7RTHGPeccd987NViaZP: { credits: 3, name: "Proteção Completa", amount: 49.9 },
+	price_1SuFiORTHGPeccd9HKTxjPO7: { credits: 10, name: "Pacote Profissional", amount: 99.9 },
+	
+	// Preços Cheios (Originais)
+	price_1SxBbqRTHGPeccd9D66pZoXs_full: { credits: 1, name: "Recurso Expresso", amount: 49.9 },
+	price_1SuFi7RTHGPeccd987NViaZP_full: { credits: 3, name: "Proteção Completa", amount: 149.7 },
+	price_1SuFiORTHGPeccd9HKTxjPO7_full: { credits: 10, name: "Pacote Profissional", amount: 499.0 },
+
 	price_H5ggYwtDq4fbrJ: { credits: 1, name: "Plano Teste", amount: 1.0 },
 };
 

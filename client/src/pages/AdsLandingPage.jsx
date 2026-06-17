@@ -182,7 +182,7 @@ const AdsLandingPage = () => {
 
 										<div><p className="text-[10px] md:text-xs text-gray-500 md:mt-2 text-center max-w-sm">
 										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
-										documento final em PDF tem um custo único a partir de R$ 4,79.
+										documento final em PDF tem um custo único a partir de R$ 9,99.
 									</p>
 									<p className="text-[10px] md:text-xs text-gray-500 text-center max-w-sm">
 										*Serviço de software privado e independente. Não possuímos vínculo com o Detran, Senatran ou qualquer órgão governamental.
@@ -369,7 +369,7 @@ const AdsLandingPage = () => {
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
 											<span className="font-medium text-gray-600">Custo</span>
 											<span className="font-black text-green-600 text-lg mx-5 md:mx-0">
-												A partir de R$ 4,79 (no pacote)
+												A partir de R$ 9,99 (no pacote)
 											</span>
 										</li>
 										<li className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 gap-1 sm:gap-0">
