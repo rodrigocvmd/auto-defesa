@@ -49,37 +49,39 @@ const Pricing = () => {
 			return;
 		}
 
-		const endTimeStr = localStorage.getItem("discountEndTime");
 		let endTime;
-		if (!endTimeStr) {
+		const getStoredEndTime = () => {
+			const stored = localStorage.getItem("discountEndTime");
+			return stored ? parseInt(stored, 10) : null;
+		};
+
+		endTime = getStoredEndTime();
+		if (!endTime) {
 			endTime = Date.now() + 60 * 60 * 1000; // 1 hora
 			localStorage.setItem("discountEndTime", endTime.toString());
-		} else {
-			endTime = parseInt(endTimeStr, 10);
 		}
 
 		const updateTimer = () => {
 			const now = Date.now();
-			const diff = endTime - now;
+			let diff = endTime - now;
 
-			const isOldUser = userData?.createdAt && isBeforeToday(userData.createdAt);
-
-			if (diff <= 0 || isOldUser) {
-				setTimeLeft({ h: "00", m: "00", s: "00" });
-				setPromoEnded(true);
-			} else {
-				const h = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, "0");
-				const m = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
-				const s = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, "0");
-				setTimeLeft({ h, m, s });
-				setPromoEnded(false);
+			if (diff <= 0) {
+				// Auto-reset timer to 1 hour
+				endTime = Date.now() + 60 * 60 * 1000;
+				localStorage.setItem("discountEndTime", endTime.toString());
+				diff = 60 * 60 * 1000;
 			}
+
+			const h = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, "0");
+			const m = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
+			const s = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, "0");
+			setTimeLeft({ h, m, s });
 		};
 
 		updateTimer();
 		const interval = setInterval(updateTimer, 1000);
 		return () => clearInterval(interval);
-	}, [userData, isDiscountActive]);
+	}, [isDiscountActive]);
 
 	const handleActivateDiscount = () => {
 		setIsDiscountActive(true);
@@ -337,31 +339,27 @@ const Pricing = () => {
 									<button
 										id="promoBtn"
 										onClick={() => handleCheckout(plan)}
-										disabled={!!loadingId || (promoEnded)}
+										disabled={!!loadingId}
 										className={`w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 ${
 											plan.recommended
 												? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-indigo-300"
 												: "bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-50"
-										} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""} ${promoEnded ? "bg-gray-400 !text-gray-200 opacity-100 !shadow-none cursor-not-allowed" : ""}`}>
+										} ${loadingId && loadingId !== plan.id ? "opacity-50 cursor-not-allowed" : ""}`}>
 										{loadingId === plan.id
 											? "Processando..."
-											: promoEnded
-												? "Fim da promoção"
-												: "Adquirir com Cartão"}
+											: "Adquirir com Cartão"}
 									</button>
 
-									{(!promoEnded) && (
-										<button
-											onClick={() => {
-												setSelectedPixPriceId(plan.id);
-												handleOpenPix(plan.id);
-											}}
-											disabled={!!loadingId}
-											className="w-full py-3 rounded-xl font-bold text-md transition-all active:scale-95 bg-white text-green-600 border-2 border-green-500 hover:bg-green-50 flex items-center justify-center gap-2">
-											<FaPix size={18} className="text-green-500" fill="currentColor" />
-											Adquirir com PIX
-										</button>
-									)}
+									<button
+										onClick={() => {
+											setSelectedPixPriceId(plan.id);
+											handleOpenPix(plan.id);
+										}}
+										disabled={!!loadingId}
+										className="w-full py-3 rounded-xl font-bold text-md transition-all active:scale-95 bg-white text-green-600 border-2 border-green-500 hover:bg-green-50 flex items-center justify-center gap-2">
+										<FaPix size={18} className="text-green-500" fill="currentColor" />
+										Adquirir com PIX
+									</button>
 								</div>
 							</div>
 						</ScrollReveal>
