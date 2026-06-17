@@ -162,7 +162,7 @@ const Pricing = () => {
 	const handleCheckout = async (plan) => {
 		setSelectedPixPriceId(null);
 		if (!currentUser) {
-			navigate(`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
+			navigate(`/register?redirect=${encodeURIComponent(location.pathname + location.search)}`);
 			return;
 		}
 
@@ -189,7 +189,7 @@ const Pricing = () => {
 	const handleOpenPix = (priceId) => {
 		setSelectedPixPriceId(priceId);
 		if (!currentUser) {
-			navigate(`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
+			navigate(`/register?redirect=${encodeURIComponent(location.pathname + location.search)}`);
 			return;
 		}
 		setIsPixModalOpen(true);

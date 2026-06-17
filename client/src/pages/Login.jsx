@@ -209,7 +209,7 @@ export default function Login() {
                                 Google
                             </button>
 
-                            <div className="mt-8 text-center text-sm text-gray-600">
+                            <div className="mt-8 text-center text-gray-600">
                                 Não tem uma conta?{' '}
                                 <Link to={`/register${redirect !== '/' ? `?redirect=${redirect}` : ''}`} className="font-medium text-blue-600 hover:text-blue-500">
                                     Cadastre-se
