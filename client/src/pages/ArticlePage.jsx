@@ -80,7 +80,7 @@ const ArticlePage = ({ customSlug }) => {
 
 	// Dynamic SEO focusing on long-tail pain points
 	const pageTitle = article.seoTitle || `Recurso de Multa: ${article.title} | Guia Auto Defesa`;
-	const pageDescription = article.seoDescription || `Saiba como anular a multa de ${article.title}. Veja teses de defesa técnica, valores e como evitar pontos na CNH.`;
+	const pageDescription = article.seoDescription || `Saiba como recorrer da multa de ${article.title}. Veja teses de defesa técnica, valores e como evitar pontos na CNH.`;
 
 	return (
 		<MainLayout>

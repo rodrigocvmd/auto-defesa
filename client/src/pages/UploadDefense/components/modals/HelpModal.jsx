@@ -25,7 +25,7 @@ export const HelpModal = ({ onClose }) => (
                             <br />
                             <br />
                             <strong>Objetivo:</strong> Apontar <strong>erros formais</strong> (ex: placa errada,
-                            cor do veículo divergente, local inexistente) para anular a infração antes que ela
+                            cor do veículo divergente, local inexistente) para cancelar a infração antes que ela
                             se torne uma penalidade (multa).
                         </p>
                     </div>

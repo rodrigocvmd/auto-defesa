@@ -25,7 +25,7 @@ import { infractionData } from "../utils/infractionData";
 const AdsLandingPage = () => {
 	const { slug } = useParams();
 	const data = infractionData[slug] || infractionData["geral"];
-	
+
 	const [showArrow, setShowArrow] = useState(true);
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 	const heroRef = useRef(null);
@@ -64,9 +64,9 @@ const AdsLandingPage = () => {
 
 	const renderStyledTitle = (title) => {
 		if (!title) return null;
-		const parts = title.split(/(Recurso|anular sua multa|3 minutos)/gi);
+		const parts = title.split(/(Recurso técnico profissional|evite a suspensão|3 minutos|evite pontos|evite pagar|direito de dirigir|evite as penalidades|proteja sua cnh|evite o pagamento)/gi);
 		return parts.map((part, i) => {
-			if (part && ["recurso", "anular sua multa", "3 minutos"].includes(part.toLowerCase())) {
+			if (part && ["recurso técnico profissional", "evite a suspensão", "3 minutos", "evite pontos", "evite pagar", "direito de dirigir", "evite as penalidades", "proteja sua cnh", "evite o pagamento"].includes(part.toLowerCase())) {
 				return (
 					<span
 						key={i}
@@ -82,8 +82,13 @@ const AdsLandingPage = () => {
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col font-sans">
 			<SEO
-				title={data.seoTitle || "Auto Defesa - Recursos de Trânsito com IA | Defesa Técnica em minutos"}
-				description={data.seoDescription || "Gere sua Defesa de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e fundamentado."}
+				title={
+					data.seoTitle || "Auto Defesa - Recursos de Trânsito com IA | Defesa Técnica em minutos"
+				}
+				description={
+					data.seoDescription ||
+					"Gere sua Defesa de Multa de trânsito em minutos com Inteligência Artificial. Defesa prévia, JARI e CETRAN. Recurso personalizado e fundamentado."
+				}
 				keywords="recurso de multa, multa de transito, recorrer multa, inteligencia artificial, defesa de transito"
 			/>
 
@@ -148,18 +153,19 @@ const AdsLandingPage = () => {
 									)}
 								</h1>
 
-								<div className="md:text-lg text-gray-600 mb-4 md:mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
+								<div className="md:text-lg text-gray-600 mb-4 md:mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-2">
 									{data.lpDescription ? (
 										<p dangerouslySetInnerHTML={{ __html: data.lpDescription }} />
 									) : (
 										<p>
 											{data.description || (
 												<>
-													Proteja seu direito de dirigir de forma técnica. Em <strong>2 minutos</strong>,
-													nossa IA identifica <strong>falhas formais</strong> e{" "}
-													<strong>vícios administrativos</strong> na sua autuação para fundamentar uma{" "}
-													<strong>Defesa Técnica Profissional</strong>. Aumente suas chances com argumentos
-													baseados na legislação atualizada.
+													Proteja seu direito de dirigir de forma técnica. Em{" "}
+													<strong>2 minutos</strong>, nossa IA identifica{" "}
+													<strong>falhas formais</strong> e <strong>vícios administrativos</strong>{" "}
+													na sua autuação para fundamentar uma{" "}
+													<strong>Defesa Técnica Profissional</strong>. Aumente suas chances com
+													argumentos baseados na legislação atualizada.
 												</>
 											)}
 										</p>
@@ -179,10 +185,6 @@ const AdsLandingPage = () => {
 										/>
 										<span className="relative z-10">Iniciar Análise Técnica (Grátis)</span>
 									</Link>
-
-									<div className="w-full max-w-md mx-auto mt-2 bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-semibold py-2 px-4 rounded-xl text-center shadow-sm">
-										⚠️ O Auto Defesa é uma plataforma privada de software independente. Não possuímos nenhum vínculo com o DETRAN, Senatran, JARI ou qualquer órgão público governamental.
-									</div>
 
 									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-2 md:mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
@@ -211,6 +213,23 @@ const AdsLandingPage = () => {
 												defesas geradas
 											</span>
 										</div>
+									</div>
+
+									{/* <div className="w-full max-w-md mx-auto mt-2 bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-semibold py-2 px-4 rounded-xl text-center shadow-sm">
+										*O Auto Defesa é uma plataforma privada de software independente. Não possuímos nenhum vínculo com o DETRAN, Senatran, JARI ou qualquer órgão público governamental.
+										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
+										documento final em PDF tem um custo único a partir de R$ 9,99.
+									</div> */}
+									<div>
+										<p className="text-[10px] md:text-xs text-amber-700 md:mt-2 text-center max-w-sm">
+											*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
+											documento final em PDF tem um custo único a partir de R$ 9,99.
+										</p>
+										<p className="text-[10px] md:text-xs text-amber-700 md:mt-2 text-center max-w-sm mt-2">
+											*Auto Defesa é uma plataforma privada de software independente. Não possuímos
+											nenhum vínculo com o DETRAN, Senatran, JARI ou qualquer órgão público
+											governamental.
+										</p>
 									</div>
 
 									{showArrow && (
@@ -293,7 +312,7 @@ const AdsLandingPage = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Baixe e Protocole</h3>
 								<p className="text-gray-600 leading-relaxed text-justify">
-									Receba o <strong>documento em PDF (minuta)</strong>. Basta imprimir ou assinar
+									Receba o <strong>documento em PDF</strong>. Basta imprimir ou assinar
 									digitalmente e enviar ou protocolar junto ao órgão autuador.
 								</p>
 							</div>
@@ -397,7 +416,9 @@ const AdsLandingPage = () => {
 											size={20}
 											className="hidden md:block relative z-10 group-hover:-translate-y-1 transition-transform"
 										/>
-										<span className="relative px-3 py-2 text-lg z-10">Iniciar Análise Técnica (Grátis)</span>
+										<span className="relative px-3 py-2 text-lg z-10">
+											Iniciar Análise Técnica (Grátis)
+										</span>
 									</Link>
 								</div>
 							</ScrollReveal>
@@ -529,7 +550,7 @@ const AdsLandingPage = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Defesa Pronta para Uso</h3>
 								<p className="text-gray-600">
-									Ao detectar uma falha, geramos automaticamente o documento em PDF (minuta),
+									Ao detectar uma falha, geramos automaticamente o documento em PDF,
 									fundamentado e pronto para ser protocolado.
 								</p>
 							</div>
@@ -591,7 +612,9 @@ const AdsLandingPage = () => {
 									<div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 										<FileText size={24} />
 									</div>
-									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">+<CountUp end={1366} /></div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
+										+<CountUp end={1366} />
+									</div>
 									<div className="text-gray-600 font-medium">Defesas Elaboradas</div>
 									<div className="mt-4 h-1 w-12 bg-blue-600 rounded-full"></div>
 								</div>
@@ -615,7 +638,9 @@ const AdsLandingPage = () => {
 									<div className="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:scale-110 transition-transform transform-gpu">
 										<Star size={24} fill="currentColor" />
 									</div>
-									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight"><CountUp end={94} />%</div>
+									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
+										<CountUp end={94} />%
+									</div>
 									<div className="text-gray-600 font-medium">Satisfação dos Usuários</div>
 									<div className="mt-4 h-1 w-12 bg-yellow-500 rounded-full"></div>
 								</div>
@@ -627,7 +652,8 @@ const AdsLandingPage = () => {
 										<Clock size={24} />
 									</div>
 									<div className="text-gray-900 text-4xl font-black mb-2 tracking-tight">
-										&lt; <CountUp end={3} />min
+										&lt; <CountUp end={3} />
+										min
 									</div>
 									<div className="text-gray-600 font-medium">Tempo Médio de Geração</div>
 									<div className="mt-4 h-1 w-12 bg-indigo-600 rounded-full"></div>
@@ -636,7 +662,7 @@ const AdsLandingPage = () => {
 						</div>
 
 						{/* Hint for mobile */}
-						<div className="text-center mt-2 text-gray-600 text-sm animate-pulse md:hidden">
+						<div className="text-center mb-6 text-gray-600 text-sm animate-pulse md:hidden">
 							Arraste para o lado e veja mais <ChevronRight size={14} className="inline" />
 						</div>
 					</div>
@@ -681,9 +707,14 @@ const AdsLandingPage = () => {
 				<div className="max-w-4xl mx-auto px-4 space-y-2">
 					<p className="font-bold text-gray-700">Auto Defesa Recursos de Trânsito</p>
 					<p>Operado por Abax Labs Ltda | CNPJ: 46.463.308/0001-44</p>
-					<p>Endereço Comercial: Setor Comercial Sul, Quadra 04, Bloco A, Brasília - DF, CEP: 70304-000</p>
+					<p>
+						Endereço Comercial: Setor Comercial Sul, Quadra 04, Bloco A, Brasília - DF, CEP:
+						70304-000
+					</p>
 					<p>Contato Suporte: suporte@meuautodefesa.com.br</p>
-					<p className="pt-4 text-[10px]">© {ano} Auto Defesa. Todos os direitos reservados. Plataforma privada e independente.</p>
+					<p className="pt-4 text-[10px]">
+						© {ano} Auto Defesa. Todos os direitos reservados. Plataforma privada e independente.
+					</p>
 				</div>
 			</footer>
 		</div>

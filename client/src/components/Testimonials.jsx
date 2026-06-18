@@ -31,7 +31,7 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 3 semanas",
 		comment:
-			"Melhor investimento que fiz. O valor é simbólico perto do valor da multa que consegui anular.",
+			"Melhor investimento que fiz. O valor é simbólico perto do valor da multa que consegui cancelar.",
 	},
 	{
 		id: 4,
@@ -84,7 +84,7 @@ const REVIEWS = [
 		name: "PATRICIA LEAL",
 		rating: 5,
 		date: "Há 3 meses",
-		comment: "anulei multa de velocidade q eu nem lembrava vlw dms!!",
+		comment: "cancelei uma multa de velocidade q eu nem lembrava. valeu demais!!",
 	},
 	{
 		id: 12,
@@ -217,7 +217,7 @@ const REVIEWS = [
 		rating: 5,
 		date: "Há 10 meses",
 		comment:
-			"O suporte é excelente e a ferramenta funciona perfeitamente. Consegui anular minha multa de rodízio.",
+			"O suporte é excelente e a ferramenta funciona perfeitamente. Consegui cancelar minha multa de rodízio.",
 	},
 	{
 		id: 29,

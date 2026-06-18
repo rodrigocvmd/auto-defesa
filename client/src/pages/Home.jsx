@@ -72,16 +72,20 @@ const Home = () => {
 					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 md:mt-3">
 						<div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-center md:mt-4 !pb-5 md:!pb-0">
 							{/* Texto Hero */}
-							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0 mt-4 md:mt-2">
-								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-5 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full">
-									Elabore seu{" "}
+							<div className="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start pt-3 lg:pt-0 mt-1 md:mt-2">
+								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-5 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 !text-center !w-full px-3">
+									Gere um{" "}
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
-										Recurso
+										Recurso Técnico Profissional 
 									</span>{" "}
-									e cancele sua multa com <br className="hidden lg:block" />
+									para sua multa e{" "}
 									<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
-										Inteligência Artificial
+										proteja sua CNH{" "}
 									</span>
+									em apenas 3 minutos
+									{/* <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-300% animate-gradient">
+										
+									</span> */}
 								</h1>
 
 								<p className="md:text-lg text-gray-600 mb-4 md:mb-8 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 !text-center mx-4">
@@ -108,9 +112,7 @@ const Home = () => {
 										<span className="relative z-10">Iniciar Análise Técnica (Grátis)</span>
 									</Link>
 
-									<div className="w-full max-w-md mx-auto mt-2 bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-semibold py-2 px-4 rounded-xl text-center shadow-sm">
-										⚠️ O Auto Defesa é uma plataforma privada de software independente. Não possuímos nenhum vínculo com o DETRAN, Senatran, JARI ou qualquer órgão público governamental.
-									</div>
+								
 
 									<div className="trustInfo flex items-center justify-center gap-6 sm:gap-12 text-gray-500 font-medium w-full mt-2 md:mt-4 !mx-20">
 										<div className="flex flex-col items-center gap-1">
@@ -141,9 +143,17 @@ const Home = () => {
 											</div>
 									</div>
 
-									<div><p className="text-[10px] md:text-xs text-gray-500 md:mt-2 text-center max-w-sm">
+										{/* <div className="w-full max-w-md mx-auto mt-2 bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-semibold py-2 px-4 rounded-xl text-center shadow-sm">
+										*O Auto Defesa é uma plataforma privada de software independente. Não possuímos nenhum vínculo com o DETRAN, Senatran, JARI ou qualquer órgão público governamental.
 										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
 										documento final em PDF tem um custo único a partir de R$ 9,99.
+									</div> */}
+									<div><p className="text-[10px] md:text-xs text-amber-700 md:mt-2 text-center max-w-sm">
+										*A análise inicial de falhas e argumentos é 100% gratuita. A emissão do
+										documento final em PDF tem um custo único a partir de R$ 9,99.
+									</p>
+									<p className="text-[10px] md:text-xs text-amber-700 md:mt-2 text-center max-w-sm mt-2">
+										*Auto Defesa é uma plataforma privada de software independente. Não possuímos nenhum vínculo com o DETRAN, Senatran, JARI ou qualquer órgão público governamental.
 									</p>
 									</div>
 
@@ -233,7 +243,7 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Baixe e Protocole</h3>
 								<p className="text-gray-600 leading-relaxed text-justify">
-									Receba o <strong>documento em PDF (minuta)</strong>. Basta imprimir ou assinar
+									Receba o <strong>documento em PDF</strong>. Basta imprimir ou assinar
 									digitalmente e enviar ou protocolar junto ao órgão autuador.
 								</p>
 							</div>
@@ -468,7 +478,7 @@ const Home = () => {
 								</div>
 								<h3 className="text-xl font-bold text-gray-900 mb-3">Defesa Pronta para Uso</h3>
 								<p className="text-gray-600">
-									Ao detectar uma falha, geramos automaticamente o documento em PDF (minuta),
+									Ao detectar uma falha, geramos automaticamente o documento em PDF,
 									fundamentado e pronto para ser protocolado.
 								</p>
 							</div>
@@ -575,7 +585,7 @@ const Home = () => {
 						</div>
 
 						{/* Hint for mobile */}
-						<div className="text-center mt-2 text-gray-600 text-sm animate-pulse md:hidden">
+						<div className="text-center mb-6 text-gray-600 text-sm animate-pulse md:hidden">
 							Arraste para o lado e veja mais <ChevronRight size={14} className="inline" />
 						</div>
 					</div>

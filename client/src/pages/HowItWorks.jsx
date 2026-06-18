@@ -56,7 +56,7 @@ const HowItWorks = () => {
 					<header className="text-center mb-16">
 						<h1 className="text-4xl font-black text-gray-900 mb-4">Como Funciona</h1>
 						<p className="text-xl text-gray-600 max-w-2xl mx-auto">
-							Entenda o passo a passo para anular sua multa de trânsito com a Auto Defesa - Recursos
+							Entenda o passo a passo para recorrer da sua multa de trânsito com a Auto Defesa - Recursos
 							de Trânsito sem burocracia e sem gastar com advogados.
 						</p>
 					</header>

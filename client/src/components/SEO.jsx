@@ -14,7 +14,7 @@ const SEO = ({
 	const siteName = "Auto Defesa - Recursos de Trânsito";
 	// Descrição padrão focada na autoridade e especialidade
 	const defaultDescription =
-		"Auto Defesa - Recursos de Trânsito: A autoridade em recursos de multas com IA. Tecnologia jurídica avançada para anular infrações e proteger sua CNH com base no CTB.";
+		"Auto Defesa - Recursos de Trânsito: A autoridade em recursos de multas com IA. Tecnologia jurídica avançada para recorrer de infrações e proteger sua CNH com base no CTB.";
 	const baseUrl = "https://meuautodefesa.com.br";
 
 	const fullTitle = title ? `${title} | ${siteName}` : `${siteName} com IA`;

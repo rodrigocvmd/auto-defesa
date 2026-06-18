@@ -72,7 +72,7 @@ const InfractionPage = () => {
 	const pageTitle = data?.seoTitle || `Recurso de Multa ${data?.title} | Auto Defesa`;
 	const pageDescription =
 		data?.seoDescription ||
-		`Multa de ${data?.title}? Inicie seu recurso agora. IA jurídica para anular pontos e multas do CTB com alta taxa de sucesso.`;
+		`Multa de ${data?.title}? Inicie seu recurso agora. IA jurídica para recorrer de multas do CTB com alta taxa de sucesso.`;
 
 	// Estado para slug não encontrado (fallback genérico)
 	if (!data) {

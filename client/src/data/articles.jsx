@@ -7,9 +7,10 @@ export const articles = [
 		slug: "lei-seca",
 		title: "Multa por Lei Seca e Recusa (Art. 165 e 165-A)",
 		seoTitle: "Defesa Multa Lei Seca Art. 165 CTB: Evite Suspensão da CNH",
-		seoDescription: "Levou multa da Lei Seca ou Recusa (Art. 165-A)? Veja como anular a suspensão de 12 meses e a multa de R$ 2.934,70 com recurso técnico especializado.",
+		seoDescription:
+			"Levou multa da Lei Seca ou Recusa (Art. 165-A)? Veja como recorrer da suspensão de 12 meses e a multa de R$ 2.934,70 com recurso técnico especializado.",
 		description:
-			"Seja por teste positivo ou por recusa ao bafômetro, a multa da Lei Seca prevê suspensão da CNH por 12 meses. Descubra as teses jurídicas para anular essa penalidade.",
+			"Seja por teste positivo ou por recusa ao bafômetro, a multa da Lei Seca prevê suspensão da CNH por 12 meses. Descubra as teses jurídicas que podem cancelar essa penalidade.",
 		category: "Lei Seca",
 		publishDate: "2026-02-03",
 		faq: [
@@ -23,7 +24,7 @@ export const articles = [
 			},
 			{
 				q: "Vale a pena recorrer?",
-				a: "Sim. Erros formais no bafômetro, falta de sinais de embriaguez descritos no auto ou falhas na notificação anulam totalmente a infração.",
+				a: "Sim. Erros formais no bafômetro, falta de sinais de embriaguez descritos no auto ou falhas na notificação podem anular totalmente a infração.",
 			},
 		],
 		content: (
@@ -68,8 +69,8 @@ export const articles = [
 				<div className="bg-blue-50 rounded-2xl p-8 mt-10 text-center border border-blue-100">
 					<h3 className="text-xl font-bold text-gray-900 mb-4">Sua multa pode ser anulada?</h3>
 					<p className="text-gray-600 mb-6">
-						Nossa IA analisa seu caso buscando erros formais e falta de materialidade que garantem o
-						cancelamento da multa e da suspensão.
+						Nossa IA analisa seu caso buscando erros formais e falta de materialidade que podem
+						imputar o cancelamento da multa e da suspensão.
 					</p>
 					<Link
 						to="/upload"
@@ -84,7 +85,7 @@ export const articles = [
 		slug: "faixa-exclusiva",
 		title: "Multa por Transitar em Faixa Exclusiva (Art. 184)",
 		description:
-			"Transitar na faixa de ônibus ou seletiva gera multa gravíssima. Entenda as exceções como acesso a garagens ou conversões à direita que anulam a autuação.",
+			"Transitar na faixa de ônibus ou seletiva gera multa gravíssima. Entenda as exceções como acesso a garagens ou conversões à direita que podem anular a autuação.",
 		category: "Infrações Comuns",
 		publishDate: "2026-02-26",
 		faq: [
@@ -109,8 +110,8 @@ export const articles = [
 				<p>
 					O Código de Trânsito permite o uso da faixa exclusiva para fins de{" "}
 					<strong>acesso a lotes lindeiros</strong> (garagens, postos de combustíveis) ou para
-					realizar <strong>conversões à direita</strong>. Se você foi multado enquanto realizava
-					uma dessas manobras legítimas, a autuação é indevida.
+					realizar <strong>conversões à direita</strong>. Se você foi multado enquanto realizava uma
+					dessas manobras legítimas, a autuação é indevida.
 				</p>
 
 				<h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
@@ -128,9 +129,9 @@ export const articles = [
 					<li className="flex items-start gap-3">
 						<CheckCircle className="text-green-500 shrink-0 mt-1" size={20} />
 						<span>
-							<strong>Foto de Radar:</strong> A foto deve mostrar o veículo transitando por um
-							longo trecho. Uma foto isolada não prova que o motorista não estava apenas entrando na
-							faixa para acessar uma garagem próxima.
+							<strong>Foto de Radar:</strong> A foto deve mostrar o veículo transitando por um longo
+							trecho. Uma foto isolada não prova que o motorista não estava apenas entrando na faixa
+							para acessar uma garagem próxima.
 						</span>
 					</li>
 				</ul>
@@ -141,7 +142,7 @@ export const articles = [
 					</h3>
 					<p className="text-gray-600 mb-6">
 						Muitas vezes o sistema automático não identifica que você estava apenas manobrando para
-						entrar em um estacionamento. Recorra para anular os 7 pontos.
+						entrar em um estacionamento. Recorra para cancelar os 7 pontos.
 					</p>
 					<Link
 						to="/upload"
@@ -155,8 +156,9 @@ export const articles = [
 	{
 		slug: "excesso-velocidade",
 		title: "Recurso de Multa por Excesso de Velocidade (Art. 218)",
-		seoTitle: "Recurso Multa Excesso de Velocidade Art. 218 CTB | Anular Pontos",
-		seoDescription: "Sua multa de radar do Art. 218 CTB pode ser anulada. Verifique erros técnicos no radar e evite a suspensão da CNH por excesso de velocidade.",
+		seoTitle: "Recurso Multa Excesso de Velocidade Art. 218 CTB | Cancelar Pontos",
+		seoDescription:
+			"Sua multa de radar do Art. 218 CTB pode ser anulada. Verifique erros técnicos no radar e evite a suspensão da CNH por excesso de velocidade.",
 		description:
 			"Multas de radar são as campeãs de emissão no Brasil. Entenda quando o equipamento falha e como evitar pontos na carteira ou até a suspensão direta.",
 		category: "Excesso de Velocidade",
@@ -798,7 +800,7 @@ export const articles = [
 
 				<h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Como Recorrer da Multa NIC?</h2>
 				<p>
-					Para anular a multa NIC, a estratégia principal é atacar a{" "}
+					Para cancelar a multa NIC, a estratégia principal é atacar a{" "}
 					<strong>multa originária</strong> ou a <strong>falta de notificação</strong> da empresa.
 				</p>
 				<ul className="space-y-4 mt-4">
@@ -885,7 +887,7 @@ export const articles = [
 		slug: "caminhoneiro",
 		title: "Defesa de Multas para Caminhoneiros e Transportadoras",
 		description:
-			"Excesso de peso, exame toxicológico e evasão de balança. Saiba como anular multas que prejudicam o frete e a transportadora.",
+			"Excesso de peso, exame toxicológico e evasão de balança. Saiba como cancelar multas que prejudicam o frete e a transportadora.",
 		category: "Profissional",
 		publishDate: "2026-02-10",
 		faq: [
