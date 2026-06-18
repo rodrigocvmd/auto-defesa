@@ -246,7 +246,7 @@ exports.generateDefense = (req, res) => {
 
 				const defenseData = {
 					userId: userId,
-					guestEmail: isGuest
+					guestEmail: false
 						? (data.guestEmail || "").trim().toLowerCase()
 						: (userEmail || "").trim().toLowerCase(),
 					infractionType: data.defenseType || "Análise de Upload",
@@ -260,7 +260,7 @@ exports.generateDefense = (req, res) => {
 				const docRef = await db.collection("defenses").add(defenseData);
 				defenseId = docRef.id;
 
-				await deductCredits(userId, isGuest, userEmail);
+				await deductCredits(userId, false, userEmail);
 			}
 
 			res.status(200).json({
