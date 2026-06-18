@@ -35,6 +35,18 @@ async function generateWithFallback(genAI, primaryModelName, parts) {
 }
 
 exports.generateDefense = (req, res) => {
+	// Configuração Manual de CORS (Nuclear Option)
+	res.set("Access-Control-Allow-Origin", req.headers.origin || "*");
+	res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+	res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+	res.set("Access-Control-Allow-Credentials", "true");
+
+	// Responder imediatamente à requisição de Preflight (OPTIONS)
+	if (req.method === "OPTIONS") {
+		res.status(204).send("");
+		return;
+	}
+
 	cors(req, res, async () => {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) {
@@ -282,6 +294,18 @@ exports.generateDefense = (req, res) => {
 };
 
 exports.extractDataFromImage = (req, res) => {
+	// Configuração Manual de CORS (Nuclear Option)
+	res.set("Access-Control-Allow-Origin", req.headers.origin || "*");
+	res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+	res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+	res.set("Access-Control-Allow-Credentials", "true");
+
+	// Responder imediatamente à requisição de Preflight (OPTIONS)
+	if (req.method === "OPTIONS") {
+		res.status(204).send("");
+		return;
+	}
+
 	cors(req, res, async () => {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
@@ -382,6 +406,18 @@ exports.extractDataFromImage = (req, res) => {
 };
 
 exports.preAnalyze = (req, res) => {
+	// Configuração Manual de CORS (Nuclear Option)
+	res.set("Access-Control-Allow-Origin", req.headers.origin || "*");
+	res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+	res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+	res.set("Access-Control-Allow-Credentials", "true");
+
+	// Responder imediatamente à requisição de Preflight (OPTIONS)
+	if (req.method === "OPTIONS") {
+		res.status(204).send("");
+		return;
+	}
+
 	cors(req, res, async () => {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
@@ -469,6 +505,18 @@ exports.preAnalyze = (req, res) => {
 };
 
 exports.analyzeDocument = (req, res) => {
+	// Configuração Manual de CORS (Nuclear Option)
+	res.set("Access-Control-Allow-Origin", req.headers.origin || "*");
+	res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+	res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+	res.set("Access-Control-Allow-Credentials", "true");
+
+	// Responder imediatamente à requisição de Preflight (OPTIONS)
+	if (req.method === "OPTIONS") {
+		res.status(204).send("");
+		return;
+	}
+
 	cors(req, res, async () => {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) return res.status(500).json({ error: "API Key ausente." });
@@ -648,6 +696,18 @@ exports.analyzeDocument = (req, res) => {
 };
 
 exports.sendDefensePdfEmail = (req, res) => {
+	// Configuração Manual de CORS (Nuclear Option)
+	res.set("Access-Control-Allow-Origin", req.headers.origin || "*");
+	res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+	res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+	res.set("Access-Control-Allow-Credentials", "true");
+
+	// Responder imediatamente à requisição de Preflight (OPTIONS)
+	if (req.method === "OPTIONS") {
+		res.status(204).send("");
+		return;
+	}
+
 	cors(req, res, async () => {
 		try {
 			const { pdfBase64, fileName } = req.body;
