@@ -81,6 +81,27 @@ export const useDefenseLogic = (step) => {
 		}
 	}, [step, result, resetDefense]);
 
+	// Auto-confirm defense when reaching result step (triggers credit deduction)
+	useEffect(() => {
+		const confirm = async () => {
+			if (step === "result" && defenseId && currentUser) {
+				try {
+					console.log("Confirmando geração de defesa e debitando crédito...", defenseId);
+					const response = await api.confirmDefense(defenseId);
+					if (response.success) {
+						console.log("Defesa confirmada com sucesso.");
+					}
+				} catch (err) {
+					console.error("Erro ao confirmar defesa:", err);
+					// Mesmo se falhar aqui, o usuário já viu o resultado.
+					// O ideal é que o front trate créditos de forma otimista ou 
+					// valide novamente ao baixar.
+				}
+			}
+		};
+		confirm();
+	}, [step, defenseId, currentUser]);
+
 	// Ensure isTestMode matches the data presence
 	useEffect(() => {
 		if (isTestMode && !formData.name && !formData.cpf) {

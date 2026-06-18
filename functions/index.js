@@ -16,32 +16,34 @@ exports.getInfraction = onRequest(infractionController.getInfraction);
 
 // --- FUNÇÃO PARA VERIFICAR EMAIL ---
 // CORS configurado manualmente no controller para garantir acesso
-exports.checkEmail = onRequest(userController.checkEmail);
-exports.getGuestCredits = onRequest(userController.getGuestCredits);
+exports.checkEmail = onRequest({ cors: true }, userController.checkEmail);
+exports.getGuestCredits = onRequest({ cors: true }, userController.getGuestCredits);
 
 // --- FUNÇÃO DE SUPORTE ---
-exports.sendSupportEmail = onRequest(supportController.sendSupportEmail);
+exports.sendSupportEmail = onRequest({ cors: true }, supportController.sendSupportEmail);
 
 // --- FUNÇÃO 2: MANUAL / REFINAMENTO ---
-exports.generateDefense = onRequest({ timeoutSeconds: 120 }, defenseController.generateDefense);
+exports.generateDefense = onRequest({ timeoutSeconds: 120, cors: true }, defenseController.generateDefense);
 
 // --- FUNÇÃO 3: CHECKOUT STRIPE ---
-exports.createCheckoutSession = onRequest(paymentController.createCheckoutSession);
+exports.createCheckoutSession = onRequest({ cors: true }, paymentController.createCheckoutSession);
 
 // --- FUNÇÃO 4: OCR ---
-exports.extractDataFromImage = onRequest(defenseController.extractDataFromImage);
+exports.extractDataFromImage = onRequest({ cors: true }, defenseController.extractDataFromImage);
 
 // --- FUNÇÃO 5: PRÉ-ANÁLISE ---
-exports.preAnalyze = onRequest(defenseController.preAnalyze);
+exports.preAnalyze = onRequest({ cors: true }, defenseController.preAnalyze);
 
 // --- FUNÇÃO 6: ANÁLISE COMPLETA (UPLOAD) ---
-exports.analyzeDocument = onRequest({ timeoutSeconds: 120 }, defenseController.analyzeDocument);
+exports.analyzeDocument = onRequest({ timeoutSeconds: 120, cors: true }, defenseController.analyzeDocument);
 
 // --- FUNÇÃO 7: ENVIAR PDF POR EMAIL ---
 exports.sendDefensePdfEmail = onRequest(
-	{ timeoutSeconds: 60 },
+	{ timeoutSeconds: 60, cors: true },
 	defenseController.sendDefensePdfEmail,
 );
+
+exports.confirmDefense = onRequest({ cors: true }, defenseController.confirmDefense);
 
 // --- WEBHOOK STRIPE ---
 exports.stripeWebhook = onRequest(paymentController.stripeWebhook);

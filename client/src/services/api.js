@@ -107,6 +107,22 @@ export const api = {
     }
   },
 
+  confirmDefense: async (defenseId) => {
+    try {
+      const headers = await getAuthHeaders();
+      const response = await fetch(`${BASE_URL}/confirmDefense`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ defenseId }),
+      });
+
+      return await handleResponse(response);
+    } catch (error) {
+      console.error("API Call Error (confirmDefense):", error);
+      throw error;
+    }
+  },
+
   // 2. Defesa via Upload
   analyzeDocument: async (fileBase64, mimeType, userData = {}) => {
     try {

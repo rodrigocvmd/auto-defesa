@@ -272,7 +272,9 @@ exports.generateDefense = (req, res) => {
 				const docRef = await db.collection("defenses").add(defenseData);
 				defenseId = docRef.id;
 
-				await deductCredits(userId, false, userEmail);
+				// O crédito NÃO é debitado aqui. 
+				// Ele será debitado apenas quando o usuário confirmar na página de preview.
+				// await deductCredits(userId, false, userEmail);
 			}
 
 			res.status(200).json({
@@ -675,7 +677,9 @@ exports.analyzeDocument = (req, res) => {
 			const docRef = await db.collection("defenses").add(defenseData);
 			const defenseId = docRef.id;
 
-			await deductCredits(userId, false, userEmail);
+			// O crédito NÃO é debitado aqui. 
+			// Ele será debitado apenas quando o usuário confirmar na página de preview.
+			// await deductCredits(userId, false, userEmail);
 
 			res.status(200).json({
 				success: true,
@@ -761,6 +765,77 @@ exports.sendDefensePdfEmail = (req, res) => {
 		} catch (error) {
 			console.error("Erro ao enviar email com PDF:", error);
 			return res.status(500).json({ error: "Erro interno ao processar envio de email." });
+		}
+	});
+};
+
+exports.confirmDefense = (req, res) => {
+	// Configuração Manual de CORS (Nuclear Option)
+	res.set("Access-Control-Allow-Origin", req.headers.origin || "*");
+	res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+	res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+	res.set("Access-Control-Allow-Credentials", "true");
+
+	// Responder imediatamente à requisição de Preflight (OPTIONS)
+	if (req.method === "OPTIONS") {
+		res.status(204).send("");
+		return;
+	}
+
+	cors(req, res, async () => {
+		try {
+			const { defenseId } = req.body;
+			let userId = null;
+			let userEmail = null;
+
+			try {
+				userId = await verifyAuth(req);
+				const userDoc = await db.collection("users").doc(userId).get();
+				if (userDoc.exists) {
+					userEmail = userDoc.data().email;
+				}
+			} catch (e) {
+				return res.status(401).json({ error: "Usuário não autenticado." });
+			}
+
+			if (!defenseId) {
+				return res.status(400).json({ error: "ID da defesa é obrigatório." });
+			}
+
+			const defenseRef = db.collection("defenses").doc(defenseId);
+			const defenseDoc = await defenseRef.get();
+
+			if (!defenseDoc.exists) {
+				return res.status(404).json({ error: "Defesa não encontrada." });
+			}
+
+			const defenseData = defenseDoc.data();
+			if (defenseData.userId !== userId) {
+				return res.status(403).json({ error: "Acesso negado." });
+			}
+
+			// Se já estiver confirmada, não debita novamente
+			if (defenseData.status === "confirmed") {
+				return res.status(200).json({ success: true, message: "Defesa já confirmada." });
+			}
+
+			// Debitar o crédito agora que o usuário confirmou
+			await deductCredits(userId, false, userEmail);
+
+			// Marcar como confirmada
+			await defenseRef.update({
+				status: "confirmed",
+				confirmedAt: FieldValue.serverTimestamp(),
+			});
+
+			return res.status(200).json({ success: true, message: "Crédito debitado e defesa confirmada." });
+		} catch (error) {
+			if (error.message === "Créditos insuficientes.") {
+				res.status(402).json({ error: "Créditos insuficientes. Por favor, recarregue." });
+			} else {
+				console.error("Erro ao confirmar defesa:", error);
+				res.status(500).json({ error: "Erro interno ao confirmar defesa." });
+			}
 		}
 	});
 };
